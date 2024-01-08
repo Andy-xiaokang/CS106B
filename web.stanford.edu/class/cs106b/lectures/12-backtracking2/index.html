@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B More Recursive Backtracking</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 12. More Recursive Backtracking</h1>
+ <p class="subtle-heading">Monday October 23</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Further explorations in solving problems using recursive backtracking.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 9.1-9.3</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/142518">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=f2bb6ea9-4452-4ba2-8482-b083014df2e2&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Problem Statement: 0-1 Knapsack (and Some Broken Solutions)</p>
+<p>2. Similarity to Subset Generation</p>
+<p>3. Preliminaries: Structs in C++</p>
+<p>4. Test Cases</p>
+<p>5. Overview: Why So Many Recursive Backtracking Solutions Today?</p>
+<p>6. Recursive Backtracking Solution (1 of 3)</p>
+<p>7. Recursive Backtracking Solution (2 of 3)</p>
+<p>8 . Recursive Backtracking Solution (3 of 3)</p>
+<p>9. Best- and Worst-Case Runtimes for Recursive Knapsack Solutions</p>
+<p>10. Side Note: Inefficiency of the Solutions Above</p>
+<p>11. Recursion and Backtracking Wrap</p>
+<p>12. What's next?</p>
+<p>13. Practice Problems</p>
+<p><strong><br />Problem Statement: 0-1 Knapsack (and Some Broken Solutions)</strong></p>
+<p>Suppose we have a sack with a weight capacity<span>&nbsp;</span><em>c</em>, and we have items with weights (<em>w</em><sub>i</sub>) and values (<em>v</em><sub>i</sub>). The goal of the 0-1 knapsack problem is to stuff items into our knapsack in such a way that maximizes the total value of the items we take (without exceeding the bag's maximum weight capacity). The problem is "0-1" because our decision about each item is binary: we either take it, or we don't. (There is a related problem called the <a class="external" href="http://en.wikipedia.org/wiki/Continuous_knapsack_problem" target="_blank" rel="noopener"><span>"continuous" or "fractional" knapsack problem</span></a> that<span> allows us to take fractions of an item and is amenable to different solution from the one we're about to discuss</span>.)</p>
+<p>For example, suppose we have the following items, and a bag where<span>&nbsp;</span><em>c</em><span>&nbsp;</span>= 10:</p>
+<p>Item 0:<span>&nbsp;</span><em>w</em><sub>0</sub><span>&nbsp;</span>= 4,<span>&nbsp;</span><em>v</em><sub>0</sub><span>&nbsp;</span>= 6<br />Item 1:<span>&nbsp;</span><em>w</em><sub>1</sub><span>&nbsp;</span>= 2,<span>&nbsp;</span><em>v</em><sub>1</sub><span>&nbsp;</span>= 4<br />Item 2:<span>&nbsp;</span><em>w</em><sub>2</sub><span>&nbsp;</span>= 3,<span>&nbsp;</span><em>v</em><sub>2</sub><span>&nbsp;</span>= 5<br />Item 3:<span>&nbsp;</span><em>w</em><sub>3</sub><span>&nbsp;</span>= 1,<span>&nbsp;</span><em>v</em><sub>3</sub><span>&nbsp;</span>= 3<br />Item 4:<span>&nbsp;</span><em>w</em><sub>4</sub><span>&nbsp;</span>= 6,<span>&nbsp;</span><em>v</em><sub>4</sub><span>&nbsp;</span>= 9<br />Item 5:<span>&nbsp;</span><em>w</em><sub>5</sub><span>&nbsp;</span>= 4,<span>&nbsp;</span><em>v</em><sub>5</sub><span>&nbsp;</span>= 7</p>
+<p>Notice that if we start taking the most valuable items that we can hold, we won't maximize the value from our pillaging. We'll first take Item 4, then Item 5. Our total weight is then 10, and our total value is 16. However, there's a better solution. Do you see what it is?</p>
+<p><strong>Highlight for solution:</strong> <span style="background-color: #ced4d9; color: #ced4d9;">Take items 1, 2, 3, and 5, for a total weight of 2 + 3 + 1 + 4 = 10 and a total value of 4 + 5 + 3 + 7 = 19.</span></p>
+<p>You might object to the approach above and say that we should instead choose items based on (<em>v</em><sub>i</sub><span>&nbsp;</span>/<span>&nbsp;</span><em>w</em><sub>i</sub>) ratios (selecting the items with the highest ratios first). It turns out that will work for the example above, but here's a different example that shows where that approach <em>doesn't</em><span>&nbsp;</span>work (again with max capacity<span>&nbsp;</span><em>c</em><span>&nbsp;</span>= 10):</p>
+<p>Item 0:<span>&nbsp;</span><em>w</em><sub>0</sub><span>&nbsp;</span>= 8,<span>&nbsp;</span><em>v</em><sub>0</sub><span>&nbsp;</span>= 160, v<sub>0</sub><span>&nbsp;</span>/ w<sub>0</sub><span>&nbsp;</span>= 20<br />Item 1:<span>&nbsp;</span><em>w</em><sub>1</sub><span>&nbsp;</span>= 3,<span>&nbsp;</span><em>v</em><sub>1</sub><span>&nbsp;</span>= 58, v<sub>1</sub><span>&nbsp;</span>/ w<sub>1</sub><span>&nbsp;</span>= 19.333<br />Item 2:<span>&nbsp;</span><em>w</em><sub>2</sub><span>&nbsp;</span>= 3,<span>&nbsp;</span><em>v</em><sub>2</sub><span>&nbsp;</span>= 58, v<sub>2</sub><span>&nbsp;</span>/ w<sub>2</sub><span>&nbsp;</span>= 19.333<br />Item 3:<span>&nbsp;</span><em>w</em><sub>3</sub><span>&nbsp;</span>= 3,<span>&nbsp;</span><em>v</em><sub>3</sub><span>&nbsp;</span>= 58, v<sub>3</sub><span>&nbsp;</span>/ w<sub>3</sub><span>&nbsp;</span>= 19.333<br />Item 4:<span>&nbsp;</span><em>w</em><sub>4</sub><span>&nbsp;</span>= 1,<span>&nbsp;</span><em>v</em><sub>4</sub><span>&nbsp;</span>= 2, v<sub>4</sub><span>&nbsp;</span>/ w<sub>4</sub><span>&nbsp;</span>= 2</p>
+<p>Selecting by (<em>v</em><sub>i</sub><span>&nbsp;</span>/<span>&nbsp;</span><em>w</em><sub>i</sub>) ratios would cause us to take Item 0, leaving us only with room to take Item 4 after that. We would have a total value of 162 from those two items. The better solution here is to take the last four items, which give us a total weight of 10 and a total value of 176.</p>
+<p><br /><strong>Similarity to Subset Generation</strong></p>
+<p>The recursive backtracking approach to the 0-1 knapsack problem is similar to the approach we have already seen for generating all subsets of a given set: for every element in a set, we made a binary choice about whether to include it in the subset we were generating or not, and we made two recursive calls accordingly -- one for each of those possibilities. Similarly, with 0-1 knapsack, we make binary choices about whether or not to place items from some input vector into our knapsack -- and make two recursive calls to explore those two distinct possibilities. A key distinction between the subset and knapsack algorithms is that in the knapsack algorithm, when we are faced with an item that is too heavy for our knapsack, we are forced to leave it behind -- and, accordingly, we make only one recursive call to reflect that. So, with the knapsack problem not <em>every</em> item in our input vector is subject to a binary choice.</p>
+<p><strong><br />Preliminaries: Structs in C++</strong></p>
+<p>I started building up to a solution by codifying the above test cases using two separate vectors, <em>weights</em> and&nbsp;<em>values</em>, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">PROVIDED_TEST("simple knapsack test")<br />{<br />&nbsp; &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; weights = {4, 2, 3, 1, 6, 4};<br />&nbsp; &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; values = {6, 4, 5, 3, 9, 7};<br /><br />  &nbsp; <strong>int</strong> capacity = 10;<br /><br />  &nbsp; EXPECT_EQUAL(knapsack(weights, values, capacity), 19);<br />}</pre>
+<p>The idea above is that our <em>i</em><sup>th</sup> item has its weight stored at <span class="code-chonk">weights[i]</span> and its value stored at <span class="code-chonk">values[i]</span>.</p>
+<p>The idea of storing those values in two separate vectors should be somewhat concerning. What if we accidentally perturb the elements in one vector, but not the other? In that event, the weights and values could become jumbled and mismatched. Our code would be far less error-prone if we could package the weight and value together in a single datatype.</p>
+<p>In fact, C++ allows us to do that with something called a&nbsp;<strong>struct</strong>. A struct is effectively a new datatype that we articulate ourselves and which has the capability of holding multiple variables, which we refer to as the "members" or "fields" of the struct. The syntax for creating a struct is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>struct</strong> <strong><span style="background-color: #7e8c8d; color: #ffffff;"> TYPE_NAME </span></strong><br />{<br />   <span style="background-color: #7e8c8d; color: #ffffff;"><strong> DATA_TYPE </strong></span> <span style="color: #ffffff;"><strong><span style="background-color: #7e8c8d;"> MEMBER_NAME </span></strong></span>;<br />   <span style="background-color: #7e8c8d; color: #ffffff;"><strong> DATA_TYPE </strong></span> <span style="color: #ffffff;"><strong><span style="background-color: #7e8c8d;"> MEMBER_NAME </span></strong></span>;<br />   ...<br />};</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Common pitfalls!</em></span>) The semicolon after the closing curly brace above is required. Leaving off the semicolon is one of the most common errors with struct declarations. Note also that we declare our structs above and outside of the functions where we want to use the new datatype we're creating, or in a header (.h) file.</p>
+<p>We created a <span class="code-chonk">treasureT</span> struct capable of holding the weight and value of a single item:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>struct</strong> treasureT<br />{<br />   <strong>int</strong> weight;<br />   <strong>int</strong> value;<br />};</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Style note.</em></span>) People often place a <span class="code-chonk">T</span> or <span class="code-chonk">_t</span> at the end of a struct's type name so we can easily distinguish it from a variable name.</p>
+<p><span class="code-chonk">treasureT</span> is now a new datatype. It can be used to declare a new variable, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>treasureT</strong> myTreasure;</pre>
+<p>Above, <span class="code-chonk">myTreasure</span> is now a variable of type <span class="code-chonk">treasureT</span>. It has two "fields" or "members" that we can access using the dot operator like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">myTreasure.weight = 4;<br />myTreasure.value = 6;</pre>
+<p>Someone brought this up in class today: we could also initialize fields as follows, where values are assigned to fields in the order of those fields' declarations within our struct:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">myTreasure = {4, 6};</pre>
+<p>In the example above, we get <span class="code-chonk">myTreasure.weight = 4</span> and <span class="code-chonk">myTreasure.value = 6</span>. (The 4 is assigned to the <span class="code-chonk">weight</span> field because that field is declared first in the struct definition. The 6 is assigned to the <span class="code-chonk">value</span> field because that one is declared second in the struct definition.</p>
+<p><br /><strong>Test Cases</strong></p>
+<p>With our newly created struct type, we threw down the following infrastructure before coding up our knapsack solution:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />#include "SimpleTest.h"<br />using namespace std;<br /><br /><strong>struct</strong> treasureT<br />{<br />   <strong>int</strong> weight;<br />   <strong>int</strong> value;<br />};<br /><br /><span style="background-color: #236fa1; color: #ffffff;"><strong>// PLACE ONE OF THE KNAPSACK SOLUTION FUNCTIONS HERE</strong></span><br /><br /><span style="color: #236fa1;"><em>// Assumes weights and values vectors have equal size.</em></span><br /><strong>Vector</strong>&lt;<strong>treasureT</strong>&gt; createTreasureVector(<strong>Vector</strong>&lt;<strong>int</strong>&gt;&amp; weights, <strong>Vector</strong>&lt;<strong>int</strong>&gt;&amp; values)<br />{<br /> &nbsp; <strong>Vector</strong>&lt;<strong>treasureT</strong>&gt; treasures;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; weights.size(); i++)<br />   {<br />      <strong>treasureT</strong> myTreasure;<br />      myTreasure.weight = weights[i];<br />      myTreasure.value = values[i];<br /> &nbsp; &nbsp; &nbsp;treasures.add(myTreasure);<br />   }<br /><br />   <strong>return</strong> treasures;<br />}<br /><br />PROVIDED_TEST("simple knapsack test")<br />{<br />&nbsp; &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; weights = {4, 2, 3, 1, 6, 4};<br />&nbsp; &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; values = {6, 4, 5, 3, 9, 7};<br /><br />    <strong>Vector</strong>&lt;<strong>treasureT</strong>&gt; treasures = createTreasureVector(weights, values);<br />  &nbsp; <strong>int</strong> capacity = 10;<br /><br />  &nbsp; EXPECT_EQUAL(knapsack(treasures, capacity), 19);<br />}<br /><br />PROVIDED_TEST("another simple knapsack test")<br />{<br />&nbsp; &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; weights = {8, 3, 3, 3, 1};<br />&nbsp; &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; values = {160, 58, 58, 58, 2};<br /><br />    <strong>Vector</strong>&lt;<strong>treasureT</strong>&gt; treasures = createTreasureVector(weights, values);<br />  &nbsp; <strong>int</strong> capacity = 10;<br /><br />  &nbsp; EXPECT_EQUAL(knapsack(treasures, capacity), 176);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   runSimpleTests(ALL_TESTS);<br />   <strong>return</strong> 0;<br />}</pre>
+<p><br /><strong>Overview: Why So Many Recursive Backtracking Solutions Today?</strong></p>
+<p>Having built out the test cases above, we began writing our backtracking solutions for the knapsack problem. In class, I presented three different solutions, each with their own advantages, disadvantages, and quirks. My goals in presenting multiple solutions to this problem today were:</p>
+<ul>
+<li>to reinforce the idea that there isn't just one "correct" recursive solution to each of the problems we've been exploring in this class</li>
+<li>to expose you to a variety of approaches in hopes of you finding one that really "clicks" and helps demystify recursion a bit</li>
+<li>to foster an exploration and discussion of the nuances of various solutions so that you can develop your own perspectives on what makes recursive functions more (or less) readable</li>
+<li>to help ensure that you won't be caught completely off guard when you see various types of recursive solutions outside of this class</li>
+</ul>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) The goal here is not for you to develop a masterful understanding of all three solutions below straight away. Rather, the goal is for you to develop a deep understanding of whichever one makes the most sense to you and to use that as a model for solving other problems recursively. There will be time after the quarter is over, or after you're more comfortable with recursion, to return to these examples and explore each of them more fully.</p>
+<p>Note that while we might have our own personal preferences for how to structure a readable solution to this problem, on an exam, we do not expect you to emulate any one of these structures over the other. We want solutions that are correct and readable. Beyond that, the structural style details are up to you.</p>
+<p><br /><strong>Recursive Backtracking Solution (1 of 3)</strong></p>
+<p>Below is the first backtracking solution we constructed for the knapsack problem. This one follows a common paradigm we've seen over the past two weeks where we have a container (often called <span class="code-chonk">rest</span>, but in this case called <span class="code-chonk">treasures</span>) from which we remove elements as we descend deeper and deeper into our recursive calls. We hit our best case when the container we're choosing from is empty.</p>
+<p>Note that this is a pass-by-reference solution, which means that we must add elements back to our vector after making our recursive calls for two reasons:</p>
+<ul>
+<li>Firstly, when we hit our first base case, our vector of treasures will be empty. If we never add anything back to that vector, then when we return to previous calls and start exploring other recursive branches of our problem space, there will never be any treasures to choose from. We need to add those treasures back so we can make our take-or-don't-take choices in other branches of the tree.</li>
+<li>Secondly, it's tremendously disruptive for us to destroy the contents of an input parameter over the course of solving some problem. The person who calls a function like this might still have use for the data they passed to us after the function is finished, so we need to be sure to restore values to the vector in question as we return our way out of this function.</li>
+</ul>
+<p>With all that in mind, and with our binary choice approach in mind as well (take-or-don't-take), our first solution is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><i>// Returns the maximum value we can derive by taking treasures from the given vector<br /></i><em>// (without the total weight of the treasures we take exceeding the given capacity).</em></span><br /><strong>int</strong> knapsack(<strong>Vector</strong>&lt;<strong>treasureT</strong>&gt;&amp; treasures, <strong>int</strong> capacity)<br />{<br />   <span style="color: #236fa1;"><em>// No more treasures to choose from means no more value to gain. Finito!</em></span><br />   <strong>if</strong> (treasures.size() == 0)<br />   {<br />      <strong>return</strong> 0;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // Here, we pull an item out of our vector in preparation for making a binary</em></span><br /><span style="color: #236fa1;"><em>   // choice about what to do with it: either take it or leave it behind.</em></span><br /><span style="color: #236fa1;"><em>   //</em></span><br /><span style="color: #236fa1;"><em>   // Removing from (and later adding to) the last position in our vector is more</em></span><br /><span style="color: #236fa1;"><em>   // efficient than operating on index 0 (zero). The latter requires us to scooch</em></span><br /><span style="color: #236fa1;"><em>   // over all the rest of the elements in the vector.</em></span><br />   <strong>treasureT</strong> thisOne = treasures[treasures.size() - 1];<br />   treasures.remove(treasures.size() - 1);<br /><br />   <strong>int</strong> result;<br /><br />   <strong>if</strong> (thisOne.weight &lt;= capacity)<br />   {<br /><span style="color: #236fa1;"><em>      // <strong>Take it.</strong> Adding the current item to our knapsack adds to our running value</em></span><br /><span style="color: #236fa1;"><em>      // but also reduces the capacity of our knapsack.</em></span><br />      <strong>int</strong> with = thisOne.value + knapsack(treasures, capacity - thisOne.weight);<br /><br /><span style="color: #236fa1;"><em>      // <strong>Don't take it.</strong> Leaving this item behind in hopes of finding other, better<br /></em><em>      // items with which to fill our knapsack means we don't gain any value, but</em></span><br /><span style="color: #236fa1;"><em>      // we also don't reduce the capacity of our knapsack.</em></span><br /><strong>      int</strong> without = knapsack(treasures, capacity);<br /><br />      result = max(with, without);<br />   }<br />   <strong>else</strong><br />   {<br /><span style="color: #236fa1;"><em>      // <strong>Don't take it.</strong> This is the branch where thisOne is too heavy to take. So,</em></span><br /><span style="color: #236fa1;"><em>      // we don't have the luxury of making a binary choice about whether to take</em></span><br /><span style="color: #236fa1;"><em>      // the item with us. We <strong>must</strong> leave it behind.</em></span><br />      result = knapsack(treasures, capacity);<br />   }<br /><br />   <span style="color: #236fa1;"><em>// Unchoose. See notes above this function about why we must add this back.</em></span><br />   treasures.add(thisOne);<br />   <strong>return</strong> result;<br />}</pre>
+<p><br /><strong>Recursive Backtracking Solution (2 of 3)</strong></p>
+<p>Someone mentioned in class that we could check whether <span class="code-chonk">capacity &lt;= 0</span> as a base case for our recursive function. Assuming all of our items have positive weights (which seems reasonable), having <span class="code-chonk">capacity &lt;= 0</span> would mean that we cannot take any additional items with us.</p>
+<p>When implementing this base case, I also took the opportunity to remove the condition from our first solution above that prevented us from making the "take it" recursive call when our item was too heavy to fit in the knapsack. I mentioned that conditional check was an example of "arm's-length recursion," which is where we actively avoid making a recursive call in a certain situation rather than just making that call and allowing a base case to handle that certain situation.</p>
+<p>The big problem here is that if we have a line like this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> with = <span style="color: #ffffff; background-color: #ba372a;"><strong>thisOne.value +</strong></span> knapsack(treasures, capacity - thisOne.weight);</pre>
+<p>... then if our item was too heavy to pick up, our recursive call is effectively powerless to undo our addition of <span class="code-chonk">thisOne.value</span> to the value of the recursive call we're making. (Indeed, if the item was too heavy to pick up, we do <strong>not</strong> want to add its value to any running total we're keeping track of.)</p>
+<p>One way around that issue is to pass the total value of all the items we have picked up so far to the function as a third parameter, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><i>// Returns the maximum value we can derive by taking treasures from the given vector<br /></i><em>// (without the total weight of the treasures we take exceeding the given capacity).<br />// This version assumes all item weights are positive.</em></span><br /><strong>int</strong> knapsack(<strong>Vector</strong>&lt;<strong>treasureT</strong>&gt;&amp; treasures, <strong>int</strong> capacity, <strong>int</strong> valueSoFar)<br />{<br /><span style="color: #236fa1;"><em>   // If capacity is less than zero, we've tried to pick up something that is too</em></span><br /><span style="color: #236fa1;"><em>   // heavy to go into our knapsack, and we have therefore entered into an invalid</em></span><br /><span style="color: #236fa1;"><em>   // state. Thus, we derive no value from this state -- not even the valueSoFar.</em></span><br />   <strong>if</strong> (capacity &lt; 0)<br />   {<br />      return 0;<br />   }<br /><br />   <span style="color: #236fa1;"><em>// No more treasures to choose from means no more value to gain. Similarly,<br />   // no knapsack capacity means nothing else to gain, assuming all item weights<br />   // are positive. We return the valueSoFar, since there's nothing else to add.<br />   // Finito!</em></span><br />   <strong>if</strong> (treasures.size() == 0 || capacity == 0)<br />   {<br />      <strong>return</strong> valueSoFar;<br />   }<br /><br />   <strong>treasureT</strong> thisOne = treasures[treasures.size() - 1];<br />   treasures.remove(treasures.size() - 1);<br /><br /><span style="color: #236fa1;"><em>   // <strong>Take it.</strong> Adding the current item to our knapsack adds to our running value</em></span><br /><span style="color: #236fa1;"><em>   // but also reduces the capacity of our knapsack.</em></span><br />   <strong>int</strong> with = knapsack(treasures, capacity - thisOne.weight, valueSoFar + thisOne.value);<br /><br /><span style="color: #236fa1;"><em>   // <strong>Don't take it.</strong> Leaving this item behind in hopes of finding other, better<br /></em><em>   // items with which to fill our knapsack means we don't gain any value, but</em></span><br /><span style="color: #236fa1;"><em>   // we also don't reduce the capacity of our knapsack.</em></span><br /><strong>   int</strong> without = knapsack(treasures, capacity, valueSoFar);<br /><br />   <span style="color: #236fa1;"><em>// Unchoose. See notes above this function about why we must add this back.</em></span><br />   treasures.add(thisOne);<br />   <strong>return</strong> max(with, without);<br />}<br /><br /><span style="color: #236fa1;"><em>// Wrapper function.</em></span><br /><strong>int</strong> knapsack(<strong>Vector</strong>&lt;<strong>treasureT</strong>&gt;&amp; treasures, <strong>int</strong> capacity)<br />{<br /><span style="color: #236fa1;"><em>   // At the start of our journey, we haven't picked up any treasures yet, so our</em></span><br /><span style="color: #236fa1;"><em>   // valueSoFar (the third parameter below) is 0 (zero).</em></span><br />   <strong>return</strong> knapsack(treasures, capacity, 0);<br />}</pre>
+<p><br /><strong>Recursive Backtracking Solution (3 of 3)</strong></p>
+<p>The final recursive solution we examined introduced a new variable, k, that started at 0 (zero) and worked its way up through our vector. I mentioned that with this sort of approach, there are often two ways to interpret the auxiliary integer variable, and that both interpretations effectively mean the same thing; they're just two sides of the same coin. In this particular example, k can be interpreted as follows:</p>
+<ul>
+<li>Within this call, we will consider what to do with the item at index <span class="code-chonk">k</span> in the vector.</li>
+<li>We have already made decisions about what to do with the first <span class="code-chonk">k</span> items in the vector.</li>
+</ul>
+<p>If <span class="code-chonk">k</span> starts at zero, then we will have made decisions about all items in the vector and hit a base case when <span class="code-chonk">k == treasures.size()</span>.</p>
+<p>A key advantage of this approach is that we don't need to do any of the bookkeeping associated with adding or removing items from our <span class="code-chonk">treasures</span> vector. We still pass it by reference, which means we benefit from the time and space savings compared to passing it by value. The only downside here is that we need to develop a solid understanding of the purpose of that <span class="code-chonk">k</span> variable.</p>
+<p>The solution is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><i>// Returns the maximum value we can derive by taking treasures from the given vector<br /></i><em>// (without the total weight of the treasures we take exceeding the given capacity),<br />// focusing only on indices k and beyond.</em></span><br /><strong>int</strong> knapsack(<strong>Vector</strong>&lt;<strong>treasureT</strong>&gt;&amp; treasures, <strong>int</strong> capacity, <strong>int</strong> k)<br />{<br />   <span style="color: #236fa1;"><em>// No more treasures to choose from means no more value to gain. Finito!</em></span><br />   <strong>if</strong> (k == treasures.size())<br />   {<br />      <strong>return</strong> 0;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // The structure below is very similar to that of today's first solution.<br /></em><em>   // This time, however, we needn't remove items from the vector or add them</em></span><br /><span style="color: #236fa1;"><em>   // back in. The k variable helps us move through the vector without modifying</em></span><br /><span style="color: #236fa1;"><em>   // its contents.</em></span><br /><br />   <strong>int</strong> thisWeight = treasures[k].weight;<br />   <strong>int</strong> thisValue = treasures[k].value;<br /><br />   <strong>int</strong> result;<br /><br />   <strong>if</strong> (thisWeight &lt;= capacity)<br />   {<br /><span style="color: #236fa1;"><em>      // <strong>Take it.</strong> Adding the current item to our knapsack adds to our running value</em></span><br /><span style="color: #236fa1;"><em>      // but also reduces the capacity of our knapsack.</em></span><br />      <strong>int</strong> with = thisValue + knapsack(treasures, capacity - thisWeight, k + 1);<br /><br /><span style="color: #236fa1;"><em>      // <strong>Don't take it.</strong> Leaving this item behind in hopes of finding other, better<br /></em><em>      // items with which to fill our knapsack means we don't gain any value, but</em></span><br /><span style="color: #236fa1;"><em>      // we also don't reduce the capacity of our knapsack.</em></span><br /><strong>      int</strong> without = knapsack(treasures, capacity, k + 1);<br /><br />      result = max(with, without);<br />   }<br />   <strong>else</strong><br />   {<br /><span style="color: #236fa1;"><em>      // <strong>Don't take it.</strong> This is the branch where the current item is too heavy to take.</em></span><br /><span style="color: #236fa1;"><em>      // So, we don't have the luxury of making a binary choice about whether to take</em></span><br /><span style="color: #236fa1;"><em>      // the item with us. We <strong>must</strong> leave it behind.</em></span><br />      result = knapsack(treasures, capacity, k + 1);<br />   }<br /><br />   <strong>return</strong> result;<br />}<br /><br /><span style="color: #236fa1;"><em>// Wrapper function.</em></span><br /><strong>int</strong> knapsack(<strong>Vector</strong>&lt;<strong>treasureT</strong>&gt;&amp; treasures, <strong>int</strong> capacity)<br />{<br /><span style="color: #236fa1;"><em>   // We kick off our journey by considering what to do with the element at index 0.<br /></em><em>   // Another way to interpret this is that when we kick off our journey, we have so</em></span><br /><span style="color: #236fa1;"><em>   // far considered what to do with zero of the items in our vector.</em></span><br />   <strong>return</strong> knapsack(treasures, capacity, 0);<br />}</pre>
+<p>A more condensed version of this approach eliminated the <span class="code-chonk">result</span> variable and simply returns from within the if-else blocks:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> knapsack(<strong>Vector</strong>&lt;<strong>treasureT</strong>&gt;&amp; treasures, <strong>int</strong> capacity, <strong>int</strong> k)<br />{<br />   <strong>if</strong> (k == treasures.size())<br />   {<br />      <strong>return</strong> 0;<br />   }<br /><br />   <strong>int</strong> thisWeight = treasures[k].weight;<br /><strong>   int</strong> thisValue = treasures[k].value;<br /><br />   <strong>if</strong> (thisWeight &lt;= capacity)<br />   {<br />      <strong>return</strong> max(thisValue + knapsack(treasures, capacity - thisWeight, k + 1),<br />                 knapsack(treasures, capacity, k + 1));<br />   }<br />   <strong>else</strong><br />   {<br />      <strong>return</strong> knapsack(treasures, capacity, k + 1);<br />   }<br />}<br /><br /><strong>int</strong> knapsack(<strong>Vector</strong>&lt;<strong>treasureT</strong>&gt;&amp; treasures, <strong>int</strong> capacity)<br />{<br />   <strong>return</strong> knapsack(treasures, capacity, 0);<br />}</pre>
+<p><strong><br />Best- and Worst-Case Runtimes for Recursive Knapsack Solutions</strong></p>
+<p>In the worst case, every item is light enough to add to our knapsack in every recursive call we make, and so each call (aside from our base case) spawns two more recursive calls, leading to an exponential runtime, <strong>O(2<sup>n</sup>)</strong> (where <em>n</em> is the size of our original vector of treasures). In the best case, every item is too heavy to add to our knapsack, and so each call we make (aside from our base case) spawns only one recursive call, leading to a linear runtime, <strong>O(n)</strong>.</p>
+<p><strong><br />Side Note: Inefficiency of the Solutions Above</strong></p>
+<p>I feel I would be remiss if I did not point out that the recursive approaches above are <strong>not</strong> the most efficient solutions to 0-1 knapsack. In later courses, you will learn about two techniques -- memoization and iterative dynamic programming -- that can be applied to the recursive algorithms above to eliminate redundant recursive calls and drastically improve the worst-case runtime.</p>
+<p><br /><strong>Recursion and Backtracking Wrap</strong></p>
+<p>This wraps up our two-week introduction to recursion and recursive backtracking. While these topics are tricky when you first encounter them, I hope they're starting to click into place, and I hope you're starting to see how incredible it is that we can now solve problems in just a few lines of code that would be significantly more complex to solve without recursion.</p>
+<p><strong><br />What's next?</strong></p>
+<p>We will now shift gears to new topics: sorting, object-oriented programming, structs, and dynamic memory management.</p>
+<p>Note that today marks the last day for new material that will appear on your upcoming midterm.</p>
+<p><strong><br />Practice Problems</strong></p>
+<p>1. Strengthen your understanding of recursion by tracing through the behavior of one of the knapsack solutions above on the first provided test case. Either construct a recursive tree diagram manually, or use the debugger to examine the behavior of the function from start to finish.</p>
+<p>2. An excellent question posed by someone in class today: Instead of creating a struct, why can't we just use a map to track our weight-value pairs for knapsack inputs? The <em>weights</em> could serve as <em>keys</em> in such a map, and the <em>values</em> they would map to would be... well, the <em>values</em> of the items they represented. For example, suppose we had the following three items:</p>
+<p>Item 1:<span>&nbsp;</span><em>w</em><sub>1</sub><span>&nbsp;</span>= 2,<span>&nbsp;</span><em>v</em><sub>1</sub><span>&nbsp;</span>= 4<br />Item 2:<span>&nbsp;</span><em>w</em><sub>2</sub><span>&nbsp;</span>= 3,<span>&nbsp;</span><em>v</em><sub>2</sub><span>&nbsp;</span>= 5<br />Item 3:<span>&nbsp;</span><em>w</em><sub>3</sub><span>&nbsp;</span>= 1,<span>&nbsp;</span><em>v</em><sub>3</sub><span>&nbsp;</span>= 3</p>
+<p>We could put these in a map like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>Map</strong>&lt;<strong>int</strong>, <strong>int</strong>&gt; treasures;<br />map[2] = 4;<br />map[3] = 5;<br />map[1] = 3;</pre>
+<p>Where does this representation potentially break down?</p>
+<p>3. Modify the first backtracking solution in today's notes to pass parameters by value rather than by reference. What operation becomes unnecessary when passing those parameters by value, and why?</p>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution to Problem #3:</strong> <span style="background-color: #ced4d9; color: #ced4d9;">When passing by value, we needn't add treasures back to the vector before returning from a recursive call. That's because the call we're about to return to has its own copy of the vector from before the treasure in question was removed.</span></span></p>
+<p><br /></p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-24
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Priority Queues and Binary Heaps</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 17. Priority Queues and Binary Heaps</h1>
+ <p class="subtle-heading">Friday November 3</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Today we'll look at different ways of creating a priority queue, an ADT used to implement those same algorithms.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 14.3, 16.5</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/144297">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=cf7c450a-0c31-412d-85ec-b083014df37e&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Hand-written Notes</p>
+<p>2. Preliminaries: Tree Terminology</p>
+<p>3. Minheaps: Properties, Operations, and Runtimes</p>
+<p>4. Percolation</p>
+<p>5. Best-Case Runtime for Deletion</p>
+<p>6. Extension: Priority Queues</p>
+<p>7. Application: Heapsort</p>
+<p>8. Representation</p>
+<p>9. Heapify</p>
+<p>10. Maxheaps</p>
+<p>11. What's next?</p>
+<p>12. Exercises</p>
+<p><br /><strong>Hand-written Notes</strong></p>
+<p><em>Attachment: <a href="17-pqheap/resources/minheaps-written-notes.pdf">minheaps-written-notes.pdf</a></em></p>
+<p>Attached above are the hand-written notes from today's class (with some extra detail and explanations).</p>
+<p>I have included a summary of today's key points below, but the hand-written notes have more details and diagrams.</p>
+<p><br /><strong>Preliminaries: Tree Terminology</strong></p>
+<p>Today's main topic was the minheap, which is used to implement priority queues. A minheap is a tree data structure, and so we started class today with some basic tree terminology:</p>
+<ul>
+<li>nodes and edges (see diagram in hand-written notes)</li>
+<li>parent-child relationships (see diagram in hand-written notes)</li>
+<li>root node (only one per tree)</li>
+<li>leaf nodes (nodes with no children)</li>
+<li>binary trees (every node has at most two children)</li>
+<li>left child, right child (in binary trees)</li>
+<li>complete binary tree (every level is completely filled up, except perhaps for the bottom level, and if the bottom level is not filled up, all nodes on that level must be completely flushed to the left with no gaps)</li>
+</ul>
+<p><strong><br />Minheaps: Properties, Operations, and Runtimes</strong></p>
+<p>Minheaps are binary trees with two additional properties: a <em>structural</em>&nbsp;property (they are&nbsp;<em>complete</em>), and an&nbsp;<em>ordering</em> property (every node must have a value less than or equal to the values in its child nodes). (The latter property guarantees that every node has a value less than or equal to all the nodes in its <em>subtrees</em>, too -- its grandchildren, its great-grandchildren, and so on.)</p>
+<p>We discussed three basic operations minheaps support, along with their big-oh runtimes:</p>
+<ul>
+<li><span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">enqueue(value)</span>
+<ul>
+<li>Also called: <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">insert()</span>, <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">add()</span></li>
+<li>Description: Inserts <em>value</em> into the heap.</li>
+<li>Best-case runtime: O(1), where new value is too large to percolate up</li>
+<li>Worst-case runtime: O(log n), where new value percolates up to root of tree</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">dequeue()</span>
+<ul>
+<li>Also called: <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">delete()</span>, <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">deleteMin()</span></li>
+<li>Description: Removes and returns the min value from the heap. Deletion of arbitrary values is not supported. (See note below.)</li>
+<li>Best-case runtime: O(1) (see "Best-Case Runtime for Deletion" section below)</li>
+<li>Worst-case runtime: O(log n), where value that moves to root percolates down entire height of tree</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">peek()</span>
+<ul>
+<li>Also called: <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">findMin()</span>, <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">getMin()</span></li>
+<li>Description: Returns the min value in the heap without removing it.</li>
+<li>Best-case runtime: O(1) (just return the value at the root!)</li>
+<li>Worst-case runtime: O(1) (just return the value at the root!)</li>
+</ul>
+</li>
+</ul>
+<p>The worst-case runtimes above are based on the height of the minheap, which we derived in class: floor(log<sub>2</sub>n) (for n &gt; 0).</p>
+<p>Note that the minheap's delete function does not allow us to delete arbitrary values from the heap. It only allows for deletion of the min value, which is always at the root. Deleting an arbitrary element from a minheap would potentially take O(n) time, because we don't know if we need to go left or right from the root (or from every other node, for that matter) to find an arbitrary value in the heap. Removing a value other than the root could also potentially disrupt the structural property of the heap (its completeness) in a way that would be difficult to recover from.</p>
+<p>Therefore, if we need to support deletion of arbitrary elements in some program we're writing, we should probably consider a different data structure than this one.</p>
+<p><br /><strong>Percolation</strong></p>
+<p>We also saw two percolation operations:</p>
+<ul>
+<li><span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">percolateUp()</span>
+<ul>
+<li>Purpose: Supports insertion operation.</li>
+<li>Loose description: Keep swapping up as long as the value being percolated up is less than its parent.</li>
+<li>Best-case runtime: O(1), where value is too large to percolate up.</li>
+<li>Worst-case runtime: O(log n), where value percolates up from leaf position to root node.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">percolateDown()</span>
+<ul>
+<li>Purpose: Supports deletion operation. Also used in <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">heapify()</span> (see below).</li>
+<li>Loose description: Keep swapping down with smallest child as long as the value being percolated down is greater than that smallest child.</li>
+<li>Best-case runtime: O(1), where value is too large to percolate down.</li>
+<li>Worst-case runtime: O(log n), where value percolates down from root node to leaf position.</li>
+</ul>
+</li>
+</ul>
+<p><strong><br />Best-Case Runtime for Deletion</strong></p>
+<p>We saw in class that the best-case runtime for deletion is O(1). That happens when the element that we move up to the root position only has to percolate down one level before settling into place. That can happen even if your heap gets absolutely huge. Consider, for example, what would happen if we called <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">dequeue()</span> on the following heap. Do you see the best-case pattern that causes deletion to be O(1)?</p>
+<p style="margin-left: 30px;"><img src="17-pqheap/resources/minheap-best-case-deletion.jpg" /></p>
+<p><span>Someone pointed out in class today that we would also get an O(1) runtime if all the values in our minheap were equal. :)</span></p>
+<p><br /><strong>Extension: Priority Queues</strong></p>
+<p>A priority queue is a minheap where we bundle a&nbsp;<em>priority</em> together with some other piece of&nbsp;<em>data</em>. We arrange nodes in our priority queue based on those <em>priority</em> values, and the associated <em>data</em> comes along for the ride.</p>
+<p>For example, we could use a priority queue to manage print requests sent to a shared printer. We might use the number of pages in each print job as its <em>priority</em> and bundle it up in a struct or class with the associated print job data. If several people are trying to print documents at once, smaller jobs would percolate up in the queue and be serviced first, while someone with a larger print job would be made to wait (instead of making everyone wait for someone who wants to print 500 pages).</p>
+<p><br /><strong>Application: Heapsort</strong></p>
+<p>We also saw that minheaps can be used to implement heapsort, which is an O(n log n) sort. It works as follows:</p>
+<ol style="list-style-type: decimal;">
+<li>Insert <em>n</em> elements into a minheap. Runtime: O(n log n)</li>
+<li>Remove all <em>n</em> elements from minheap. Runtime: O(n log n)</li>
+</ol>
+<p>In step 2, we would just place the values in an array or vector as they came out of the minheap, since they would come out in sorted order. The overall runtime here is O(n log n) -- pretty awesome!</p>
+<p><br /><strong>Representation</strong></p>
+<p>Minheaps are commonly implemented using arrays or vectors. For details, see pg. 10 of today's hand-written notes.</p>
+<p><span><br /><strong>Heapify</strong></span></p>
+<p>Toward the end of class, we saw an algorithm called <em>heapify</em> that allows us to transform an arbitrary array into a heap in place (i.e., without creating an auxiliary data structure). See pg. 11 of today's hand-written notes for details.</p>
+<p>At first glance, the runtime for heapify seems like it ought to be O(n log n). It turns out the runtime is even better than that: O(n), which is an awesome surprise. I hope to talk about why the runtime is O(n) in an upcoming lecture.</p>
+<p><span><strong><br />Maxheaps</strong></span></p>
+<p><span>A maxheap has the same structural property as a minheap, but its ordering property requires that any given node must have a value <em>greater</em> than or equal to the values in its child nodes. See pg. 13 of today's hand-written notes for an example.</span></p>
+<p><br /><strong>What's next?</strong></p>
+<p>On Monday, we have an applied ethics lecture where we will talk about ethical issues surrounding classification, sorting, and ranking algorithms. After that, we will turn our attention to a data structure that relies heavily on pointers and dynamic memory management: linked lists.</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. Draw a minheap of height 4 that will incur <em>worst</em>-case runtime when inserting the value 99. Then draw a minheap of height 4 that will incur <em>best</em>-case runtime when inserting the value 99.</p>
+<p>2. Draw a minheap of height 4 that will incur <em>worst</em>-case runtime when calling <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">dequeue()</span>.</p>
+<p>3. Draw the heap that is represented by the following array, and tell whether it is a minheap, maxheap, neither, or both:</p>
+<table style="margin-left: 30px; margin-top: 15px; border-collapse: collapse;" border="0">
+<tbody>
+<tr>
+<td style="text-align: center; border: 1px solid black; padding: 10px; width: 30px;"><span style="font-size: 10pt;">58</span></td>
+<td style="text-align: center; border: 1px solid black; padding: 10px; width: 30px;"><span style="font-size: 10pt;">39</span></td>
+<td style="text-align: center; border: 1px solid black; padding: 10px; width: 30px;"><span style="font-size: 10pt;">22</span></td>
+<td style="text-align: center; border: 1px solid black; padding: 10px; width: 30px;"><span style="font-size: 10pt;">20</span></td>
+<td style="text-align: center; border: 1px solid black; padding: 10px; width: 30px;"><span style="font-size: 10pt;">38</span></td>
+<td style="text-align: center; border: 1px solid black; padding: 10px; width: 30px;"><span style="font-size: 10pt;">21</span></td>
+<td style="text-align: center; border: 1px solid black; padding: 10px; width: 30px;"><span style="font-size: 10pt;">7</span></td>
+<td style="text-align: center; border: 1px solid black; padding: 10px; width: 30px;"><span style="font-size: 10pt;">7</span></td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+</tr>
+</tbody>
+</table>
+<p>4. Re-visit the formulas we saw in class for calculating the index of a node's parent, left child, and right child when using an array to represent a complete binary tree. If we're using an array, what is the formula for the index of the last non-leaf node in a heap, assuming it holds <em>n</em> nodes?</p>
+<p>5. What is the&nbsp;<em>exact</em> height of a complete binary tree with&nbsp;<em>n</em> nodes? Recall that you will need to use either a floor or ceiling function to give a precise answer.</p>
+<p>6. As always, the textbook and this week's section are chock full of great exercises and additional examples to help reinforce this material.</p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-07
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

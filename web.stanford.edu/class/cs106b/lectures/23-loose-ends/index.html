@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Binary Trees: Loose Ends</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 23. Binary Trees: Loose Ends</h1>
+ <p class="subtle-heading">Friday November 17</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Today we tie up a few loose ends related to binary trees and code up a function for deleting nodes from a BST.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/145206">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e1535677-f751-478d-b30f-b0be002df4f2&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. BST Code</p>
+<p>2. Runtime Analysis for Heapify</p>
+<p>3. So, Why BSTs?</p>
+<p>4. Deleting Values from BSTs</p>
+<p>5. Additional BST Deletion Examples</p>
+<p>6. Deletion Code</p>
+<p>7. What's next?</p>
+<p>8. Exercises</p>
+<p><br /><strong>BST Code</strong></p>
+<p><em>Attachment: <a href="resources/bst.zip">bst.zip</a></em></p>
+<p>For ease of reference, here is the BST code we've written so far this week, including the <span class="code-chonk">bstDelete()</span> function from class today.</p>
+<p><br /><strong>Runtime Analysis for Heapify</strong></p>
+<p><em>Here is the Prezi for this section of today's notes:</em></p>
+<p><iframe id="iframe_container" src="https://prezi.com/p/embed/TNQTT3sKKWuxcklTxxnb/" width="560" height="315" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allow="autoplay; fullscreen"></iframe></p>
+<p>We started today with a loose end from <a class="inline_disabled" href="../17-pqheap.html" target="_blank" rel="noopener">Lecture 17</a> on minheaps and priority queues: a formal analysis of the runtime of the heapify algorithm.</p>
+<p>Recall that heapify takes an arbitrary vector or array and converts it into a representation of a valid minheap by calling <span class="code-chonk">precolateDown()</span> on all the nodes from the bottom-rightmost non-leaf node back through the root node (index 0), like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> getParent(<strong>int</strong> child)<br />{<br />   <strong>return</strong> (child - 1) / 2;<br />}<br /><strong><br />void</strong> heapify(<strong>Vector</strong>&lt;<strong>int</strong>&gt;&amp; v)<br />{<br /><em><span style="color: #236fa1;">   // The last "node" in this vector is at index v.size() - 1. The bottom-rightmost</span></em><br /><em><span style="color: #236fa1;">   // non-leaf node in a complete binary tree will always be the parent of that last<br />   // node.</span></em><br /><em><span style="color: #236fa1;">   //</span></em><br /><em><span style="color: #236fa1;">   // For example, in the follow tree, the bottom-rightmost non-leaf node is <span style="background-color: #ffcc99;">38</span>, which</span></em><br /><em><span style="color: #236fa1;">   // is the parent of the bottom-rightmost node in the tree (<span style="background-color: #eccafa;">12</span>). (All the nodes to<br />   // the right of 38, as well as all the nodes on levels below it, are leaf nodes.)</span></em><br /><em><span style="color: #236fa1;">   //</span></em><br /><em><span style="color: #236fa1;">   // (Note that this is an arbitrary complete binary tree -- not a minheap.)</span></em><br /><em><span style="color: #236fa1;">   //</span></em><br /><em><span style="color: #236fa1;">   //</span></em><span style="color: #236fa1;">               9</span><br /><em><span style="color: #236fa1;">   //</span></em><span style="color: #236fa1;">             /   \</span><br /><em><span style="color: #236fa1;">   //</span></em><span style="color: #236fa1;">           3       7</span><br /><em><span style="color: #236fa1;">   //</span></em><span style="color: #236fa1;">         /   \   /   \</span><br /><em><span style="color: #236fa1;">   //</span></em><span style="color: #236fa1;">       <span style="background-color: #ffcc99;">38</span>    20 10    14</span><br /><em><span style="color: #236fa1;">   //</span></em><span style="color: #236fa1;">      /  \</span><br /><em><span style="color: #236fa1;">   //</span></em><span style="color: #236fa1;">     15  <span style="background-color: #eccafa;">12</span></span><br /><br /><span style="color: #236fa1;"><em>   // brmnln = "<strong>b</strong>ottom-<strong>r</strong>ight<strong>m</strong>ost <strong>n</strong>on-<strong>l</strong>eaf <strong>n</strong>ode"</em></span><br />   <strong>int</strong> brmnln = getParent(v.size() - 1);<br /><br />   <strong>for</strong> (<strong>int</strong> i = brmnln; i &gt;= 0; i--)<br />   {<br />      percolateDown(v, i);<br />   }<br />}</pre>
+<p>We traced through an example of this process in class as a refresher. (See timestamp 0:55 through 2:26 in today's lecture.)</p>
+<p>At first, it might seem like the big-oh runtime for heapify would be O(n log n). After all, we know the worst-case runtime for <span class="code-chonk">percolateDown()</span> is O(log n), and we're calling it n/2 times (since about half the nodes in a complete binary tree are non-leaves).</p>
+<p>The runtime is even better than that, though. We incur the O(n log n) worst-case runtime for <span class="code-chonk">percolateDown()</span> when we call it on the root and that value percolates all the way down the entire height of our tree. Calling <span class="code-chonk">percolateDown()</span> on a node other than the root results in a better runtime because the value in that node cannot swap down quite as many levels as the root's value could. Thus, our O(n log n) runtime is necessarily an over-estimate.</p>
+<p>In lecture, we saw that the worst-case number of swaps (which ultimately governs the runtime for our heapify algorithm) is less than <em>n</em>:</p>
+<p style="padding-left: 40px;"><img src="https://latex.codecogs.com/gif.download?%7Bn%5Cover2%7D+%7Bn%5Cover4%7D+%7Bn%5Cover8%7D+%7Bn%5Cover16%7D+...+1%20%3D%20n%5Cleft%28%7B1%5Cover2%7D+%7B1%5Cover4%7D+%7B1%5Cover8%7D+%7B1%5Cover16%7D+...+%7B1%5Cover%20n%7D%20%5Cright%20%29%20%3C%20n" /></p>
+<p>Thus, our runtime for heapify is O(n).</p>
+<p><br /><strong>So, Why BSTs?</strong></p>
+<p>We then shifted gears a bit to talk about why we would ever want to use a BST to store data as opposed to, say, a vector, an array, or even a linked list. Here is a summary of key points on that topic:</p>
+<ul>
+<li>Balanced BSTs support worst-case logarithmic insertion, search, and deletion operations. If we want to maintain a sorted vector or array, inserting a new smallest element would require us to scoot all the existing elements over by one position, leading to an O(n) runtime, which is significantly worse than O(log n). (Of course, if we use a regular BST and not a balanced BST, we could always devolve into a linked list and incur O(n) runtimes for our insertion, search, and deletion operations.)</li>
+</ul>
+<ul>
+<li>With BSTs, we don't encounter the same space constraints we do with fixed-size arrays. Recall that a fixed-size array can end up using more space than necessary if we over-estimate how large it needs to be and never end up using all of its cells. Conversely, if we have an array that fills up and we want to add an element to it, we need to go through an expansion operation where we create a new, larger array, copy elements from our old array into the new one, and <em>then</em> add the new element to our larger, expanded array -- again, an O(n) operation. In contrast, with a BST, we always have exactly the number of nodes we need, and we create and delete nodes on the fly as needed.</li>
+</ul>
+<ul>
+<li>Arrays require contiguous blocks of memory. If we're working in a highly memory constrained system where memory has become fragmented, it might not be possible to find a contiguous block of memory large enough for some array we want to allocate, but it might still be possible to proceed with a linked data structure that spreads its nodes across memory.</li>
+</ul>
+<ul>
+<li>BSTs are great for streaming input. If we want to be able to binary search a collection of values, and all those values are provided to us ahead of time, sure -- we can just throw them into an array of the appropriate size, sort the array, and do binary search from there. However, if we have a situation where new values could stream into our collection at any time after we have already started performing searches and we want to be able to add those to our container and process them in real time, a balanced BST might be the way to go. A balanced BST will ensure that it remains nice and balanced and bushy and always has worst-case logarithmic runtimes for insertion, search, and deletion. In contrast -- as mentioned above -- with a vector or array, adding new elements could lead to expensive O(n) expansion operations or O(n) operations to scoot larger elements over to make room for new smaller elements at the beginning of our data structure.</li>
+</ul>
+<ul>
+<li>A key benefit of BSTs over linked lists is that if we keep a BST balanced, we get efficient search runtimes of O(log n). With a linked list, even if our elements are sorted, our worst-case runtime for search is O(n). (And of course, we have talked <em>ad nauseam</em> about how much better logarithmic runtimes are than linear runtimes. What is log<sub>2</sub>(1,000,000,000) again? 😉)</li>
+</ul>
+<p>There are a few drawbacks to BSTs compared to arrays, though:</p>
+<ul>
+<li>Firstly, there are a lot of pointers involved, and dereferencing those pointers and journeying around memory could involve some extra runtime overhead compared to array cell accesses. For the purposes of anything we do in this class, that runtime hit would be so negligible as to be unobservable. That's something to keep in mind for software that needs to operate at a much larger scale, though.</li>
+</ul>
+<ul>
+<li>Secondly, and more importantly, the nodes in our BTSs take up more space than the cells in an array. On most systems these days, a single <span class="code-chonk">int</span> variable in a C++ program takes up 32 bits (or 4 bytes) of memory. So, an array of&nbsp;<em>n</em> integers would take 4<em>n</em> bytes of memory. In a BST of integers, however, each node also keeps track of a <em>left</em> and <em>right</em> child pointer. On most systems these days, a pointer in C++ takes up 64 bits (or 8 bytes) of memory. The total memory for each node in a BST, then, is 4 + 8 + 8 = 20 bytes, meaning our BST takes up 20<em>n</em> bytes of memory in total. That's <em><strong>five times</strong></em> the space required to story those integers in an array!</li>
+</ul>
+<p><strong><br />Deleting Values from BSTs</strong></p>
+<p>We then dove into examples of deleting values from a BST.</p>
+<p>For deletion, there are three distinct cases:</p>
+<ul>
+<li><strong>If the node to be deleted is a leaf node:<br /></strong><em>Just prune it! Goodbye, leaf node! For example:</em></li>
+</ul>
+<p style="padding-left: 40px;"><img src="resources/bst-delete-case01.png" /></p>
+<ul>
+<li><strong>If the node to be deleted has exactly one child:</strong><br /><em>Its child moves up to take is place, bringing along any children of its own. For example:</em></li>
+</ul>
+<p style="padding-left: 40px;"><img src="resources/bst-delete-case02.png" /></p>
+<ul>
+<li><strong>If the node to be deleted has two children:</strong><br /><em>Replace the node's value with the maximum value in its left subtree, and then (recursively) delete that maximum value from the left subtree. For example:</em></li>
+</ul>
+<p style="padding-left: 40px;"><img src="resources/bst-delete-case03.png" /></p>
+<p>Alternatively, if we delete a node has two children, we could replace the node's value with the <em>minimum</em> value from its <em>right</em> subtree (and then delete that min element from the right subtree). However, for the sake of keeping everything consistent and easy to grade on exams in this class, I always want you to choose option shown in class: use the maximum element from the node's left subtree.</p>
+<p><br /><strong>Additional BST Deletion Examples</strong></p>
+<p>Here are some supplementary BST deletion examples to help clarify :</p>
+<p style="padding-left: 40px;"><img src="resources/bst-delete-supplementary01.jpg" width="60%" /></p>
+<p style="padding-left: 40px;"><img src="resources/bst-delete-supplementary02.jpg" width="60%" /></p>
+<p><br /><strong>Deletion Code</strong></p>
+<p>Next, we coded up a BST deletion function from scratch and added it to the BST code we developed in our previous lecture.</p>
+<p>We tested that our deletion function worked by first printing the pre-, post-, and in-order traversals for a BST, then deleting a node of our choice, and then printing the traversals once again to ensure they matched what we would expect after the successful removal of the node in question.</p>
+<p>The complete code is attached above, but here's the deletion function for ease of reference:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// Recall that we pass a <strong>reference</strong> to our root pointer because we might want to<br />// change what this pointer is pointing to. That happens if we end up deleting the</em></span><br /><span style="color: #236fa1;"><em>// root node in this function call, in which case we want that pointer back in our<br />// calling function to be set to nullptr.</em></span><strong><br />void</strong> bstDelete(<strong>Node</strong>*&amp; root, <strong>int</strong> data)<br />{<br /><span style="color: #236fa1;"><em>   // Base case. :) If there's nothing here, there's nothing to delete. Just return.</em></span><br />   <strong>if</strong> (root == <strong>nullptr</strong>)<br />   {<br />      <strong>return</strong>;<br />   }<br /><br />   <strong>if</strong> (data &lt; root-&gt;data)<br />   {<br />      bstDelete(root-&gt;left, data);<br />   }<br />   <strong>else if</strong> (data &gt; root-&gt;data)<br />   {<br />      bstDelete(root-&gt;right, data);<br />   }<br />   <strong>else</strong><br />   {<br /><span style="color: #236fa1;"><em>      // Hooray, we found the value we want to delete!</em></span><br /><br />      <strong>if</strong> (root-&gt;left == <strong>nullptr</strong> &amp;&amp; root-&gt;right == <strong>nullptr</strong>)<br />      {<br /><em><span style="color: #236fa1;">         // This is the case where the node has no children. We can simply remove it</span></em><br /><em><span style="color: #236fa1;">         // from the tree.</span></em><br />         <strong>delete</strong> root;<br />         root = <strong>nullptr</strong>;<br />      }<br />      <strong>else if</strong> (root-&gt;right == <strong>nullptr</strong>)<br />      {<br /><em><span style="color: #236fa1;">         // Here, we have a single child: a left child. It might seem a bit jarring</span></em><br /><em><span style="color: #236fa1;">         // not to check above whether root-&gt;left != nullptr, but we know that if</span></em><br /><em><span style="color: #236fa1;">         // root-&gt;right == nullptr, root-&gt;left can't be nullptr. If it were, then</span></em><br /><em><span style="color: #236fa1;">         // both children would be null, and we would have triggered the if condition</span></em><br /><em><span style="color: #236fa1;">         // above and never made it to this else-if condition.<br />         //</span></em><br /><em><span style="color: #236fa1;">         // In this case, we need to delete the current node and move its left child</span></em><br /><em><span style="color: #236fa1;">         // up to take its place. Note that we can't safely access root-&gt;left after</span></em><br /><em><span style="color: #236fa1;">         // deleting root. The arrow operator (-&gt;) dereferences our struct pointer,</span></em><br /><em><span style="color: #236fa1;">         // and we should never dereference a pointer to something that has been</span></em><br /><em><span style="color: #236fa1;">         // deleted. So, we have to do a delicate dance here.</span></em><br /><br /><em><span style="color: #236fa1;">         // Hold onto the left child. This will become the new root of this subtree.</span></em><br />         <strong>Node</strong> *temp = root-&gt;left;<br /><br /><em><span style="color: #236fa1;">         // Delete the node 'root' is pointing to. (This doesn't delete the local</span></em><br /><em><span style="color: #236fa1;">         // variable called 'root'. It's still a reference to the root pointer passed</span></em><br /><em><span style="color: #236fa1;">         // to this function. This just deletes the dynamically allocated node that</span></em><br /><em><span style="color: #236fa1;">         // 'root' was pointing to.)</span></em><br />         <strong>delete</strong> root;<br /><br /><span style="color: #236fa1;"><em>         // Now set the root to point to the temp node -- the left child that is</em></span><br /><span style="color: #236fa1;"><em>         // moving up to take its parent's place.</em></span><br />         root = temp;<br />      }<br />      <strong>else if</strong> (root-&gt;left == <strong>nullptr</strong>)<br />      {<br /><span style="color: #236fa1;"><em>         // This is the case where we have just one child: a right child. The</em></span><br /><span style="color: #236fa1;"><em>         // operation is symmetric to the one above.</em></span><br />         <strong>Node</strong> *temp = root-&gt;right;<br />         <strong>delete</strong> root;<br />         root = temp;<br />      }<br />      <strong>else</strong><br />      {<br /><span style="color: #236fa1;"><em>         // This is the case where we have two children. The max value in the left</em></span><br /><span style="color: #236fa1;"><em>         // subtree needs to move up. Note that I'm not rewiring the tree here. I</em></span><br /><span style="color: #236fa1;"><em>         // just leave this node in place and change the value it contains.</em></span><br />         root-&gt;data = bstFindMax(root-&gt;left);<br />         bstDelete(root-&gt;left, root-&gt;data);<br />      }<br />   }<br />}</pre>
+<p>To enable the <span class="code-chonk">bstDelete()</span> function, I wrote this cheeky <span class="code-chonk">bstFindMax()</span> function that doesn't bother checking whether <span class="code-chonk">root</span> is null initially. For the purposes of deletion, it doesn't have to. We only ever call this function from <span class="code-chonk">bstDelete()</span> if the node we're trying to delete has two children -- meaning that its left child is definitely non-null.</p>
+<p>If someone were to pass this function an empty tree, however, it would totally segfault.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// Returns the largest value in this binary tree.<br />// </em><span style="background-color: #ba372a; color: #ffffff;">WARNING!</span><em> This function assumes root is non-null!</em></span><strong><br />int</strong> bstFindMax(<strong>Node </strong>*root)<br />{<br />   <strong>Node</strong> *current = root;<br /><br /><span style="color: #236fa1;"><em>   // To find the largest value in a BST, simply go right until we can't go<br />   // right anymore!</em></span><br />   <strong>while</strong> (current-&gt;right != <strong>nullptr</strong>)<br />   {<br />      current = current-&gt;right;<br />   }<br /><br />   <strong>return</strong> current-&gt;data;<br />}</pre>
+<p>An alternative approach to this function, by the way, is to get rid of the <span class="code-chonk">current</span> pointer altogether. We can change what <span class="code-chonk">root</span> is pointing to locally because it's not a reference; it's just a local pointer variable:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// Returns the largest value in this binary tree.<br />// </em><span style="background-color: #ba372a; color: #ffffff;">WARNING!</span><em> This function assumes root is non-null!</em></span><strong><br />int</strong> bstFindMax(<strong>Node </strong>*root)<br />{<br /><span style="color: #236fa1;"><em>   // To find the largest value in a BST, simply go right until we can't go<br />   // right anymore!</em></span><br />   <strong>while</strong> (root-&gt;right != <strong>nullptr</strong>)<br />   {<br />      root = root-&gt;right;<br />   }<br /><br />   <strong>return</strong> root-&gt;data;<br />}</pre>
+<p><strong><br />What's next?</strong></p>
+<p>Thanksgiving break! I hope all of you have a safe, relaxing, restorative week off.</p>
+<p>When we return from the break, we will talk about Huffman coding -- a data compression algorithm that will be the central topic for our final assignment in the course. Later that week, we will also talk about two incredibly important CS topics: hashing and graphs.</p>
+<p>After that, we'll head into the final week of class, which we've designed to be a bit light in hopes that you won't be too overwhelmed or overworked as we head into final exams.</p>
+<p><strong><br />Exercises</strong></p>
+<p>1. We saw today that O(n log n) was an over-estimate for the runtime of heapify, and that the actual runtime was even better: O(n). Rather than using heapify, an alternative approach to converting an arbitrary vector or array into a minheap would be to insert the values it contained, one by one, into an initially empty minheap, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// This function assumes we have access to a Minheap class.</em></span><strong><br />Minheap</strong>&lt;<strong>int</strong>&gt; makeMinheap(<strong>Vector</strong>&lt;<strong>int</strong>&gt;&amp; v)<br />{<br /><span style="color: #236fa1;"><em>   // Allocate dynamically so it can live beyond the lifespan of this function. :)</em></span><br />   <strong>Minheap</strong>&lt;<strong>int</strong>&gt; *heap = <strong>new</strong> <strong>Minheap</strong>&lt;<strong>int</strong>&gt;;<br /><br /><span style="color: #236fa1;"><em>   // Insert all values from the vector into our minheap.</em></span><br />   <strong>for</strong> (<strong>int</strong> i : v)<br />   {<br />      heap-&gt;insert(i);<br />   }<br /><br />   <strong>return</strong> heap;<br />}</pre>
+<p>What would be the runtime for the approach above?</p>
+<p><strong>Hint for Problem #1:</strong> You might find <a class="inline_disabled" href="https://en.wikipedia.org/wiki/Stirling%27s_approximation" target="_blank" rel="noopener">Stirling's approximation</a> helpful in deriving your final answer.</p>
+<p>2. Challenge yourself to recreate the recursive <span class="code-chonk">bstDelete()</span> function from today's lecture without memorizing it verbatim and without peeking back at the notes. Alternatively, be sure to trace through the behavior of that function to develop a complete understanding of how it works.</p>
+<p>3. Code up an iterative version of <span class="code-chonk">bstDelete()</span>.</p>
+<p>4. What's wrong with the following function, whose goal is to find the height of a binary tree?</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// This function returns the height of a binary tree based on the observation that<br />// a tree's height is 1 plus the height of the root's left subtree or right subtree<br />// -- whichever one is taller.<br />//<br />// For example, in the following diagram, the height of the root's left subtree<br />// (the subtree rooted at 3) is 2. The height of the root's right subtree (the<br />// subtree rooted at 7) is 1. The max of those two values (2 vs. 1) is 2. We add<br />// 1 to that to get the overall height of the tree. (Adding 1 accounts for the<br />// extra level that is added when we unite the left and right subtree beneath the<br />// root node.)<br />//<br />//</em>                           9                        | height: 1 + max(2, 1) = 3<br /><em>//</em>                         /   \                      |<br /><em>//</em>    height: 2  |       3       7      | height: 1   |<br /><em>//</em>               |     /   \   /   \    |             |<br /><em>//</em>               |   38    20 10    14  |             |<br /><em>//</em>               |   / \                              |<br /><em>//</em>               | 15   12                            |<em><br /></em></span><strong><br />int</strong> height(<strong>Node </strong>*root)<br />{<br /><span style="color: #236fa1;"><em>   // Recall that the height of a tree with a single node is zero (0).<br />   // If this node has no children, then we can simply return its height.</em></span><br />   <strong>if</strong> (root-&gt;left == <strong>nullptr</strong> &amp;&amp; root-&gt;right == <strong>nullptr</strong>)<br />   {<br /> &nbsp; &nbsp; &nbsp;<strong>return</strong> 0;<br />   }<br /><br />   <strong>return</strong> 1 + max(height(root-&gt;left), height(root-&gt;right));<br />}</pre>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution to Problem #4:</strong> <span style="color: #ced4d9; background-color: #ced4d9;">This code will segfault if we pass it an empty tree. Recall that the arrow operator (-&gt;) dereferences a struct pointer. So, if <em>root</em> is <em>nullptr</em>, we segfault right away. Please always be on the lookout for recursive binary tree functions that apply the arrow operator to&nbsp;<em>root</em> before checking whether it's <em>nullptr</em>&nbsp;or not.</span></span></p>
+<p>5. Why does the <span class="code-chonk">height()</span> function in the previous problem take a node pointer (<span class="code-chonk">Node *root</span>) and not a reference to a pointer (<span class="code-chonk">Node*&amp; root</span>) like so many of our other binary tree functions have taken?</p>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution to Problem #5:</strong> <span style="background-color: #ced4d9; color: #ced4d9;">The&nbsp;<em>height()</em></span></span><span style="font-size: 10pt; background-color: #ced4d9; color: #ced4d9;"> function doesn't need to modify the tree, and so it has no need to be able to go back to the calling function and modify the pointer stored there -- which is what a reference would allow us to do.</span></p>
+<p>6. In class today, we saw an iterative version of <span class="code-chonk">bstFindMax()</span> that works for non-empty BSTs. Write a recursive version of <span class="code-chonk">bstFindMax()</span> that assumes the BST it receives is non-empty.</p>
+<p>7. Write a version of <span class="code-chonk">findMax()</span> that works for arbitrary binary trees (not necessarily binary <em><strong>search</strong></em> trees). In the case of an empty tree, have your function return <span class="code-chonk">numeric_limits&lt;int&gt;::min()</span>, which you can use if you <span class="code-chonk">#include &lt;limits&gt;</span> at the top of your program.</p>
+<p>8. Write a recursive <span class="code-chonk">contains(Node *root, int data)</span> function that returns <span class="code-chonk">true</span> if the given binary tree (not necessarily a binary <em><strong>search</strong></em> tree) contains <span class="code-chonk">data</span>, <span class="code-chonk">false</span> otherwise. Write a corresponding recursive version of this function that works on BSTs, and then write an iterative version of the BST function as well.</p>
+<p>9. Write a <span class="code-chonk">findMin(Node *root)</span> function that returns the smallest value in the given binary tree (not necessarily a binary <em><strong>search</strong></em> tree). Have your function throw an error if the initial tree is empty. Write a corresponding recursive version of this function that works on BSTs, and then write an iterative version of the BST function as well.</p>
+<p>10. Write a function that takes the root of a binary tree and frees all dynamically allocated memory associated with that tree. Test that your function works by adding <span class="code-chonk">#include "MemoryDiagnostics.h"</span> to the top of your source file, adding <span class="code-chonk">TRACK_ALLOCATIONS_OF(Node)</span> to the <span class="code-chonk">Node</span> struct definition, and creating and running a <span class="code-chonk">STUDENT_TEST</span> that creates a non-empty binary tree and then calls your deallocation function on that tree.</p>
+<p>11. Why might it be beneficial to write the function in the previous exercise as a pass-by-reference function?</p>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution to Problem #11:</strong> <span style="color: #ced4d9; background-color: #ced4d9;">After deallocating all the memory associated with that tree, it's best practice to set the root to nullptr back in whatever function called our deallocation function. Passing the root to our deallocation function by reference will allow us to do that.</span></span></p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Dec-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

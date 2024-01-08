@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B PQ Array</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">PQ Array</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="what-is-a-priority-queue">What is a Priority Queue?</h2>
+<p>A standard queue processes elements in the first-in, first-out ("FIFO") manner typical of ordinary waiting lines. New elements are added to the back of the queue and the next element to be processed is taken from the front. Queues are a useful abstraction, but a FIFO strategy isn't always what is needed.</p>
+
+<p>A hospital emergency room, for example, needs to schedule patients according to priority. A patient with a more critical problem will pre-empt others who arrived earlier. The data structure that supports this behavior is called a <strong>priority queue</strong>. Each element is enqueued with an associated priority, and dequeue retrieves the element with the most urgent priority. There are many practical applications for a priority queue, both inside and outside computer science!</p>
+
+<h2 id="pqarray-interface">PQArray interface</h2>
+<p>A C++ class is the perfect way to provide this new collection type. The <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> class has a simple, clean interface expressed in high-level operations such as <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code>. All the messy internal details (handling dynamic memory, organizing the data, finding the most urgent priority and so on) can be neatly tucked away inside the class implementation. So far this quarter, you have relied on the Stanford library to provide the class implementation, this time you will cross behind the wall of abstraction to build the implementation yourself.</p>
+
+<p>The interface for the <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> class is shown below. It is nearly identical to that of the standard Queue. The only operational difference is the element retrieved by peek/dequeue is the element of most urgent priority rather than one that was enqueued first.</p>
+
+<p>In an ideal world, the priority queue would allow the client to set the element type like the Stanford collections do (that is, you can choose whether you want a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code>), but the C++ language features for templates/generics go a bit beyond the scope of what we've learned. Instead, we will fix the element type to always be a <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> that bundles a string label with a numeric priority. We introduced the <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> struct in the warmup and have reproduced its type declaration below:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">DataPoint</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">label</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">priority</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<blockquote class="alert alert-danger">
+  <p><strong>Important Note:</strong> The <code class="language-c++ highlighter-rouge"><span class="n">priority</span></code> field is a double value. <strong>A smaller double value indicates a more urgent priority than a larger double value</strong>, i.e. priority 1.0 is more urgent and will be dequeued before priority 3.14. The DataPoint with the minimum double value for priority is treated as the most urgent and is the one retrieved by peek/dequeue.</p>
+</blockquote>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">PQArray</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">PQrray</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">PQArray</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">enqueue</span><span class="p">(</span><span class="n">DataPoint</span> <span class="n">element</span><span class="p">);</span>
+    <span class="n">DataPoint</span> <span class="n">dequeue</span><span class="p">();</span>
+    <span class="n">DataPoint</span> <span class="n">peek</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">clear</span><span class="p">();</span>
+
+<span class="nl">private:</span>
+    <span class="n">DataPoint</span><span class="o">*</span> <span class="n">_elements</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">_numAllocated</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">_numFilled</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="pqarray-implementation">PQArray implementation</h2>
+<p>While the eventual goal is to implement the Priority Queue using a fancy high-performance data structure, you will first work with a simpler implementation that stores the elements in an array. This task will acclimate you to the Priority Queue interface and the code to implement a C++ class and will give you practice with pointers, arrays, dynamic memory, and testing a class interface.</p>
+
+<p>We start you off with a mostly-complete implementation of this <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> class. Your first job is to <strong>carefully review this provided code</strong>. Read over the class interface in <code class="language-c++ highlighter-rouge"><span class="n">pqarray</span><span class="p">.</span><span class="n">h</span></code> and then proceed to the class implementation in <code class="language-c++ highlighter-rouge"><span class="n">pqarray</span><span class="p">.</span><span class="n">cpp</span></code>. Confirm your understanding of the existing design and code by answering the following questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q5" class="question alert alert-warning">
+  <p><strong>Q5</strong>. There are extensive comments in both the interface (<code class="language-c++ highlighter-rouge"><span class="n">pqarray</span><span class="p">.</span><span class="n">h</span></code>) and implementation (<code class="language-c++ highlighter-rouge"><span class="n">pqarray</span><span class="p">.</span><span class="n">cpp</span></code>). Explain how and why the comments in the interface differ from those in the implementation. Consider both the content and audience for the documentation.</p>
+</div>
+
+<div id="Q6" class="question alert alert-warning">
+  <p><strong>Q6</strong>. Although code within the body of a member function can directly access the object's member variables, the implementer may instead choose to call public member functions to get information about the object. For example, note how the operations <code class="language-c++ highlighter-rouge"><span class="n">isEmpty</span><span class="p">()</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">peek</span><span class="p">()</span></code> intentionally call <code class="language-c++ highlighter-rouge"><span class="n">size</span><span class="p">()</span></code> instead of using <code class="language-c++ highlighter-rouge"><span class="n">_numFilled</span></code> or how <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span><span class="p">()</span></code> calls <code class="language-c++ highlighter-rouge"><span class="n">peek</span><span class="p">()</span></code> to retrieve the frontmost element. Why might be this be considered a better design?</p>
+</div>
+
+<h2 id="your-task">Your task</h2>
+<p>The provided PQArray class is mostly complete, save for the missing body of <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span><span class="o">::</span><span class="n">enqueue</span></code>. Your task is to implement this member function. This operation adds a new element to the queue.</p>
+
+<p>Your code must work correctly with the other provided operations unchanged. Before writing any code, be sure that you understand how the dynamic array is managed in the constructor/destructor and how the implementation peek/dequeue depends on the array elements being stored in <strong>order of decreasing priority value</strong>.</p>
+
+<p>The sample client code below enqueues three elements into an empty queue.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PQArray</span> <span class="n">pq</span><span class="p">;</span>
+
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span> <span class="p">{</span><span class="s">"Zoe"</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">}</span> <span class="p">);</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span> <span class="p">{</span><span class="s">"Elmo"</span><span class="p">,</span> <span class="mi">10</span><span class="p">}</span> <span class="p">);</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span> <span class="p">{</span><span class="s">"Bert"</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span> <span class="p">);</span>
+</code></pre></div></div>
+<p>Here is a screenshot of the debugger displaying the internal contents of <code class="language-c++ highlighter-rouge"><span class="n">pq</span></code> after executing the above code. (Debugger configured to show <code class="language-c++ highlighter-rouge"><span class="n">_elements</span></code> as an "Array of 10 items" as in <a href="warmup.html#changing-the-display-format">warmup</a>) The three elements in the array are stored in order of decreasing priority value.</p>
+
+<p class="w-50 mx-auto border"><img src="img/pqarray.png" alt="screenshot of variable pane showing array" /></p>
+
+<p>A subsequent call to <code class="language-c++ highlighter-rouge"><span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">({</span><span class="s">"Kermit"</span><span class="p">,</span> <span class="mi">5</span><span class="p">})</span></code> would insert the new element between Bert and Zoe, updating the array contents to:</p>
+<pre><code class="language-output">[0] = {"Elmo", 10}
+[1] = {"Bert", 6}
+[2] = {"Kermit", 5}
+[3] = {"Zoe", -3}
+</code></pre>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> operation must find the correct position in the array to place the new element and move the other elements aside to make room for it. Your main task will be to find a generalized, robust way to do so, sharpening your array manipulation and dynamic memory skills along the way.</p>
+
+<p>The other important job of <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> is to grow the array to accommodate additional elements when it is filled to capacity. Growing the array is a mildly expensive operation, so it should only be done when needed and be opportunistic about anticipating future growth. When enlarging the array, you should make the new allocation <strong>twice as large</strong> as the previous capacity. This will provide storage for many additional elements before having to grow again.</p>
+
+<p>The task of enlarging the array fits nicely in a helper function. Add a declaration of the helper function to the private section of the class interface and define it as part of the class implementation. You can then call the helper from <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> when needed.</p>
+
+<h2 id="implementation-requirements">Implementation requirements</h2>
+<ul>
+  <li>Do <strong>not change</strong> the code for any other functions other than <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>. You may add any private helper functions that you might find useful (i.e. to resize the array, to find position to insert element, etc.)</li>
+  <li>The core of the enqueue operation comes down to inserting a new element into its proper place within the already sorted array. One clean strategy is to add the new element onto the end of the array and then proceed to swap it with its left neighbor until it settles into correct position (akin to a single pass of the inner loop of bubble sort). Alternatively you could start at the end of the array and work backwards, sliding elements to the right to open up a space at the correct position to place the new element (akin to a single pass of the inner loop of insertion sort). While both of these suggested operations are derived from a full sort algorithm, enqueue should <strong>not</strong> re-sort the entire array. The existing elements in the array are already sorted and do not need rearrangement (and doing so adds necessary work). There is only a single element that needs to be swapped/inserted into the proper position.</li>
+  <li>Revisit the lecture content on arrays to review the process to expand the capacity of a dynamic array. This is a small but tricky operation – ask questions to be sure you understand each step in the process.</li>
+  <li>The class is responsible for proper allocation and deallocation of dynamic memory. Take care to properly deallocate any memory that is no longer is needed, such as when outgrowing a piece of memory or in the class destructor.</li>
+</ul>
+
+<h2 id="testing-across-the-abstraction-boundary">Testing across the abstraction boundary</h2>
+<p>The abstraction boundary that separates the client's use from the internals of the implementation is a great benefit for managing complexity, but when trying to develop and debug that implementation, that separation can be a bit of nuisance.  Here are some suggestions for how to straddle that boundary and find ways to test the internals of a class from client code.</p>
+
+<ul>
+  <li>Many test cases can be structured to stay <strong>entirely client-side</strong>. A client-side test case calls functions in the public interface and confirms that the externally observed behavior is correct. For example, a test case could check a newly constructed PQArray is empty or that after enqueueing 3 elements, the size is 3. A more complex case could enqueue a sequence of entries with random priorities and confirm that the elements are dequeued in priority order.</li>
+  <li>Ideally you would test each operation independently, but some operations are intrinsically bound together. To test peek, you need to have first enqueued. If peek returns the wrong value, is it due to bug in peek or did enqueue botch something? You could figure out which by looking at the contents of the internal array, but the client/testing code doesn't have access to the private data! What you need is some kind of "<strong>backstage pass</strong>" when testing; here are some ideas of how to make your own:
+    <ul>
+      <li>The <strong>debugger</strong> is a friend here! Stop in the debugger, find the PQArray object in the <code class="language-c++ highlighter-rouge"><span class="n">Variables</span></code> pane and expand it to see  its member variables. For example, set a breakpoint before a call to peek or enqueue, review the contents of the internal array, <code class="language-c++ highlighter-rouge"><span class="n">Step</span> <span class="n">Over</span></code> the call, and then review the updated array to confirm that the operation did its job correctly. Neat!</li>
+      <li>The PQArray starter code defines the <code class="language-c++ highlighter-rouge"><span class="n">debugConfirmInternalArray</span></code> member function. This debug helper uses its insider access to raise an error if the array contents are not properly ordered. You can insert a call to the debug helper at any time to check for a problem. For example, one of the provided tests makes a call to <code class="language-c++ highlighter-rouge"><span class="n">debugConfirmInternalArray</span></code> between every operation as a failsafe.</li>
+      <li>The debug functions <code class="language-c++ highlighter-rouge"><span class="n">debugGetInternalArrayContents</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">debugSetInternalArrayContents</span></code> provide access to the contents of the internal array. The debugGet function reads the contents and the debugSet function replaces the contents. A test case can call debugSet to configure the PQueue into a particular state, perform an operation, call debugGet to retrieve the updated state and then confirm the changes were as expected. This invasive level of access can be useful for setting up a precise configuration targeting a very specific scenario. Review the code in <code class="language-c++ highlighter-rouge"><span class="n">pqarray</span><span class="p">.</span><span class="n">cpp</span></code> to understand how more about how these functions operate and how to use them.</li>
+    </ul>
+  </li>
+  <li>Our provided test cases demonstrate use of the above techniques on the PQArray. You will also want to add student test cases of your own. One scenario for you to test is a PQArray filled to capacity where next enqueue operation has to enlarge the internal array. <strong>Add two student test cases for enlarge.</strong> One test case should use the debug functions to confirm the contents of the internal array before/after enlarging. The second enlarge test case should operate client-side and confirm the external behavior of the the pqueue when enlarging repeatedly.</li>
+</ul>
+
+<div id="Q7" class="question alert alert-warning">
+  <p><strong>Q7</strong>. Internal and client-side testing strategies serve different purposes. Give an example of a test case/scenario suited to an internal approach that would be difficult to test using a client-side approach. Conversely, what is a scenario that seems better tested client-side?</p>
+</div>
+
+<h2 id="timing-analysis">Timing analysis</h2>
+<p>With a completed and fully-tested class, the final task for PQArray is an analysis of its efficiency . First, predict what you expect the Big O of <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> to be (hint: these predictions should match the requirements stated in the comments in <code class="language-c++ highlighter-rouge"><span class="n">pqarray</span><span class="p">.</span><span class="n">h</span></code>) and follow up with a timing analysis to confirm your prediction.</p>
+
+<p>A call to <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>/<code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> operation runs quite quickly and our timers are not precise enough to reliably measure the time spent in a single operation. Instead, we run many, many operations and measure the total time for all. The starter code provides the helpful functions <code class="language-c++ highlighter-rouge"><span class="n">fillQueue</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">emptyQueue</span></code>, which run <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> total <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>/<code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> operations respectively. Helpful hint: <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> represents both the total number of operations and the final (worst case) size of the queue —think carefully about how this might impact the timing results you observe.</p>
+
+<p>Use the SimpleTest timing operations to measure the execution time of <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> over 4 or more different size inputs. Choose sizes so that the largest operation completes in under a minute or so. Because <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> runs much faster than <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>, you may have to choose a different range of sizes for the enqueue and dequeue operations.</p>
+
+<p>Answer these questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q8" class="question alert alert-warning">
+  <p><strong>Q8</strong>. Give the results from your time trials and explain how they support your prediction for the Big-O runtimes of  <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code>.</p>
+</div>
+
+<p><a name="debugging-memory-errors"></a></p>
+<h2 id="addendum-debugging-memory-errors">Addendum: debugging memory errors</h2>
+<p>When your code makes a memory error (writes out of array bounds, access deallocated memory, etc.) the consequences can vary widely –everything from spectacular immediate crash to hang to garbage output or the insidious situation where everything <em>appears</em> fine but lies in wait. This last one "silent-but-deadly" is the worst–  some part of memory has been corrupted and it only surfaces in some later, seemingly unrelated situation.</p>
+
+<p>For a dynamic array, enlarging the array or edge cases such as the last add before enlarge or first add after enlarge are common places for errors to creep in.  One tactic that may help to isolate faulty code in enlarge to change your constructor to make an enormous initial allocation (big enough to cover the largest of your test cases with room to spare). This change will cause your enlarge code to not be used at all. If after making this change, all the test cases pass in all situations, then you know to focus your attention on enlarge. Now change your initial allocation to 1 and grow by 1 each time (rather than double capacity), your enlarge code is going to get a tremendous workout . Run the test cases again and any bug in enlarge will have nowhere to hide.</p>
+
+<p>Be vigilant about staying within the allocated bounds of your array. There's nothing that will stop your code from accessing an index even just one step beyond the valid array bounds (e.g. at <code class="language-c++ highlighter-rouge"><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> </code>or <code class="language-c++ highlighter-rouge"><span class="n">index</span><span class="p">[</span><span class="n">_numAllocated</span><span class="p">])</span></code> other than your own vigilance. These errors can be nasty. It is possible for an out of bounds write to corrupt the memory housekeeping in such a way that it crashes on a subsequent new/delete operation. The distance between the time the error was made and the observed consequence can be particularly confounding.</p>
+
+<p>Another common cause of memory errors is incorrect deallocation. If you suspect this in your code, comment out every call to <code class="language-c++ highlighter-rouge"><span class="k">delete</span><span class="p">[]</span></code> and re-test. If disabling deallocation "fixes" all your errors, you know to drill down into how you delete memory. Reintroduce those delete calls one a time and re-test to pinpoint which is the one causing the trouble.</p>
+
+<p>Erroneously accessing deallocated memory is another pitfall. When you call <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code>, the system marks the memory location as available for recycling, but often leaves the contents there. If you access it and see your contents, you mistakenly believe all is well.</p>
+
+<p>An analogy from lecture was you telling the front desk that you are checking out of your hotel room but keeping your room key. If the hotel doesn't change the locks, it is okay for you to use your room key (pointer) to go back to the room and pick up that toothbrush that you forgot? If you went back quickly enough, you might find your stuff right where you left it, but eventually housekeeping will sweep the room and the room will be re-assigned and you certainly don't want to walk into someone else's room looking for your stuff. It is your job to do the right thing:  don't deallocate memory until you are sure you are done with it and don't access it after you have deallocated it.</p>
+
+<p>All of this is tough stuff – C++ puts a lot of control in your hands and gives you little help in detecting/diagnosing the error. Be systematic, use test cases, work on small bits of code at a time, and make use of your awesome debugger skills. You will learn a lot by working through these difficult bugs and gain a deep appreciation of the responsibility that comes with this power.</p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-04
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

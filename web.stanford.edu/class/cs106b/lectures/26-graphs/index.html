@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Graph Algorithms</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 26. Graph Algorithms</h1>
+ <p class="subtle-heading">Friday December 1</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=d78934c8-0a47-47d4-8d46-b083014df4c5&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br />Here is the Prezi from today's lecture:</p>
+<p><iframe id="iframe_container" src="https://prezi.com/p/embed/3YK7r4AIMZVo0OGePPDb/" width="560" height="315" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allow="autoplay; fullscreen"></iframe></p>
+<p><strong>Contents</strong></p>
+<p>1. Overview</p>
+<p>2. Terminology</p>
+<p>3. Flavors and Properties of Graphs</p>
+<p>4. Representations</p>
+<p>5. Stanford <span class="code-chonk">Graph</span> Class</p>
+<p>6. Minimum Spanning Trees</p>
+<p>7. Topological Sort</p>
+<p>8. Graph Traversal, Exploration, and Shortest Paths</p>
+<p>9. Pathfinding Animations</p>
+<p>10. Depth-First Search (DFS)</p>
+<p>11. Breadth-First Search (BFS)</p>
+<p>12. Additional Examples: Tree Traversals with DFS and BFS</p>
+<p>13. What's next?</p>
+<p>14. Exercises</p>
+<p><br /><strong>Overview</strong></p>
+<p>Today, we took a whirlwind tour of one of the most flexible and important data structures in computer science: graphs!</p>
+<p>Graphs are node-based structures (or "linked structures"), and they should look somewhat familiar already from our explorations of linked lists and trees earlier this quarter. Some key distinctions here are:</p>
+<ul>
+<li>Graphs don't necessarily have just one primary entry point. Compare this to the presence of a head node in every linked list and the presence of a root node in every tree.</li>
+</ul>
+<ul>
+<li>We are not constrained to relationships that imply ordering (<em>next</em> or&nbsp;<em>previous</em>, <em>left child</em> or <em>right child</em>) or hierarchy&nbsp;(<em>parent</em> or&nbsp;<em>child</em>).</li>
+</ul>
+<p>For most of today's content coverage, I defer to the Prezi included above, and I avoid reiterating in these notes the sundry example applications covered in lecture today. A light summary of key points is included below, as well as an elaboration on DFS and BFS.</p>
+<p><br /><strong>Terminology</strong></p>
+<p>We saw the following key terms when exploring the basic anatomy of a graph. Examples of each of these are included in the Prezi at the top of today's notes.</p>
+<ul>
+<li>A <strong>graph</strong> is a collection of <strong>nodes</strong> (or <strong>vertices</strong>) and <strong>edges</strong>.</li>
+<li>A <strong>path</strong> is a list of vertices in which successive vertices are connected by an edge in the graph.*</li>
+<li>A <strong>cycle</strong> is a path that begins and ends at the same vertex.</li>
+<li>The length of a path (<strong>path length</strong>) is the number of edges in that path.</li>
+<li>Two vertices are said to be&nbsp;<strong>adjacent</strong> (or&nbsp;<strong>neighbors</strong>) if there is an edge between them.</li>
+<li>A vertex&nbsp;is <strong>reachable</strong> from another vertex in a graph if a path exists to that vertex from the other.</li>
+<li>A <strong>loop</strong> is an edge from some vertex to itself.</li>
+<li>A <strong>complete graph</strong> is one in which there is an edge from every vertex to every other vertex in the graph.</li>
+<li>A <strong>sparse graph</strong> is one with a small number of edges (relative to the number of possible edges in that graph).</li>
+<li>A <strong>dense graph</strong> is one with a large number of edges (relative to the number of possible edges in that graph).</li>
+</ul>
+<p style="margin-left: 30px; margin-top: 25px; margin-bottom: 25px; padding: 10px; width: 640px; background-color: #eeeeee; border-left: 3px solid #888888;">(*) <em>Note that different sources use different definitions for some of these terms. For example, some sources say a path cannot include the same vertex multiple times, while other sources allow paths to contain repeat vertices and instead use the term "simple path" to refer to one without repeats. Some sources make a similar distinction with the terms "cycle" and "simple cycle." Additionally, some sources define a "path" as a list of edges rather than a list of vertices (although the distinction there is subtle and might not be obvious depending upon representational notation).<br /><br />For the purposes of this class, we will stick to the definitions above. If you have any questions about these definitions, please always feel free to ask, especially if you have been exposed to graph theory before and have encountered alternative definitions for some of these terms!</em></p>
+<p><strong>Flavors and Properties of Graphs</strong></p>
+<p>In addition to the fundamental structural terms above, we saw a few different flavors and properties of graphs, along with potential applications for each of these:</p>
+<ul>
+<li>A graph can be <strong>weighted</strong> or <strong>unweighted</strong>. A weighted graph has numeric weights associated with its edges.</li>
+</ul>
+<ul>
+<li>A graph can be <strong>directed</strong> or <strong>undirected</strong>. In an undirected graph, an edge between vertices&nbsp;<strong>A</strong> and&nbsp;<strong>B</strong> can be taken in either direction (from A to B or from B to A). In a directed graph, we use arrows to indicate directionality for each edge; in a directed graph, an edge from A to B cannot be taken from B to A.</li>
+</ul>
+<ul>
+<li>A graph can be <strong>connected</strong> or <strong>disconnected</strong>. A graph is connected if every vertex is reachable from every other vertex. Otherwise, the graph is said to be disconnected.</li>
+</ul>
+<p><strong><br />Representations</strong></p>
+<p>The also discussed the two most common ways to represent a graph: with an adjacency list or an adjacency matrix. Following are some key points about each representation. (For examples, see today's Prezi.)</p>
+<ul>
+<li><strong>Adjacency List</strong></li>
+</ul>
+<ul>
+<ul>
+<li>An adjacency list is a collection of lists. For each vertex in our graph, we maintain a list of all the vertices it is adjacent to. The traditional conception of an adjacency list is as an array of linked lists, but because looking up elements in a linked list can be slow -- O(n) in the worst case -- it's not uncommon to implement an adjacency list using an array of hash tables instead, which allow for efficient insertion and lookup operations (unless we get unlucky and encounter tons of collisions, which is always a possibility).</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>If we have a dense graph, each list can tend toward a length of O(n) (where <em>n</em> is the number of vertices in our graph). A collection of <em>n</em> such lists gives an overall space complexity of O(n<sup>2</sup>), but with the added overhead of lots of pointers (if using linked lists) and potentially slow, O(n) lookup runtimes (which could happen even with hash tables, if we happen to encounter an excessive number of collisions). So, if our graph is <strong>dense</strong>, and we have to deal with using O(n<sup>2</sup>) space to represent our graph, we might be better off switching to an adjacency matrix representation, which uses that amount of space but guarantees fast insertion and lookup runtimes. If our graph is&nbsp;<strong>sparse</strong>, the adjacency list is probably a good choice of representation.</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>If we have a sparse graph and each adjacency list has an average length of O(1) (some small constant number of vertices), then our overall space complexity is O(n).</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>Given some vertex, we can efficiently list all the vertices adjacent to that one by just iterating over the list associated with that vertex. If some vertex, <em>v</em>, is adjacent to&nbsp;<em>k</em> other vertices, iterating over that list of vertices can be done in O(k) time with the adjacency list representation.</li>
+</ul>
+</ul>
+<ul>
+<li><strong>Adjacency Matrix</strong></li>
+</ul>
+<ul>
+<ul>
+<li>An adjacency matrix is an <em>n</em>-by-<em>n</em> grid (or 2D array) where the cell at row&nbsp;<em>i</em> and column&nbsp;<em>j</em> indicates whether there is an edge from vertex&nbsp;<em>i</em> to vertex <em>j</em>. Such a matrix could use boolean values to represent the presence (or lack thereof) of an unweighted edge, numeric values to represent edge weights or the number of edges between two nodes, or an exotic combination of or variation on any of those things.</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>The runtime for inserting an edge or looking up whether two vertices are adjacent in an adjacency matrix is O(1): we just jump to the corresponding cell in our array.</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>An adjacency matrix always uses O(n<sup>2</sup>) space. If we have a <strong>sparse</strong> graph, this is wasteful, and we might be better off with an adjacency list instead, which could bring us down to O(n) space. In the case of a very <strong>dense</strong> graph, we might as well use an adjacency matrix because the space complexity of the adjacency list would be just as bad, but the adjacency matrix at least offers O(1) runtimes for edge insertion and lookup.</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>An adjacency matrix is also somewhat wasteful if our graph is undirected, as each edge ends up getting represented twice in the matrix. The matrix ends up being symmetrical about one of the diagonals.</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>Given some vertex in our graph, if we want to list all the vertices adjacent to that one, we have to loop through the entire row for that vertex in our adjacency matrix: an O(n) operation. If a vertex is only adjacent to&nbsp;<em>k</em> other vertices in the graph and&nbsp;<em>k</em> is significantly smaller than&nbsp;<em>n</em>, this operation ends up being significantly slower than what we would encounter with an adjacency list.</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>In some contexts, adjacency matrices might be easier to work with in code than adjacency lists, particularly if we are working in a language where we don't have access to convenient container structures such as linked lists or hash sets.</li>
+</ul>
+</ul>
+<p>With both of the representations above, we can use structs to associate each edge with additional information (numeric weights, labels, the number of edges between two vertices if we're allowing more than one, and so on).</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) We generally prefer to use adjacency lists to represent sparse graphs and adjacency matrices to represent dense graphs, although there might be some exceptions depending on the unique needs of our applications and just how large&nbsp;<em>n</em> is.</p>
+<p><strong><br />Stanford <span class="code-chonk">Graph</span> Class</strong></p>
+<p>The Stanford C++ Library has a <span class="code-chonk">Graph</span> class you can use for implementing graph algorithms! Below is a basic example. To explore the full functionality of this class, simply <span class="code-chonk">#include "basicgraph.h"</span> in a Qt project, and ctrl+click on the <span class="code-chonk">"basicgraph.h"</span> portion of that line to go to the header file and see what the interface looks like for this class.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "basicgraph.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>BasicGraph</strong> g;<br /><br />   g.addNode("u");<br />   g.addNode("v");<br />   g.addNode("w");<br /><br />   g.addEdge("u", "v");<br />   g.addEdge("v", "u");<br /><br />   g.addEdge("v", "w");<br />   g.addEdge("w", "v");<br /><br />   ...<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Minimum Spanning Trees</strong></p>
+<p>We talked briefly about minimum spanning trees (MSTs) and some potential applications for MST construction. These are something you should look into in more detail on your own time. You might also consider looking into at least one of the algorithms that I mentioned for constructing MSTs: Prim's algorithm or Kruskal's algorithm. You never know when having one of those in your back pocket might help you solve an interview problem.</p>
+<p><br /><strong>Topological Sort</strong></p>
+<p>We also talked briefly about topological sort, its relationship to dependency graphs, and some potential applications. We will aim to discuss this in a bit more depth on Monday, time permitting.</p>
+<p><br /><strong>Graph Traversal, Exploration, and Shortest Paths</strong></p>
+<p>Toward the end of class, I gave a quick, high-level overview of DFS, BFS, Dijkstra's algorithm, and A*:</p>
+<ul>
+<li><strong>Depth-First Search (DFS)</strong> - Goes as deeply as possible down one path, then backtracks and tries alternative routes when it hits a dead end. DFS will find a path from our source vertex to our target vertex (provided such a path exists), but it won't necessarily be the shortest such path.</li>
+</ul>
+<ul>
+<li><strong>Breadth-First Search (BFS)</strong> - Explores the neighbors of our source vertex, followed by the neighbors' neighbors, and so on, until it finds our target vertex (or exhausts all possible avenues for search without finding the target). This one is guaranteed to find the shortest path from our source to the goal, but it can be quite slow.</li>
+</ul>
+<ul>
+<li><strong>Dijkstra's Algorithm</strong> - Finds shortest paths in a graph, but unlike BFS, it takes edge weights into account. We will discuss this in more detail on Monday.</li>
+</ul>
+<ul>
+<li><strong>A* Search</strong> - Like Dijkstra's algorithm, but introduces a function that biases us toward exploring nodes that get us closer to some predetermined destination in our graph. We will discuss this in more detail on Monday.</li>
+</ul>
+<p>For more detail on DFS and BFS, see below.</p>
+<p><br /><strong>Pathfinding Animations</strong></p>
+<p>Here is the pathfinding visualization tool I used to demo BFS and A* in class today. Notice how slow BFS is compared to A*:</p>
+<ul>
+<li><a href="https://qiao.github.io/PathFinding.js/visual/" target="_blank" rel="noopener">https://qiao.github.io/PathFinding.js/visual/</a></li>
+</ul>
+<p><strong><br />Depth-First Search (DFS)</strong></p>
+<p><span>The key insight behind DFS is that it goes as far down a path as possible (without visiting any node more than once) before backtracking and exploring different branches through the graph. That is, it goes&nbsp;</span><em>deep</em><span>&nbsp;before&nbsp;</span><em>branching out</em><span>. We encountered DFS earlier this quarter in A2, when we explored mazes via the <span class="code-chonk">Grid</span> class. We observed that behavior again in the mazerunning I presented in class when we covered backtracking:</span></p>
+<p style="padding-left: 40px;"><span><img src="resources/mazerunner-multi.gif" /></span></p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important terminological note!</em></span>) When we use this algorithm to explore an entire graph (rather than stopping at some particular node we're searching for), we can call it a depth-first traversal, although it's also common to just call it DFS even when we're not technically searching for a particular target node.</p>
+<p>A DFS can start at any node in a graph. Consider, for example, the following graph, <strong>G<sub>1</sub></strong>:</p>
+<p style="padding-left: 40px; width: 250px; text-align:center;"><span style="font-size: 10pt;"><strong><u>Graph G<sub>1</sub></u></strong></span></p>
+<p style="padding-left: 40px;"><img src="resources/bfs-dfs-g1.jpg" /></p>
+<p>Starting from vertex <strong>C</strong> in <strong>G<sub>1</sub></strong>, one valid DFS traversal is: &nbsp;&nbsp;&nbsp;<strong>C&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;F</strong></p>
+<p>Notice that we had a choice when we reached vertex <strong>E</strong>: we could have gone to vertex <strong>F</strong> or <strong>G</strong> next. (The decision is arbitrary when we perform these traversals by hand. Programmatically, the decision will be influenced by the order in which the vertices are represented in our adjacency matrix or adjacency list.)</p>
+<p><span>Following is a list of all valid DFS traversals starting at vertex <strong>C</strong> in <strong>G</strong></span><strong><sub>1</sub></strong><span>:</span></p>
+<ul>
+<li><span>C&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;F</span></li>
+<li><span>C&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;B</span></li>
+<li><span>C&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;F</span></li>
+<li><span>C&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;D</span></li>
+</ul>
+<p>DFS can be implemented using a stack, <a class="inline_disabled" href="../../assignments/2-adt/maze.html#4-write-solvemazedfs" target="_blank" rel="noopener">as described in A2</a>.</p>
+<p><strong><br />Breadth-First Search (BFS)</strong></p>
+<p>BFS takes the complementary tack to DFS. It explores all the neighbors of a vertex before moving on to the neighbors' neighbors. It goes as <em>broad</em> as possible before going <em>deeper</em> into the graph.</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important terminological note!</em></span>) As with DFS, when we use BFS to explore an entire graph (rather than stopping at some particular node we're searching for), we can call it a breadth-first traversal, although it's also common to just call it BFS even when we're not technically searching for a particular target node.</p>
+<p>As with DFS, a BFS traversal can start at any node in a graph. Consider, for example, the graph <strong>G<sub>1</sub></strong> from the previous section of notes. Starting at vertex <strong>C</strong> in <strong>G<sub>1</sub></strong>, one valid BFS traversal is: &nbsp;&nbsp;&nbsp;<strong>C</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>B</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>D</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>A</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>E</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>G</strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong>F</strong></p>
+<p>Notice that we start by visiting all vertices adjacent to <strong>C</strong> (namely, <strong>B</strong> and <strong>D</strong>). <span style="background-color: #ffff99;">Because we visited <strong>B</strong> before <strong>D</strong>, we must visit all neighbors of <strong>B</strong> (namely, <strong>A</strong>) before visiting all neighbors of <strong>D</strong>!</span> Then we visit all neighbors of <strong>D</strong>, all neighbors of <strong>A</strong>, and so on, until every vertex in the graph has been visited.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) The note highlighted above is a key take-away for BFS; failure to take note of that point is a common stumbling block and point of misunderstanding when people are asked identify valid breadth-first traversals through a graph. To reiterate: if we visit <strong>B</strong> before <strong>D</strong> in our BFS, we must then visit <strong>B</strong>'s neighbors before <strong>D</strong>'s neighbors. If, on the other hand, we visit <strong>D</strong> before <strong>B</strong> in our BFS, we would subsequently visit <strong>D</strong>'s neighbors before <strong>B</strong>'s neighbors.</p>
+<p>Here again is the graph <strong>G<sub>1</sub></strong> for ease of reference:</p>
+<p style="padding-left: 40px; width: 250px; text-align:center;"><span style="font-size: 10pt;"><strong><u>Graph G<sub>1</sub></u></strong></span></p>
+<p style="padding-left: 40px;"><img src="resources/bfs-dfs-g1.jpg" /></p>
+<p><span>Following is a list of all valid BFS traversals starting at vertex <strong>C</strong> in <strong>G</strong></span><strong><sub>1</sub></strong><span>:</span></p>
+<ul>
+<li><span>C&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;F</span></li>
+<li><span>C&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;F</span></li>
+<li><span>C&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;G</span></li>
+</ul>
+<p><span>BFS can be implemented using a queue, <a class="inline_disabled" href="../../assignments/2-adt/maze.html#3-write-solvemazebfs" target="_blank" rel="noopener">as described in A2</a> (as well as in class today).</span></p>
+<p><br /><strong>Additional Examples: Tree Traversals with DFS and BFS</strong></p>
+<p>The breadth and depth metaphors perhaps make more intuitive sense when we consider BFS and DFS traversals of a tree. (Recall that a tree is a graph, so I'm not doing anything unconventional or weird by performing BFS or DFS traversal on one.) Consider, for example, the following graph, <strong>G<sub>2</sub></strong>:</p>
+<p style="padding-left: 40px; width: 270px; text-align:center;"><span style="font-size: 10pt;"><strong><u>Graph G<sub>2</sub></u></strong></span></p>
+<p style="padding-left: 40px;"><img src="resources/bfs-dfs-g2.jpg" /></p>
+<p>Starting at vertex <strong>A</strong> in <strong>G<sub>2</sub></strong>, one valid DFS would be:</p>
+<p style="padding-left: 40px;">A&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;J&nbsp;&nbsp;&nbsp;&nbsp;K&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;H&nbsp;&nbsp;&nbsp;&nbsp;I</p>
+<p>Notice that we go as&nbsp;<em>deep</em> as possible down any given path before backtracking and exploring other paths.</p>
+<p>Starting at vertex <strong>A</strong> in <strong>G<sub>2</sub></strong>, one valid BFS would be:</p>
+<p style="padding-left: 40px;">A&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;&nbsp;&nbsp;H&nbsp;&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;&nbsp;J&nbsp;&nbsp;&nbsp;&nbsp;K</p>
+<p><strong><br />What's next?</strong></p>
+<p>On Monday, we'll discuss Dijkstra's algorithm in more detail. If time permits, we will also discuss A* in more detail. That will conclude our coverage of new material for the quarter. We will spend Wednesday and Friday of next week wrapping things up.</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. Suppose we want to create a graph to help study the spread of certain pathogens via public transportation and rideshare systems. In the graph, every person living in the U.S. is represented by a node, and we place an edge between between two nodes if the people represented by those nodes have been in close proximity with one another on public transit or in a rideshare within the past seven days.</p>
+<ol style="list-style-type: lower-alpha;">
+<li>Should this graph be directed or undirected? Why? (Justify your response.)</li>
+<li>Would you expect the graph to be connected or disconnected? Why? (Justify your response.)</li>
+<li>Should we use an adjacency list or an adjacency matrix to represent this graph? Why? (Justify your choice.)</li>
+</ol>
+<p>2. Why is &nbsp;&nbsp;<strong>C&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;G</strong>&nbsp;&nbsp; not a valid BFS for graph <strong>G<sub>1</sub></strong> from today's notes? (Hint: See the highlighted key take-away from the section on BFS.)</p>
+<p>3. How many valid DFS and BFS traversals are there for graph <strong>G<sub>2</sub></strong> above (the tree used in the BFS and DFS examples) starting at vertex <strong>A</strong>? (Note: This is just a reinforcement exercises and is not meant to imply that there is an important pattern or formula that I want you to discover for determining the number of BFS or DFS traversals in an arbitrary graph or tree.)</p>
+<p>4. Write a function that can read a graph from a text file into an adjacency matrix. An adjacency matrix isn't always the best representation to use for a graph (remember, for a sparse graph, the adjacency matrix has a lot of wasted space), but I'm suggesting that here because it's a fairly straightforward one to work with in code. Set up your function to read in files with the following format:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">7<br />A<br />B<br />C<br />D<br />E<br />F<br />G<br />0 1 0 0 0 0 1<br />1 0 1 0 0 0 0<br />0 1 0 1 0 0 0<br />0 0 1 0 1 0 0<br />0 0 0 1 0 1 1<br />0 0 0 0 1 0 0<br />1 0 0 0 1 0 0</pre>
+<p>The file above represents graph <strong>G<sub>1</sub></strong> from today's notes. The first line tells us how many nodes there are in the graph, <em>n</em>, which allows us to create an appropriately sized grid to store our adjacency matrix. The next&nbsp;<em>n</em> lines give labels or names to our nodes. Those can be stored in a vector for ease of reference. The final&nbsp;<em>n</em> lines give us an adjacency matrix. The first of those final&nbsp;<em>n</em> lines tells us which nodes have an edge from vertex <strong>A</strong> (where 0 indicates no edge, and 1 indicates an edge). Within that line, the pattern <span class="code-chonk">0 1 0 0 0 0 1</span> indicates the following:</p>
+<ul>
+<li>edge from <strong>A</strong> to <strong>A</strong>? no (0)</li>
+<li>edge from <strong>A</strong> to <strong>B</strong>? yes (1)</li>
+<li>edge from <strong>A</strong> to <strong>C</strong>? no (0)</li>
+<li>edge from <strong>A</strong> to <strong>D</strong>? no (0)</li>
+<li>edge from <strong>A</strong> to <strong>E</strong>? no (0)</li>
+<li>edge from <strong>A</strong> to <strong>F</strong>? no (0)</li>
+<li>edge from <strong>A</strong> to <strong>G</strong>? yes (1)</li>
+</ul>
+<p>The line after that tells us which nodes have an edge from vertex <strong>B</strong>, and so on.</p>
+<p>5. Challenge yourself to code up BFS and DFS from scratch, on your own, without peeking back at your code for A2 or implementations posted online. (You should be doing this with most algorithms we cover in lecture. Regularly working through exercises like this -- where you have a compact, elegant algorithm that has somewhat sophisticated behaviors -- is a key way to ramp up your coding skills.) Note that DFS can be coded up iteratively with a stack as well as recursively. Try coding it up both ways. Run your implementations on the graph whose input file is given above (in the previous exercise) to check your results.</p>
+<p>6. When tracing through a queue-based implementation of BFS in class today, I marked nodes as processed when they were placed in the queue -- not when they were removed from the queue. <span>An alternative would be to mark a node as processed </span><em>after</em><span>&nbsp;it's pulled out of the queue. In that case, every time you pull a node out of the queue, you'd check whether it was processed already and print it out only in the case where it was unprocessed. What is the big downside to implementing the algorithm that way? (Hint: Trace through both of these approaches to BFS using a <strong>complete graph</strong>&nbsp;to see the potential performance difference.)</span></p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Dec-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

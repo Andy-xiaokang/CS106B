@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Beyond Algorithmic Analysis</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Beyond Algorithmic Analysis</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Katie Creel and Nick Bowman
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>Thus far in CS106B, you have been introduced to the technique of benchmarking (i.e., measuring run time) and saw in your first assignment how the choice of algorithm can have significant impacts on performance. Next week, we will expand and formalize our accounting of algorithmic performance using a technique called Big-O analysis, which will inform our study of algorithms throughout the rest of the course. However, we want to approach the topic of efficiency and optimization with a certain amount of cautious skepticism in terms of its ethical implications. A company might argue that as computers become increasingly more powerful, an effort to make a program slightly more efficient or use a bit less memory does not warrant the investment of (expensive) programmer time, but is the corporate bottom line the only cost to consider?  What about the savings of environmental and energy resources? (I'm looking at you, cryptocurrency mining, and the vast amount of squandered computer cycles) On the other hand, prioritizing efficiency at the cost of sacrifices in effectiveness, quality, or ease of use seems a poor tradeoff of a different sort. This short ethical reflection is designed to prepare you to learn about Big-O by pausing to consider some of these challenges.</p>
+
+<div id="Q8" class="question alert alert-warning">
+  <p><strong>Q8</strong>. In a short paragraph, describe a real or plausible scenario in which reworking an algorithm to improve its efficiency might benefit Earth's environment or humanity as a whole. Include your thoughts on how a software engineer working on this piece of code might identify such potential benefits and take them into consideration when designing the code.</p>
+</div>
+
+<p>As ethical and socially-conscious computer programmers, we also know that many considerations other than the speed and memory use are important in choosing the appropriate algorithm for a particular use. Dr. Gillian Smith, an associate professor at the Worcester Polytechnic Institute, identifies an interesting fallacy that computer scientists often fall into when applying algorithmic analysis techniques like benchmarking and Big-O analysis:</p>
+
+<p><em>If it’s more efficient, it’s better. The quality of a program, independent of how people interact with it, should be evaluated only with respect to how well it minimizes cost.</em></p>
+
+<p>The following case study illustrates the importance of supplementing efficiency and performance analyses with human-centric evaluation.</p>
+
+<p>In 2006 the state of Indiana awarded IBM a contract for more than $1 billion to modernize Indiana's welfare case management system and manage and process the State's applications for food stamps, Medicaid and other welfare benefits for its residents. The program sought to <strong><em>increase efficiency and reduce fraud</em></strong> by moving to an automated case management process. After only 19 months into the relationship, while still in the transition period, it became clear to Indiana that the relationship was not going as planned. In particular here are some "lowlights" of the system's failures to provide important and necessary services for those in need:</p>
+
+<ul>
+  <li>"Applicants waited 20 or 30 minutes on hold, only to be denied benefits for 'failure to cooperate in establishing eligibility' if they were unable to receive a callback after having burned through their limited cellphone minutes."</li>
+  <li>"Applicants faxed millions of pages of photocopied driver’s licenses, Social Security cards, and other supporting documents to a processing center in Marion, Indiana; so many of the documents disappeared that advocates started calling it “the black hole in Marion" […] Any application missing just one of tens to hundreds of pieces of necessary information or paperwork were automatically denied."</li>
+  <li>"By February 2008, the number of households receiving food stamps in Delaware County, which includes Muncie, Indiana, dropped more than 7 percent, though requests for food assistance had climbed 4 percent in Indiana overall." (Quotations from <a href="ethics.html#references">Virginia Eubanks</a>)</li>
+</ul>
+
+<p>In light of these failures, the State of Indiana cancelled its contract with IBM and sued the company for breach of contract, stating that the company had failed to deliver a system that helped people get the services they needed. In court, IBM argued that they were not responsible for issues related to wait times, appeals, wrongful denials, lost documents, etc. as the contract only stated that a successful system would succeed by reducing costs and fraud.  IBM’s system did reduce costs, but did so by denying people the benefits they needed. In light of this, we would like you to consider the following questions:</p>
+
+<div id="Q9" class="question alert alert-warning">
+  <p><strong>Q9</strong>. According to the contract that IBM struck with the state of Indiana, the criteria for optimization were improving efficiency of the overall welfare system and reducing fraud. Criteria for reducing wait times and wrongful denials were not included.  However, wrongfully denying benefits has a huge negative impact on the citizens who rely on the system.  If criteria like minimizing wrongful denials were not included in the contract, should engineers have included them in their optimization algorithm?  Why or why not?</p>
+</div>
+
+<div id="Q10" class="question alert alert-warning">
+  <p><strong>Q10</strong>. Imagine that after completing CS106B you are hired at IBM as an engineer working on this system. How might you have approached designing and setting the goals of this system?  How might you apply algorithmic analysis tools to build a system that achieved the desired goals? Could you do so in a way that avoids the severe negative impacts on users of the system that are outlined in the case study?</p>
+</div>
+
+<h3 id="references">References</h3>
+<p>If you are interested to learn more, we highly recommend reading more from Virginia Eubanks.</p>
+
+<ul>
+  <li>Virginia Eubanks, <em>"Want to Cut Welfare? There’s an App for That."</em>, The Nation, May 27, 2015. <a href="https://www.thenation.com/article/archive/want-cut-welfare-theres-app/">https://www.thenation.com/article/archive/want-cut-welfare-theres-app/</a></li>
+  <li>Virginia Eubanks, <em>"Automating Inequality: How High-Tech Tools Profile, Police, and Punish the Poor"</em>, Macmillan, 2018. <a href="https://us.macmillan.com/books/9781250074317/automatinginequality">https://us.macmillan.com/books/9781250074317/automatinginequality</a></li>
+</ul>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-09
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

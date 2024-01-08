@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursive Backtracking</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 4. Recursive Backtracking</h1>
+ <p class="subtle-heading">Monday October 30</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><!-- This boilerplate inserts formatted due date -->
+
+<!--  Boilerplate content for assignment index page -->
+
+<h2 id="due-monday-october-30-at--500-pm">Due Monday, October 30 at  5:00 pm</h2>
+<ul>
+  <li><small>Submit to <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Paperless</a>. On-time submissions (before on or due date) earn a small bonus to reward your good time management! </small></li>
+  <li><small>Late work (after the due date) is accepted if within the grace period (48 hours for this assignment). We do not accept further late work.</small></li>
+  <li><small>The grace period gives you the ability to self-grant an extension; we trust you will make reasonable and sparing use of this power.</small></li>
+</ul>
+
+<hr />
+
+<p>Last week's assignment introduced you to the intriguing world of recursion and built your base of recursive fundamentals. Now you move on to apply the power of recursive backtracking to solve real-world problems. As is typical in recursive problem-solving, the primary challenge is at the beginning as you work to develop the recursive insight, but once ready to write the code, a concise algorithm is all that's needed. That sparse elegance can sometimes seem incongruous with how hard you had to work for it. <strong>Start without delay</strong> to give yourself enough time to let these deep and powerful ideas percolate to full understanding. When you put the finishing touches on these problems, you will have earned your rightful place as a master in the way of recursive problem-solving.</p>
+
+<p><em>This assignment is to be completed <strong>individually</strong>. Working in pairs/groups is not permitted.</em></p>
+
+<h2 id="learning-goals">Learning goals</h2>
+<p>After completing this assignment, you will be able to…</p>
+<ul>
+  <li>Appreciate the elegance and power of recursive problem-solving and identify problems that are well-suited to be solved recursively</li>
+  <li>Implement more advanced recursive algorithms to solve problems that cannot be easily solved using an iterative approach</li>
+  <li>Reflect thoughtfully on the ends to which you will apply these techniques</li>
+</ul>
+
+<h2 id="assignment-parts">Assignment parts</h2>
+<p>This assignment consists of a warmup exercise and three separate problems to solve using recursive backtracking.</p>
+
+<ul>
+  <li>
+    <h3 id="warmup"><a href="warmup.html">Warmup</a></h3>
+    <p>Practice with testing and debugging recursive functions.</p>
+  </li>
+  <li>
+    <h3 id="text-predict"><a href="predict.html">Text Predict</a></h3>
+    <p>Predict a user's intended word when typed on old-style phone keypad.</p>
+  </li>
+  <li>
+    <h3 id="banzhaf-power-index"><a href="voting.html">Banzhaf power index</a></h3>
+    <p>Compute the voting power of the different blocks in a block-voting system.</p>
+  </li>
+  <li>
+    <h3 id="computational-redistricting"><a href="redistrict.html">Computational Redistricting</a></h3>
+    <p>Determine if there is a fair geometric division of a state's population into equal-size electoral districts.</p>
+  </li>
+</ul>
+
+<h2 id="getting-started">Getting started</h2>
+<p>📦 <a href="../../restricted/starter-assign4.zip.html">Starter project</a></p>
+
+<p>The starter project is provided as a zip archive. Download the zip, extract the files, and move the project folder to your CS106B folder. Open the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> file in Qt Creator to get started.</p>
+
+<h2 id="resources">Resources</h2>
+<p>Here are some resources that you might find helpful for this assignment:</p>
+<ul>
+  <li>The CS106B <a href="../../resources/style_guide.html" title="Style Guide">Style Guide</a></li>
+  <li><a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">A Guide to Testing Code in CS106B</a></li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/qt/commonissues.html">Common Build/Run Errors Guide</a>, put together by one of our wonderful section leaders, Jillian Tang.</li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a> Chapter 9 Recursive Backtracking</li>
+</ul>
+
+<h2 id="getting-help">Getting help</h2>
+
+<p>Look for an announcement on the Ed forum for the YEAH session for this assignment. We welcome your questions on the Ed forum. Always start by searching first to see if your question has already been answered before making a new post.  To troubleshoot a problem with your specific code, your best bet is to bring it to the <a href="../../lair.html" title="LaIR helper hours">LaIR</a> helper hours or <a href="../../about_staff.html">office hours</a>.</p>
+
+<h2 id="submit">Submit</h2>
+<p>Before you call it done, run through our <a href="../../resources/submit_checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>s are crossed and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>s dotted. Then upload your completed files to Paperless for grading.</p>
+
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">predict</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">voting</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">redistrict</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code></li>
+</ul>
+
+<p>🏁 <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Submit to Paperless</a></p>
+
+<p><em>Note: On Paperless, all due dates and submission times are expressed in <a href="https://www.timeanddate.com/worldclock/@5398563" title="Current time in Pacific">Pacific time</a>.</em></p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-24
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

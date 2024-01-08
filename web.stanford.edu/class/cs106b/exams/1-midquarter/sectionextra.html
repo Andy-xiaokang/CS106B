@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B More Practice Problems</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">More Practice Problems</h1>
+
+<hr>
+
+<p class="attribution">
+ Written by Clinton Kwarteng, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>These problems will give you more practice with concepts we've discussed so far in class.</p>
+
+<h2 id="1-references-available-upon-request">1) References Available Upon Request</h2>
+<p><em>Topic: Reference parameters, range-based for loops</em></p>
+
+<p>Reference parameters are an important part of C++ programming, but can take some getting used to if you’re not familiar with them. Trace through the following code. What does it print?</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printVector</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="o">:</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">elem</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">maui</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">values</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1258</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">moana</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="o">:</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">elem</span> <span class="o">*=</span> <span class="mi">137</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">heihei</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span> <span class="n">elem</span><span class="o">:</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">elem</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">teFiti</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="o">:</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="p">(</span><span class="n">elem</span> <span class="o">*</span> <span class="mi">137</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span> <span class="p">};</span>
+    <span class="n">maui</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">moana</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">heihei</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">teFiti</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>Here’s the output from the program:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span> <span class="mi">3</span> <span class="mi">7</span>
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">7</span>
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span>
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span>
+</code></pre></div></div>
+<p>Here’s a breakdown of where this comes from:</p>
+<ul>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">maui</span></code> function takes its argument by value, so it’s making changes to a copy of the original vector, not the vector itself. That means that the values are unchanged back in main.</li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">moana</span></code> function uses a range-based for loop to access the elements of the vector. This makes a copy of each element of the vector, so the changes made in the loop only change the temporary copy and not the elements of the vector. That makes that the values are unchanged back in main.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">heihei</span></code>, on the other hand, uses <code class="language-c++ highlighter-rouge"><span class="kt">int</span><span class="o">&amp;</span></code> as its type for the range-based for loop, so in a sense it’s really iterating over the elements of the underlying vector. Therefore, its changes stick.</li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">teFiti</span></code> function creates and returns a new vector with a bunch of updated values, but the return value isn’t captured back in main.</li>
+</ul>
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-mirror">2) Mirror</h2>
+
+<p><em>Topic: Grids</em></p>
+
+<p>Write a function <code class="language-c++ highlighter-rouge"><span class="err">​</span><span class="n">mirror</span><span class="err">​</span></code> that accepts a reference to a <code class="language-c++ highlighter-rouge"><span class="err">​</span><span class="n">Grid</span><span class="err">​</span></code> of integers as a parameter and flips the grid along its diagonal. You may assume the grid is square; in other words, that it has the same number of rows as columns. For example, the grid below that comes first would be altered to give it the new grid state shown afterwards:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Original</span> <span class="n">state</span><span class="o">:</span> 
+<span class="p">{</span> <span class="p">{</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">},</span>                
+  <span class="p">{</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">},</span>                  
+  <span class="p">{</span><span class="mi">14</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">18</span><span class="p">},</span>             
+  <span class="p">{</span><span class="mi">21</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">}</span> <span class="p">}</span>               
+
+<span class="n">Mirrored</span> <span class="n">state</span><span class="o">:</span> 
+ <span class="p">{</span> <span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">21</span><span class="p">},</span>
+   <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">55</span><span class="p">},</span>
+   <span class="p">{</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">73</span><span class="p">},</span>
+   <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">}</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Bonus: How would you solve this problem if the grid were not square?</p>
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// solution</span>
+<span class="kt">void</span> <span class="nf">mirror</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">numRows</span><span class="p">();</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// start at r+1 rather than 0 to avoid double-swapping </span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">numCols</span><span class="p">();</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> 
+            <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">];</span> 
+            <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">r</span><span class="p">];</span> 
+            <span class="n">grid</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+        <span class="p">}</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// bonus </span>
+<span class="kt">void</span> <span class="nf">mirror</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">numCols</span><span class="p">(),</span> <span class="n">grid</span><span class="p">.</span><span class="n">numRows</span><span class="p">());</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">numRows</span><span class="p">();</span> <span class="n">r</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">numCols</span><span class="p">();</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">r</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-collection-mystery">3) Collection Mystery</h2>
+<p><em>Topics: Stacks and Queues</em></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">collectionMystery</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">s</span><span class="p">)</span> 
+<span class="p">{</span> 
+    <span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">;</span>
+    <span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">s2</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+       <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">peek</span><span class="p">()</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">q</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">());</span> 
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">s2</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">q</span><span class="p">.</span><span class="n">dequeue</span><span class="p">());</span> 
+    <span class="p">}</span>
+    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">s2</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span> 
+        <span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">s2</span><span class="p">.</span><span class="n">pop</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Write the output produced by the above function when passed each of the following stacks. Note that stacks and queues are written in ​front to back order, with the oldest element on the left side of the queue/stack.</p>
+
+<p>Stacks:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span>                <span class="n">________________________________________</span>
+<span class="p">{</span><span class="mi">42</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">88</span><span class="p">}</span>        <span class="n">________________________________________</span>
+<span class="p">{</span><span class="mi">65</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>    <span class="n">________________________________________</span>
+
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">88</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">71</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="4-twice">4) Twice</h2>
+<p><em>Topic: Sets</em></p>
+
+<p>Write a function named <code class="language-c++ highlighter-rouge"><span class="n">twice</span></code> that takes a vector of integers and returns a set containing all the numbers in the vector that appear exactly twice.</p>
+
+<p>Example: passing <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span></code> returns <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span></code>.</p>
+
+<p>Bonus: do the same thing, but you are not allowed to declare any kind of data structure other than sets.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// solution</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">twice</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">counts</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">twice</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">counts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">twice</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">twice</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// bonus</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">twice</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">once</span><span class="p">;</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">twice</span><span class="p">;</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">more</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">once</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">once</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="n">twice</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">twice</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">twice</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="n">more</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="o">!</span><span class="n">more</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">once</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">twice</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="5-reversing-a-map">5) Reversing a Map</h2>
+<p><em>Topic: Nested data structures</em></p>
+
+<p>Write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span> <span class="n">reverseMap</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">map</span><span class="p">)</span></code></p>
+</div>
+<p>that, given a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span></code> that associates string values with integers, produces a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span></code> that’s essentially the reverse mapping, associating each integer value with the set of strings that map to it. (This is an old job interview question from 2010.)</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<p>Here’s one possible implementation.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span> <span class="n">reverseMap</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">map</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span> <span class="n">result</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">oldKey</span> <span class="o">:</span> <span class="n">map</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Note: we check containsKey here but this isn't </span>
+        <span class="c1">// necessary since Maps auto-initialize values </span>
+        <span class="c1">// on square bracket access if the key is not </span>
+        <span class="c1">// present</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">.</span><span class="n">containsKey</span><span class="p">(</span><span class="n">map</span><span class="p">[</span><span class="n">oldKey</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">map</span><span class="p">[</span><span class="n">oldKey</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="p">}</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">map</span><span class="p">[</span><span class="n">oldKey</span><span class="p">]].</span><span class="n">add</span><span class="p">(</span><span class="n">oldKey</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="6-oh-no-big-o-too-slow">6) Oh No, Big-O, Too Slow</h2>
+
+<p><em>Topics: Big-O, code analysis</em></p>
+
+<p>Give a tight bound of the nearest runtime complexity class for each of the
+following code fragments in Big-Oh notation, in terms of the variable N.</p>
+
+<p>Code Snippet A</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sum</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">N</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sum</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sum</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Code Snippet B</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">5</span><span class="p">;</span> <span class="n">j</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sum</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sum</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Code Snippet C</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">N</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">N</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">N</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sum</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<pre><code class="language-output">Code Snippet A has a runtime complexity of O(N).
+Code Snippet B has a runtime complexity of O(N^2).
+Code Snippet C has a runtime complexity of O(1).
+</code></pre>
+
+</div>
+</div>
+<hr />
+
+<h2 id="7-more-big-o">7) More Big O</h2>
+<p>Below are five functions. Determine the big-O runtime of each of those pieces of code, in terms of the variable <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">function1</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">function2</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">function3</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">function4</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Finally, what is the big-O runtime of this function in terms of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>, the number of elements in <code class="language-c++ highlighter-rouge"><span class="n">v</span></code>?</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">squigglebah</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="n">v</span><span class="p">.</span><span class="n">subList</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">values</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="n">values</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-7" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-7">
+   
+<ol>
+  <li>The runtime of this code is <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code>: We print out a single star, which takes time<code class="language-c++ highlighter-rouge"> <span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code>, a total of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> times.</li>
+  <li>The runtime of this code is <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code>. The inner loop does <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> work, and it runs <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> times for a net total of <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code> work.</li>
+  <li>This one also does <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code> work. To see this, note that the first iteration of the inner loop runs for <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="err">–</span> <span class="mi">1</span></code> iterations, the next for <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="err">–</span> <span class="mi">2</span></code> iterations, then <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="err">–</span> <span class="mi">3</span></code> iterations, etc. Adding all this work up across all iterations gives <code class="language-c++ highlighter-rouge"><span class="p">(</span><span class="n">n</span> <span class="err">–</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">n</span> <span class="err">–</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="err">…</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">0</span> <span class="o">=</span> <span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code>.</li>
+  <li>This one runs in time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">log</span> <span class="n">n</span><span class="p">)</span></code>. To see why this is, note that after <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> iterations of the inner loop, the value of <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> is equal to <code class="language-c++ highlighter-rouge"><span class="mi">2</span><span class="o">^</span><span class="n">k</span></code>. The loop stops running when <code class="language-c++ highlighter-rouge"><span class="mi">2</span><span class="o">^</span><span class="n">k</span></code> exceeds <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>. If we set <code class="language-c++ highlighter-rouge"><span class="mi">2</span><span class="o">^</span><span class="n">k</span> <span class="o">=</span> <span class="n">n</span></code>, we see that the loop must
+stop running after <code class="language-c++ highlighter-rouge"><span class="n">k</span> <span class="o">=</span> <span class="n">log</span><span class="err">₂</span> <span class="n">n</span></code> steps. <br /><br /> Another intuition for this one: the value of i doubles on each iteration, and you can only double <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">log</span> <span class="n">n</span><span class="p">)</span></code> times before you overtake the value <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>.</li>
+</ol>
+
+<p>For the final function, Let’s follow the useful maxim of "when in doubt, work inside out!"" The innermost for loop (the one counting with <code class="language-c++ highlighter-rouge"><span class="n">j</span></code>) does work proportional to the size of the values list, and the values list has size equal
+to <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> on each iteration. Therefore, we can simplify this code down to something that looks like this:</p>
+<div align="left">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">squigglebah</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="n">v</span><span class="p">.</span><span class="n">subList</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+        <span class="k">do</span> <span class="n">O</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="n">work</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>  </div>
+</div>
+<p>Now, how much work does it take to create the values vector? We’re copying a total of <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> elements from <code class="language-c++ highlighter-rouge"><span class="n">v</span></code>, and so the work done will be proportional to <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>. That gives us this:</p>
+<div align="left">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">squigglebah</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">do</span> <span class="n">O</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="n">work</span><span class="p">;</span>
+        <span class="k">do</span> <span class="n">O</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="n">work</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>  </div>
+</div>
+<p>Remember that doing <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></code> work twice takes time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></code>, since big-O ignores constant factors. We’re now left with this:</p>
+<div align="left">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">squigglebah</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">do</span> <span class="n">O</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="n">work</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>  </div>
+</div>
+<p>This is the same pattern as function2 in the previous problem, and it works out to <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code> total time.</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="8-recursion-mystery-part-1">8) Recursion Mystery Part 1</h2>
+
+<p><em>Topics: recursive function calls, return value tracing</em></p>
+
+<p>Code Snippet A</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">recursionMystery</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">recursionMystery</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>For each call to the above recursive function, indicate what value is returned by the function call.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Call</span>                                   <span class="n">Return</span> <span class="n">value</span>  
+
+<span class="nf">recursionMystery</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">13</span><span class="p">);</span>               <span class="n">______________</span>
+<span class="nf">recursionMystery</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>              <span class="n">______________</span>
+<span class="nf">recursionMystery</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">12</span><span class="p">);</span>              <span class="n">______________</span>
+
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-8" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-8">
+   
+<p>6</p>
+
+<p>4</p>
+
+<p>1</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="9-recursion-mystery-part-2">9) Recursion Mystery Part 2</h2>
+
+<p><em>Topics: recursive function calls, output tracing</em></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">recursionMystery2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span><span class="p">;</span>
+        <span class="n">recursionMystery2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+<p>For each call to the above recursive function, write the output that would be produced, as it would appear on the console.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Call</span>                                   <span class="n">Output</span>
+        
+<span class="nf">recursionMystery2</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>        <span class="n">___________________________________</span>
+<span class="nf">recursionMystery2</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>        <span class="n">___________________________________</span>
+<span class="nf">recursionMystery2</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>        <span class="n">___________________________________</span>
+<span class="nf">recursionMystery2</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>        <span class="n">___________________________________</span>
+<span class="nf">recursionMystery2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>        <span class="n">___________________________________</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-9" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-9">
+   
+<p>4</p>
+
+<p>8, 4, 8</p>
+
+<p>16, 8, 16</p>
+
+<p>12, 8, 4, 8, 12</p>
+
+<p>12, 9, 6, 3, 6, 9, 12</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="10-recursion-tracing">10) Recursion Tracing</h2>
+
+<p><em>Topics: Recursion, strings, recursion tracing</em></p>
+
+<p>Below is a recursive function to reverse a string.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">reverseOf</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">reverseOf</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>Trace through the execution of <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"stop"</span><span class="p">)</span></code> along the lines of what we did in lecture, showing recursive call information for each call that’s made and how the final value gets computed.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-10" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-10">
+   
+<p>Our initial call to <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"stop"</span><span class="p">)</span></code> fires off a call to <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"top"</span><span class="p">)</span></code>. This call fires off a call to <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"op"</span><span class="p">)</span></code>. This in turn calls <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"p"</span><span class="p">)</span></code>. This in turn calls <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">""</span><span class="p">)</span></code>. This triggers the base case and returns the empty string. (Notice that the reverse of the empty string "" is indeed the empty string ""). We now append <code class="language-c++ highlighter-rouge"><span class="n">p</span></code> to return <code class="language-c++ highlighter-rouge"><span class="s">"p"</span></code>. We now append <code class="language-c++ highlighter-rouge"><span class="n">o</span></code> to return <code class="language-c++ highlighter-rouge"><span class="s">"po"</span></code>. We append <code class="language-c++ highlighter-rouge"><span class="n">t</span></code> to return <code class="language-c++ highlighter-rouge"><span class="s">"pot"</span></code>. And finally we append s to return <code class="language-c++ highlighter-rouge"><span class="s">"pots"</span></code> back to whoever called us. Yay!</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="11-sum-of-squares">11) Sum of Squares</h2>
+
+<p><em>Topics: Recursion</em></p>
+
+<p>Write a recursive function named <code class="language-c++ highlighter-rouge"><span class="n">sumOfSquares</span></code> that takes an int <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> and returns the sum of squares from <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code> to <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>. For example, <code class="language-c++ highlighter-rouge"><span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span></code>should return 1^2 + 2^2 + 3^2 = 14. If <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> is negative, you should report an error to that effect.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-11" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-11">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">sumOfSquares</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"Value of provided n was negative"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="n">sumOfSquares</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="12-double-stack">12) Double Stack</h2>
+
+<p><em>Topics: Recursion, Stacks</em></p>
+
+<p>Write a recursive function named <code class="language-c++ highlighter-rouge"><span class="n">doubleStack</span></code> that takes a reference to a stack of ints and replaces each integer with two copies of that integer. For example, if <code class="language-c++ highlighter-rouge"><span class="n">s</span></code> stores <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span></code>, then <code class="language-c++ highlighter-rouge"><span class="n">doubleStack</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></code> changes it to <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span></code>.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-12" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-12">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">doubleStack</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">s</span><span class="p">)</span> 
+<span class="p">{</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="n">doubleStack</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> 
+        <span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span> 
+        <span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="13-string-subsequences">13) String Subsequences</h2>
+
+<p><em>Topics: Recursion, verifying properties</em></p>
+
+<p>Write a recursive function named <code class="language-c++ highlighter-rouge"><span class="n">isSubsequence</span></code> that takes two strings and returns <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> if the second string is a subsequence of the first string. A string is a subsequence of another if it contains the same letters in the same order, but not necessarily consecutively. You can assume both strings are already lower-cased.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Call</span>                                    <span class="n">Output</span>
+<span class="n">isSubsequence</span><span class="p">(</span><span class="s">"computer"</span><span class="p">,</span> <span class="s">"core"</span><span class="p">)</span>       <span class="nb">false</span> 
+<span class="n">isSubsequence</span><span class="p">(</span><span class="s">"computer"</span><span class="p">,</span> <span class="s">"cope"</span><span class="p">)</span>       <span class="nb">true</span> 
+<span class="n">isSubsequence</span><span class="p">(</span><span class="s">"computer"</span><span class="p">,</span> <span class="s">"computer"</span><span class="p">)</span>   <span class="nb">true</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-13" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-13">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isSubsequence</span><span class="p">(</span><span class="n">string</span> <span class="n">big</span><span class="p">,</span> <span class="n">string</span> <span class="n">small</span><span class="p">)</span> 
+<span class="p">{</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">small</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">big</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">big</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">small</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">isSubsequence</span><span class="p">(</span><span class="n">big</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">small</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">isSubsequence</span><span class="p">(</span><span class="n">big</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">small</span><span class="p">);</span>
+        <span class="p">}</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="14-recursion-and-time-complexity-and-exponents-big-oh-my">14) Recursion and Time Complexity and Exponents, (Big-)Oh My</h2>
+
+<p><em>Topics: recursion, time complexity, big O, algorithm comparison</em></p>
+
+<p>Below is a simple function that computes the value of m^n when n is a nonnegative integer:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="n">m</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>1) What is the big-O complexity of the above function, written in terms of m and n? You can assume that it takes time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> to multiply two numbers.</p>
+
+<p>2) If it takes 1 microsecond (μs) to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</p>
+
+<p>Below is a recursive function that computes the value of <code class="language-c++ highlighter-rouge"><span class="n">m</span><span class="o">^</span><span class="n">n</span></code> when <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> is a nonnegative integer:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">m</span> <span class="o">*</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>3) What is the big-O complexity of the above function, written in terms of <code class="language-c++ highlighter-rouge"><span class="n">m</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>? You can assume that it takes time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> to multiply two numbers.</p>
+
+<p>4) If it takes 1μs to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</p>
+
+<p>Here’s an alternative recursive function for computing <code class="language-c++ highlighter-rouge"><span class="n">m</span><span class="o">^</span><span class="n">n</span></code> that uses a technique called exponentiation by squaring. The idea is to modify the recursive step as follows:</p>
+
+<ul>
+  <li>If <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> is an even number, then we can write <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> as <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="n">k</span></code>. Then <code class="language-c++ highlighter-rouge"><span class="n">m</span><span class="o">^</span><span class="n">n</span> <span class="o">=</span> <span class="n">m</span><span class="o">^</span><span class="p">(</span><span class="mi">2</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span><span class="o">^</span><span class="n">k</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span></code>.</li>
+  <li>If <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> is an odd number, then we can write <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> as <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></code>. Then <code class="language-c++ highlighter-rouge"><span class="n">m</span><span class="o">^</span><span class="n">n</span> <span class="o">=</span> <span class="n">m</span><span class="o">^</span><span class="p">(</span><span class="mi">2</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">m</span><span class="o">^</span><span class="p">(</span><span class="mi">2</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span><span class="o">^</span><span class="n">k</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span></code>.</li>
+</ul>
+
+<p>Based on this observation, we can write this recursive function:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">halfPower</span> <span class="o">=</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">halfPower</span> <span class="o">*</span> <span class="n">halfPower</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">halfPower</span> <span class="o">=</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">m</span> <span class="o">*</span> <span class="n">halfPower</span> <span class="o">*</span> <span class="n">halfPower</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>5) What is the big-O complexity of the above function, written in terms of <code class="language-c++ highlighter-rouge"><span class="n">m</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>? You can assume that it takes time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> to multiply two numbers.</p>
+
+<p>6) If it takes 1μs to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-14" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-14">
+   
+<ol>
+  <li>
+    <p>This function runs in time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code>. It runs the loop <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> times, at each step doing <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> work. There is no dependence on <code class="language-c++ highlighter-rouge"><span class="n">m</span></code> in the runtime.</p>
+  </li>
+  <li>
+    <p>We know that this code runs in time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code>, so it scales roughly linearly with the size of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>. Therefore, if it took 1μs to compute a value when <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">=</span> <span class="mi">100</span></code>, it will take roughly 100 times longer when we plug in <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span></code>. As a result, we’d expect this code would take about 100μs to complete.</p>
+  </li>
+  <li>
+    <p>If we trace through the recursion, we’ll see that we make a total of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> recursive calls, each of which is only doing <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> work. Adding up all the work done by these recursive calls gives us a total of <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> work, as before.</p>
+  </li>
+  <li>
+    <p>As before, this should take about 100μs.</p>
+  </li>
+  <li>
+    <p>Notice that each recursive call does <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> work (there are no loops anywhere here), then calls itself on a problem that’s half as big as the original one. This means that only <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">log</span> <span class="n">n</span><span class="p">)</span></code> recursive calls will happen (remember that repeatedly dividing by two is the hallmark of a logarithm), so the total work done here is <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">log</span> <span class="n">n</span><span class="p">)</span></code>.</p>
+  </li>
+  <li>
+    <p>We know that the runtime when n = 100 is roughly 1μs. Notice that 100^2 = 10,000, so we’re essentially asking for the runtime of this function when we square the size of the input. Also notice that via properties of logarithms that <code class="language-c++ highlighter-rouge"><span class="n">log</span> <span class="n">n</span><span class="o">^</span><span class="mi">2</span> <span class="o">=</span> <span class="mi">2</span> <span class="n">log</span> <span class="n">n</span></code>. Therefore, since we know the runtime grows roughly logarithmically and we’ve squared the value of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>, this should take about twice as long as before, roughly 2μs.</p>
+  </li>
+</ol>
+
+</div>
+</div>
+<hr />
+
+<h2 id="15-longest-common-subsequence">15) Longest Common Subsequence</h2>
+<p><em>Topic: Recursive Backtracking</em></p>
+
+<p>Write a recursive function named longestCommonSubsequence that returns the longest common subsequence of two strings passed as arguments. Some
+example function calls and return values are shown below.</p>
+
+<p>Recall that if a string is a subsequence of another, each of its letters occurs in the longer string in the same order, but not necessarily consecutively.</p>
+
+<p>Hint: In the recursive case, compare the first character of each string. What one recursive call can you make if they are the same? What two recursive calls do you try if they are different?</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="s">"cs106a"</span><span class="p">,</span> <span class="s">"cs106b"</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="s">"cs106"</span> 
+<span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="s">"nick"</span><span class="p">,</span> <span class="s">"julie"</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="s">"i"</span> 
+<span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="s">"karel"</span><span class="p">,</span> <span class="s">"c++"</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="s">""</span> 
+<span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="s">"she sells"</span><span class="p">,</span> <span class="s">"seashells"</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="s">"sesells"</span>
+</code></pre></div></div>
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-15" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-15">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">longestCommonSubsequence</span><span class="p">(</span><span class="n">string</span> <span class="n">s1</span><span class="p">,</span> <span class="n">string</span> <span class="n">s2</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">s2</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+ 	<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">s2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+ 		<span class="k">return</span> <span class="n">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> 
+ 							<span class="n">s2</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+ 	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+ 		<span class="n">string</span> <span class="n">choice1</span> <span class="o">=</span> <span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+		<span class="n">string</span> <span class="n">choice2</span> <span class="o">=</span> <span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">s2</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">choice1</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">choice2</span><span class="p">.</span><span class="n">length</span><span class="p">())</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">choice1</span><span class="p">;</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">choice2</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="15-recursion-recursioncpp">15) Recursion (<code class="language-c++ highlighter-rouge"><span class="n">recursion</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p>Imagine you have a 2 × n grid that you’d like to cover using 2 × 1 dominoes. The dominoes need to be completely contained within the grid (so they can’t hang over the sides), can’t overlap, and have to be at 90° angles (so you can’t have diagonal or tilted tiles). There’s exactly one way to tile a 2 × 1 grid this way, exactly two ways to tile a 2 × 2 grid this way, and exactly three ways to tile a 2 × 3 grid this way (can you see what they are?) Write a recursive function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">int</span> <span class="n">numWaysToTile</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span></code></p>
+</div>
+<p>that, given a number n, returns the number of ways you can tile a 2 × n grid with 2 × 1 dominoes.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-16" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-16">
+   
+<p>If you draw out a couple of sample tilings, you might notice that every tiling either starts with a single vertical domino or with two horizontal dominoes. That means that the number of ways to tile a <code class="language-c++ highlighter-rouge"><span class="mi">2</span> <span class="err">×</span> <span class="n">n</span></code> (for <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="err">≥</span> <span class="mi">2</span></code>) is given by the number of ways to tile a <code class="language-c++ highlighter-rouge"><span class="mi">2</span> <span class="err">×</span> <span class="p">(</span><span class="n">n</span> <span class="err">–</span> <span class="mi">1</span><span class="p">)</span></code> grid (because any of them can be extended into a <code class="language-c++ highlighter-rouge"><span class="mi">2</span> <span class="err">×</span> <span class="n">n</span></code> grid by adding a vertical domino) plus the number of ways to tile a <code class="language-c++ highlighter-rouge"><span class="mi">2</span> <span class="err">×</span> <span class="p">(</span><span class="n">n</span> <span class="err">–</span> <span class="mi">2</span><span class="p">)</span></code> grid (because any of them can be extended into a <code class="language-c++ highlighter-rouge"><span class="mi">2</span> <span class="err">×</span> <span class="n">n</span></code> grid by adding two horizontal dominoes). From there the question is how to compute this. You could do this with regular recursion, like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">numWaysToTile</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* There's one way to tile a 2 x 0 grid: put down no dominoes. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="cm">/* There's one way to tile a 2 x 1 grid: put down a vertical domino. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    
+    <span class="cm">/* Recursive case: Use the above insight. */</span>
+    <span class="k">return</span> <span class="n">numWaysToTile</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">numWaysToTile</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="16-cracking-passwords">16) Cracking Passwords</h2>
+<p><em>Topic: Recursive Backtracking</em></p>
+
+<p>Write a function <code class="language-c++ highlighter-rouge"><span class="n">crack</span></code> that takes in the maximum length a site allows for a user's password and tries to find the password into an account by using recursive backtracking to attempt all possible passwords up to that length (inclusive). Assume you have access to the function <code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="n">login</span><span class="p">(</span><span class="n">string</span> <span class="n">password</span><span class="p">)</span></code> that returns true if a password is correct. You can also assume that the passwords are entirely alphabetic and case-sensitive. You should return the correct password you find, or the empty string if you cannot find the password. You should return the empty string if the maximum length passed is 0 and raise an error if the length is negative.</p>
+
+<p>Security note: The ease with which computers can brute-force passwords is the reason why login systems usually permit only a certain number of login attempts at a time before timing out. It’s also why long passwords that contain a variety of different characters are better! Try experimenting with how long it takes to crack longer and more complex passwords. See the comic here for more information: <a href="https://xkcd.com/936/">https://xkcd.com/936/</a></p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-17" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-17">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">crackHelper</span><span class="p">(</span><span class="n">string</span> <span class="n">soFar</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxLength</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">login</span><span class="p">(</span><span class="n">soFar</span><span class="p">))</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">soFar</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">soFar</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">maxLength</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="sc">'a'</span><span class="p">;</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="sc">'z'</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">string</span> <span class="n">password</span> <span class="o">=</span> <span class="n">crackHelper</span> <span class="p">(</span><span class="n">soFar</span> <span class="o">+</span> <span class="n">c</span><span class="p">,</span> <span class="n">maxLength</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">password</span> <span class="o">!=</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">password</span><span class="p">;</span>
+		<span class="p">}</span>
+ 		<span class="c1">// Also check uppercase</span>
+ 		<span class="kt">char</span> <span class="n">upperC</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+ 		<span class="n">password</span> <span class="o">=</span> <span class="n">crackHelper</span> <span class="p">(</span><span class="n">soFar</span> <span class="o">+</span> <span class="n">upperC</span><span class="p">,</span> <span class="n">maxLength</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">password</span> <span class="o">!=</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="k">return</span> <span class="n">password</span><span class="p">;</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+	<span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="nf">crack</span><span class="p">(</span><span class="kt">int</span> <span class="n">maxLength</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">maxLength</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">error</span><span class="p">(</span><span class="s">"max length cannot be negative!);"</span><span class="p">;</span>
+	<span class="p">}</span>
+ 	<span class="k">return</span> <span class="nf">crackHelper</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="n">maxLength</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Dec-01
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

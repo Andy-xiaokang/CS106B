@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Testing and the SimpleTest framework</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Testing and the SimpleTest framework</h1>
+
+<hr>
+
+<p class="attribution">
+Written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="why-testing">Why testing?</h2>
+<p>Anybody that writes code for some purpose (whether as a researcher, a software engineer, or in any other profession) will get to the point where others are relying on their code. Bugs in software can be <a href="https://royal.pingdom.com/10-historical-software-bugs-with-extreme-consequences/">dangerous or even deadly</a>. Additionally, users do not enjoy using software that is buggy and crashes, and fixing bugs once the software is in production is very costly. Most importantly, <strong>good engineers take pride in building things that work well and are robust.</strong></p>
+
+<p>The key to writing working software is developing good tests. In this course we follow an approach called test-driven development. As you write code, you will also write companion tests. These tests are used to verify that the code you just finished writing works as intended.</p>
+
+<p>This strategy is sometimes called "<em>test-as-you-go</em>." You work in small steps, being sure to test thoroughly, and only move on after you having confirmed the correctness and fixed all issues. The beauty of this approach is that each step is relatively straightforward and easy to debug. Imagine the opposite approach: you write hundreds of lines of code, the code does not work, and now you need to figure out which one of those hundreds of lines of code isn't working as expected! That is the sort of frustration that we want to help you all avoid as you continue to develop your skills as programmers.</p>
+
+<h2 id="simpletest">SimpleTest</h2>
+<p>For CS106B, we provide a unit-test framework called <code class="language-c++ highlighter-rouge"><span class="n">SimpleTest</span></code> that you will use to test your code. This framework was pioneered by our ace colleague Keith Schwarz. <code class="language-c++ highlighter-rouge"><span class="n">SimpleTest</span></code> provides a simple, clean approach to writing and running test cases.</p>
+
+<p>Here is an example of how you might see the <code class="language-c++ highlighter-rouge"><span class="n">SimpleTest</span></code> framework used in the starter code of an assignment.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// reversed(str) returns copy of str with characters in reverse order.</span>
+<span class="n">string</span> <span class="nf">reversed</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">string</span> <span class="n">result</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* * * * * * Test Cases * * * * * */</span>
+
+<span class="n">PROVIDED_TEST</span><span class="p">(</span><span class="s">"Demonstrate different SimpleTest use cases"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"but"</span><span class="p">),</span> <span class="s">"tub"</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"stanford"</span><span class="p">),</span> <span class="s">"drofnats"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>When we provide tests for you in the starter code, each test case is wrapped in the special macro <code class="language-c++ highlighter-rouge"><span class="n">PROVIDED_TEST</span></code>. The string argument in parentheses describes the purpose of the test, and the code block that follows (enclosed in curly braces) defines the actual test behavior.</p>
+
+<p>When you add your own test cases, you will wrap your test code blocks in the <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> macro instead. The <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> functionality and structure are exactly the same as <code class="language-c++ highlighter-rouge"><span class="n">PROVIDED_TEST</span></code>; it simply distinguishes the tests you've written yourself from those we provide for the benefit of your grader. You will see many examples of this in the following sections.</p>
+
+<h3 id="expect_equal">EXPECT_EQUAL</h3>
+<p>The test macro <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">your_result</span><span class="p">,</span> <span class="n">expected_result</span><span class="p">)</span></code> tests whether your result matches the expected.  A typical use for <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code> compares a value produced by your code (e.g. the return value from a call to one of your functions) to the expected result and confirms they are equal. As an example, consider the first test case from the code above:</p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"but"</span><span class="p">),</span> <span class="s">"tub"</span><span class="p">);</span></code></p>
+
+<p>This test case compares the result of the call <code class="language-c++ highlighter-rouge"><span class="n">reversed</span><span class="p">(</span><span class="s">"but"</span><span class="p">)</span></code> to the expected answer <code class="language-c++ highlighter-rouge"><span class="s">"tub"</span></code>. If the two are indeed equal, the test will be reported as <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code>. If they do not match, the test is reported as a failure.</p>
+
+<p>See below the added <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> code block with three tests of your own. These test cases use <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code> to try out further scenarios not covered by the provided tests.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* * * * * * Test Cases * * * * * */</span>
+
+<span class="n">PROVIDED_TEST</span><span class="p">(</span><span class="s">"Demonstrate different SimpleTest use cases"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"but"</span><span class="p">),</span> <span class="s">"tub"</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"stanford"</span><span class="p">),</span> <span class="s">"drofnats"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"my added cases not covered by the provided tests"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"racecar"</span><span class="p">),</span> <span class="s">"racecar"</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">""</span><span class="p">),</span> <span class="s">""</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"123456789"</span><span class="p">),</span> <span class="s">"987654321"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<blockquote class="alert alert-danger">
+  <p>Important note: You should never modify the provided tests —these are the same tests that will be used for grading, so it is not in your best interest to modify them. When adding tests, put them in a new <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> block of your own.</p>
+</blockquote>
+
+<h3 id="expect">EXPECT</h3>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span></code> test case confirms the truth of a single expression. If the expression evaluates to true, the test is reported as <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code>. If false, it reports a test failure. For example, if you added the <code class="language-c++ highlighter-rouge"><span class="n">isPalindrome</span></code> function to the above program, you could add a test case that uses <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span></code> to confirm the correct result from <code class="language-c++ highlighter-rouge"><span class="n">isPalindrome</span></code>, as shown below.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// reversed(str) returns copy of str with characters in reverse order.</span>
+<span class="n">string</span> <span class="nf">reversed</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">result</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">isPalindrome</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="o">==</span> <span class="n">reversed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* * * * * * Test Cases * * * * * */</span>
+
+<span class="n">PROVIDED_TEST</span><span class="p">(</span><span class="s">"Demonstrate different SimpleTest use case"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"but"</span><span class="p">),</span> <span class="s">"tub"</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"stanford"</span><span class="p">),</span> <span class="s">"drofnats"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"test additional cases not covered by the provided tests"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"racecar"</span><span class="p">),</span> <span class="s">"racecar"</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">""</span><span class="p">),</span> <span class="s">""</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">reversed</span><span class="p">(</span><span class="s">"123456789"</span><span class="p">),</span> <span class="s">"987654321"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"test my isPalindrome function"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">isPalindrome</span><span class="p">(</span><span class="s">"racecar"</span><span class="p">));</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">isPalindrome</span><span class="p">(</span><span class="s">"stanford"</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>When would you use <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span></code> instead of <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code>?</p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code> is appropriate when you have a result that can be compared for equality to an expected result (e.g. two numbers, two strings, two Vectors, etc.). For most situations, confirming that your code "got the right answer" is exactly what you need. On the other hand, <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span></code> allows you to express a wider variety of conditions beyond simple equality. For example, you could confirm the truth of a complex set of conditions by using a compound expression such as <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">!=</span> <span class="n">z</span> <span class="o">||</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span></code></p>
+
+<h3 id="expect_error">EXPECT_ERROR</h3>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_ERROR</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span></code> test macro is used to verify that evaluating the given expression raises an error (i.e. calls the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function). If an error is raised, the test is reported as <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code>.  If not, the test is reported as a failure.  As an example, <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_ERROR</span><span class="p">(</span><span class="n">stringToInteger</span><span class="p">(</span><span class="s">"cow"</span><span class="p">));</span></code> would confirm that an error is raised when trying to convert the non-numeric string to a number value. <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_ERROR</span></code> is used in the specific situation of confirming expected handling of errors within your code.</p>
+
+<h3 id="expect_no_error">EXPECT_NO_ERROR</h3>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_NO_ERROR</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span></code> is the opposite of the above. If the expression successfully runs to completion without raising an error, then the test is reported as <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code>. The test is reported as a failure if the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function is called. <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_NO_ERROR</span></code> is used in situations where you want to confirm that functions run to completion on correct input.</p>
+
+<h3 id="time_operation">TIME_OPERATION</h3>
+<p><code class="language-c++ highlighter-rouge"><span class="n">SimpleTest</span></code> also has support for simple execution timing.</p>
+
+<p>The macro <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">expression</span><span class="p">)</span></code> is used to measure the time it takes to evaluate an expression, which is of the specified size.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Time operation vector sort on tiny input"</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">12</span><span class="p">};</span>
+    <span class="n">TIME_OPERATION</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">sort</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The first argument to <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> is the input size; this is used to label this timing result in the output. The second argument is the expression to evaluate. <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> will start a new timer, evaluate the expression, stop the timer, and report the elapsed time.</p>
+
+<p>It is often useful to have a sequence of <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> on different sizes to see the larger pattern. Each operation is individually evaluated and timed. Below demonstrates use of <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> in a loop to time how long it takes to sort the items in successively larger vectors.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Time operation vector sort over a range of input sizes"</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">50000</span><span class="p">;</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="p">;</span> <span class="n">size</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">v</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">randomInteger</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">));</span> <span class="c1">// fill vector with random values</span>
+        <span class="p">}</span>
+        <span class="n">TIME_OPERATION</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">sort</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Here are the test results for running the test cases above:</p>
+
+<p><img src="img/time_operation.png" alt="screenshot of test results from time operation" /></p>
+
+<p>Using <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> over a range of sizes lets you see how the time required for an operation changes with respect to input size – i.e. it predicts the algorithm's Big O. Handy!</p>
+
+<p>By default, a test case that uses <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> will be reported as <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code> as long as the expression being evaluated does not result in an error or crash. If you want to verify the actual correctness of the result as well as time it, you can mix in regular use of <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span></code> into the test case as shown below:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Time operation vector sort on tiny input and verify is sorted"</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">12</span><span class="p">};</span>
+    <span class="n">TIME_OPERATION</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">sort</span><span class="p">());</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">checkIsSorted</span><span class="p">(</span><span class="n">v</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="runsimpletests">runSimpleTests</h3>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">main</span></code> function of our projects will begin by offering the user a choice in what to execute: run all the tests, select which tests to run, or run no tests  and proceed with normal execution. It does this by calling the <code class="language-c++ highlighter-rouge"><span class="n">runSimpleTest</span></code> function as shown below:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">runSimpleTests</span><span class="p">(</span> <span class="o">&lt;</span><span class="n">test</span> <span class="n">choice</span> <span class="n">argument</span><span class="o">&gt;</span> <span class="p">))</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="p">...</span>  <span class="c1">// rest of normal main() here</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The argument to <code class="language-c++ highlighter-rouge"><span class="n">runSimpleTests</span></code> is either:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">ALL_TESTS</span></code> (run all tests for all files)</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">SELECTED_TESTS</span></code> (provide menu for user to select which tests to run)
+    <ul>
+      <li>The user can enter zero for "no tests", which causes the program to continue with rest of <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="debugging-a-failing-test">Debugging a failing test</h2>
+<p>Your goal when testing your code should be to get all of your tests to pass. However, if you get a failed test result, don't look at this as sad times; this test result is news you can use. The failing test case indicates an operation that behaved unexpectedly. This means you know where to focus your attention.</p>
+
+<p>Dig into that test case under the debugger to analyze how it has gone astray. Set a breakpoint inside the text code block, and choose to stop at the line that is at or before the failing <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span><span class="o">/</span><span class="n">EXPECT_EQUAL</span></code> statement.</p>
+
+<p><img src="img/break_on_test.png" alt="screenshot of setting breakpoint in debugger on EXPECT statement" width="80%" /></p>
+
+<p>Now run the tests using the debugger. When the program stops at the breakpoint, single-step through the code while watching the variables pane to observe how the state of your program changes, using a technique just like you did in the <a href="../assignments/0-namehash/DebuggerTutorial.pdf" title="Debugger tutorial from Assignment 0">debugging tutorial</a> in Assignment 0.</p>
+
+<p>After you understand the failure and apply a fix, run that test again. When you see the test pass, you can <a href="http://phdcomics.com/comics/archive.php?comicid=180">celebrate having squashed that bug!</a></p>
+
+<p><a name="bogus"></a></p>
+<h2 id="debugging-your-test-cases">Debugging your test cases</h2>
+<p>Your test cases are implemented as code, which means that they, too, can have bugs of their own. Having a bug in your test case can truly be a maddening experience!   A test case that produces a false negative can lead you to investigate a non-existent defect and a false positive lulls you into overlooking a lurking one. You attribute the erroneous test result to the code being tested, yet the real issue is within the test case itself. Unlike hackneyed sitcom plots, hilarity does <em>not</em> ensue from this misunderstanding.</p>
+
+<p>For example, suppose you have written a function that returns the square of a number. You write some tests for it:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">square</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"confirm my square function works correctly for 5, 10, and 15"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">25</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">100</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="mi">275</span><span class="p">);</span>  <span class="c1">// this test case is BUGGY!</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The first two tests pass but the third will fail. The square of 15 is actually 225, not 275. The problem isn't with the <code class="language-c++ highlighter-rouge"><span class="n">square</span><span class="p">()</span></code> function, but with the buggy test case that produces a false negative.  Every programmer can relate to a time when a buggy test case reported an erroneous failure that led to wild goose chase to find a non-existent flaw in code that was correct all along, argh!</p>
+
+<p>There can also be tests that produce a false positive, i.e. report that code is <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code> when it has a defect. This could be due to a buggy test case that compares to the wrong expected value, such as shown above.  Another source of false positives is when your test cases are not sufficiently robust or comprehensive to surface the problem.  If <code class="language-c++ highlighter-rouge"><span class="n">square</span><span class="p">()</span></code> returned the wrong value only for negative inputs and your test cases only tested positive inputs, you would receive all <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code> results and no mention of the lurking defect. Or perhaps you took a shortcut and wrote your test cases to only confirm that <code class="language-c++ highlighter-rouge"><span class="n">square</span><span class="p">()</span></code> returned a non-negative value (e.g. <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span></code>) without checking the specific value. These test cases are not buggy per se, but they are not thorough enough to fully vet the code being tested.</p>
+
+<p>A key takehome is that your test results are meaningful exactly and only if your test cases accurate and robust. Put extra care into verifying each test case is properly constructed and produces accurate results. Ensure your suite of test cases cover a comprehensive range of scenarios, including unusual inputs and edge conditions. Now when your program earns its clean sweep of <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code> results, you can celebrate that success with confidence!</p>
+
+<h2 id="test-driven-development">Test-driven development</h2>
+
+<p>We highly recommend employing test-driven development when working on your assignments. To do so, follow these steps:</p>
+
+<ul>
+  <li>identify a small, concrete task (bug to fix, feature to add, desired change in behavior)</li>
+  <li>construct tests for the desired outcome, add them to the file in which you're currently working, and verify the current code fails these tests</li>
+  <li>implement the changes in your code to complete the task</li>
+  <li>re-run your newly added tests and verify they now succeed</li>
+  <li>test the rest of the system (by running all tests) to verify you didn't inadvertently break something else</li>
+</ul>
+
+<p>This process allows you to change only a small amount of code at once and validate your results with carefully constructed tests before and after. It keeps your development moving forward while ensuring you have a functional program at each step!</p>
+
+<h2 id="test-cases-and-grading">Test cases and grading</h2>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">SimpleTest</span></code> framework will be supplied with each assignment, and there will be some initial test cases provided in the starter project, but you will also be expected to add your own tests.</p>
+
+<p>You will submit your tests along with the code, and the grader's review will consider the quality of your tests.  We will also provide comments on your tests to help you improve your testing approach. Please incorporate our feedback into future assignments; it will improve your grade and, more importantly, your effectiveness as a programmer. We guarantee future employers will appreciate your ability to write good tests and well-tested code!</p>
+
+<p>Here are some things we look for in good tests.</p>
+
+<ul>
+  <li>
+    <p>Are the tests comprehensive? Is all the functionality tested?</p>
+  </li>
+  <li>
+    <p>Where possible, are the tests self-contained and independent?</p>
+  </li>
+  <li>
+    <p>Did you anticipate potential problems, tricky cases, and boundary conditions?</p>
+  </li>
+  <li>
+    <p>Did you develop the tests in a good order? Did you test basic functionality before more advanced functionality? Did you take small, carefully chosen steps?</p>
+  </li>
+</ul>
+
+<h2 class="faq" id="common-questions">Common questions</h2>
+
+<h3 id="should-each-expectexpect_equal-be-in-a-student_test-code-block-of-its-own-or-can-i-list-several-within-one-code-block">Should each <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span></code>/<code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code> be in a <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> code block of its own or can I list several within one code block?</h3>
+
+<p>For tests that are closely related, it may be convenient to group them together in the same code block under one test name. The tests will operate as one combined group and show up in the report as one aggregate success (if all pass) or one failure (if at least one fails).</p>
+
+<p>However, there are advantages to separating each individual test case into its own code block. You will be able to choose a clear, specific name for this block. The separation isolates each test so you can easily identify exactly which cases are passing and which are failing. For example, if you have,</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Many tests together"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(...</span> <span class="n">Test</span> <span class="n">A</span> <span class="p">...)</span>
+    <span class="n">EXPECT</span><span class="p">(...</span> <span class="n">Test</span> <span class="n">B</span> <span class="p">...)</span>
+    <span class="n">EXPECT</span><span class="p">(...</span> <span class="n">Test</span> <span class="n">C</span> <span class="p">...)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>then if Test B fails, Test C will never run and you won't be able to see the output – you won't know if Test C passed or failed. On the other hand, if you structure your tests like this</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Test A"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(...</span> <span class="n">Test</span> <span class="n">A</span> <span class="p">...)</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Test B"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(...</span> <span class="n">Test</span> <span class="n">B</span> <span class="p">...)</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Test C"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(...</span> <span class="n">Test</span> <span class="n">C</span> <span class="p">...)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>then all the tests will run individually, and even if Test B fails, you will still get independent information about Tests A and C. Having this sort of isolated behavior might make debugging any problems you encounter a little bit easier!</p>
+
+<h3 id="when-an-assignment-requirement-says-to-add-2-tests-do-we-count-each-student_test-or-each-expect_equal">When an assignment requirement says to "add 2 tests," do we count each <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> or each <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code>?</h3>
+<p>Each use of <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span></code>/<code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code> is counted as one test case.  Read the answer to the previous question for some things to consider when deciding whether to group multiple test cases under a single <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> group or keep separated.</p>
+
+<h3 id="the-fontsizescolors-in-the-simple-test-result-window-are-not-pleasing-to-me-can-i-customize-the-display">The font/sizes/colors in the Simple Test result window are not pleasing to me. Can I customize the display?</h3>
+<p>Yes! Look in the Qt project browser under <code class="language-c++ highlighter-rouge"><span class="n">Other</span> <span class="n">files</span><span class="o">-&gt;</span><span class="n">testing</span></code> for a file named <code class="language-c++ highlighter-rouge"><span class="n">styles</span><span class="p">.</span><span class="n">css</span></code>. This file is the CSS stylesheet for the Simple Test window. Edit this file to change the display styles. Each project has its own copy of the stylesheet. Copy the edited stylesheet from this project into a new project to carry those customizations forward.</p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

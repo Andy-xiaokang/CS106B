@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B PQ Heap</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">PQ Heap</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="adts-for-the-win">ADTs for the win</h2>
+
+<p>Now you are ready for the <em>pièce de résistance</em> — implementing the priority queue as a binary heap.  One of the fantastic features of C++ classes as an abstraction is that you can swap out its inner workings for a totally different implementation, with minimal impact on the client. For example, you can change how your internal algorithms to rev up performance or switch a more compact data representation to save space, all the while your clients continue using the same interface, and receive the benefits of your improvements without lifting a finger.</p>
+
+<p>For this task you will implement the <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> class using a binary heap. This version of the priority queue has the same interface and external behavior as the <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> that you worked on earlier, but it operates much more efficiently. This will allow priority queue client applications to scale to much larger inputs than was possible with the slower <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code>.</p>
+
+<h2 id="the-pqheap-class">The <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> class</h2>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> class has the same public interface as the <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code>:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">PQHeap</span> <span class="p">{</span>
+<span class="nl">public:</span>
+
+    <span class="n">PQHeap</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">PQHeap</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">enqueue</span><span class="p">(</span><span class="n">DataPoint</span> <span class="n">element</span><span class="p">);</span>
+    <span class="n">DataPoint</span> <span class="n">dequeue</span><span class="p">();</span>
+    <span class="n">DataPoint</span> <span class="n">peek</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">clear</span><span class="p">();</span>
+
+<span class="nl">private:</span>
+
+    <span class="kt">int</span> <span class="n">getParentIndex</span><span class="p">(</span><span class="kt">int</span> <span class="n">child</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">getLeftChildIndex</span><span class="p">(</span><span class="kt">int</span> <span class="n">parent</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">getRightChildIndex</span><span class="p">(</span><span class="kt">int</span> <span class="n">parent</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>PQHeap requires the same debug functions as PQArray that verify/read/set the contents of the internal array.</p>
+
+<p>In the private section, we suggest some helper functions for handle the math for computing the parent/child indexes and swapping elements. While we do not require these private helpers, we <strong>strongly recommend</strong> them as we know they will make your development and debugging processes substantially smoother. The remainder of the private section (including all member variables) is left for you to define as part of your implementation.</p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">pqheap</span><span class="p">.</span><span class="n">h</span></code> file includes documentation of the expected behavior of each operation, including the required handling for error conditions, such as attempting to peek or dequeue from an empty queue. <strong>You should read through the provided documentation in this file before beginning to code.</strong></p>
+
+<h2 id="binary-heap-highlights">Binary heap highlights</h2>
+<p>For an introduction to the binary heap data structure and its operations, refer to the [lecture on heaps][18-pqheap]. The rest of this handout assumes familiarity with that content and does not repeat it.</p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> operation needs to be able to quickly retrieve the frontmost element, but keeping the entire array in fully sorted order as <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> did is actually a bit of overkill in its approach. The binary heap is a <em>partially-ordered</em> data structure optimized for quick access to the frontmost element (and those near the front) and gives less attention to sorting those elements all the way in the back. A binary heap is ordered in a much weaker sense than a sorted array, but its form of ordering is still sufficient for highly efficient performance of the <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> operations.</p>
+
+<p>The binary min-heap you will use should be stored in a flattened array. The root element is placed at index <code class="language-c++ highlighter-rouge"><span class="mi">0</span></code>. For a given element at index <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>, its two children (if they exist) are at index <code class="language-c++ highlighter-rouge"><span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span></code> and index <code class="language-c++ highlighter-rouge"><span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span></code> and its parent is located at index <code class="language-c++ highlighter-rouge"><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></code>.</p>
+
+<p>Confirm your understanding of binary heap operations by answering the following questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q11" class="question alert alert-warning">
+  <p><strong>Q11</strong>. Start with an empty binary heap and enqueue the nine <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code>s in the order shown below and show the result. You only need to show the final heap, not intermediate steps. Draw the heap as tree-like diagram with root element on top, its two children below, and so on. Yes, we know that we're asking you to draw pictures in a text file (we love the <a href="http://asciiflow.com/">AsciiFlow</a> tool for "drawing" in text).</p>
+</div>
+
+<pre><code class="language-output">{"R", 4}
+{"A", 5}
+{"B", 3}
+{"K", 7}
+{"G", 2}
+{"V", 9}
+{"T", 1}
+{"O", 8}
+{"S", 6}
+</code></pre>
+<p>Confirm for yourself that while there are many possible arrangements of these elements into a valid binary heap, there is only one that will result from enqueueing these values in this particular order.</p>
+
+<div id="Q12" class="question alert alert-warning">
+  <p><strong>Q12</strong>. Make two calls to <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> on the above binary heap and draw the updated result.</p>
+</div>
+
+<div id="Q13" class="question alert alert-warning">
+  <p><strong>Q13</strong>. Draw the array representation of the binary heap above. Label each element with its array index.</p>
+</div>
+
+<h2 id="implementation-requirements">Implementation requirements</h2>
+<ul>
+  <li>Declare your necessary private member variables in <code class="language-c++ highlighter-rouge"><span class="n">pqheap</span><span class="p">.</span><span class="n">h</span></code> along with any private helper functions. Do not modify the provided public member prototypes in any way.</li>
+  <li>Implement the bodies of all member functions and the constructor/destructor in <code class="language-c++ highlighter-rouge"><span class="n">pqheap</span><span class="p">.</span><span class="n">cpp</span></code>. Empty implementation skeletons have been provided there for you.</li>
+  <li>The underlying data organization technique is a binary min-heap, stored as a flattened array. The root of the heap is stored at index 0.</li>
+  <li>The array elements are of type <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code>, which packages a string label with a numeric priority. <strong>A smaller value for priority indicates a more urgent priority than a larger value.</strong> The DataPoint with the minimum double value for priority is treated as the most urgent and is the one retrieved by peek/dequeue.</li>
+  <li>You must use a dynamically-allocated array as your underlying data storage mechanism. The array should be allocated with a small initial capacity (10 elements, defined as a constant in the code) and <strong>capacity should double on each resize operation, when necessary</strong>.</li>
+  <li>The class is responsible for proper allocation and deallocation of dynamic memory. Take care to properly deallocate any memory that is no longer is needed, such as when outgrowing a piece of memory or in the class destructor.</li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> operations must run in <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">log</span> <span class="n">N</span><span class="p">)</span></code> time where <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> is the count of elements in the priority queue. The bubble operations can operate either iteratively or recursively, your choice.</li>
+  <li>Your PQHeap implementation must not use any library sorting routine nor use any classes or algorithms from the C++ STL framework. It also must not use any Stanford collection classes (such as Vector or Map).</li>
+</ul>
+
+<h2 id="strategic-advice">Strategic advice</h2>
+<p>(Re)-read our <a href="pqarray.html#debugging-memory-errors">advice on debugging memory errors</a> to remind yourself of the need to bring your A-game.</p>
+
+<p>Do <strong>not</strong> write all functions and try to test the entire class in one big hairy mess. Pick a single task to work on in isolation and test as you go. Here is a suggested plan of attack:</p>
+<ul>
+  <li>Start with a careful reading of the code for <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code>, both the provided code and tests and the code and student tests that you added. Both <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> implement the same class interface and both use a dynamically-allocated array under the hood. You will find that some <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> operations can reuse same/similar code as <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code>, while other operations will need a distinct implementation that is specific to the binary heap.  Determine which portions of the code and tests can be usefully incorporated into <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> and bring those in now.</li>
+  <li>We recommend you begin with the most important of the debug functions: <code class="language-c++ highlighter-rouge"><span class="n">debugConfirmInternalArray</span></code>. Writing this function will prompt you to think through the structure of a proper binary heap and write the code to confirm the array contents are valid. Investing in a solid internal watchdog now will pay off in much saved grief later.  The other two debug functions (debugGet and debugSet) can be pretty much just copied from PQArray.</li>
+  <li>When ready to start on the public operations, choose an order to implement that is conducive to testing. Simple operations like <code class="language-c++ highlighter-rouge"><span class="n">peek</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">clear</span></code> are a nice starting point. It might seem like these operations would be hard to test without first having a working <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>, but remember you can use the debugSet operation to directly configure the internal contents as needed.</li>
+  <li>When ready to tackle <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>, start by implementing the private helpers.</li>
+  <li>The indexing helpers are a clean way to abstract out the slightly messy calculation of the indexes. Implement the helper return a distinctive sentinel value to indicate if the requested parent or child index is not valid (i.e. trying to get parent of the root index, or access child of index that has no children)  This sentinel will simplify the stopping conditions for your bubble up/down operation.</li>
+  <li>When ready to implement the <code class="language-c++ highlighter-rouge"><span class="n">swapElements</span></code> helper, be sure to check out and reuse the provided version in <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code>. The defensive design of this helper checking that your indexes are valid can be a lifesaver.</li>
+  <li>Break down <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> into its subtasks, perhaps first insert into array that doesn't yet expand. When you get to a needed step like <code class="language-c++ highlighter-rouge"><span class="n">swapElements</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">percolate</span></code>, bust out a private helper function for it.</li>
+  <li>Implement and test each operation like crazy. Hand-construct small targeted test cases. Trace on paper, then confirm the correctness of your operations by viewing the array contents in the debugger and using the debug functions to access the internal array contents.</li>
+  <li>After the basic enqueue works, extend to support expanding the array. Follow with more testing on a wide range of inputs, including at scale.</li>
+  <li>Then you're ready for <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code>, the final big task. Some additional private helper might be worthwhile: <code class="language-c++ highlighter-rouge"><span class="n">indexOfMinChild</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">siftDown</span></code>? You're in the home stretch!</li>
+  <li>With all operations individually vetted, you're up to testing interleaved operations and stress-sized inputs in your final push. Congratulations!</li>
+</ul>
+
+<h2 id="writing-your-own-tests">Writing your own tests</h2>
+<p>We never tire of repeating ourselves on the importance of thorough testing. The more care that you put into your testing strategy and thoughtful choices in test cases, the higher your confidence that your code is truly bug-free. The binary heap code has many complex interactions, and sneaky bugs can lurk in the shadows, it will take your finest testing to shake those out into the light of day.</p>
+<ul>
+  <li>We want you in the driver's seat on testing your <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> class and have intentionally started you with no provided tests. You will need to <strong>add a comprehensive set of student tests</strong>.</li>
+  <li>Review the test coverage of <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> as a starting point and figure out which tests can be re-used. Copy in a test case and make whatever modifications are needed to adapt from <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> to <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code>. For each test you borrow, take the time to understand what exactly it is testing, as well as what it is not being tested. It is those omissions for which you need to devise additional test cases to ensure your coverage is fully comprehensive.</li>
+  <li>Each test case should include a <strong>comment which documents what this test case is targeting and how it complements the rest of your tests</strong>.</li>
+  <li>Many of our provided tests use the empty string as the <code class="language-c++ highlighter-rouge"><span class="n">label</span></code> field of the <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code>, since we only care about the priority value. Feel free to do the same in your own tests.</li>
+</ul>
+
+<h2 id="break-the-speed-barrier">Break the speed barrier</h2>
+<p>Finally, jump back to your role as client and open up <code class="language-c++ highlighter-rouge"><span class="n">pqclient</span><span class="p">.</span><span class="n">cpp</span></code>. Edit the functions <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> to use your shiny new PQHeap in place of that pokey old PQArray. The only change required is the type of the variable declaration and like magic, these algorithms are now turbo-charged. Let's hear it for the power of abstraction! Re-run your previous time trial tests, increasing the sizes to a range appropriate for this zippy implementation.</p>
+
+<p>The action of pqSort using PQHeap is akin to the sorting algorithm <em>heapsort</em>, a classic <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">NlogN</span><span class="p">)</span></code> performer. Streaming top-k should operate in time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">NlogK</span><span class="p">)</span></code>, using space proportional to <code class="language-c++ highlighter-rouge"><span class="n">K</span></code>. That's some impressive work you've done!</p>
+
+<p>Answer the following questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q14" class="question alert alert-warning">
+  <p><strong>Q14</strong>. Re-run the timing trials on <code class="language-c++ highlighter-rouge"><span class="n">pqclient</span><span class="p">.</span><span class="n">cpp</span></code> and provide your results that confirm that <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> runs in time O(NlogN) and <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> in O(NlogK).</p>
+</div>
+
+<h2 id="extensions">Extensions</h2>
+<p>Looking to go further with the priority queue? There are lots of directions you could take this project!</p>
+
+<ul>
+  <li>Add a <strong>merge</strong> operation. One additional feature often needed when working with priority queues is the ability to merge two priority queues into one combined result. Extend your class to support such a merge member function. An uninspired way to do this is to add a loop that dequeues from one and enqueues to another, but merging should instead take advantage of the internal implementation to operate efficiently. Add timing trials for this operation and report what efficiency you can achieve for merge operation for each of the different implementations.</li>
+  <li>A <strong>double-ended priority queue</strong> supports both <code class="language-c++ highlighter-rouge"><span class="n">dequeueMin</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeueMax</span></code> operations. Extend your implementation(s) to add this facility. Which implementations can be adapted to provide to efficient access to both the min and max value?</li>
+  <li>Research and implement an <strong>alternative priority queue implementation</strong>. One of the reasons we love priority queues is because that are so many possible implementation strategies, each with different strengths and weaknesses. Here are a few other data structures you might research (in alphabetical order): binomial heaps, calendar queues, d-ary heaps, Fibonacci heaps, fishspears, leftist heaps, pairing heaps, skew heaps, skip lists, and weak heaps (and there are many others!). Code up one of these alternatives and share with us what you learned in the process.</li>
+</ul>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-10
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

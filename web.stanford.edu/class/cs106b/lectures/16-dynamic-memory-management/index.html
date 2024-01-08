@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Dynamic Memory Management</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 16. Dynamic Memory Management</h1>
+ <p class="subtle-heading">Wednesday November 1</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>An introduction to the world of <i>dynamic memory</i>, where we as programmers now have complete control over how computer memory is used. We create for the first time objects that can live beyond the lifespans of the functions where they are created.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 12.1, 12.3, 14.2</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/144296">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=16799ba0-2cfa-420f-8ebd-b083014df360&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Overview</p>
+<p>2. Motivation</p>
+<p>3. Proof That Local Variables Die When We Leave a Function (Part 1 of 2)</p>
+<p>4. Quokka Destruction: Proof That Local Variables Die When We Leave a Function (Part 2 of 2)</p>
+<p>5. The Immortal Quokka (and C++'s <span class="code-chonk">new</span> Operator) (and Dynamic Memory Allocation)</p>
+<p>6. Memory Diagrams: Static vs. Dynamic Quokka Allocation</p>
+<p>7. Concerns About the Immortal Quokka (and Memory Leaks!)</p>
+<p>8. Returning Dynamically Allocated Variables from Functions</p>
+<p>9. Super Important Rule of Thumb: For Every <span class="code-chonk">new</span>, a Single <span class="code-chonk">delete</span></p>
+<p>10. Array-Based Stack</p>
+<p>11. <span class="code-chonk">const</span> Member Functions</p>
+<p>12. What's next?</p>
+<p>13. Exercises</p>
+<p><strong><br />Overview</strong></p>
+<p>We talked today about <em>dynamic memory allocation</em>, which allows us to set aside memory where we can store data that lives beyond the lifespan of a function. The trade-off here is that we must keep careful tabs on dynamically allocated memory and manually release it when we're finished using it order to prevent <em>memory leaks</em> -- situations where our programs hog memory they're not using really using anymore, which can potentially place a serious strain on system resources.</p>
+<p><br /><strong>Motivation</strong></p>
+<p>We started today with a familiar example from Monday's lecture:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>Vector</strong>&lt;<strong>int</strong>&gt; createRandoVector(<strong>int</strong> n)<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br />      v.add(randomInteger(1, 100));<br />   }<br /><br />   <strong>return</strong> v;<br />}</pre>
+<p>Recall that the locally declared <span class="code-chonk">v</span> vector dies when we leave this function. What is returned to whoever calls this function is a <em>copy</em> of <span class="code-chonk">v</span>. That leads to a few problems:</p>
+<ol style="list-style-type: decimal;">
+<li>Since returning the vector by value creates a copy of that vector, returning is a slow operation. We have to copy every single value from that vector into a new copy when we return from this function.</li>
+<li>If we try to return a reference or pointer, we will be returning a reference or pointer to a dead variable. Using that reference or pointer to access the vector from outside this function would crash our program.</li>
+</ol>
+<p>Today, we ultimately solved this problem by doing the following:</p>
+<ol style="list-style-type: decimal;">
+<li>Using <span class="code-chonk">new</span> to dynamically allocate a space in memory that lives beyond the lifespan of the function where it's set aside.</li>
+<li>Returning a pointer to that dynamically allocated memory space, which is super fast because pointers are typically represented using only 64 bits on most systems. That's not much data to return from a function at all.</li>
+</ol>
+<p><strong><br />Proof That Local Variables Die When We Leave a Function (Part 1 of 2)</strong></p>
+<p>Using our knowledge of pointers from Monday, we can now convince ourselves that returning a vector by value creates a new copy of that vector. Check this out:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "random.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>Vector</strong>&lt;<strong>int</strong>&gt; createRandoVector(<strong>int</strong> n)<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br />      v.add(randomInteger(1, 100));<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; "Address of vector in createRandoVector(): " &lt;&lt; &amp;v &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "Contents of vector in createRandoVector(): " &lt;&lt; v &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // This returns a <strong>copy</strong> of our vector. This is a slow, expensive operation.</em></span><br />   <strong>return</strong> v;<br />}<br /><br /><strong>int</strong> main()<br />{<br />    <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />    <strong>cout</strong> &lt;&lt; "Address of vector in main() before calling cRV(): " &lt;&lt; &amp;v &lt;&lt; <strong>endl</strong>;<br /><br />    v = createRandoVector(5);<br /><br /><em><span style="color: #236fa1;">    // Notice the address of our local v variable does not change.</span></em><br />    <strong>cout</strong> &lt;&lt; "Address of vector in main() after calling cRV(): " &lt;&lt; &amp;v &lt;&lt; <strong>endl</strong>;<br /><strong>    cout</strong> &lt;&lt; "Contents of vector in main(): " &lt;&lt; v &lt;&lt; <strong>endl</strong>;<br /><br />&nbsp; &nbsp; <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram -- immediately before returning from createRandoVector():</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>createRandoVector():<br /><br /></strong>  x      &nbsp; 0x7f3118dbbc<span style="background-color: #fbeeb8;">00</span>  &lt;-- different address from the one in main()!<br />  +---------------------+<br />  |  {9, 27, 3, 1, 91}  |<br />  +---------------------+<strong><br /><br />main():</strong><br /><br />  x &nbsp;      0x7f3118dbbb<span style="background-color: #eccafa;">d0</span><br />  +---------------------+<br />  |  {9, 27, 3, 1, 91}  |<br />  +---------------------+<br /><br /><br />(*) This memory diagram is somewhat misleading. The array within the vector actually<br />    exists in heap space. :-o That detail isn't particularly relevant or important to<br />    us at this moment, though.</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">Address of vector in main() before calling cRV(): 0x7f3118dbbbd0<br />Address of vector in createRandoVector(): 0x7f3118dbbc00<br />Contents of vector in createRandoVector(): {9, 27, 3, 1, 91}<br />Address of vector in main() after calling cRV(): 0x7f3118dbbbd0<br />Contents of vector in main(): {9, 27, 3, 1, 91}</pre>
+<p>The output above shows that the vector in <span class="code-chonk">createRandoVector()</span> is stored at a different address from the one in <span class="code-chonk">main()</span>. This provides evidence that what is returned from the <span class="code-chonk">createRandoVector()</span> function is just a <em>copy</em> of the vector it created (and remember, copy = slow).</p>
+<p>We're close to being able to solve this problem!</p>
+<p><br /><strong>Quokka Destruction: Proof That Local Variables Die When We Leave a Function (Part 2 of 2)</strong></p>
+<p>I also used output from constructor and destructor functions to show that the objects created within a function die when we leave that function. I injected a bunch of <span class="code-chonk">getLine()</span> function calls into the program so we could walk through the program step by step and see what was happening where.</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.h:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef QUOKKA_H<br />#define QUOKKA_H<br /><br />#include &lt;iostream&gt;<br /><br /><strong>class</strong> Quokka<br />{<br /><strong>public</strong>:<br />   Quokka();<br />   Quokka(<strong>std</strong>::<strong>string</strong> name);<br />   ~Quokka();<br /><br /><strong>private</strong>:<br />   <strong>std</strong>::<strong>string</strong> _name;<br />};<br /><br />#endif  // QUOKKA_H</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.cpp:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "quokka.h"<br />using namespace std;<br /><br /><strong>Quokka</strong>::Quokka()<br />{<br />}<br /><br /><strong>Quokka</strong>::Quokka(<strong>string</strong> name)<br />{<br />   _name = name;<br />   <strong>cout</strong> &lt;&lt; "Hello, " &lt;&lt; _name &lt;&lt; <strong>endl</strong>;<br />}<br /><br /><strong>Quokka</strong>::~Quokka()<br />{<br />   <strong>cout</strong> &lt;&lt; "R.I.P. " &lt;&lt; _name &lt;&lt; <strong>endl</strong>;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"<br />#include "simpio.h"<br />using namespace std;<br /><br /><strong>void</strong> createQuokka()<br />{<br />   <strong>cout</strong> &lt;&lt; "In createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   Quokka q("Muffinface");<br /><br />   <strong>cout</strong> &lt;&lt; "About to leave createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>cout</strong> &lt;&lt; "About to call createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   createQuokka();<br /><br />   <strong>cout</strong> &lt;&lt; "Back in main()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">About to call createQuokka()...<br /><br />In createQuokka()...<br /><br />Hello, Muffinface<br />About to leave createQuokka()...<br /><br />R.I.P. Muffinface<br />Back in main()...</pre>
+<p>Notice above that as soon as we leave <span class="code-chonk">createQuokka()</span>, before getting back to <span class="code-chonk">main()</span> and printing <span class="code-chonk">Back in main()...</span>, our quokka is deconstructed. Again, this provides evidence that local variables die when we leave a function.</p>
+<p><br /><strong>The Immortal Quokka (and C++'s <span class="code-chonk">new</span> Operator) (and Dynamic Memory Allocation)</strong></p>
+<p>Our next goal was to create an immortal quokka -- one that wouldn't die when we left the function where it was created.</p>
+<p>For that, we used the <span class="code-chonk">new</span> operator, which sets aside memory for whatever data type we would like to hold and returns the address of that memory block. Aha! Now you know why we talked about pointers on Monday! We need a place to store the memory address returned by <span class="code-chonk">new</span>, which means we need pointers!</p>
+<p>The syntax for <span class="code-chonk">new</span> is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>new</strong> <span style="background-color: #7e8c8d; color: #ffffff;"><strong> DATA_TYPE </strong></span>;</pre>
+<p>That will return a pointer to the newly allocated memory space, so we typically capture the result in a pointer variable:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #7e8c8d; color: #ffffff;"><strong> DATA_TYPE </strong></span> *var = <strong>new</strong> <span style="background-color: #7e8c8d; color: #ffffff;"><strong> DATA_TYPE </strong></span>;</pre>
+<p>If we want to create an array in this fashion, the syntax is:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #7e8c8d; color: #ffffff;"><strong> DATA_TYPE </strong></span> *var = <strong>new</strong> <span style="background-color: #7e8c8d; color: #ffffff;"><strong> DATA_TYPE </strong></span>[<span style="background-color: #7e8c8d; color: #ffffff;"><strong> ARRAY_LENGTH </strong></span>];</pre>
+<p>Here are some key points about <span class="code-chonk">new</span>:</p>
+<ul>
+<li>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) The memory we set aside with <span class="code-chonk">new</span> exists outside the stack frame for our function call, which means it will not die when we leave our function. Cool! Instead of existing in <em>stack space</em>, the stuff we create with <span class="code-chonk">new</span> exists in what we call <em>heap space</em>.</li>
+<li>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) Because the memory set aside with <span class="code-chonk">new</span> is not released automatically when we leave the function where that happened, it's up to us to keep track of that memory and manually release it to the system using the <span class="code-chonk">delete</span> operator when we're finished with it. Failure to do so will lead to a&nbsp;<em>memory leak</em>&nbsp;(discussed more in a section of notes below).</li>
+<li>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) Remember that <span class="code-chonk">new</span> returns to us the address of the block of memory it just set aside for us in heap space. We store that address in a pointer variable.</li>
+<li>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) The memory we set aside with <span class="code-chonk">new</span> has behaviors that are not predicted at compile-time. If we use <span class="code-chonk">new</span> to create an array, the length of that array might be based on some variable whose value is determined through user input or file input at runtime. Furthermore, the exact place where we finish using that memory and manually release it back to the system might be governed by user input that cannot be predicted at compile-time. The behaviors here are&nbsp;<em>dynamic</em>.</li>
+<li>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) Accordingly, when we set aside memory with <span class="code-chonk">new</span>, we call that <em><strong><span style="text-decoration: underline;">dynamic</span> memory allocation</strong></em>. (In contrast, the creation of local variables without the use of <span class="code-chonk">new</span> is called <em><strong><span style="text-decoration: underline;">static</span> memory allocation</strong></em>, which is a bit obnoxious because the word "static" had additional meanings in C++ and many other languages.)</li>
+</ul>
+<p>Here's how we modified our <span class="code-chonk">createQuokka()</span> function to create a quokka that lived beyond the lifespan of our function. Notice the following changes:</p>
+<ol style="list-style-type: decimal;">
+<li>We use <span class="code-chonk">new</span> to create our quokka.</li>
+<li>We store our result in a pointer variable: <span class="code-chonk">Quokka *</span>.</li>
+<li>If we want to ship that pointer back to <span class="code-chonk">main()</span>, we have our function return a <span class="code-chonk">Quokka *</span> as well.</li>
+</ol>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"<br />#include "simpio.h"<br />using namespace std;<br /><br /><strong>void</strong> createQuokka()<br />{<br />   <strong>cout</strong> &lt;&lt; "In createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   <span style="background-color: #ffcc99;">Quokka *q = new Quokka("Muffinface");</span><br /><br />   <strong>cout</strong> &lt;&lt; "About to leave createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>cout</strong> &lt;&lt; "About to call createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   createQuokka();<br /><br />   <strong>cout</strong> &lt;&lt; "Back in main()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">About to call createQuokka()...<br /><br />In createQuokka()...<br /><br />Hello, Muffinface<br />About to leave createQuokka()...<br /><br />Back in main()...</pre>
+<p>Notice that we no longer see the <span class="code-chonk">R.I.P. Muffinface</span> line in the program's output! That means our quokka destructor is not getting called!</p>
+<p><strong><em>Mission accomplished!</em></strong> We've created an object that lives beyond the lifespan of the function where it was created. Neat!</p>
+<p><br /><strong>Memory Diagrams: Static vs. Dynamic Quokka Allocation</strong></p>
+<p>Our original <span class="code-chonk">createQuokka()</span> function was creating our new quokka in stack space. So, when we left the function, our quokka died:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram <span style="text-decoration: underline;">before</span> returning from createQuokka():</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>stack space:<br /></strong>+-----------------------------+<strong><br /></strong>| <strong>createRandoVector():</strong>        |<br />|                             |<strong><br /></strong>|   q                         |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   |  &lt;-- disappears when we leave the function<br />|   +---------------------+   |<br />+-----------------------------+<br />| <strong>main():</strong>                     |<strong><br /></strong>|                             |<br />|   (no local variables...)   |<br />+-----------------------------+<br /> <br /><strong>heap space:</strong><br />+-----------------------------+<br />|                             |<br />+-----------------------------+</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram <span style="text-decoration: underline;">after</span> returning from createQuokka():</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>stack space:<br /></strong>+-----------------------------+<br />| <strong>main():</strong>                     |<strong><br /></strong>|                             |<br />| (no local variables...)     |<br />+-----------------------------+<br /><br /><strong>heap space:</strong><br />+-----------------------------+<br />|                             |<br />+-----------------------------+</pre>
+<p>Compare this to the <span class="code-chonk">createQuokka()</span> function that uses dynamic memory allocation with <span class="code-chonk">new</span>. In that case, our quokka exists even after we leave the function:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram <span style="text-decoration: underline;">before</span> returning from createQuokka():</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>stack space:<br /></strong>+-----------------------------+<strong><br /></strong>| <strong>createRandoVector():</strong>        |<br />|                             |<strong><br /></strong>|   q                         |<br />|   +---------------------+   |<br />|   |     0x019247c00     |   |  &lt;-- memory address of dynamically allocated quokka<br />|   +---------------------+   |<br />+-----------------------------+<br />| <strong>main():</strong>                     |<strong><br /></strong>|                             |<br />|   (no local variables...)   |<br />+-----------------------------+<br /> <br /><strong>heap space:</strong><br />+-----------------------------+<br />|   0x019247c00               |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   | &lt;-- lives even when we leave the function<br />|   +---------------------+   |<br />+-----------------------------+</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram <span style="text-decoration: underline;">after</span> returning from createQuokka():</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>stack space:<br /></strong>+-----------------------------+<br />| <strong>main():</strong>                     |<strong><br /></strong>|                             |<br />|   (no local variables...)   |<br />+-----------------------------+<br /> <br /><strong>heap space:</strong><br />+-----------------------------+<br />|   0x019247c00               |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   | &lt;-- still here! (but inaccessible from main()!)<br />|   +---------------------+   |<br />+-----------------------------+</pre>
+<p><strong><br />Concerns About the Immortal Quokka (and Memory Leaks!)</strong></p>
+<p>At this point, you might be tremendously concerned that the immortal quokka we created in <span class="code-chonk">createQuokka()</span> will take up memory in our system forever and ever. That's not really the case. When a program terminates -- when we finally return from <span class="code-chonk">main()</span> -- all memory associated with that program is reclaimed by the operating system. So, while our quokka lived beyond the lifespan of the function where it was created, it didn't live beyond the lifespan of our whole&nbsp;<em>program</em>. (If that were possible, the consequences for memory management would be disastrous.)</p>
+<p>It's considered poor form, however, to let a program terminate without having&nbsp;<em>manually</em> released our claim to all the dynamically allocated memory we set aside over the course of our program. We should do our own bookkeeping and release dynamically allocated memory once we no longer need it. When we fail to do so -- or when we completely lose all record of a pointer given to us by <span class="code-chonk">new</span> and can therefore no longer access that memory address -- we have what we call a&nbsp;<em>memory leak</em>.</p>
+<p>Memory leaks are especially problematic if a program is expected to run for a very long time without being restarted. If it has a tiny memory leak where it dynamically allocates memory and either (a) does not release that memory block when it's finished using it, or (b) loses the pointer to that memory block altogether before releasing it, then the program could slowly sap our system resources over time by filling up memory with useless junk, causing our entire system to slowly grind to a halt.</p>
+<p>For example:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"<br />#include "simpio.h"<br />using namespace std;<br /><br /><strong>void</strong> createQuokka()<br />{<br />   <strong>cout</strong> &lt;&lt; "In createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br /><span style="color: #236fa1;"><em>   // Dynamic memory allocation!</em></span><br />   <span style="background-color: #ffcc99;">Quokka *q = new Quokka("Muffinface");</span><br /><br />   <strong>cout</strong> &lt;&lt; "About to leave createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>cout</strong> &lt;&lt; "About to call createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br /><span style="color: #236fa1;"><em>   // </em><span style="background-color: #ba372a; color: #ffffff;"><strong>YIKES!</strong></span><em> This creates a memory leak! A call to this function creates a Quokka</em></span><br /><span style="color: #236fa1;"><em>   // object in heap space, but we have no way to get to that object because we</em></span><br /><span style="color: #236fa1;"><em>   // failed to return its address from createQuokka(). That object will continue</em></span><br /><span style="color: #236fa1;"><em>   // to take up memory -- even though we can no longer reach it -- until this</em></span><br /><span style="color: #236fa1;"><em>   // program terminates.</em></span><br />   createQuokka();<br /><br />   <strong>cout</strong> &lt;&lt; "Back in main()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p>We can create an even nastier memory leak if we do something like this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> main()<br />{<br /><span style="color: #236fa1;"><em>   // Create ONE BILLION Quokka objects!</em></span><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; 1000000000; i++)<br />   {<br /><span style="color: #236fa1;"><em>      // The first iteration of this loop creates a memory leak! See diagrams below</em></span><br /><span style="color: #236fa1;"><em>      // for explanation.</em></span><br />      createQuokka();<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p>Here's what's happening in memory as we perform our first few iterations of that loop:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory after our <span style="text-decoration: underline;">first</span> call to&nbsp;createQuokka():</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>stack space:<br /></strong>+-----------------------------+<br />| <strong>main():</strong>                     |<strong><br /></strong>|                             |<br />|   (no local variables...)   |<br />+-----------------------------+<br /> <br /><strong>heap space:</strong><br />+-----------------------------+<br />|   0x019247c00               |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   | &lt;-- createQuokka() just set aside this space. We cannot<br />|   +---------------------+   |     reach it from main() because we did not return this<br />+-----------------------------+     pointer from createQuokka(). So, we already have a<br />                                    memory leak!</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory after our <span style="text-decoration: underline;">second</span> call to createQuokka():</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>stack space:<br /></strong>+-----------------------------+<br />| <strong>main():</strong>                     |<strong><br /></strong>|                             |<br />|   (no local variables...)   |<br />+-----------------------------+<br /> <br /><strong>heap space:</strong><br />+-----------------------------+<br />|   0x019247c00               |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   |<br />|   +---------------------+   |<br />|                             |<br />|   0x01924d440               |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   |  &lt;-- We now have a SECOND quokka lingering in memory!<br />|   +---------------------+   |<br />+-----------------------------+</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory after our <span style="text-decoration: underline;">third</span> call to createQuokka():</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>stack space:<br /></strong>+-----------------------------+<br />| <strong>main():</strong>                     |<strong><br /></strong>|                             |<br />|   (no local variables...)   |<br />+-----------------------------+<br /> <br /><strong>heap space:</strong><br />+-----------------------------+<br />|   0x019247c00               |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   |<br />|   +---------------------+   |<br />|                             |<br />|   0x01924d440               |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   |<br />|   +---------------------+   |<br />|                             |<br />|   0x01924fe00               |<br />|   +---------------------+   |<br />|   | _name: "Muffinface" |   |  &lt;-- We now have a THIRD quokka lingering in memory!<br />|   +---------------------+   |      This is getting out of control!<br />+-----------------------------+</pre>
+<p>That's not good. Let's explore how to squash that memory leak.</p>
+<p><br /><strong>Returning Dynamically Allocated Variables from Functions</strong></p>
+<p>To squash the memory leak created by our repeated calls to <span class="code-chonk">createQuokka()</span>, we need that function to return a pointer to the dynamically allocated memory it has set aside. For that, we just return <span class="code-chonk">q</span>. Recall that our variable <span class="code-chonk">q</span> contains the memory address we got from <span class="code-chonk">new</span>. By returning <span class="code-chonk">q</span>, we are returning that memory address to <span class="code-chonk">main()</span>. To facilitate that return, we need to update the return type of <span class="code-chonk">createQuokka()</span> to match the type of the variable being returned. In this case, that's a <span class="code-chonk">Quokka *</span>.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #ffcc99;"><strong>Quokka *</strong></span>createQuokka()<br />{<br />   <strong>cout</strong> &lt;&lt; "In createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   Quokka *q = new Quokka("Muffinface");<br /><br />   <strong>cout</strong> &lt;&lt; "About to leave createQuokka()..." &lt;&lt; <strong>endl</strong>;<br />   getLine();<br /><br />   <span style="background-color: #ffcc99;"><strong>return</strong> q;</span><br />}</pre>
+<p>Note that this is a super fast <span class="code-chonk">return</span> statement! We are no longer returning a&nbsp;<em>copy</em> of the thing we created in our function. We are instead returning a tiny, 64-bit memory address. This is enormously fast and can be used to fully resolve the issues we had with our <span class="code-chonk">createRandoVector()</span> function at the top of today's notes.</p>
+<p>We then need to capture those pointers in a variable in <span class="code-chonk">main()</span> and free them up before moving on to the next iteration of our loop. The syntax for releasing dynamically allocated memory back to our system (often called "freeing" that memory), is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>delete <span style="color: #ffffff; background-color: #7e8c8d;"> POINTER_TO_DYNAMICALLY_ALLOCATED_SPACE </span></strong>;</pre>
+<p>For dynamically allocated arrays, we add <span class="code-chonk">[]</span> brackets to the end of delete, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>delete</strong>[]<strong> <span style="color: #ffffff; background-color: #7e8c8d;"> POINTER_TO_DYNAMICALLY_ALLOCATED_ARRAY </span></strong>;</pre>
+<p>Recall from class that <span class="code-chonk">new</span> and <span class="code-chonk">delete</span> are in cahoots. <span class="code-chonk">new</span> gives us an address for our dynamically allocated block of memory. We call <span class="code-chonk">delete</span> on such an address to tell our memory management unit that we no longer lay any claim over that block of memory.</p>
+<p>Here is our updated <span class="code-chonk">main()</span>, which no longer has a memory leak:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> main()<br />{<br /><span style="color: #236fa1;"><em>   // Create ONE BILLION Quokka objects!</em></span><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; 1000000000; i++)<br />   {<br /><span style="color: #236fa1;"><em>      // We now have a box called q that holds the address of our dynamically</em></span><br /><span style="color: #236fa1;"><em>      // allocated quokka!</em></span><br />      <span style="background-color: #ffcc99;">Quokka *q = </span>createQuokka();<br /><br /><em><span style="color: #236fa1;">      // This releases the memory associated with the address stored in q!</span></em><br /><em><span style="color: #236fa1;">      // Goodbye, memory leak! (This also causes our Quokka object's destructor</span></em><br /><em><span style="color: #236fa1;">      // function to be called!)</span></em><br />      <span style="background-color: #ffcc99;"><strong>delete</strong> q;</span><br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) For a memory diagram that illustrates what's happening above -- the memory leak as well as its full resolution -- see 26:33 through 30:40 in today's lecture video.</p>
+<p><br /><strong>Super Important Rule of Thumb: For Every <span class="code-chonk">new</span>, a Single <span class="code-chonk">delete</span></strong></p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Important note!</em></span>) A super important rule of thumb is that for every <span class="code-chonk">new</span> statement in a program, we should have a corresponding <span class="code-chonk">delete</span> statement to free up the dynamically allocated memory.</p>
+<p><strong><br />Array-Based Stack</strong></p>
+<p>We then combined the topics from this lecture, our lecture on pointers, and our lecture on object-oriented programming in order to implement an array-based stack that expands automatically to accommodate new elements.</p>
+<p>Some key aspects of this implement are as follows:</p>
+<ol style="list-style-type: decimal;">
+<li>We use <span class="code-chonk">new</span> and <span class="code-chonk">delete</span> to create and destroy arrays every time the stack needs to expand.</li>
+<li>The syntax for freeing an entire array is <span class="code-chonk">delete[] myArray;</span>. Note the need for the <span class="code-chonk">[]</span> brackets in that statement.</li>
+<li>Recall that we use an <span class="code-chonk">int *</span> to point to the base of an array. To some degree, an <span class="code-chonk">int *</span> can be treated as an integer array. We can we apply an offset such as <span class="code-chonk">[i]</span> to an <span class="code-chonk">int *</span> variable, and that pointer will be dereferenced by those brackets in addition to our system skipping forward <span class="code-chonk">i</span> cells in memory.</li>
+</ol>
+<p>The stack is discussed (complete with diagrams and an explanation of how the stack worked before we started coding) starting at the 31:01 mark in today's lecture video. The stack implementation we created is as follows:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>arraybasedstack.h:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef ARRAYBASEDSTACK_H<br />#define ARRAYBASEDSTACK_H<br /><br /><span style="color: #236fa1;"><em>// Starting with a ridiculously small initial capacity so we can observe the</em></span><br /><span style="color: #236fa1;"><em>// expansion of the stack in a small test case.</em></span><br />#define DEFAULT_STACK_CAPACITY 3<br /><br /><strong>class</strong> ArrayBasedStack<br />{<br /><strong>public:</strong><br />   ArrayBasedStack();<br />   ~ArrayBasedStack();<br />   <strong>void</strong> push(int value);<br />   <strong>int</strong> pop();<br />   <strong>int</strong> peek() <strong>const</strong>;<br />   <strong>int</strong> size() <strong>const</strong>;<br />   <strong>bool</strong> isEmpty() <strong>const</strong>;<br /><br /><strong>private:</strong><br />   <strong>int</strong> *_elements;<br />   <strong>int</strong> _size;<br />   <strong>int</strong> _capacity;<br />};<br /><br />#endif // ARRAYBASEDSTACK_H</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>arraybasedstack.cpp:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "arraybasedstack.h"<br />#include "error.h"<br />using namespace std;<br /><br /><strong>ArrayBasedStack</strong>::ArrayBasedStack()<br />{<br /><span style="color: #236fa1;"><em>   // Creating this dynamically ensures it lives when we leave our constructor</em></span><br /><span style="color: #236fa1;"><em>   // function, which is definitely the desired behavior here!</em></span><br />   _elements = <strong>new</strong> <strong>int</strong>[DEFAULT_STACK_CAPACITY];<br />   _size = 0;<br />   _capacity = DEFAULT_STACK_CAPACITY;<br /><br />   <strong>cout</strong> &lt;&lt; "Created stack with capacity: " &lt;&lt; _capacity &lt;&lt; <strong>endl</strong>;<br />}<br /><br /><strong>ArrayBasedStack</strong>::~ArrayBasedStack()<br />{<br /><span style="color: #236fa1;"><em>   // When it's time to destroy a stack, we must free the array it contains.</em></span><br /><span style="color: #236fa1;"><em>   // Otherwise, we will lose access to that array's address and have a memory</em></span><br /><span style="color: #236fa1;"><em>   // leaks that persists until our program terminates. Recall that to delete</em></span><br /><span style="color: #236fa1;"><em>   // an array, we need [] brackets after "delete".</em></span><br />   delete[] _elements;<br />}<br /><br /><strong>void</strong> <strong>ArrayBasedStack</strong>::push(<strong>int</strong> value)<br />{<br /><span style="color: #236fa1;"><em>   // If our stack is full, we must expand the underlying array before expansion.<br /></em><em>   // It's probably better design to outsource this to a private member function,</em></span><br /><span style="color: #236fa1;"><em>   // but I didn't take the time to do that in class.</em></span><br />   <strong>if</strong> (_size &gt;= _capacity)<br />   {<br /><em><span style="color: #236fa1;">      // Create new, larger stack.</span></em><br />      <strong>int</strong> *newArray = <strong>new</strong> <strong>int</strong>[_capacity * 2 + 1];<br /><br /><em><span style="color: #236fa1;">      // Copy elements from old array into new array.</span></em><br />      <strong>for</strong> (<strong>int</strong> i = 0; i &lt; _size; i++)<br />      {<br />         newArray[i] = _elements[i];<br />      }<br /><br /><em><span style="color: #236fa1;">      // Free old array. If we don't do this <span style="text-decoration: underline;"><strong>before</strong></span> setting _elements = newArray,<br />      // we will lose this pointer forever and have a memory leak!</span></em><br />      <strong>delete</strong>[] _elements;<br /><br /><em><span style="color: #236fa1;">      // Set the stack's internal pointer to point to the new array.</span></em><br />      _elements = newArray;<br /><br /><em><span style="color: #236fa1;">      // Update the stack capacity.</span></em><br />      _capacity = _capacity * 2 + 1;<br /><br />      <strong>cout</strong> &lt;&lt; "Expanded stack to capacity: " &lt;&lt; _capacity &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   _elements[_size] = value;<br />   _size++;<br />}<br /><br /><strong>int</strong> <strong>ArrayBasedStack</strong>::pop()<br />{<br />   <strong>if</strong> (isEmpty())<br />   {<br />      error("Empty stack in pop()!");<br />   }<br /><br />   <strong>int</strong> result = _elements[_size - 1];<br />   _size--;<br />   <strong>return</strong> result;<br />}<br /><br /><strong>int</strong> <strong>ArrayBasedStack</strong>::peek() <strong>const</strong><br />{<br />   <strong>if</strong> (isEmpty())<br />   {<br />      error("Stack is empty in peek()!");<br />   }<br /><br />   <strong>return</strong> _elements[_size - 1];<br />}<br /><br /><strong>int</strong> <strong>ArrayBasedStack</strong>::size() <strong>const</strong><br />{<br />   <strong>return</strong> _size;<br />}<br /><br /><strong>bool</strong> <strong>ArrayBasedStack</strong>::isEmpty() <strong>const</strong><br />{<br />   <strong>return</strong> _size == 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "arraybasedstack.h"<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>ArrayBasedStack</strong> s;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; 10; i++)<br />   {<br />      s.push(i);<br />   }<br /><br />   <strong>while</strong> (!s.isEmpty())<br />   {<br />      <strong>cout</strong> &lt;&lt; s.pop() &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">Created stack with capacity: 3<br />Expanded stack to capacity: 7<br />Expanded stack to capacity: 15<br />9<br />8<br />7<br />6<br />5<br />4<br />3<br />2<br />1<br />0</pre>
+<p><br /><strong><span class="code-chonk">const</span> Member Functions</strong></p>
+<p>(<span style="font-size: 10pt; background-color: #eccafa;"><em>Not mentioned in class!</em></span>) You'll see this in section this week, so I don't feel too bad about not mentioning it in class, but: when we have a member function that isn't supposed to change the internal state of an object at all (such as our <span class="code-chonk">peek()</span> function above, which should return a value without modifying the stack), it's conventional to put <span class="code-chonk">const</span> after the function name in both our header file and our .cpp file. That actually ensures that the function cannot change any of our member variables, and this is considered a best practice so that no one can come along and accidentally modify the code to change member variables that shouldn't have been changed.</p>
+<p><br /><strong>What's next?</strong></p>
+<p>On Friday, we will shift gears a bit and look at a new data structure: the minheap, which is used to implement priority queues. Next week, we will delve into nested and linked dynamically allocated structures, and we will explore a data structure that relies heavily on pointers and dynamic memory management: linked lists.</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. Trace through what's happening with the dynamic memory management in today's <span class="code-chonk">ArrayBasedStack</span> class for the small example given in that program's <span class="code-chonk">main()</span> function. Draw memory diagrams that distinguish between variables in stack space and heap space.</p>
+<p>2. After reviewing today's notes, implement an array-based stack from scratch. Then do the same with an array-based queue and an array-based vector. Inject <span class="code-chonk">cout</span> statements above each <span class="code-chonk">new</span> and <span class="code-chonk">delete</span> statement so you can see when you run your program that each invocation of the <span class="code-chonk">new</span> operator has a corresponding invocation of the <span class="code-chonk">delete</span> operator.</p>
+<p>3. With today's array-based stack, what reason did I give for using the formula <span class="code-chonk">newSize = oldSize * 2 + 1</span> instead of <span class="code-chonk">newSize = oldSize * 2</span> when expanding the stack? (The answer to this question is at the 49:20 mark in today's lecture video.)</p>
+<p>4. A<span>s always, the textbook and this week's section are chock full of great exercises and additional examples to help reinforce this material. In particular, be sure to check out the NotoriousRBQ (ring buffer queue) in this week's section.</span></p>
+<p><br /></p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-07
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

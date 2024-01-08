@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Perfect numbers</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Perfect numbers</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>This warmup task gives you practice with C++ expressions, control structures, and functions, as well as testing and debugging your code.</p>
+
+<p>Throughout the writeup, we pose thought questions (in the highlighted yellow boxes) for you to answer.  The starter project includes the file <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code> (located under "Other Files" in the Qt Project pane). Edit this file to fill in your responses and submit it with your code. Your section leader will review your responses as part of grading. We'll be evaluating the sincerity and thoughtfulness of your reflection and reasoning; not a rigid "right/wrong" thing.</p>
+
+<h2 id="perfect-numbers">Perfect numbers</h2>
+
+<p>This exercise explores a type of numbers called <em>perfect numbers</em>. Before we jump into the coding, let's begin with a little math and history.</p>
+
+<p>A <em>perfect number</em> is an integer that is equal to the sum of its proper divisors. A number's proper divisors are those positive numbers that evenly divide it, excluding itself. The first perfect number is <code class="language-c++ highlighter-rouge"><span class="mi">6</span></code> because its proper divisors are <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code>, <code class="language-c++ highlighter-rouge"><span class="mi">2</span></code>, and <code class="language-c++ highlighter-rouge"><span class="mi">3</span></code>, and <code class="language-c++ highlighter-rouge"><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">6</span></code>.  The next perfect number is <code class="language-c++ highlighter-rouge"><span class="mi">28</span></code>, which equals the sum of its proper divisors: <code class="language-c++ highlighter-rouge"><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">7</span> <span class="o">+</span> <span class="mi">14</span></code>.</p>
+
+<p>Perfect numbers are an interesting case study at the intersection of mathematics, number theory, and history. The <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Perfect_numbers/">rich history of perfect numbers</a> is a testament to how much these numbers have fascinated humankind through the ages. Using our coding powers, we can explore different algorithmic approaches to finding these special numbers.</p>
+
+<h2 id="an-exhaustive-algorithm">An exhaustive algorithm</h2>
+<p>One approach to finding perfect numbers is using an <em>exhaustive</em> search. This search operates by brute force, looping through the numbers one by one, and testing each to determine if it is perfect. Testing whether a particular number is perfect involves another loop to find those numbers which divide the value and add those divisors to a running sum. If that sum and the original number are equal, then you've found a perfect number!</p>
+
+<p>Here is some Python code that performs an exhaustive search for perfect numbers:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">divisor_sum</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">divisor</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">divisor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">divisor</span>
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="k">def</span> <span class="nf">is_perfect</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">==</span> <span class="nf">divisor_sum</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">find_perfects</span><span class="p">(</span><span class="n">stop</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nf">is_perfect</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Found perfect number: </span><span class="sh">"</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">10000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c1"># progress bar
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Done searching up to </span><span class="sh">"</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
+</code></pre></div></div>
+<p>The Python code from above is re-expressed in C++ below. If your CS106A was taught in Python, comparing and contrasting these two may be a helpful way to start adapting to the language differences. If instead your prior experience was in Java or Javascript, just sit back and enjoy how C++ already seems familiar to what you know!</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* The divisorSum function takes one argument `n` and calculates the
+ * sum of proper divisors of `n` excluding itself. To find divisors
+ * a loop iterates over all numbers from 1 to n-1, testing for a
+ * zero remainder from the division using the modulus operator %
+ *
+ * Note: the C++ long type is a variant of int that allows for a
+ * larger range of values. For all intents and purposes, you can
+ * treat it like you would an int.
+ */</span>
+<span class="kt">long</span> <span class="nf">divisorSum</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">long</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">long</span> <span class="n">divisor</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">divisor</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">divisor</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">divisor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">divisor</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* The isPerfect function takes one argument `n` and returns a boolean
+ * (true/false) value indicating whether or not `n` is perfect.
+ * A perfect number is a non-zero positive number whose sum
+ * of its proper divisors is equal to itself.
+ */</span>
+<span class="kt">bool</span> <span class="nf">isPerfect</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="n">divisorSum</span><span class="p">(</span><span class="n">n</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="cm">/* The findPerfects function takes one argument `stop` and performs
+ * an exhaustive search for perfect numbers over the range 1 to `stop`.
+ * Each perfect number found is printed to the console.
+ */</span>
+<span class="kt">void</span> <span class="nf">findPerfects</span><span class="p">(</span><span class="kt">long</span> <span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">long</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="n">stop</span><span class="p">;</span> <span class="n">num</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">isPerfect</span><span class="p">(</span><span class="n">num</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Found perfect number: "</span> <span class="o">&lt;&lt;</span> <span class="n">num</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">num</span> <span class="o">%</span> <span class="mi">10000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"."</span> <span class="o">&lt;&lt;</span> <span class="n">flush</span><span class="p">;</span> <span class="c1">// progress bar</span>
+    <span class="p">}</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="s">"Done searching up to "</span> <span class="o">&lt;&lt;</span> <span class="n">stop</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="observing-the-runtime">Observing the runtime</h2>
+<p>The starter project contains the C++ code above. It is given to you pre-written and works correctly.  Look over the code and confirm your understanding of how it works. If you have questions or points of confusion, make a post on Ed to start a conversation or come by Lair or office hours.</p>
+
+<p>We want you to first observe the performance of the given code. One simple approach for measuring runtime is to simply run the program while keeping an eye on your watch or a clock. Open the starter project in Qt Creator and build and run the program. When you are prompted in the console to "Select the test groups you wish to run," enter 0 for "None" and the program will instead proceed with the ordinary <code class="language-c++ highlighter-rouge"><span class="n">main</span></code> function. This <code class="language-c++ highlighter-rouge"><span class="n">main</span></code> function does a search for perfect numbers across the range 1 to 40000. Watch the clock while the program runs and note the total elapsed time.</p>
+
+<div id="Q1" class="question alert alert-warning">
+  <p><strong>Q1</strong>. Roughly how long did it take your computer to do the search? How many perfect numbers were found and what were they?</p>
+</div>
+
+<p>You now have one timing result (how long it takes for a range of size 40000), but would need additional data to suss out the overall pattern. What would be ideal is to run the search several times with different search sizes (20000, 40000, 80000, etc.) and measure the runtime for each. To do this manually, you would edit  <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">.</span><span class="n">cpp</span></code>, change the argument to <code class="language-c++ highlighter-rouge"><span class="n">findPerfects</span></code> and re-run the program while again watching the clock. Repeating for many different sizes would be tedious. It would be more convenient to run several time trials in sequence and have the program itself measure the elapsed time. The SimpleTest framework can help with this task, so let's take a detour there now.</p>
+
+<h2 id="what-is-simpletest">What is SimpleTest?</h2>
+
+<p>In CS106B, you will use a unit-test framework called <code class="language-c++ highlighter-rouge"><span class="n">SimpleTest</span></code> to test your code. This type of testing support will be familiar to you if you've been exposed to Java's <code class="language-c++ highlighter-rouge"><span class="n">JUnit</span></code> or python <code class="language-c++ highlighter-rouge"><span class="n">doctest</span></code>. (and no worries if you haven't yet, there will be much opportunity to practice with unit testing in CS106B!)</p>
+
+<p class="alert alert-danger">🛑 <strong>Stop here and read our <a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">guide to testing</a></strong> to introduce yourself to SimpleTest. For now, focus on use of <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code>, as these are the features you will use in Assignment 1.</p>
+
+<h2 id="practice-with-time_operation">Practice with <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code></h2>
+<p>Now that you know the basics of SimpleTest, you are ready to practice with it using the provided tests in  <code class="language-c++ highlighter-rouge"><span class="n">perfect</span><span class="p">.</span><span class="n">cpp</span></code>.</p>
+
+<ul>
+  <li>Open the <code class="language-c++ highlighter-rouge"><span class="n">perfect</span><span class="p">.</span><span class="n">cpp</span></code> file and scroll to the bottom. Review the provided test cases to see how they are constructed. One of the provided test shows a sample use of <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> to measure the time spent during a call to <code class="language-c++ highlighter-rouge"><span class="n">findPerfects</span></code>.</li>
+  <li>Run the program and when prompted to "Enter your selection," enter the number that corresponds to the option for the <code class="language-c++ highlighter-rouge"><span class="n">perfect</span><span class="p">.</span><span class="n">cpp</span></code> tests. This will run the test cases from the file <code class="language-c++ highlighter-rouge"><span class="n">perfect</span><span class="p">.</span><span class="n">cpp</span></code>. The SimpleTest window will open to show the results of each test. The given code should pass all the provided tests. This shows you what a successful sweep will look like. Note that the SimpleTest results window also reports the elapsed time for each <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code>.</li>
+</ul>
+
+<p>When constructing a time trial test, you will want to run several <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> across a set of different input sizes that allow the trend line to emerge.  Selecting appropriate input sizes is a bit of an art form. If you choose a size that is too small, it can finish so quickly that the time is not measurable or gets lost in the noise of other activity. A size that is too large will have you impatiently waiting for it to complete.  You are generally aiming for test cases that complete in 10-60 seconds. Note that a size that is just right for your friend's computer might be too small or too larger for yours, so you may need a bit of trial and error on your system to find a good range.</p>
+
+<p>Set up an experiment by adding a <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> that does a single <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> of <code class="language-c++ highlighter-rouge"><span class="n">findPerfects</span></code>.  Try different sizes to determine the largest size which your computer can complete in around 60 seconds or so. Now edit your <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> to do four time trials on increasing sizes, doubling the size each time and ending with the final trial of that large size. The starter code includes some sample code showing how to use a loop to configure a series of time trials. This is a great technique to add to your repertoire! Run your time trials and write down the reported times.</p>
+
+<div id="Q2" class="question alert alert-warning">
+  <p><strong>Q2</strong>. Make a table of the timing results for <code class="language-c++ highlighter-rouge"><span class="n">findPerfects</span></code> that you observed. (old-school table of text rows and columns is just fine)</p>
+</div>
+
+<p>Use the data from your table to work out the relationship between the search size and the amount of time required. To visualize the trend, it may help to sketch a plot of the values (either by hand or using a tool like <a href="https://www.desmos.com/calculator">https://www.desmos.com/calculator</a>).</p>
+
+<p>You will find that doubling the input size doesn't take simply twice the time; the time goes up by a factor of 4. There appears a quadratic relationship between size and program execution time! Let's investigate why this might be.</p>
+
+<div id="Q3" class="question alert alert-warning">
+  <p><strong>Q3</strong>. Does it take the same amount of work to compute <code class="language-c++ highlighter-rouge"><span class="n">isPerfect</span></code> on the number 10 as it does on the number 1000? Why or why not? Does it take the same amount of work for <code class="language-c++ highlighter-rouge"><span class="n">findPerfects</span></code> to search the range of numbers from 1-1000 as it does to search the numbers from 1000-2000? Why or why not?</p>
+</div>
+
+<p>That quadratic relationship means the algorithm is going to seriously bog down for larger ranges.  Sure, the first four perfect numbers pop out in a jif (<code class="language-c++ highlighter-rouge"><span class="mi">6</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">496</span><span class="p">,</span> <span class="mi">8128</span></code>) because they are encountered early in the search, but that fifth one is quite a ways off – in the neighborhood of 33 million. Working up to that number by exhaustive search is going to take l-o-o-ng time.</p>
+
+<div id="Q4" class="question alert alert-warning">
+  <p><strong>Q4</strong>. Extrapolate from the data you gathered and make a prediction: how long will it take <code class="language-c++ highlighter-rouge"><span class="n">findPerfects</span></code> to reach the fifth perfect number?</p>
+</div>
+
+<p>This is your first exposure to <em>algorithmic analysis</em>, a topic we will explore in much greater detail throughout the course.</p>
+
+<p>As a fun aside, if you have access to a Python environment, you can attempt similarly-sized searches using the Python version of the program to see just how much slower an interpreted language (Python) is compared to a compiled language (C++). Check out the <a href="https://edstem.org/us/courses/45672/discussion/3544180">Python vs C++ Showdown</a> we've posted to the Ed discussion forum.</p>
+
+<h2 id="digging-deeper-into-testing">Digging deeper into testing</h2>
+
+<p>Having completed these observations about performance, we move on to testing the code, which is one of the most important skills with which we hope you will come out of this class. Designing good tests and writing solid, well-tested code are skills that will serve you well for the rest of your computer science journey!</p>
+
+<p>Here are some further explorations to do with SimpleTest:</p>
+
+<ul>
+  <li>All perfect numbers are positive, there is no such thing as a negative perfect number; thus <code class="language-c++ highlighter-rouge"><span class="n">isPerfect</span></code> should return false for any negative numbers. Will you need to make a special case for this or does the code already handle it? Let's investigate…
+    <ul>
+      <li>Look at the code and make a prediction about what happens if <code class="language-c++ highlighter-rouge"><span class="n">isPerfect</span></code> is given a negative input.</li>
+      <li>Add a new <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> case that calls <code class="language-c++ highlighter-rouge"><span class="n">isPerfect</span></code> on a few different negative inputs. The expected result of <code class="language-c++ highlighter-rouge"><span class="n">isPerfect</span></code> for such inputs should be <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code>.
+        <ul>
+          <li>A quick reminder that the tests that we give you in the starter code will always be labeled <code class="language-c++ highlighter-rouge"><span class="n">PROVIDED_TEST</span></code> and you should never modify the provided tests. When you add tests of your own, be sure to label them <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code>. This allows your grader to easily identify which tests are yours. We also prefer that your list your <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> cases first, ahead of the <code class="language-c++ highlighter-rouge"><span class="n">PROVIDED_TEST</span></code> cases.</li>
+        </ul>
+      </li>
+      <li>Run your new test cases to confirm that the code behaves as expected.</li>
+    </ul>
+  </li>
+  <li>Introduce a bug into <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span></code> by erroneously initializing <code class="language-c++ highlighter-rouge"><span class="n">total</span></code> to 1 instead of zero. Rebuild and run the tests again. This lets you see how test failures are reported.</li>
+</ul>
+
+<div id="Q5" class="question alert alert-warning">
+  <p><strong>Q5</strong>. Do any of the tests still pass even with this broken function? Why or why not?</p>
+</div>
+
+<ul>
+  <li>Be sure to undo the bug and restore <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span></code> to a correct state before moving on!</li>
+</ul>
+
+<h2 id="streamlining-and-more-testing">Streamlining and more testing</h2>
+<p>The exhaustive search does a lot of work to find the perfect numbers. However, there is a neat little optimization that can significantly streamline the process.  The function <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span></code> runs a loop from <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code> to <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> to find divisors, but this is a tad wasteful, as we actually only need to examine divisors up to the square root of <code class="language-c++ highlighter-rouge"><span class="n">N</span></code>. Each time we find a divisor, we can directly compute what the corresponding pairwise factor for that divisor (no need to search all the way up to N to find it). In other words, we can take advantage of the fact that each divisor that is less than the square root is paired up with a divisor that is greater than the square root. Take a moment to carefully think about why this is true and how you would rearrange the code to capitalize on this observation.</p>
+
+<p>You are to implement a new function <code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span></code>:</p>
+
+<p class="text-center"><code class="language-c++ highlighter-rouge"><span class="kt">long</span> <span class="n">smarterSum</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">)</span></code></p>
+
+<p>that produces the same result as the original <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span></code> but uses this optimization to tighten up the loop. You may find it helpful to use the provided <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span></code> implementation as a starting point (that is, you may choose to copy-paste the existing code and make tweaks to it). Be careful: there are some subtle edge cases that you may have to handle in the adapted version that were not an issue in the original.</p>
+
+<p>The C++ library function <code class="language-c++ highlighter-rouge"><span class="n">sqrt</span></code> can be used to compute a square root.</p>
+
+<p>After adding new code to your program, <strong>your next step is to thoroughly test that code</strong> and confirm it is bug-free. Only then should you move on to the next task. Having just written <code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span></code>, now is the time for you to test it.</p>
+
+<p>Because you already have the vetted function <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span></code> at your disposal, a clever testing strategy uses <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code> to confirm that the result from <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> is equal to the result from <code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code>.  Rather than pick any old values for <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>, brainstorm about which values would be particularly good candidates. As an example, choosing <code class="language-c++ highlighter-rouge"><span class="n">n</span><span class="o">=</span><span class="mi">25</span></code> (which has an square root that is an integer value) could confirm there is no off-by-one issue on the stopping condition of your new loop. <strong>Add at least 3 new student test cases for <code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span></code>.</strong></p>
+
+<div id="Q6" class="question alert alert-warning">
+  <p><strong>Q6</strong>. Explain your testing strategy for <code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span></code> and how you chose your specific test cases that lead you to be confident the function is working correctly.</p>
+</div>
+
+<p>Now with confidence in <code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span></code>, implement the following two functions that build on it:</p>
+
+<p class="text-center"><code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="n">isPerfectSmarter</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">)</span></code></p>
+<p class="text-center"><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">findPerfectsSmarter</span><span class="p">(</span><span class="kt">long</span> <span class="n">stop</span><span class="p">)</span></code></p>
+
+<p>The code for these two functions is <em>very similar</em> to the provided <code class="language-c++ highlighter-rouge"><span class="n">isPerfect</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">findPerfects</span></code> functions, basically just substituting <code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span></code> for <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span></code>. Again, you may copy-paste the existing implementations, and make small tweaks as necessary.</p>
+
+<p>Now let's run time trials to see just how much improvement we've gained.</p>
+
+<ul>
+  <li>Add a <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> that uses a sequence of <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> to measure <code class="language-c++ highlighter-rouge"><span class="n">findPerfectsSmarter</span></code>. Set up 4 runs on increasing sizes, doubling the size each time, and ending with a run on the maximum size your program can complete in around 60 seconds using this improved algorithm. Given the smarter algorithm, these sizes will be larger than you used for the original version.</li>
+</ul>
+
+<div id="Q7" class="question alert alert-warning">
+  <p><strong>Q7</strong>. Record your timing results for <code class="language-c++ highlighter-rouge"><span class="n">findPerfectsSmarter</span></code> into a table.</p>
+</div>
+
+<p>Our previous algorithm grew at the rate <code class="language-c++ highlighter-rouge"><span class="n">N</span><span class="o">^</span><span class="mi">2</span></code>, while this new version is N√<span style="text-decoration:overline;">N</span>, since we only have to inspect √<span style="text-decoration:overline;">N</span> divisors for every number along the way. If you plot runtimes on the same graph as before, you will see that they grow much less steeply than the runtimes of the original algorithm.</p>
+
+<div id="Q8" class="question alert alert-warning">
+  <p><strong>Q8</strong>. Make a prediction: how long will <code class="language-c++ highlighter-rouge"><span class="n">findPerfectsSmarter</span></code> take to reach the fifth perfect number?</p>
+</div>
+
+<h2 id="mersenne-primes-and-euclid">Mersenne primes and Euclid</h2>
+
+<p>Back to story time: in 2018, there was <a href="https://www.mersenne.org/primes/press/M82589933.html">a rare finding of a new Mersenne prime</a>.  A <em>Mersenne number</em> is a number that is one less than a power of two, i.e., of the form <code>2<sup>k</sup>-1</code> for some integer <code class="language-c++ highlighter-rouge"><span class="n">k</span></code>. A <em>prime number</em> is one whose only divisors are 1 and the number itself. A Mersenne number that is prime is called a <em>Mersenne prime</em>. The Mersenne number <code>2<sup>5</sup>-1</code> is 31 and 31 is prime, making it a Mersenne prime.</p>
+
+<p>Mersenne primes are quite elusive; the most recent one found is only the 51st known and has almost 25 million digits! Verifying that the found number was indeed prime required almost two weeks of non-stop computing. The quest to find further Mersenne primes is driven by the <a href="https://www.mersenne.org/">Great Internet Mersenne Prime Search (GIMPS)</a>, a cooperative, distributed effort that taps into the spare computing cycles of a vast community of volunteer machines. Mersenne primes are of great interest because they are some of the <a href="https://en.wikipedia.org/wiki/Largest_known_prime_number">largest known prime numbers</a> and because they show up in interesting ways in games like the <a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi">Tower of Hanoi</a> and the <a href="https://en.wikipedia.org/wiki/Wheat_and_chessboard_problem">wheat and chessboard problem</a>.</p>
+
+<p>Back in 400 BCE, Euclid discovered an intriguing one-to-one relationship between perfect numbers and the Mersenne primes. Specifically, if the Mersenne number <code>2<sup>k</sup>-1</code> is prime, then <code>2<sup>(k-1)</sup> * (2<sup>k</sup>-1)</code> is a perfect number.  The number 31 is a Mersenne prime where k = 5, so Euclid's relation applies and leads us to the number <code>2<sup>4</sup> * (2<sup>5</sup>-1) = 496</code> which is a perfect number. Neat!</p>
+
+<p>Those of you enrolled in CS103 will appreciate this lovely <a href="https://primes.utm.edu/notes/proofs/EvenPerfect.html">proof of the Euclid-Euler theorem</a>.</p>
+
+<h2 id="turbo-charging-with-euclid">Turbo-charging with Euclid</h2>
+<p>The final task of the warmup is to leverage the cleverness of Euclid to implement a blazingly-fast alternative algorithm to find perfect numbers that will beat the pants off of exhaustive search. Buckle up!</p>
+
+<p>Your job is to implement the function:</p>
+
+<p class="text-center"><code class="language-c++ highlighter-rouge"><span class="kt">long</span> <span class="n">findNthPerfectEuclid</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">)</span></code></p>
+
+<p>The exhaustive search algorithm painstakingly examines every number from 1 upwards, testing each to identify those that are perfect. Taking Euclid's approach, we instead hop through the numbers by powers of two, checking each Mersenne number to see if it is prime, and if so, calculate its corresponding perfect number.  The general strategy is outlined below:</p>
+<ol>
+  <li>Start by setting <code class="language-c++ highlighter-rouge"><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span></code>.</li>
+  <li>Calculate <code>m = 2<sup>k</sup>-1</code> (Note: C++ has no exponentiation operator, instead use library function <a href="http://en.cppreference.com/w/cpp/numeric/math/pow" title="Documentation for pow"><code class="language-c++ highlighter-rouge"><span class="n">pow</span></code></a>)</li>
+  <li>Determine whether <code class="language-c++ highlighter-rouge"><span class="n">m</span></code> is prime or composite. (Hint: a prime number has a <code class="language-c++ highlighter-rouge"><span class="n">divisorSum</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span></code> equal to one. Code reuse is your friend!)</li>
+  <li>If <code class="language-c++ highlighter-rouge"><span class="n">m</span></code> is prime, then the value <code>2<sup>(k-1)</sup> * (2<sup>k</sup>-1)</code> is a perfect number.  If this is the <code class="language-c++ highlighter-rouge"><span class="n">nth</span></code> perfect number you have found, stop here.</li>
+  <li>Increment <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> and repeat from step 2.</li>
+</ol>
+
+<p>The call <code class="language-c++ highlighter-rouge"><span class="n">findNthPerfectEuclid</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> should return the <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>th perfect number. What will be your testing strategy to verify that this function returns the correct result? You may find this <a href="https://en.wikipedia.org/wiki/List_of_perfect_numbers">table of perfect numbers</a> to be helpful. One possibility is a test case that confirms each number is perfect according to your earlier function, e.g. <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span><span class="p">(</span><span class="n">isPerfect</span><span class="p">(</span><span class="n">findNthPerfectEuclid</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span></code>.</p>
+
+<p><strong>Note:</strong> The <code class="language-c++ highlighter-rouge"><span class="n">findNthPerfectEuclid</span></code> function can assume that all inputs (values of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>) will be positive (that is, greater than 0). In particular, this means that you don't have to worry about negative values of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> or the case where <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> is zero.</p>
+
+<p><strong>Add at least 4 new student test cases of your own to verify that your <code class="language-c++ highlighter-rouge"><span class="n">findNthPerfectEuclid</span></code> works correctly.</strong></p>
+
+<div id="Q9" class="question alert alert-warning">
+  <p><strong>Q9</strong>. Explain how you chose your specific test cases and why they lead you to be confident <code class="language-c++ highlighter-rouge"><span class="n">findNthPerfectEuclid</span></code> is working correctly.</p>
+</div>
+
+<p>A call to <code class="language-c++ highlighter-rouge"><span class="n">findNthPerfectEuclid</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></code> should near instantaneously return the fifth perfect number. Woah! Quite an improvement over the exhaustive algorithm, eh?  But if you try for the sixth, seventh, eighth, and beyond, you can run into a different problem of scale.  The super-fast algorithm  works in blink of an eye, but the numbers begin to have so many digits that they quickly exceed the capability of the <code class="language-c++ highlighter-rouge"><span class="kt">long</span></code> data type (<code class="language-c++ highlighter-rouge"><span class="kt">long</span></code> can hold a maximum of 10 to 20 digits depending on your system. When a number gets too large, the value will unexpectedly go negative — how wacky is that? Take CS107 to learn more)</p>
+
+<p>So much for the invincibility of modern computers… As a point of comparison, back in 400 BC, Euclid worked out the first eight perfect numbers himself — not too shabby for a guy with no electronics!</p>
+
+<h2 id="warmup-conclusions">Warmup conclusions</h2>
+<p>Hooray for algorithms! One of the themes for CS106B is the tradeoffs between algorithm choices and program efficiency. The differences between the exhaustive search and Euclid's approach is striking.  Although there are tweaks (such as the square root trick) that will improve each algorithm relative to itself, the biggest bang for the buck comes from starting with a better overall approach. This result foreshadows many of the interesting things to come this quarter.</p>
+
+<p>Before moving on to the second part of the assignment, confirm that you have completed all tasks from the warmup.  You should have answers to questions Q1 to Q9 in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>. You should have implemented the following functions in <code class="language-c++ highlighter-rouge"><span class="n">perfect</span><span class="p">.</span><span class="n">cpp</span></code></p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">smarterSum</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">isPerfectSmarter</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">findPerfectsSmarter</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">findNthPerfectEuclid</span></code></li>
+</ul>
+
+<p>as well as added the requisite number of tests for each of these functions. Your code should also have thoughtful comments, including an overview header comment at the top of the file.</p>
+
+<p>In the header comment for <code class="language-c++ highlighter-rouge"><span class="n">perfect</span><span class="p">.</span><span class="n">cpp</span></code>, share with your section leader a little something about yourself and to offer an interesting tidbit you learned in doing this warmup (be it something about C++, algorithms, number theory, how spunky your computer is, or some other neat insight).</p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

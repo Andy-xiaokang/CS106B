@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Soundex Search</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Soundex Search</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>For the Soundex search portion of the assignment you will:</p>
+<ul>
+  <li>study a real-world algorithm used by the U.S. Census to encode the phonetic pronunciation of surnames.</li>
+  <li>implement the algorithm, developing a function that can take surnames as input and produce phonetic encodings as output.</li>
+  <li>implement a console program that allows users to input a surname and then find all matches in a database of Stanford surnames that have the same encoding.</li>
+  <li>respond to a few reflective questions on the efficacy and limitations of this algorithm.</li>
+</ul>
+
+<p>The coding is mostly C++ string processing, along with a little bit of file reading and use of <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>.  You'll also be practicing with use of decomposition and a test-as-you-go strategy.  The two files you will be editing are <code class="language-c++ highlighter-rouge"><span class="n">soundex</span><span class="p">.</span><span class="n">cpp</span></code> (for the code) and <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code> (for responses to thought questions).</p>
+
+<h2 id="why-phonetic-name-matching-is-useful">Why phonetic name matching is useful</h2>
+<p>One of the more pesky features of the English language is the lack of consistency between phonetics and spelling. Matching surnames can be vexing because many common surnames come in a variety of spellings and continue to change over time and distance as a result of incorrectly inputted data, cultural differences in spelling, and transliteration errors.</p>
+
+<p>Traditional string matching algorithms that use exact match or partial/overlap match perform poorly in this messy milieu of real world data. In contrast, the Soundex system groups names by phonetic structure to enable matching by pronunciation rather than literal character match. This makes tasks like tracking genealogy or searching for a spoken surname easier.</p>
+
+<p>Soundex was patented by Margaret O'Dell and Robert C. Russell in 1918, and the <a href="https://www.archives.gov/research/census/soundex">U.S. Census</a> is a big consumer of Soundex along with genealogical researchers, directory assistance, and background investigators. The Soundex algorithm is a coded index based on the way a name sounds rather than the way it is spelled. Surnames that sound the same but are spelled differently, like "Vaska," "Vasque," and "Vussky," have the same code and are classified together.</p>
+
+<h2 id="how-soundex-codes-are-generated">How Soundex codes are generated</h2>
+<p>The Soundex algorithm operates on an input surname and converts the name into its Soundex code. A Soundex code is a four-character string in the form of an initial letter followed by three digits, such as <code class="language-c++ highlighter-rouge"><span class="n">Z452</span></code>. The initial letter is the first letter of the surname, and the three digits are drawn from the sounds within the surname using the following algorithm:</p>
+
+<ol>
+  <li>Extract only the letters from the surname, discarding all non-letters (no dashes, spaces, apostrophes, …).</li>
+  <li>
+    <p>Encode each letter as a digit using the table below.</p>
+
+    <table class="table-condensed table-striped table-bordered">
+      <tbody>
+        <tr>
+          <td><strong>Digit</strong></td>
+          <td>represents the letters</td>
+        </tr>
+        <tr>
+          <td><strong>0</strong></td>
+          <td>A E I O U H W Y</td>
+        </tr>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>B F P V</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>C G J K Q S X Z</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>D T</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td>L</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>M N</td>
+        </tr>
+        <tr>
+          <td><strong>6</strong></td>
+          <td>R</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Coalesce adjacent duplicate digits from the code (e.g. <code class="language-c++ highlighter-rouge"><span class="mi">222025</span></code> becomes <code class="language-c++ highlighter-rouge"><span class="mi">2025</span></code>).</li>
+  <li>Replace the first digit of the code with the first letter of the original name, converting to uppercase.</li>
+  <li>Discard any zeros from the code.</li>
+  <li>Make the code exactly length 4 by padding with zeros or truncating the excess.</li>
+</ol>
+
+<p>Note that Soundex algorithm does not distinguish case in the input; letters can be lower, upper, or mixed case. The first character in the result code is always in upper case.</p>
+
+<p>To ensure you understand the construction, get a piece of scratch paper and manually compute a few names, such as "Curie" (<code class="language-c++ highlighter-rouge"><span class="n">C600</span></code>) and "O'Conner" (<code class="language-c++ highlighter-rouge"><span class="n">O256</span></code>).</p>
+
+<div id="Q10" class="question alert alert-warning">
+  <p><strong>Q10</strong>. What is the Soundex code for "Angelou"? What is the code for your own surname?</p>
+</div>
+
+<h2 id="decomposing-the-problem">Decomposing the problem</h2>
+<p>Your best strategy for approaching a complex algorithm like this is to decompose the problem into smaller, more manageable tasks and proceed step by step, testing as you go.</p>
+
+<div id="Q11" class="question alert alert-warning">
+  <p><strong>Q11</strong>. Before writing any code, brainstorm your plan of attack and sketch how you might decompose the work into smaller tasks. Briefly describe your decomposition strategy.</p>
+</div>
+
+<p>To get you started, we're going to walk you through what it might look like to decompose and implement the first step of the Soundex algorithm. Decomposition is important here because if you tried to implement a single function that accomplished the whole Soundex algorithm all in one go, you could end up with one big, unwieldy piece of code. However, if you break down the problem into a number of different steps, each corresponding to its own helper function, you can develop these helper functions one at a time and test each one as you go.</p>
+
+<p>For example, Step 1 of the Soundex algorithm could be implemented as a helper function that extracts only the letters from a string. The C++ library function <a href="http://en.cppreference.com/w/cpp/header/cctype" title="Documentation for cctype"><code class="language-c++ highlighter-rouge"><span class="n">isalpha</span></code></a> will report whether a character is alphabetic (i.e. is a letter).  Here is a starting point (provided for you in <code class="language-c++ highlighter-rouge"><span class="n">soundex</span><span class="p">.</span><span class="n">cpp</span></code>):</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// WARNING: Code is buggy! Add test cases to identify which inputs are mishandled</span>
+<span class="n">string</span> <span class="nf">lettersOnly</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="n">charToString</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">isalpha</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="testing-testing-testing">Testing, testing, testing</h2>
+<p>With this draft implementation of <code class="language-c++ highlighter-rouge"><span class="n">lettersOnly</span></code>, the next step is to test it. Our starter code includes some provided tests to get you started. Run the program and when prompted, select the option from the menu for tests from <code class="language-c++ highlighter-rouge"><span class="n">soundex</span><span class="p">.</span><span class="n">cpp</span></code>. When you run these provided tests, you will see that the tests for the <code class="language-c++ highlighter-rouge"><span class="n">lettersOnly</span></code> function all pass. From this, you might conclude that the function is good to go. However, there is a problem lurking within the code that has yet to be uncovered!</p>
+
+<p>Review our provided test cases to see what sorts of inputs we tested, and, more importantly, what sorts of inputs we <em>didn't</em> test.  Brainstorm what those missing cases are and then add them.  Think about edge cases that could lurk in the extremes or cases that are uniquely distinguished from the provided tests, such as a completely empty string or a string composed of only non-letter characters.</p>
+
+<p><strong>Add at least 1 new student test to expose the bug in the given implementation of <code class="language-c++ highlighter-rouge"><span class="n">lettersOnly</span></code>.</strong></p>
+
+<p>Your goal in writing tests is to enumerate a comprehensive set of tests that brings any bugs in the code to light so you can debug and fix them. Good tests are the key to writing robust software. A great developer is not only a great coder, but also a great tester.</p>
+
+<h2 id="debugging-a-failing-test-case">Debugging a failing test case</h2>
+<p>Once you have added a test case that fails, use the debugger to get more information about how the function has gone wrong. Set a breakpoint within the code block that contains your test case. A good place to stop is on the line with the operation that you want to trace through, like so:</p>
+
+<p><img src="img/breakpoint.png" alt="breakpoint on line that has call to lettersOnly" width="70%" /></p>
+
+<p>Now run the tests while using the debugger. When you hit the breakpoint, single step through the call to <code class="language-c++ highlighter-rouge"><span class="n">lettersOnly</span></code> while watching the debugger's variables pane to see how the values are changing. This "step-and-watch" approach is the same as you used in the <a href="../0-namehash/DebuggerTutorial.pdf" title="Debugger tutorial from Assignment 0">Assignment 0 debugging tutorial</a>.</p>
+
+<p>Using the debugger should help you find the bug —once you understand it, go ahead and fix it!</p>
+
+<h2 id="implementing-the-soundex-algorithm">Implementing the Soundex algorithm</h2>
+<p>With your fix, you have a working helper function that implements the first of the <a href="soundex.html#how-soundex-codes-are-generated">Soundex algorithm steps</a>. Now for each subsequent step of the algorithm (encode, coalesce duplicates, and so on), follow the same process:</p>
+
+<ul>
+  <li>Identify the next small task of the algorithm to implement.</li>
+  <li>Define a new helper function to accomplish that task.</li>
+  <li>Write student tests that confirm the expected behavior of the new function.</li>
+  <li>Fill in the code for your helper function, debugging as you go. Continue writing code and debugging until you have passed all the tests from the previous step.</li>
+  <li>Rinse and repeat.</li>
+</ul>
+
+<p>Your eventual goal is to implement the function:</p>
+
+<p class="text-center"><code class="language-c++ highlighter-rouge"><span class="n">string</span> <span class="n">soundex</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span></code></p>
+
+<p>The top-level function will use the helper functions that you have written and tested. In addition to the test cases for the individual helper functions, you will also need test cases for the top-level function. The starter code has a number of provided test cases to get you started, but you should also add tests of your own to ensure you have covered the full possible range of inputs.</p>
+
+<h2 id="developing-a-census-search-program">Developing a census search program</h2>
+<p>The capstone of this part of the assignment is to build a program that emulates the way in which the U.S. Census uses the Soundex algorithm. This console program allows a user to perform a Soundex search on a database of surnames. Implement the following function prototype:</p>
+
+<p class="text-center"><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">soundexSearch</span><span class="p">(</span><span class="n">string</span> <span class="n">filepath</span><span class="p">)</span></code></p>
+
+<p>The one argument to <code class="language-c++ highlighter-rouge"><span class="n">soundexSearch</span></code> is the name of a text file containing a database of names. The program then repeatedly allows the user to enter a surname to look up in the database. For each surname that is entered, the program calculates the Soundex code of the entered name and then finds all names in the database that have a matching Soundex code. Here are the steps for the program:</p>
+
+<ol>
+  <li>Read a database of surnames from the specified text file.
+    <ul>
+      <li>This step is provided for you in the starter code.  The "database" is simply a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code>.</li>
+    </ul>
+  </li>
+  <li>Prompt the user to enter a surname.
+    <ul>
+      <li>The function <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/simpio.html#Function:getLine"><code class="language-c++ highlighter-rouge"><span class="n">getLine</span></code></a> from <code class="language-c++ highlighter-rouge"><span class="s">"simpio.h"</span></code> will be helpful here.</li>
+    </ul>
+  </li>
+  <li>Compute the Soundex code of the surname.</li>
+  <li>Iterate over the Vector of names, compute Soundex code of each name, and gather a result Vector containing those surnames with a matching code.</li>
+  <li>Print the matches in sorted order.
+    <ul>
+      <li>The Vector has a handy <code class="language-c++ highlighter-rouge"><span class="n">sort</span><span class="p">()</span></code> operation (you can use <code class="language-c++ highlighter-rouge"><span class="n">vec</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span></code> where <code class="language-c++ highlighter-rouge"><span class="n">vec</span></code> is the name of your vector), and you can print a vector using the <code class="language-c++ highlighter-rouge"><span class="o">&lt;&lt;</span></code> operator, e.g. <code class="language-c++ highlighter-rouge"><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">vec</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span></code>. Please note that the <code class="language-c++ highlighter-rouge"><span class="n">sort</span><span class="p">()</span></code> function sorts the vector in place and <em>does not return a value</em>.</li>
+    </ul>
+  </li>
+  <li>Repeat steps 2-5 until the user indicates that they are done.</li>
+</ol>
+
+<p>To run the Soundex search program, you will need to change the <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code> function from its previous use in the perfect number warmup.  Open the file <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">.</span><span class="n">cpp</span></code> and edit the <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code> to comment out the call to <code class="language-c++ highlighter-rouge"><span class="n">findPerfects</span></code> and uncomment the call to <code class="language-c++ highlighter-rouge"><span class="n">soundexSearch</span></code>. Now when you run the program and select no tests, the <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code> function will execute and enter the Soundex search console program.</p>
+
+<p>Below is the output from a sample run of the program. If you are able to match this sample output exactly, then you have successfully completed this part of the assignment!</p>
+
+<pre><code class="language-output">Read file res/surnames.txt, 29409 names found.
+
+Enter a surname (RETURN to quit): Zelenski
+Soundex code is Z452
+Matches from database: {"Zelenski", "Zelnik", "Zelnis", "Zielonka"}
+
+Enter a surname (RETURN to quit): hanrahan
+Soundex code is H565
+Matches from database: {"Hammerman", "Haner-McAllister", "Hanrahan", "Honarmand"}
+
+Enter a surname (RETURN to quit): 
+All done!
+</code></pre>
+
+<h2 id="considering-limitations-of-soundex">Considering limitations of Soundex</h2>
+
+<video controls="controls" width="400" name="K.Creel String Ethics" src="StringEthicsKCreel.mp4"></video>
+
+<p><small><em>Take a few moments to first watch this short video from Katie Creel, our CS Ethicist-in-Residence, giving some background context for the Soundex algorithm. You will need the content presented in this video to complete the ethical reasoning short answer questions below.</em></small></p>
+
+<p>A consistent theme of this class is that we want you to consider the ethical implications of the choice of algorithm.  Like many of the algorithms we will encounter in CS106B, Soundex is used in real systems.  For example, the U.S. Census has relied on a variation of the Soundex algorithm for almost a century. But just because it has been used in practice does not make it a perfect algorithm!  Now that you understand how Soundex works, we want you to consider some of its limitations.</p>
+
+<div id="Q12" class="question alert alert-warning">
+  <p><strong>Q12</strong>. Think about one or more examples of a class of names that the Soundex system might not work well for. Explain what this class of names is and why the system might incorrectly group them or mis-categorize one of the names.</p>
+</div>
+
+<p>(Hint: You may find it useful to look over the other possible phonetic systems in <a href="soundex.html#extending-your-phonetic-algorithm">Extending Your Phonetic Algorithm</a>.)</p>
+
+<p>As you know, not all names can be represented using ASCII;  many are more accurately represented using Unicode.  However, ASCII is the default standard in C++ and many other programming languages and computer systems. The strings you've been working with in this assignment all use ASCII.</p>
+
+<div id="Q13" class="question alert alert-warning">
+  <p><strong>Q13</strong>. Suppose you are a software engineer working for the U.S. government. You have been tasked with implementing a system that collects names as part of the Census survey and analyzes these names using a phonetic algorithm. Your boss suggests using Soundex and notes that the algorithm is only expected to work for ASCII-encoded strings, since supporting Unicode would require extra work and time. What would your response be and why? What representational harms might result from building a system that exclusively uses Soundex and/or ASCII?</p>
+</div>
+
+<h2 id="additional-advice-for-testing">Additional advice for testing</h2>
+<ul>
+  <li>Testing is key for implementing this problem. Make sure that you take advantage of the SimpleTest testing framework!</li>
+  <li>If a test is failing, put a breakpoint inside the failing test, and step through the code line by line using the debugger. Keep an eye on the variables pane —that will be your most helpful resource to figure out what is going wrong!</li>
+  <li>The starter project includes a text file <code class="language-c++ highlighter-rouge"><span class="n">res</span><span class="o">/</span><span class="n">surnames</span><span class="p">.</span><span class="n">txt</span></code> containing the surnames of Stanford students, faculty, and staff for the use of Soundex search. There are some 29,000 unique surnames within the Stanford community, wow! For early testing, you may want to change the program to read names from the file <code class="language-c++ highlighter-rouge"><span class="n">res</span><span class="o">/</span><span class="n">small</span><span class="p">.</span><span class="n">txt</span></code> instead, which contains a tiny set of names that is easier to debug on.</li>
+  <li>All of the input strings we will use to test your <code class="language-c++ highlighter-rouge"><span class="n">soundex</span></code> function are guaranteed to contain at least one letter character. This means you do not have to make a special case in <code class="language-c++ highlighter-rouge"><span class="n">soundex</span></code> to handle a string that doesn't any letters at all (e.g. no empty string or string containing only digits or punctuation).</li>
+</ul>
+
+<h2 id="useful-resources">Useful resources</h2>
+<ul>
+  <li>On the Qt Creator window, there is search field in the lower left labeled with a magnifying glass icon.  If you enter the name of a header file (e.g. <code class="language-c++ highlighter-rouge"><span class="n">strlib</span><span class="p">.</span><span class="n">h</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">cctype</span></code>), Qt will display its contents. This is a quick way to review the features of a given library.</li>
+  <li>You can also browse/search all library documentation online:
+    <ul>
+      <li><a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/" title="Documentation for Stanford-specific C++ libraries">Stanford C++ Library Documentation</a></li>
+      <li><a href="http://en.cppreference.com/" title="Documentation for C++ language and library">C++ Standard Library Documentation</a></li>
+    </ul>
+  </li>
+  <li>For this assignment, you will be using library functions that operate on strings and characters, in particular:
+    <ul>
+      <li>The standard library <a href="http://en.cppreference.com/w/cpp/string/basic_string" title="Documentation for basic_string">string</a> functions <code class="language-c++ highlighter-rouge"><span class="n">length</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">substr</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">concat</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">replace</span></code>, etc. will be useful, along with the Stanford-specific string functions in <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/strlib.html" title="Documentation for strlib.h">strlib.h</a>.</li>
+      <li>For case conversions, you can use the functions in <a href="http://en.cppreference.com/w/cpp/header/cctype" title="Documentation for cctype">cctype</a> to convert a single <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> or string functions in <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/strlib.html" title="Documentation for strlib.h">strlib.h</a> to convert an entire string.</li>
+      <li>Remember that C++ treats individual characters differently than strings of characters. Individual characters have type <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> and are enclosed in single quotes (i.e. <code class="language-c++ highlighter-rouge"><span class="sc">'a'</span></code> not <code class="language-c++ highlighter-rouge"><span class="s">"a"</span></code>). Strings have type <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> and enclose a sequence of characters in double-quotes (i.e. <code class="language-c++ highlighter-rouge"><span class="s">"hello"</span></code> not '<code class="language-c++ highlighter-rouge"><span class="n">hello</span></code>'). There are helpful functions in <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/strlib.html" title="Documentation for strlib.h">strlib.h</a> to aid you with converting between the two, including the <code class="language-c++ highlighter-rouge"><span class="n">charToString</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">stringToChar</span></code> functions.</li>
+      <li>In a similar vein, the integer 5 is a distinct beast from the digit character '5' or the string "5". Take care to express the type carefully to match your intentions.</li>
+      <li>Our <a href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">guide to C++ strings</a></li>
+    </ul>
+  </li>
+  <li>CS106B has a library of useful functions and collection classes including <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> and others, that are specifically designed for our ecosystem.  All of these functions and classes are available for you to use. Bookmark the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/" title="Documentation for Stanford-specific C++ libraries">library documentation</a> and keep it handy.
+    <ul>
+      <li>You may have heard of similar collection classes provided in the C++ Standard Template Library (STL). <strong>Do not use the STL versions in CS106B</strong>. As a helpful mnemonic to distinguish between the two, our class names are always capitalized (<code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>) whereas STL class names are all lowercase (<code class="language-c++ highlighter-rouge"><span class="n">queue</span></code>). Stick to the capitalized ones!</li>
+    </ul>
+  </li>
+  <li>Our guide to <a href="../../resources/python_to_cpp.html" title="Python to C++ Guide">Transitioning from Python to C++</a></li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a></li>
+</ul>
+
+<h2 id="soundex-references">Soundex references</h2>
+<ul>
+  <li><a href="https://www.archives.gov/research/census/soundex">https://www.archives.gov/research/census/soundex</a></li>
+  <li>Online Soundex code calculator: <a href="https://www.functions-online.com/soundex.html">https://www.functions-online.com/soundex.html</a></li>
+</ul>
+
+<h2 id="extending-your-phonetic-algorithm">Extending your phonetic algorithm</h2>
+<p>If you have completed the assignment and want to go further, we encourage you to try working on an extension! There are many other phonetic systems out there besides Soundex. Here is a non-extensive list:</p>
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Daitch%E2%80%93Mokotoff_Soundex">Daitch-Mokotoff</a></li>
+  <li><a href="https://stevemorse.org/phonetics/bmpm.htm">Beider-Morse</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Metaphone">Metaphone</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/New_York_State_Identification_and_Intelligence_System">New York State Identification and Intelligence System</a></li>
+</ul>
+
+<p>Try implementing one of these other systems and see if you can get better or more intuitive surname matches! When implementing an extension, add a new .cpp file to your project that contains the extension code, keeping it separate from the regular Soundex implementation. If you have other creative ideas for extensions, run them by the course staff, and we'd be happy to give you guidance!</p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B More Practice Problems</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">More Practice Problems</h1>
+
+<hr>
+
+<p class="attribution">
+ Written by Clinton Kwarteng, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>These problems will give you more practice with concepts we've discussed so far in class.</p>
+
+<h2 id="1-longest-common-subsequence">1) Longest Common Subsequence</h2>
+<p><em>Topic: Recursive Backtracking</em></p>
+
+<p>Write a recursive function named longestCommonSubsequence that returns the longest common subsequence of two strings passed as arguments. Some
+example function calls and return values are shown below.</p>
+
+<p>Recall that if a string is a subsequence of another, each of its letters occurs in the longer string in the same order, but not necessarily consecutively.</p>
+
+<p>Hint: In the recursive case, compare the first character of each string. What one recursive call can you make if they are the same? What two recursive calls do you try if they are different?</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="s">"cs106a"</span><span class="p">,</span> <span class="s">"cs106b"</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="s">"cs106"</span> 
+<span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="s">"nick"</span><span class="p">,</span> <span class="s">"julie"</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="s">"i"</span> 
+<span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="s">"karel"</span><span class="p">,</span> <span class="s">"c++"</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="s">""</span> 
+<span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="s">"she sells"</span><span class="p">,</span> <span class="s">"seashells"</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="s">"sesells"</span>
+</code></pre></div></div>
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">longestCommonSubsequence</span><span class="p">(</span><span class="n">string</span> <span class="n">s1</span><span class="p">,</span> <span class="n">string</span> <span class="n">s2</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">s2</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+ 	<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">s2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+ 		<span class="k">return</span> <span class="n">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> 
+ 							<span class="n">s2</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+ 	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+ 		<span class="n">string</span> <span class="n">choice1</span> <span class="o">=</span> <span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+		<span class="n">string</span> <span class="n">choice2</span> <span class="o">=</span> <span class="n">longestCommonSubsequence</span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">s2</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">choice1</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">choice2</span><span class="p">.</span><span class="n">length</span><span class="p">())</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">choice1</span><span class="p">;</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">choice2</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-cracking-passwords">2) Cracking Passwords</h2>
+<p><em>Topic: Recursive Backtracking</em></p>
+
+<p>Write a function <code class="language-c++ highlighter-rouge"><span class="n">crack</span></code> that takes in the maximum length a site allows for a user's password and tries to find the password into an account by using recursive backtracking to attempt all possible passwords up to that length (inclusive). Assume you have access to the function <code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="n">login</span><span class="p">(</span><span class="n">string</span> <span class="n">password</span><span class="p">)</span></code> that returns true if a password is correct. You can also assume that the passwords are entirely alphabetic and case-sensitive. You should return the correct password you find, or the empty string if you cannot find the password. You should return the empty string if the maximum length passed is 0 and raise an error if the length is negative.</p>
+
+<p>Security note: The ease with which computers can brute-force passwords is the reason why login systems usually permit only a certain number of login attempts at a time before timing out. It’s also why long passwords that contain a variety of different characters are better! Try experimenting with how long it takes to crack longer and more complex passwords. See the comic here for more information: <a href="https://xkcd.com/936/">https://xkcd.com/936/</a></p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">crackHelper</span><span class="p">(</span><span class="n">string</span> <span class="n">soFar</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxLength</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">login</span><span class="p">(</span><span class="n">soFar</span><span class="p">))</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">soFar</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">soFar</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">maxLength</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="sc">'a'</span><span class="p">;</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="sc">'z'</span><span class="p">;</span> <span class="n">c</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">string</span> <span class="n">password</span> <span class="o">=</span> <span class="n">crackHelper</span> <span class="p">(</span><span class="n">soFar</span> <span class="o">+</span> <span class="n">c</span><span class="p">,</span> <span class="n">maxLength</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">password</span> <span class="o">!=</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="n">password</span><span class="p">;</span>
+		<span class="p">}</span>
+ 		<span class="c1">// Also check uppercase</span>
+ 		<span class="kt">char</span> <span class="n">upperC</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+ 		<span class="n">password</span> <span class="o">=</span> <span class="n">crackHelper</span> <span class="p">(</span><span class="n">soFar</span> <span class="o">+</span> <span class="n">upperC</span><span class="p">,</span> <span class="n">maxLength</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">password</span> <span class="o">!=</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+ 			<span class="k">return</span> <span class="n">password</span><span class="p">;</span>
+ 		<span class="p">}</span>
+ 	<span class="p">}</span>
+	<span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="nf">crack</span><span class="p">(</span><span class="kt">int</span> <span class="n">maxLength</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">maxLength</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+ 		<span class="n">error</span><span class="p">(</span><span class="s">"max length cannot be negative!);"</span><span class="p">;</span>
+	<span class="p">}</span>
+ 	<span class="k">return</span> <span class="nf">crackHelper</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="n">maxLength</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-tracing-pointers-by-reference">3) Tracing Pointers by Reference</h2>
+
+<p>One of the trickier nuances of linked lists comes up when we start passing around pointers as parameters by reference. To better understand exactly what that’s all about, trace through the following code and show what it prints out. Also, identify any memory leaks that occur in the program.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">confuse</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="mi">137</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">befuddle</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">confound</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="mi">2718</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">bamboozle</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">mystify</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="mi">161</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">list</span> <span class="o">=</span> <span class="cm">/* some logic to make the list 1 -&gt; 3 -&gt; 5 -&gt; null */</span>
+    
+    <span class="n">confuse</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span> <span class="c1">// defined at beginning of section handout </span>
+    
+    <span class="n">befuddle</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    
+    <span class="n">confound</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    
+    <span class="n">bamboozle</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    
+    <span class="n">mystify</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    
+    <span class="n">freeList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span> <span class="c1">// defined at beginning of section handout </span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>Let’s go through this one step at a time.</p>
+
+<ul>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">confuse</span></code> updates the first element of the list to store 137, so the call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> will print out 137, 3, 5. Although the argument is passed by value, because both pointers point to the same Node in memory, the original list will also see a different value.</li>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">befuddle</span></code> takes its argument by value. That means it’s working with a copy of the pointer to the first element of the list, so when we set list to be a new node, it doesn’t change where the list variable back in main is pointing. The node created in this function is leaked, and the next call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> will print out 137, 3, 5.</li>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">confound</span></code> takes its argument by value. However, when it writes to list-&gt;next, it’s following the pointer to the first element of the linked list and changing the actual linked list node it finds there. This means that the list is modified by dropping off the 3 and the 5 (that memory gets leaked) and replacing it with a node containing 2718. Therefore, the next call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> will print out 137, 2718.</li>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">bamboozle</span></code> takes its argument by reference, but notice that it never actually reassigns the next pointer. However, it does change the memory in the node at the front of the list to hold 42, so the next call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> will print 42, 2718.</li>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">mystify</span></code> takes its argument by reference, and therefore, when it reassigns <code class="language-c++ highlighter-rouge"><span class="n">list</span></code>, it really is changing where <code class="language-c++ highlighter-rouge"><span class="n">list</span></code> back in main is pointing. This leaks the memory for the nodes containing 42 and 2718. The variable <code class="language-c++ highlighter-rouge"><span class="n">list</span></code> back in main is changed to point at a new node containing 161, so the final call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> prints 161.</li>
+  <li>Finally, we free that one-element list. Overall, we’ve leaked a lot of memory!</li>
+</ul>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="4-inserting-into-a-linked-list-insertcpp">4) Inserting into a Linked List (<code class="language-c++ highlighter-rouge"><span class="n">insert</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p>Write a function named <code class="language-c++ highlighter-rouge"><span class="n">insert</span></code> that accepts a reference to a <code class="language-c++ highlighter-rouge"><span class="n">StringNode</span></code> pointer representing the front of a linked list, along with an index and a string value. Your function should insert the given value into a new node at the specified position of the list. For example, suppose the list passed to your function contains the following sequence of values:</p>
+
+<div align="center">
+  <pre><code class="language-output">{ "Katherine", "Julie", "Kate" }
+</code></pre>
+</div>
+
+<p>The call of <code class="language-c++ highlighter-rouge"><span class="n">insert</span><span class="p">(</span><span class="n">front</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">"Mehran"</span><span class="p">)</span></code> should change the list to store the following:</p>
+
+<div align="center">
+  <pre><code class="language-output">{ "Katherine", "Julie", "Mehran", "Kate" }
+</code></pre>
+</div>
+
+<p>The other values in the list should retain the same order as in the original list. You may assume that the index passed is between 0 and the existing size of the list, inclusive.</p>
+
+<p>Constraints: Do not modify the data field of existing nodes; change the list by changing pointers only. Do not use any auxiliary data structures to solve this problem (no array, Vector, Stack, Queue, string, etc).</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">insert</span><span class="p">(</span><span class="n">StringNode</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">string</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">insert</span><span class="p">(</span><span class="n">StringNode</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">string</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">front</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringNode</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">front</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">StringNode</span><span class="o">*</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">temp</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StringNode</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">temp</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="5-remove-all-threshold-thresholdcpp">5) Remove All Threshold (<code class="language-c++ highlighter-rouge"><span class="n">threshold</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p>Write a function <code class="language-c++ highlighter-rouge"><span class="n">removeAllThreshold</span></code> that removes all occurrences of a given double value +/- a threshold value from the list. For example, if a list contains the following values:</p>
+
+<div align="center">
+{ <u>3.0</u>, 9.0, 4.2, 2.1, <u>3.3</u>, 2.3, 3.4, 4.0, <u>2.9</u>, <u>2.7</u>, <u>3.1</u>, 18.2}
+</div>
+
+<p>The call of <code class="language-c++ highlighter-rouge"><span class="n">removeAllThreshold</span><span class="p">(</span><span class="n">front</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">.3</span><span class="p">)</span></code> where front denotes a pointer to the front of list, would remove all occurrences of the value 3.0 +/- .3 (corresponding to the underlined values in the above example) from the list, yielding the following list:</p>
+
+<div align="center">
+{9.0, 4.2, 2.1, 2.3, 3.4, 4.0, 18.2}
+</div>
+
+<p>If the list is empty or values within the given range don't appear in the list, then the list should not be changed by your function. You should preserve the original order of the list. You should implement your code to match the following prototype</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">removeAllThreshold</span><span class="p">(</span><span class="n">DoubleNode</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">,</span> <span class="kt">double</span> <span class="n">value</span><span class="p">,</span> <span class="kt">double</span> <span class="n">threshold</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">valueWithinThreshold</span> <span class="p">(</span><span class="kt">double</span> <span class="n">value</span><span class="p">,</span> <span class="kt">double</span> <span class="n">target</span><span class="p">,</span> <span class="kt">double</span> <span class="n">threshold</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">threshold</span> <span class="o">&amp;&amp;</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="n">target</span> <span class="o">+</span> <span class="n">threshold</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">removeAllThreshold</span><span class="p">(</span><span class="n">DoubleNode</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">,</span> <span class="kt">double</span> <span class="n">value</span><span class="p">,</span> <span class="kt">double</span> <span class="n">threshold</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">front</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">DoubleNode</span><span class="o">*</span> <span class="n">current</span> <span class="o">=</span> <span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="n">DoubleNode</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">current</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">DoubleNode</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">valueWithinThreshold</span><span class="p">(</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">current</span><span class="p">;</span>
+            <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">current</span><span class="p">;</span> 
+        <span class="p">}</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// edge case for when front's value is also within threshold.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">valueWithinThreshold</span><span class="p">(</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">DoubleNode</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="k">delete</span> <span class="n">front</span><span class="p">;</span>
+        <span class="n">front</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="6-double-list">6) Double List</h2>
+
+<p>Write a function that takes a pointer to the front of a linked list of integers and appends a copy of the original sequence to the end of the list. For example, suppose you're given the following list:</p>
+
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span></code></p>
+</div>
+
+<p>After a call to your function, the list's contents would be:</p>
+
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span></code></p>
+</div>
+
+<p>Do not use any auxiliary data structures to solve this problem. You should only construct one additional node for each element in the original list. Your function should run in <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> time where <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> is the number of nodes in the original list. You should implement your code to match the following prototype</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">doubleList</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">doubleList</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">front</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">half2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">);</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">back</span> <span class="o">=</span> <span class="n">half2</span><span class="p">;</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">current</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">back</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">);</span>
+            <span class="n">back</span> <span class="o">=</span> <span class="n">back</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">half2</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="7-rewiring-linked-lists">7) Rewiring Linked Lists</h2>
+<p>For each of the following diagrams, write the code that will produce the given "after" result from the given "before" starting point by modifying the links between the nodes shown and/or creating new nodes as needed. There may be more than one way to write the code, but do <strong>not</strong> change the data field of any existing node. If a variable doesn't appear in the "after" picture, it doesn't matter what value it has after changes are made.</p>
+
+<p><img src="img/listmanip.png" alt="The image has two sets of before and after lists. The first set of before and after lists is as follows. Before: list -&gt; 5 -&gt; 4 -&gt; 3 (null, end of list) After: list -&gt; 3 -&gt; 4 -&gt; 5 (null, end of list). The second set of before and after lists is as follows. Before: list -&gt; 5 -&gt; 4 -&gt; 3 (null, end of list) After: There are two lists, the first one is list -&gt; 3 -&gt; 5 (null, end of list) and the second one is list2 -&gt; 4 -&gt; 3 -&gt; 5 (null, end of list)." width="100%" /></p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-7" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-7">
+   
+<p>a)</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Node</span> <span class="o">*</span><span class="n">temp</span> <span class="o">=</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="n">temp</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+<span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="n">list</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+</code></pre></div></div>
+<p>b)</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+<span class="n">list</span> <span class="o">=</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="n">Node</span> <span class="o">*</span><span class="n">list2</span> <span class="o">=</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="8-linked-list-mechanics">8) Linked List Mechanics</h2>
+
+<p>This section handout is almost exclusively about linked lists, so before we jump into some of their applications, let’s start off by reviewing some of the basic mechanics about how they work!</p>
+
+<p>To begin with, let’s imagine we have a linked list of integers. Write a function</p>
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">sumOfElementsIn</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">);</span>
+</code></pre></div>  </div>
+</div>
+
+<p>that adds up the values of all the elements in the linked list. Write this function two ways – first, do it iteratively; then, do it recursively. Which one did you think was easier to write? Why?</p>
+
+<p>Next, write a function</p>
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Node</span><span class="o">*</span> <span class="nf">lastElementOf</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">);</span>
+</code></pre></div>  </div>
+</div>
+
+<p>that returns a pointer to the last element of a linked list (and reports an error if the list is empty). Again, write this function two ways, iteratively and recursively. Which one did you think was easier to write?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-8" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-8">
+   
+<p><strong>Summing List Elements</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Iterative version */</span>
+<span class="kt">int</span> <span class="nf">sumOfElementsIn</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span> <span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Recursive version. */</span>
+<span class="kt">int</span> <span class="nf">sumOfElementsIn</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* The sum of the elements in an empty list is zero. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="cm">/* The sum of the elements in a nonempty list is the sum of the elements in
+    * the first node plus the sum of the remaining elements.
+    */</span>
+    <span class="k">return</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">+</span> <span class="n">sumOfElementsIn</span><span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Finding the Last List Element</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Iterative version */</span>
+<span class="n">Node</span><span class="o">*</span> <span class="nf">lastElementOf</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Empty lists have no last element."</span><span class="p">);</span>
+    
+    <span class="cm">/* Loop forward until the current node next pointer is null. That’s the
+    * point where the list ends.
+    */</span>
+    
+    <span class="n">Node</span><span class="o">*</span> <span class="n">result</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">result</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Recursive version. */</span>
+<span class="n">Node</span><span class="o">*</span> <span class="nf">lastElementOf</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base Case 1: The empty list has no last element. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Nothing can come from nothing."</span><span class="p">);</span>
+    
+    <span class="cm">/* Base Case 2: The only element of a one-element list is the last element. */</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+    
+    <span class="cm">/* Recursive Case: There’s at least two nodes in this list. The last element
+    * of the overall list is the last element of the list you get when you drop
+    * off the first element.
+    */</span>
+    <span class="k">return</span> <span class="n">lastElementOf</span><span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="9-the-notorious-rbq-revisited">9) The Notorious RBQ, Revisited</h2>
+
+<p><em>Topics: Classes, dynamic memory allocation, pointers</em></p>
+
+<p>Remember our good friend the <code class="language-c++ highlighter-rouge"><span class="n">RingBufferQueue</span></code> from last section? Check out the <a href="../../section/section5/index.html#3-the-notorious-rbq-ringbufferqueuehcpp">problem definition from last week</a> if you want a quick refresher. Last time we visited the RBQ it had fixed capacity – that is, it couldn't grow in size after it was initially created. How limiting! With our newfound pointer and dynamic allocation skills, we can remove this limitation on the RBQ and make it fully functional!</p>
+
+<p>Add functionality to the class <code class="language-c++ highlighter-rouge"><span class="n">RingBufferQueue</span></code> from the previous section problem so that the queue resizes to an array twice as large when it runs out of space. In other words, if asked to enqueue when the queue is full, it will enlarge the array to give it enough capacity.</p>
+
+<p>For example, say our queue can hold 5 elements and we enqueue the five values 10, 20, 30, 40, and 50. Our queue would look like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">index</span>    <span class="mi">0</span>    <span class="mi">1</span>    <span class="mi">2</span>    <span class="mi">3</span>    <span class="mi">4</span>
+      <span class="o">+----+----+----+----+----+</span>
+<span class="n">value</span> <span class="o">|</span> <span class="mi">10</span> <span class="o">|</span> <span class="mi">20</span> <span class="o">|</span> <span class="mi">30</span> <span class="o">|</span> <span class="mi">40</span> <span class="o">|</span> <span class="mi">50</span> <span class="o">|</span>
+      <span class="o">+----+----+----+----+----+</span>
+         <span class="o">^</span>                   <span class="o">^</span>
+         <span class="o">|</span>                   <span class="o">|</span>
+       <span class="n">head</span>                <span class="n">tail</span>
+</code></pre></div></div>
+
+<p>If the client tries to enqueue a sixth element of 60, your improved queue class should grow to an array twice as large:</p>
+
+<pre><code class="language-output">index    0    1    2    3    4    5    6    7    8    9
+      +----+----+----+----+----+----+----+----+----+----+
+value | 10 | 20 | 30 | 40 | 50 | 60 |    |    |    |    |
+      +----+----+----+----+----+----+----+----+----+----+
+         ^                        ^
+         |                        |
+       head                     tail
+</code></pre>
+
+<p>The preceding is the simpler case to handle. But what about if the queue has wrapped around via a series of enqueues and dequeues? For example, if the queue stores the following five elements:</p>
+
+<pre><code class="language-output">index    0    1    2    3    4
+      +----+----+----+----+----+
+value | 40 | 50 | 10 | 20 | 30 |
+      +----+----+----+----+----+
+              ^    ^
+              |    |
+            tail head
+</code></pre>
+
+<p>If the client tries to add a sixth element of 60, you cannot simply copy the array as it is shown. If you do so, the head and wrapping will be broken. Instead, copy into the new array so that index 0 always becomes the new head of the queue. The picture will look the same as the previous one with the value 60 at index 5.</p>
+
+<p>Write up the implementation of the new and improved <code class="language-c++ highlighter-rouge"><span class="n">RingBufferQueue</span></code>. It should have the same members as in the previous problem, but with the new resizing behavior added. You may add new member functions to your class, but you should make them private.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-9" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-9">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">RingBufferQueue</span><span class="p">.</span><span class="n">h</span>
+</code></pre></div></div>
+
+<hr />
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma once
+</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">RingBufferQueue</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">RingBufferQueue</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">RingBufferQueue</span><span class="p">();</span>
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isFull</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">enqueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">dequeue</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">peek</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">_elements</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">_capacity</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">_size</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">_head</span><span class="p">;</span>
+    <span class="k">friend</span> <span class="n">ostream</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span> <span class="k">const</span> <span class="n">RingBufferQueue</span><span class="o">&amp;</span> <span class="n">queue</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">enlarge</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<hr />
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">RingBufferQueue</span><span class="p">.</span><span class="n">cpp</span>
+</code></pre></div></div>
+
+<hr />
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"RingBufferQueue.h"</span><span class="cp">
+</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="n">kDefaultCapacity</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">RingBufferQueue</span><span class="o">::</span><span class="n">RingBufferQueue</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">_capacity</span> <span class="o">=</span> <span class="n">kDefaultCapacity</span><span class="p">;</span>
+    <span class="n">_elements</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">_capacity</span><span class="p">];</span>
+    <span class="n">_head</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">RingBufferQueue</span><span class="o">::~</span><span class="n">RingBufferQueue</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">_elements</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="n">RingBufferQueue</span><span class="o">::</span><span class="n">enqueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isFull</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">enlarge</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">tail</span> <span class="o">=</span> <span class="p">(</span><span class="n">_head</span> <span class="o">+</span> <span class="n">_size</span><span class="p">)</span> <span class="o">%</span> <span class="n">_capacity</span><span class="p">;</span>
+    <span class="n">_elements</span><span class="p">[</span><span class="n">tail</span><span class="p">]</span> <span class="o">=</span> <span class="n">elem</span><span class="p">;</span>
+    <span class="n">_size</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">RingBufferQueue</span><span class="o">::</span><span class="n">dequeue</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">front</span> <span class="o">=</span> <span class="n">peek</span><span class="p">();</span>
+    <span class="n">_head</span> <span class="o">=</span> <span class="p">(</span><span class="n">_head</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">_capacity</span><span class="p">;</span>
+    <span class="n">_size</span><span class="o">--</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">front</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">RingBufferQueue</span><span class="o">::</span><span class="n">peek</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"Can't peek at an empty queue!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">_elements</span><span class="p">[</span><span class="n">_head</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="kt">bool</span> <span class="n">RingBufferQueue</span><span class="o">::</span><span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">bool</span> <span class="n">RingBufferQueue</span><span class="o">::</span><span class="n">isFull</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">_size</span> <span class="o">==</span> <span class="n">_capacity</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">RingBufferQueue</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">_size</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="n">RingBufferQueue</span><span class="o">::</span><span class="n">enlarge</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="o">*</span><span class="n">larger</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">_capacity</span> <span class="o">*</span> <span class="mi">2</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">larger</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_elements</span><span class="p">[(</span><span class="n">_head</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">%</span> <span class="n">_capacity</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">_elements</span><span class="p">;</span>
+    <span class="n">_elements</span> <span class="o">=</span> <span class="n">larger</span><span class="p">;</span>
+    <span class="n">_capacity</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">_head</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">ostream</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span> <span class="k">const</span> <span class="n">RingBufferQueue</span><span class="o">&amp;</span> <span class="n">queue</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="s">"{"</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">queue</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="c1">// We can access the inner ‘_elements’ member variables because</span>
+        <span class="c1">// this operator is declared as a friend of the RingBufferQueue class</span>
+        <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">queue</span><span class="p">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">queue</span><span class="p">.</span><span class="n">_head</span><span class="p">];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">queue</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">queue</span><span class="p">.</span><span class="n">_head</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">%</span> <span class="n">queue</span><span class="p">.</span><span class="n">_capacity</span><span class="p">;</span>
+            <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">queue</span><span class="p">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="s">"}"</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">out</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<p><strong>You can also assume the following utility functions have been defined as well:</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Prints the contents of a linked list, in order. */</span>
+<span class="kt">void</span> <span class="nf">printList</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span> <span class="n">cur</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* Frees all the memory used by a linked list. */</span>
+<span class="kt">void</span> <span class="nf">deleteList</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">list</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Store where to go next, since we're about to blow up our linked
+         * list node.
+         */</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="k">delete</span> <span class="n">list</span><span class="p">;</span>
+        <span class="n">list</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="10-how-tall-is-that-tree-heightcpp">10) How Tall is That Tree? (<code class="language-c++ highlighter-rouge"><span class="n">height</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p>Write a function</p>
+
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">int</span> <span class="nf">height</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">node</span><span class="p">);</span></code></p>
+</div>
+
+<p>that calculates the height of the provided tree. The height of a tree is defined to be the number of edges along the longest path from the root to a leaf. By definition, an empty tree has a height of -1. A tree of only one node has height 0. A node with one or two leaves as children has height 1, etc.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-10" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-10">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">height</span><span class="p">(</span><span class="n">TreeNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">node</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">max</span><span class="p">(</span><span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">),</span> <span class="n">height</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="11-the-ultimate-and-penultimate-values-findmaxcpp">11) The Ultimate and Penultimate Values (<code class="language-c++ highlighter-rouge"><span class="n">findmax</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p>Write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="n">TreeNode</span><span class="o">*</span> <span class="n">biggestNodeIn</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span></code></p>
+</div>
+<p>that takes as input a pointer to the root of a (nonempty) binary search tree, then returns a pointer to the node containing the largest value in the BST. What is the runtime of your function if the tree is balanced? If it’s imbalanced? Then, write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="n">TreeNode</span><span class="o">*</span> <span class="n">secondBiggestNodeIn</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span></code></p>
+</div>
+<p>that takes as input a pointer to the root of a BST containing at least two nodes, then returns a pointer to the node containing the second-largest value in the BST. Then answer the same runtime questions posed in the first part of this problem.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-11" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-11">
+   
+<p>We could solve this problem by writing a function that searches over the entire BST looking for the biggest value, but we can do a lot better than this! It turns out that the biggest value in a BST is always the one that you get to by starting at the root and walking to the right until it’s impossible to go any further. Here’s a recursive solution that shows off why this works:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TreeNode</span><span class="o">*</span> <span class="nf">biggestNodeIn</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Nothing to see here, folks."</span><span class="p">);</span>
+    <span class="cm">/* Base case: If the root of the tree has no right child, then the root node
+    * holds the largest value because everything else is smaller than it.
+    */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+    
+    <span class="cm">/* Otherwise, the largest value in the tree is bigger than the root, so it’s
+    * in the right subtree.
+    */</span>
+    <span class="k">return</span> <span class="n">biggestNodeIn</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>And, of course, we should do this iteratively as well, just for funzies:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TreeNode</span><span class="o">*</span> <span class="nf">biggestNodeIn</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"Nothing to see here, folks."</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Getting the second-largest node is a bit trickier simply because there’s more places it can be. The good news is that it’s definitely going to be near the rightmost node – we just need to figure out exactly where.</p>
+
+<p>There are two cases here. First, imagine that the rightmost node does not have a left child. In that case, the second-smallest value must be that node’s parent. Why? Well, its parent has a smaller value, and there are no values between the node and its parent in the tree (do you see why?) That means that the parent holds the second-smallest value. The other option is that the rightmost node does have a left child. The largest value in that subtree is then the second-largest value in the tree, since that’s the largest value smaller than the max. We can use this to write a nice iterative function for this problem that works by walking down the right spine of the tree (that’s the fancy term for the nodes you get by starting at the root and just walking right), tracking the current node and its parent node. Once we get to the largest node, we either go into its left subtree and take the largest value, or we return the parent, whichever is appropriate.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TreeNode</span><span class="o">*</span> <span class="nf">secondBiggestNodeIn</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"Nothing to see here, folks."</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">TreeNode</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">TreeNode</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">root</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span><span class="p">;</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">prev</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">biggestNodeIn</span><span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Notice that all three of these functions work by walking down the tree, doing a constant amount of work at each node. This means that the runtime is <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">h</span><span class="p">)</span></code>, where <code class="language-c++ highlighter-rouge"><span class="n">h</span></code> is the height of the tree. In a balanced tree that’s <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">log</span> <span class="n">n</span><span class="p">)</span></code> work, and in an imbalanced tree that’s <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> work in the worst-case.</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="12-checking-bst-validity-bstcpp">12) Checking BST Validity (<code class="language-c++ highlighter-rouge"><span class="n">bst</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p>You are given a pointer to a TreeNode that is the root of some type of binary tree. However, you are not sure whether or not it is a binary search tree. For example, you might get a tree that is a binary tree but not a binary search tree. Write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="n">isBST</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span></code></p>
+</div>
+<p>that, given a pointer to the root of a tree, determines whether or not the tree is a legal binary search tree. You can assume that what you’re getting as input is actually a tree, so, for example, you won’t have a node that has multiple pointers into it, no node will point at itself, etc.</p>
+
+<p>As a hint, think back to our recursive definition of what a binary search tree is. If you have a node in a binary tree, what properties must be true of its left and right subtrees for the overall tree to be a binary search tree? Consider writing a recursive helper function that tracks all the relevant additional parameters you’ll need in order to answer this question.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-12" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-12">
+   
+<p>There are a bunch of different ways that you could write this function. The one that we’ll use is based on recursive definition of a BST from lecture: a BST is either empty, or it’s a node <code class="language-c++ highlighter-rouge"><span class="n">x</span></code> whose left subtree is a BST of values smaller than <code class="language-c++ highlighter-rouge"><span class="n">x</span></code> and whose right subtree is a BST of values greater than <code class="language-c++ highlighter-rouge"><span class="n">x</span></code>.</p>
+
+<p>This solution works by walking down the tree, at each point keeping track of two pointers to nodes that delimit the range of values we need to stay within.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isBSTRec</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">,</span> <span class="n">TreeNode</span><span class="o">*</span> <span class="n">lowerBound</span><span class="p">,</span> <span class="n">TreeNode</span><span class="o">*</span> <span class="n">upperBound</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: The empty tree is always valid.*/</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+ 
+    <span class="cm">/* Otherwise, make sure this value is in the proper range. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">lowerBound</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&lt;=</span> <span class="n">lowerBound</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">upperBound</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&gt;=</span> <span class="n">upperBound</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ 
+    <span class="cm">/* Okay! We're in range. So now we just need to confirm that the left and
+    * right subtrees are good as well. Notice how the range changes based on the
+    * introduction of this node.
+    */</span>
+    <span class="k">return</span> <span class="n">isBSTRec</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">lowerBound</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+           <span class="o">&amp;&amp;</span> <span class="n">isBSTRec</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">upperBound</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">isBST</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">isBSTRec</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="13-binary-search-tree-warmup">13) Binary Search Tree Warmup</h2>
+<p>Binary search trees have a ton of uses and fun properties. To get you warmed up with them, try working through the following problems.</p>
+
+<p>First, draw three different binary search trees made from the numbers <code class="language-c++ highlighter-rouge"><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span></code> and <code class="language-c++ highlighter-rouge"><span class="mi">9</span></code>. What are the heights of each of the trees you drew? What’s the tallest BST you can make from those numbers? How do you know it’s as tall as possible? What’s the shortest BST you can make from those numbers? How do you know it’s as short as possible?</p>
+
+<p>Take one of your BSTs. Trace through the logic to insert the number <code class="language-c++ highlighter-rouge"><span class="mi">10</span></code> into that tree. Then insert <code class="language-c++ highlighter-rouge"><span class="mf">3.5</span></code>.What do your trees look like?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-13" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-13">
+   
+<p><img style="float: right; width: 10%" alt="This image depicts a degenerate binary search tree, with height equal to the total number of nodes in the tree. One way to have a degenrate tree like this is to have root node 9, which has a single child 1, which has a single child 8, which has a single child 2, which has a single child 7, which has a single child 3, which has a single child 6, which has a single child 4, which has a single child 5, which is a leaf node." src="img/binary3.png" /></p>
+
+<p>There are several trees that are tied for the tallest possible binary search tree we can make from these numbers, one of which is shown to the right. It has height 8, since the height is defined as the number of edges in the path from the root to a farthest-away leaf. See Q10 above for a formal definition. A fun math question to ponder over: how many different binary search trees made from these numbers have this height? And what’s the probability that if you choose a random order of the elements 1 through 9 to insert into a binary search tree that you come up with an ordering like this one?</p>
+
+<p>Similarly, there are several trees tied for the shortest possible binary search tree we can make from these numbers, one of which is shown below. It has height 3, which is the smallest possible height we can have. One way to see this is to notice that each layer in the tree is, in a sense, as full as it can possibly be; there’s no room to move any of the elements from the deeper layers of the tree any higher up:</p>
+<div align="center">
+  <p><img src="img/binary1.png" alt="This image depicts a tree with root node 5. Node 5 has left child 2 and right child 8. node 2 has left child 1 and right child 4. Node 1 is a leaf node. Node 4 has right child 3 (which is a leaf node) and no right child. Node 8 has left child 7 and right child 9 (which is a leaf node). Node 7 has a left child 6 (which is a leaf node) and no right child." width="40%" /></p>
+</div>
+<p>If we insert 10, we’d get the following:</p>
+<div align="center">
+  <p><img src="img/binary2.png" alt="This is a tree that is the same as described in the previous image, with the modification that 10 is now added as the right child of 9, which is no longer a leaf node." width="40%" /></p>
+</div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="14-tree-quality">14) Tree-Quality</h2>
+<p>Write a function</p>
+
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="nf">areEqual</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">one</span><span class="p">,</span> <span class="n">TreeNode</span><span class="o">*</span> <span class="n">two</span><span class="p">);</span></code></p>
+</div>
+
+<p>that take as input pointers to the roots of two binary trees (not necessarily binary search trees), then returns whether the two trees have the exact same shape and contents.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-14" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-14">
+   
+<p>Let’s use the recursive definition of trees! The empty tree is only equal to the empty tree. A nonempty tree is only equal to another tree if that tree is nonempty, if the roots have the same values, and if the left and right subtrees of those roots are the same. That leads to this recursive algorithm:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">areEqual</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">one</span><span class="p">,</span> <span class="n">TreeNode</span><span class="o">*</span> <span class="n">two</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base Case: If either tree is empty, they had both better be empty. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">one</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">two</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">one</span> <span class="o">==</span> <span class="n">two</span><span class="p">;</span> <span class="c1">// At least one is null</span>
+    <span class="p">}</span>
+ 
+    <span class="cm">/* We now know both trees are nonempty. Confirm the root values match and
+    * that the subtrees agree.
+    */</span>
+    <span class="k">return</span> <span class="n">one</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">==</span> <span class="n">two</span><span class="o">-&gt;</span><span class="n">data</span> 
+           <span class="o">&amp;&amp;</span> <span class="n">areEqual</span><span class="p">(</span><span class="n">one</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">two</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span> 
+           <span class="o">&amp;&amp;</span> <span class="n">areEqual</span><span class="p">(</span><span class="n">one</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">two</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="15-recursive-enumeration-and-backtracking">15) Recursive Enumeration and Backtracking</h2>
+
+<p>Given a positive integer <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>, write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">printSumsOf</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span></code></p>
+</div>
+<p>that finds all ways of writing <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> as a sum of nonzero natural numbers. For example, given <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">=</span> <span class="mi">3</span></code>, you’d list off these options:</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span></code></p>
+</div>
+
+<p>Next, write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">listKOrderings</span><span class="p">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">choices</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span></code></p>
+</div>
+<p>that, given a set of strings and a number k, lists all ways of choosing k elements
+from that list, given that order does matter. For example, given the objects <code class="language-c++ highlighter-rouge"><span class="n">A</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">B</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">C</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span></code>, you’d list</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="n">A</span> <span class="n">B</span><span class="p">,</span> <span class="n">A</span> <span class="n">C</span><span class="p">,</span> <span class="n">B</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="n">C</span><span class="p">,</span> <span class="n">C</span> <span class="n">A</span><span class="p">,</span> <span class="n">C</span> <span class="n">B</span></code></p>
+</div>
+
+<p>Finally, we will revisit one of the problems from earlier in this handout. In particular, one of the problems from the "Container Classes" section of this handout discussed compound words, which are words that can be cut into two smaller pieces, each of which is a word. You can generalize this idea further if you allow the word to be chopped into even more pieces. For example, the word "longshoreman" can be split into "long," "shore," and "man," and "whatsoever" can be split into "what," "so," and "ever."" Write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">printMultCompoundWords</span><span class="p">(</span><span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">dict</span><span class="p">)</span></code></p>
+</div>
+<p>that takes in a Lexicon representing the English dictionary and prints out all words in the dictionary that can be split apart into two or more smaller pieces, each of which is itself an English word.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-15" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-15">
+   
+<p>The key insight for the first problem is that some positive number has to come first in our ordering, so we can just try all possible ways of breaking off some initial bit and see what we find.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printSumsOf</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Handle edge cases. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Can't make less than nothing from more than nothing."</span><span class="p">);</span>
+    <span class="n">printSumsRec</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">{});</span>
+<span class="p">}</span>
+
+<span class="cm">/* Print all ways to sum up to n, given that we've already broken off the numbers
+ * given in soFar.
+ */</span>
+<span class="kt">void</span> <span class="nf">printSumsRec</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">soFar</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: Once n is zero, we need no more numbers. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printAsSum</span><span class="p">(</span><span class="n">soFar</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="cm">/* The next number can be anything between 1 and n, inclusive. */</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printSumsRec</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* Prints a Vector&lt;int&gt; nicely as a sum. */</span>
+<span class="kt">void</span> <span class="nf">printAsSum</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">sum</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* The empty sum prints as zero. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">sum</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="cm">/* Print out each term, with plus signs interspersed. */</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sum</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sum</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">!=</span> <span class="n">sum</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">" + "</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The second problem is half combinations, half permutations. We use the permutations strategy of asking "what is the next term in our ordered list?" at each step, and the combinations strategy of cutting off our search as soon as we have enough terms.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">listKOrderings</span><span class="p">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">choices</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Quick edge case check: if we want more items than there are options, there
+    * are no orderings we can use.
+    */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">choices</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">listOrderingHelper</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="p">{});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">listOrderingHelper</span><span class="p">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">choices</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">soFar</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: If no more terms are needed, print what we have. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">soFar</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive case: What comes next? Try all options. */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">choice</span><span class="o">:</span> <span class="n">choices</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">listOrderingHelper</span><span class="p">(</span><span class="n">choices</span> <span class="o">-</span> <span class="n">choice</span><span class="p">,</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="n">choice</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The main insight for the final problem is that a word can be broken apart into two or more words if it can be split into two pieces such that the first piece is a word, and the second piece is either (1) a word or (2) itself something that can be split apart into two or more words.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printMultCompoundWords</span><span class="p">(</span><span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">dict</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">word</span> <span class="o">:</span> <span class="n">dict</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">isMultCompoundWord</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">dict</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">word</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">isMultCompoundWord</span><span class="p">(</span><span class="n">string</span> <span class="n">word</span><span class="p">,</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">dict</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* In an unusual twist, our base case is folded into the recursive step. We
+    * will try all possible splits into two pieces, and if one of them happens
+    * to be a pair of words, we stop.
+    */</span>
+ 
+    <span class="cm">/* Try all ways of splitting things. */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">word</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Only split if the first part is a word. */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">dict</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)))</span> <span class="p">{</span>
+            <span class="n">string</span> <span class="n">remaining</span> <span class="o">=</span> <span class="n">word</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="cm">/* We're done if the remainder is either a word or a compound word. */</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">dict</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span> <span class="o">||</span> <span class="n">isMultCompoundWord</span><span class="p">(</span><span class="n">remaining</span><span class="p">,</span> <span class="n">dict</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="cm">/* Nothing works; give up. */</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="16-dynamic-arrays-and-classes">16) Dynamic Arrays and Classes</h2>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code> type in C++ can only support integers in a limited range (typically, <code class="language-c++ highlighter-rouge"><span class="o">-</span><span class="mi">2</span><span class="o">^</span><span class="mi">31</span></code> to <code class="language-c++ highlighter-rouge"><span class="mi">2</span><span class="o">^</span><span class="mi">31</span> <span class="err">–</span> <span class="mi">1</span></code>). If you want to work with integers that are larger than that, you’ll need to use a type often called a <strong>big number</strong> type (or “bignum” for short). Those types usually work internally by storing a dynamic array that holds the digits of that number. For example, the number <code class="language-c++ highlighter-rouge"><span class="mi">78979871</span></code> might be stored as the array <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span></code> (or, sometimes, in reverse as <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span></code>). Implement a bignum type layered on top of a dynamic array. Your implementation should provide member functions that let you add together two bignums or produce a string representation of a bignum, and a constructor that lets you initialize the bignum to some integer value. For simplicity, you don’t need to worry about negative numbers.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-16" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-16">
+   
+<p>Let’s begin with the interface for our class, which will look like this:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BigNum</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">BigNum</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// Default to zero unless specified otherwise.</span>
+    <span class="o">~</span><span class="n">BigNum</span><span class="p">();</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">toString</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span> <span class="c1">// Get a string representation</span>
+    <span class="kt">void</span> <span class="n">add</span><span class="p">(</span><span class="k">const</span> <span class="n">BigNum</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">);</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">digits</span><span class="p">;</span> <span class="c1">// Stored in reverse order</span>
+    <span class="kt">int</span> <span class="n">allocatedSize</span><span class="p">;</span> <span class="c1">// In # of digits</span>
+    <span class="kt">int</span> <span class="n">numDigits</span><span class="p">;</span> <span class="c1">// In # of digits.</span>
+    <span class="kt">void</span> <span class="n">reserve</span><span class="p">(</span><span class="kt">int</span> <span class="n">space</span><span class="p">);</span> <span class="c1">// Ensure we have space to hold numDigits digits</span>
+    <span class="kt">int</span> <span class="n">numDigitsOf</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span> <span class="c1">// How many digits are in value?</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>Here, the constructor takes in the value we’ll store. The <code class="language-c++ highlighter-rouge"><span class="n">toString</span></code> function produces a string representation of the number, and the <code class="language-c++ highlighter-rouge"><span class="n">add</span></code> function takes in another <code class="language-c++ highlighter-rouge"><span class="n">BigNum</span></code> and adds its value to the total.</p>
+
+<p>Interally, we’ll represent the <code class="language-c++ highlighter-rouge"><span class="n">BigNum</span></code> as an array of integers, each of which represents a single digit. The <code class="language-c++ highlighter-rouge"><span class="n">allocatedSize</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">numDigits</span></code> variables track how many digits we have space for and how many digits we actually have, respectively. (A note: it’s actually not a good use of space to store each digit as an integer because the <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code> type can hold much, much larger values than a single digit, but for simplicity we’ll opt for that approach. Take CS107 to see some alternatives!)</p>
+
+<p>We’ll also write a function named <code class="language-c++ highlighter-rouge"><span class="n">reserve</span><span class="p">()</span></code>, which takes as input a number of digits and then does whatever needs to be done to ensure that we have space for at least that many digits. Think of it as a more cautious version of the <code class="language-c++ highlighter-rouge"><span class="n">grow</span><span class="p">()</span></code> function we wrote for our stack type: it’ll make the array bigger, but only if it needs to.</p>
+
+<p>To make the implementation simpler, we’ll store the digits of our number in reverse order, so the number <code class="language-c++ highlighter-rouge"><span class="mi">137</span></code> would be stored as <code class="language-c++ highlighter-rouge"><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span></code>. This makes the math easier and makes it easier to add digits in, since it’s usually easier to add new items further in an array rather than earlier. The implementation itself is presented below.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BigNum</span><span class="o">::</span><span class="n">BigNum</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Set up an initial array of elements. */</span>
+    <span class="n">digits</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">kDefaultSize</span><span class="p">];</span> <span class="c1">// Some reasonable default</span>
+    <span class="n">allocatedSize</span> <span class="o">=</span> <span class="n">kDefaultSize</span><span class="p">;</span>
+
+    <span class="cm">/* Count how many digits are in our number. 0 is an edge case, so we'll make
+    * this work by reducing the number of digits down to the last one.
+    */</span>
+    <span class="n">numDigits</span> <span class="o">=</span> <span class="n">numDigitsOf</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">numDigits</span> <span class="o">&gt;=</span> <span class="n">allocatedSize</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Input too big!"</span><span class="p">);</span>
+
+    <span class="cm">/* Copy the number into the array, one digit at a time. */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numDigits</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="n">value</span> <span class="o">/=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">BigNum</span><span class="o">::</span><span class="n">numDigitsOf</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="cm">/* Pro C++ tip: Since this function doesn't read or write any member
+    * variables, this should either be a free function or a static member
+    * function. We didn't discuss those sorts of concerns in CS106B, though.
+    */</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// All numbers have at least one digit.</span>
+
+    <span class="cm">/* We've already counted one digit. Now count the rest. */</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">value</span> <span class="o">/=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">BigNum</span><span class="o">::~</span><span class="n">BigNum</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">digits</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="n">BigNum</span><span class="o">::</span><span class="n">toString</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="cm">/* Because characters are stored in reverse order, we have to scan them
+    * backwards to make our number.
+    */</span>
+    <span class="n">string</span> <span class="n">result</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">numDigits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BigNum</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="k">const</span> <span class="n">BigNum</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* First, ensure we have space to hold the result. Adding two numbers produces
+    * a result whose size is at most one digit bigger than either input number.
+    */</span>
+    <span class="kt">int</span> <span class="n">digitsToVisit</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">numDigits</span><span class="p">,</span> <span class="n">value</span><span class="p">.</span><span class="n">numDigits</span><span class="p">);</span>
+    <span class="n">reserve</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">digitsToVisit</span><span class="p">);</span>
+
+    <span class="cm">/* Use the grade school algorithm to add the numbers. */</span>
+    <span class="kt">int</span> <span class="n">carry</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">digitsToVisit</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="kt">int</span> <span class="n">sum</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">numDigits</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">numDigits</span><span class="p">)</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">value</span><span class="p">.</span><span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">carry</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">numDigits</span><span class="p">)</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">carry</span><span class="p">;</span>
+        <span class="k">else</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">carry</span><span class="p">;</span>
+
+        <span class="cm">/* Write the one's place. */</span>
+        <span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="cm">/* Store the carry. */</span>
+        <span class="n">carry</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">/</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* We need at least as many digits as before, plus one if there is a final
+    * carry.
+    */</span>
+    <span class="n">numDigits</span> <span class="o">=</span> <span class="n">digitsToVisit</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">carry</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">numDigits</span> <span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">carry</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="n">digits</span><span class="p">[</span><span class="n">digitsToVisit</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Reserving space uses the regular "double in size" trick. */</span>
+<span class="kt">void</span> <span class="n">BigNum</span><span class="o">::</span><span class="n">reserve</span><span class="p">(</span><span class="kt">int</span> <span class="n">space</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* If we have the space, then we don't need to do anything. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">space</span> <span class="o">&lt;=</span> <span class="n">allocatedSize</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+    <span class="cm">/* Double and copy. We deliberately don't just grow to the size requested,
+    * since that may not be efficient.
+    */</span>
+    <span class="n">allocatedSize</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">newDigits</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">allocatedSize</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numDigits</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">newDigits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">digits</span><span class="p">;</span>
+    <span class="n">digits</span> <span class="o">=</span> <span class="n">newDigits</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="17-linked-lists">17) Linked Lists</h2>
+
+<p>Write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="n">ListNode</span><span class="o">*</span> <span class="n">kthToLast</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">list</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span></code></p>
+</div>
+<p>that, given a pointer to a singly-linked list and a number <code class="language-c++ highlighter-rouge"><span class="n">k</span></code>, returns the <code class="language-c++ highlighter-rouge"><span class="n">k</span></code>th-to last element of the linked list (or a null pointer if no such element exists). How efficient is your solution, from a big-O perspective? As a challenge, see if you can solve this in <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> time with only <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> auxiliary storage space.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-17" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-17">
+   
+<p>There are a couple of ways we could do this. One option would be to sweep across the list from the front to the back, counting how many nodes there are, then calculate the index we need. That’s shown here:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">listLength</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="cm">/* Cute little for loop trick to visit everything in a linked list. This loop
+    * is great if you are not making any changes to the list, but if the list is
+    * either being rewired or being deallocated, this loop won't work.
+    */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span> <span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ListNode</span><span class="o">*</span> <span class="nf">kthToLastSimple</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">list</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Find length of the list */</span>
+    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">listLength</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    
+    <span class="cm">/* If the list is too small, just return nullptr. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">)</span> <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+ 
+    <span class="cm">/* Move len - k + 1 steps into the list */</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span> <span class="o">-</span> <span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">curr</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Another option, which is a bit less obvious but is quite beautiful, is to walk down the list with two concurrent pointers, one of which is <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> steps ahead of the other. As soon as the lead pointer falls off the list, the pointer behind it is <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> steps from the end. Do you see why?</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ListNode</span><span class="o">*</span> <span class="nf">kthToLast</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">list</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Set up two pointers, one leader and one follower. */</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">leader</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">follower</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">leader</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="n">leader</span> <span class="o">=</span> <span class="n">leader</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Keep walking the leader and follower forward. As soon as the leader walks
+    * off the follower is in the right spot.
+    */</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">leader</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="n">follower</span><span class="p">;</span>
+        <span class="n">leader</span> <span class="o">=</span> <span class="n">leader</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">follower</span> <span class="o">=</span> <span class="n">follower</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="18-braiding-a-linked-list">18) Braiding a Linked List</h2>
+
+<p>Write a function braid that takes a linked list and weaves the reverse of that list into the original. (You will need to create new nodes.) Here are a few examples:</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">3</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre></div>  </div>
+</div>
+
+<p>You should implement your code to match the following prototype</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">braid</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-18" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-18">
+   
+<p>One recursive solution to braid</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Node</span><span class="o">*</span> <span class="nf">braid</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">front</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">reverse</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">front</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Node</span><span class="o">*</span> <span class="n">frontRest</span> <span class="o">=</span> <span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">reverseRest</span> <span class="o">=</span> <span class="n">reverse</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">;</span>
+    <span class="n">reverse</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">braid</span><span class="p">(</span><span class="n">frontRest</span><span class="p">,</span> <span class="n">reverseRest</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">front</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">braid</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="n">reverse</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Node</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span> <span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">newNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span>
+        <span class="n">newNode</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">;</span>
+        <span class="n">reverse</span> <span class="o">=</span> <span class="n">newNode</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">front</span> <span class="o">=</span> <span class="n">braid</span><span class="p">(</span><span class="n">front</span><span class="p">,</span> <span class="n">reverse</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="19-sorting">19) Sorting</h2>
+<p>Write an implementation of insertion sort that works on singly-linked lists. Implement the following function header:</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">listInsertionSort</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span></code></p>
+</div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="sectionextra.html#solution-collapse-19" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-19">
+   
+<p>The singly-linked list requirement here suggests that our pattern of repeatedly swapping elements back in the sequence is not going to be easy to implement – we’ll keep losing track of where our preceding element is. There are many ways we could deal with this. One of them works by taking the element, moving it to the front of the list, then swapping it forward until it’s in the right position.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">listInsertionSort</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Question to ponder: why by reference?</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">sortedList</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Need to store the pointer to the next cell in the list, since after
+        * we do the insert operation we'll lose track of where the next cell
+        * is.
+        */</span>
+        <span class="n">ListNode</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">sortedInsert</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span> <span class="n">sortedList</span><span class="p">);</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">list</span> <span class="o">=</span> <span class="n">sortedList</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cm">/* Adds the given node into a sorted, singly-linked list. */</span>
+<span class="kt">void</span> <span class="nf">sortedInsert</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">toIns</span><span class="p">,</span> <span class="n">ListNode</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* See if we go at the beginning. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">toIns</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">toIns</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+        <span class="n">list</span> <span class="o">=</span> <span class="n">toIns</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="cm">/* Find the spot right before where we go, since that's the pointer we
+        * need to rewire.
+        */</span>
+        <span class="n">ListNode</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+        <span class="n">ListNode</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;</span> <span class="n">toIns</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span><span class="p">;</span>
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="cm">/* Splice us in. */</span>
+        <span class="n">toIns</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">curr</span><span class="p">;</span>
+        <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">toIns</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Dec-10
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

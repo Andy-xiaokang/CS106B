@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>   Welcome to CS106B!</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 0. Welcome to CS106B!</h1>
+ <p class="subtle-heading">Monday October 2</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><!-- Don't use boilerplate for this one, it's an odd ball -->
+<h2 id="due-monday-october-2-at--500-pm">Due Monday, October 2 at  5:00 pm</h2>
+
+<p>For this assignment, you are to install Qt Creator and then work through compiling, running, and debugging a sample program. This confirms you and your computer are ready for the awesome adventures to come this quarter!</p>
+
+<h2 id="step-1-install-qt-creator">Step 1) Install Qt Creator</h2>
+
+<p>Install the Qt Creator development tools by following the step-by-step instructions in our <a href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>.</p>
+
+<blockquote class="alert alert-warning">
+  <p><strong>⚠️ If you run into a snag when installing Qt</strong>, we're here to help. The section leaders will hold a special help session for Qt installation <strong>3–5pm Sunday, October 1</strong> in Durand 353. Bring your computer and we can diagnose the issue and resolve to get you on your way. You can also post install questions on the <a href="https://edstem.org/us/courses/45672" title="Ed Discussion Forum">Ed forum</a>.</p>
+</blockquote>
+
+<h2 id="step-2-download-starter-project">Step 2) Download starter project</h2>
+<p>For each assignment, we create a starter project and post it as a ZIP archive. Here is the archive for this assignment:</p>
+
+<ul>
+  <li>📦 <a href="starter-assign0.zip">Starter project</a></li>
+</ul>
+
+<p>Download the archive and extract all. Move the starter project folder into your CS106B folder. The starter project contains two files: <code class="language-c++ highlighter-rouge"><span class="n">NameHash</span><span class="p">.</span><span class="n">pro</span></code> (Qt project file) and <code class="language-c++ highlighter-rouge"><span class="n">NameHash</span><span class="p">.</span><span class="n">cpp</span></code> (C++ source file).  Open the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> project file in Qt Creator. The first time you open a new project, Qt Creator will ask you to configure it; select the default kit (Qt 6.x) from your Qt install.</p>
+
+<h2 id="step-3-hash-your-name">Step 3) Hash your name</h2>
+
+<p>In the Qt Creator window,  click the green triangle in the lower-left to build and run the program. When the program runs, the console window appears and will prompt you to enter your preferred first and last names. The program then computes a hash code from your name. The hash code is like a “fingerprint”, unique to your name and unlikely to match anyone else's. Write down the <strong>hash code for your name</strong>; you'll be asked for it when you submit.</p>
+
+<p>While you are here, skim the code for a preview of C++ syntax and control flow. Don't worry if you don't fully understand the math behind the algorithm just yet, consider it a teaser for ideas we will explore together later in the quarter.</p>
+
+<h2 id="step-4-practice-with-debugger">Step 4) Practice with debugger</h2>
+
+<p>Knowing your debugger is a key component in your programming tool belt. Our colleague Keith Schwarz wrote a wonderful tutorial to introduce students to the Qt debugger. The tutorial guides you through using the debugger to inspect the <code class="language-c++ highlighter-rouge"><span class="n">NameHash</span></code> program.</p>
+
+<p>Open the <a href="DebuggerTutorial.pdf">debugger tutorial</a> and follow along step-by-step. Along the way there is a point where the tutorial asks you to remember a special value that you see in the debugger. Write down this <strong>special value</strong>; you'll be asked for it when you submit.</p>
+
+<h2 id="step-5-read-course-policies-syllabus-honor-code">Step 5) Read course policies (Syllabus, Honor Code)</h2>
+<p>Please read the pages on the course website that detail our policies for the <a href="../../syllabus.html" title="Syllabus">syllabus</a> and <a href="../../honor_code.html" title="CS106B and the Honor Code">Honor Code</a>. We want to ensure that you know what to expect from us and what we will expect from you. If you have any questions or concerns about the course policies, make a post on <a href="https://edstem.org/us/courses/45672" title="Ed Discussion Forum">Ed</a> or via private email to clarify or resolve issues before choosing to enroll.</p>
+
+<h2 id="step-6-submit">Step 6) Submit</h2>
+<p>Once you've finished everything, fill out this form while logged into your Stanford Google account:</p>
+<ul>
+  <li>📋 Submit Google form: <a href="https://forms.gle/9Z3qW3vVJrTvknTC8">https://forms.gle/9Z3qW3vVJrTvknTC8</a></li>
+</ul>
+
+<p>Enter the numbers from Steps 3 and 4, confirm that you understand the course policies, and submit the form.</p>
+
+<p><strong>Congrats and welcome to CS106B!</strong></p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

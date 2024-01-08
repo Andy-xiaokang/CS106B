@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Introduction to Recursion</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 7. Introduction to Recursion</h1>
+ <p class="subtle-heading">Wednesday October 11</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>An introduction to the interesting world of recursion, where a function can call itself!</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 7.1-7.3</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/141785">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=8a6b2c1b-a40e-4faf-85cb-b083014df257&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Don't panic!</p>
+<p>2. Overview</p>
+<p>3. Our First Recursive Function (and Stack Overflow)</p>
+<p>4. Recursion vs. Iteration</p>
+<p>5. Factorial</p>
+<p>6. Common Pitfall #1</p>
+<p>7. Common Pitfall #2</p>
+<p>8. Random Interlude: Unsigned Integers (<em>Supplementary</em>)</p>
+<p>9. Palindromes</p>
+<p>10. Common Pitfall #3</p>
+<p>11. String Printing</p>
+<p>12. Reverse String Printing</p>
+<p>13. Wrapper Functions</p>
+<p>14. Common Pitfall #4</p>
+<p>15. Coin Flips</p>
+<p>16. What's next?</p>
+<p>17. Practice Problems</p>
+<p><strong><br />Don't panic!</strong></p>
+<p>Recursion is&nbsp;<em>crazy</em> the first time you see it in code! Don't feel discouraged if today's lecture felt super weird or foreign or mystical or difficult. This is a tough topic. It will take lots of practice, but eventually, writing recursive functions will feel like second nature.</p>
+<p><br /><strong>Overview</strong></p>
+<p>Today, we made our foray into recursion, examining some basic examples of functions that call themselves. We saw that there are two critical components to recursive functions:</p>
+<ol>
+<li><strong>Base Case.</strong> Include some sort of terminating condition that returns the result for some canonical case where we know the answer immediately.</li>
+</ol>
+<ol start="2">
+<li><strong>Recursive Call.</strong>&nbsp;Decompose the current input into subproblems, one of which involves making a recursive call to the function you're writing. Make sure your input is approaching the base case (not growing infinitely in the opposite direction)!</li>
+</ol>
+<p><br /><strong>Our First Recursive Function (and Stack Overflow)</strong></p>
+<p>We started with this simple recursive function that doesn't accomplish anything interesting:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> foo()<br />{<br />   foo();<br />}<br /><br /><strong>int</strong> main()<br />{<br />   foo();<br />   <strong>return</strong> 0;<br />}</pre>
+<p>We dissected its behavior and saw that the infinite recursion fills up our program stack with recursive calls, causing a stack overflow. In the Qt Creator, the terminal window just flashed briefly, and the fact that our program crashed might not have been immediately apparent, but the "Application Output" tab at the bottom of the window was flashing red:</p>
+<p><img style="padding-left: 30px; padding-top: 20px; padding-bottom: 20px;" src="resources/tab.png" /></p>
+<p>Clicking that tab gave us a rather bland and not-nearly-alarming-enough message indicating that the program had crashed:</p>
+<p><img style="padding-left: 30px; padding-top: 20px; padding-bottom: 20px;" src="resources/crash.png" /></p>
+<p>We then augmented the program to give us some indication of how many recursive calls we were able to make before crashing:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<strong><br /><br />void</strong> foo(<strong>int</strong> n)<br />{<br /><span style="color: #236fa1;">   // <em>We used this mod trick because printing to the screen is such a slow</em></span><br /><span style="color: #236fa1;">   // <em>operation. When we tried printing n in every single function call, it</em></span><br /><span style="color: #236fa1;">   // <em>was taking way too long. (On the computer in my office, it takes about</em><br />   // <em><span style="text-decoration: underline;"><strong>nine minutes</strong></span> for the program to crash when printing every single n.</em><br />   // <em>When printing n once per 1000 calls, it takes less than one second to</em><br />   // <em>crash.</em></span><br /><br />   <strong>if</strong> (n % 1000 == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; n &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   foo(n + 1);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   foo(0);<br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">...<br />261945<br />261946<br />261947<br />261948<br />261949<br />19:06:18: /home/seansz/Desktop/Recursion/Recursion crashed.</span></pre>
+<p>Finally, we added a base case to the function and re-wrote it in such a way that each recursive call was working toward that base case:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br />void</strong> foo(<strong>int</strong> n)<br />{<br />   <strong>if</strong> (n == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; "Blastoff!" &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; n &lt;&lt; "..." &lt;&lt; <strong>endl</strong>;<br />   foo(n - 1);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   foo(5);<br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">5...<br />4...<br />3...<br />2...<br />1...<br />Blastoff!</span></pre>
+<p><br /><strong>Recursion vs. Iteration</strong></p>
+<p>Note that most of the recursive functions we saw in class today could have been implemented iteratively (i.e., using for-loops that iterate through the problems, rather than using recursion), but we played with the recursive implementations anyway because they offer a fairly gentle introduction to the idea of recursion (insofar as <em>any</em> introduction to recursion could be considered gentle...). We'll see more useful examples of recursion throughout the quarter.</p>
+<p><br /><strong>Factorials</strong></p>
+<p>We then explored how to write a recursive factorial function. We started by observing that for&nbsp;<em>n</em> &gt; 0,&nbsp;<em>n!</em> has at least one other factorial embedded in it: (<em>n</em> - 1)!. We capitalized on that to write a mathematical version of&nbsp;<em>n</em><em>!</em> recursively, then translated that into code:</p>
+<iframe src="https://prezi.com/p/embed/JTh9ZkXcfANyghfCbVdp/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p>From there we saw how individual <strong>stack frames</strong> piled up as we made recursive calls to our function, starting with <span class="code-chonk">factorial(5)</span>:</p>
+<iframe src="https://prezi.com/p/embed/Dj5z2aZY3UhNf3MDrH6y/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p>I also presented a visualization of the recursive calls that showed us diving deeper into recursive calls and then returning from them:</p>
+<iframe src="https://prezi.com/p/embed/aD9sSPCrmXQomQVBEMXI/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p>Our final program was as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br />int</strong> factorial(<strong>int</strong> n)<br />{<br />   <strong>if</strong> (n == 0)<br />   {<br />      <strong>return</strong> 1;<br />   }<br /><br />   return n * factorial(n - 1);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   cout &lt;&lt; factorial(5) &lt;&lt; endl;<br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">120</span></pre>
+<p><strong><br />Common Pitfall #1</strong></p>
+<p>Over the years, I have seen a&nbsp;<span style="text-decoration: underline;"><strong>lot</strong></span> of people leave return statements off their functions, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> factorial(<strong>int</strong> n)<br />{<br />   <strong>if</strong> (n == 0)<br />   {<br />      <strong>return</strong> 1;<br />   }<br /><br />   n * factorial(n - 1);  <span style="background-color: #ba372a; color: #ffffff;"><strong>// NOoOoOoOoooooooo! :(</strong></span><br />}</pre>
+<p>This won't be a problem when working with the Qt Creator this quarter because our project flags stop you from compiling if an <span class="code-chonk">int</span> function doesn't return a value. By default, however, a C++ compiler&nbsp;<em>will</em> let you compile such a function, and so it's important to be aware of that moving forward.</p>
+<p><br /><strong>Common Pitfall #2</strong></p>
+<p>With the factorial example, we also discussed the importance of our code actually accounting for all possible valid inputs. Although factorials are not defined for negative integers, 0!&nbsp;<em>is</em> defined. So, the following code would be insufficient. If we called factorial(0), we would get stack overflow instead of a valid result:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> factorial(<strong>int</strong> n)<br />{<br />   <strong>if</strong> (n == 1)  <span style="background-color: #ba372a; color: #ffffff;"><strong>// NOoOoOoOoooooooo! :( What about n == 0?</strong></span><br />   {<br />      <strong>return</strong> 1;<br />   }<br /><br />   <strong>return</strong> n * factorial(n - 1);<br />}</pre>
+<p><br /><strong>Random Interlude: Unsigned Integers (<em>Supplementary</em>)</strong></p>
+<p><span style="font-size: 10pt; background-color: #ffff99;"><em>This is supplementary information. You don't need to know this right now.</em></span></p>
+<p>(<span style="font-size: 10pt; background-color: #eccafa;"><em>Not mentioned in class.</em></span>) Above, I'm inclined not to worry about what happens if someone calls <span class="code-chonk">factorial()</span> with a negative integer, since the function needn't be defined for negative integers. However, if you wanted to restrict inputs to non-negative integers, there's a data type in C++ for that called <span class="code-chonk">unsigned int</span>:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>unsigned int</strong> factorial(<span style="background-color: #ffcc99;"><strong>unsigned int</strong></span> n)<br />{<br />   <strong>if</strong> (n == 0)<br />   {<br />      <strong>return</strong> 1;<br />   }<br /><br />   <strong>return</strong> n * factorial(n - 1);<br />}</pre>
+<p><strong><br />Palindromes</strong></p>
+<p>The next recursive function we wrote detected whether or not a string was a palindrome. Recall that a <strong>palindrome</strong> is a string that is the same forward as it is backward.</p>
+<p>We started by examining the structure of the problem and observing that by peeling away the first and last character of a string (if those characters matched), we uncovered a subproblem that could be passed to our function recursively: namely, whether the remaining portion of the string was, itself, a palindrome.</p>
+<p>For an exploration of the recursive framing of this problem, see the following Prezi:</p>
+<iframe src="https://prezi.com/p/embed/GuVDDUEBEptmzk3sLn3z/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p>For a visualization of the stack frames associated with all the recursive calls that flow from a call to <span class="code-chonk">isPalindrome("racecar")</span>, see the following:</p>
+<iframe src="https://prezi.com/p/embed/XemkRrV68srVFdjz5elr/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p>Our final version of the palindrome code was as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "SimpleTest.h"<br />using namespace std;<br /><strong><br />bool</strong> isPalindrome(<strong>string</strong> s)<br />{<br /><span style="color: #236fa1;">   // <em>All strings of length 1 are palindromes, as is the empty string.</em></span><br />   <strong>if</strong> (s.length() &lt;= 1)<br />   {<br />      <strong>return</strong> true;<br />   }<br /><br />   <strong>if</strong> (s[0] != s[s.length() - 1])<br />   {<br />      <strong>return</strong> false;<br />   }<br /><br /><span style="color: #236fa1;">   // <em>Peel off the first and last character and pass the remaining string</em></span><br /><span style="color: #236fa1;">   // <em>to isPalindrome() recursively. We needn't use a new string variable</em></span><br /><span style="color: #236fa1;">   // <em>here. I did that in class only to clarify what was going on. The</em></span><br /><span style="color: #236fa1;">   // <em>more conventional approach is to pass s.substr(...) to isPalindrome()</em></span><br /><span style="color: #236fa1;">   // <em>directly.</em></span><br /> &nbsp; <strong>string</strong> sub = s.substr(1, s.length() - 2);<br />   <strong>return</strong> isPalindrome(sub);<br />}<br /><br /><strong>PROVIDED_TEST</strong>("various palindromes")<br />{<br />   <strong>EXPECT_EQUAL</strong>(isPalindrome("racecar"), true);<br />   <strong>EXPECT_EQUAL</strong>(isPalindrome("kayak"), true);<br />   <strong>EXPECT_EQUAL</strong>(isPalindrome("civic"), true);<br />   <strong>EXPECT_EQUAL</strong>(isPalindrome("radar"), true);<br />   <strong>EXPECT_EQUAL</strong>(isPalindrome("rotor"), true);<br />   <strong>EXPECT_EQUAL</strong>(isPalindrome("step on no pets"), true);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   runSimpleTests(ALL_TESTS);<br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Common Pitfall #3</strong></p>
+<p>Initially, I presented the following (broken) version of <span class="code-chonk">isPalindrome()</span>:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>bool</strong> isPalindrome(<strong>string</strong> s)<br />{<br />   <strong>if</strong> (s.length() &lt;= 1)<br />   {<br />      <strong>return</strong> true;<br />   }<br /><br /><strong>   <span style="background-color: #ba372a; color: #ffffff;">// ERROR: Not checking whether first and last characters match.</span></strong><br /><strong>   <span style="background-color: #ba372a; color: #ffffff;">// This function returns true for all possible inputs!</span></strong><br /><br /> &nbsp; <strong>string</strong> sub = s.substr(1, s.length() - 2);<br />   <strong>return</strong> isPalindrome(sub);<br />}</pre>
+<p>This version passed all the test cases above and highlighted the importance of testing not just whether a function like this returns <span class="code-chonk">true</span> when it's expected to, but also that it returns <span class="code-chonk">false</span> as intended.</p>
+<p><br /><strong>String Printing</strong></p>
+<p>We then took a moment to work on an exercise in-class. The challenge I presented was to write a recursive function that prints a string, with the restriction that any given call can only print a single character. We came up with the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br />void</strong> printString(<strong>string</strong> s)<br />{<br />   <strong>if</strong> (s.length() == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; endl;<br />      <strong>return</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; s[0];<br /><br />   <span style="color: #236fa1;">// <em>The string passed recursively has s[0] shaved off.</em></span><br />   printString(s.substr(1));<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <span style="color: #236fa1;">// <em>Calling twice to ensure proper placement of line break in output.</em></span><br />   printString("hello");<br />   printString("hello");<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">hello<br />hello</span></pre>
+<p><strong><br />Reverse String Printing</strong></p>
+<p>I then asked how we could modify the code above to print our string in reverse. One option (mentioned in class but not shown explicitly) would be to print the last character of the string in each recursive call, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> printStringReverse(<strong>string</strong> s)<br />{<br />   <strong>if</strong> (s.length() == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; endl;<br />      <strong>return</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; s[s.length() - 1];<br />   printStringReverse(s.substr(0, s.length() - 1));<br />}</pre>
+<p>Another option is to simply swap the order of our <span class="code-chonk">cout</span> and <span class="code-chonk">printStringReverse()</span> lines in the original recursive function, and to let the program stack take care of reversing the string for us:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br />void</strong> printStringReverse(<strong>string</strong> s)<br />{<br />   <strong>if</strong> (s.length() == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; endl;  <span style="background-color: #ba372a; color: #ffffff;"><strong>// This is problematic.</strong></span><br />      <strong>return</strong>;<br />   }<br /><br /><em>   </em><span style="background-color: #ffcc99;">// Swapped order of lines below.</span><br />   printStringReverse(s.substr(1));<br />   <strong>cout</strong> &lt;&lt; s[0];<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <span style="color: #236fa1;">// <em>Calling twice to ensure proper placement of line break in output.</em></span><br />   printStringReverse("hello");<br />   printStringReverse("hello");<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p>Notice that the output actually places the newline character&nbsp;<em>before</em> each reversed string, not after. We resolve that issue in the following section.</p>
+<p><br /><strong>Wrapper Functions</strong></p>
+<p>The base case of our recursive <span class="code-chonk">printStringReverse()</span> function is not the right place to print <span class="code-chonk">endl</span>. We hit the base case before <em>any</em> other characters have printed to the screen, so if we place the <span class="code-chonk">endl</span> there, we print our newline character <em>before</em> we print out the string in reverse.</p>
+<p>We also don't want to tell someone who calls our function that they have to print a newline character themselves. It's a natural part of the desired behavior of a string printing function, and so we should handle that ourselves.</p>
+<p>One way to accomplish this is through the use of a <strong>wrapper function</strong> -- a function that acts as a sort of gateway to our core function, but takes care of any setup or tear-down that needs to happen before or after that core function is executed. Here's what we did in class:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br />void</strong> <span style="background-color: #ffcc99;">printStringReverseForRealsies</span>(<strong>string</strong> s)<br />{<br />   <strong>if</strong> (s.length() == 0)<br />   {<br />      <strong>return</strong>;<br />   }<br /><br /> &nbsp; <span style="background-color: #ffcc99;">printStringReverseForRealsies</span>(s.substr(1));<br />   <strong>cout</strong> &lt;&lt; s[0];<br />}<br /><br /><strong>void</strong> printStringReverse(<strong>string</strong> s)<br />{<br />   <span style="background-color: #ffcc99;">printStringReverseForRealsies(s);</span><br />   <span style="background-color: #ffcc99;"><strong>cout</strong> &lt;&lt; endl;</span><br />}<br /><br /><strong>int</strong> main()<br />{<br />   <span style="color: #236fa1;">// <em>Calling twice to ensure proper placement of line break in output.</em></span><br />   printStringReverse("hello");<br />   printStringReverse("hello");<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">olleh<br />olleh</span></pre>
+<p>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not mentioned in class.</em></span>) The name <span class="code-chonk">printStringReverseForRealsies()</span> is highly unconventional. It would be more common to refer to that so-called helper function as <span class="code-chonk">printStringReverseHelper()</span> or something similar.</p>
+<p>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not mentioned in class.</em></span>) In the event that the <em>original</em> string passed to our function is empty, we might not want to print a newline character at all. To accomplish that, we could add a conditional statement to the <span class="code-chonk">printStringReverse()</span> wrapper function.</p>
+<p><br /><strong>Common Pitfall #4</strong></p>
+<p>When creating the wrapper function above and renaming the original <span class="code-chonk">printString()</span> function to <span class="code-chonk">printStringForRealsies()</span>, I pointed out one of the cardinal sins of modifying a recursive function name: forgetting to update the recursive call(s) within that function to the new name. The place where this probably comes up the most is in copying and pasting recursive functions you've already written and then making minor tweaks to them to achieve new functionality.</p>
+<p><br /><strong>Coin Flips</strong></p>
+<p>At the end of class, I talked briefly about the problem of printing out all possible outcomes from flipping a coin&nbsp;<em>n</em> times. For example, if we flip a coin twice, our outcomes are as follows (where 'H' is for flipping heads and 'T' is for flipping tails):</p>
+<p style="padding-left: 40px;">HH, HT, TH, TT</p>
+<p>This is a bit obnoxious to achieve iteratively, but can be achieved elegantly with just a few lines of code if we use recursion. We will explore this in more depth when we return to recursion, but in the meantime, here's the Prezi, which includes a recursive solution to this problem:</p>
+<iframe src="https://prezi.com/p/embed/T1JHZiNcZUf8M6D1rncW/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p><br /><strong>What's next?</strong></p>
+<p>On Friday, we will discuss a fundamental technique for analyzing algorithm efficiency: Big-O runtime analysis. Next week, after you have had some time to explore the examples from today's lecture quite deeply, we will return to the topic of recursion.</p>
+<p><br /><strong>Practice Problems</strong></p>
+<p>1. Enrich your knowledge of the material we covered today by reviewing all the sections of today's notes labeled "(<span style="font-size: 10pt; background-color: #eccafa;"><em>Not mentioned in class.</em></span>)" Be sure to review all the "Common Pitfall" sections, as well.</p>
+<p>2. After reviewing today's examples, take at least a 30-minute break, then try to code up each of the following recursive functions from scratch, without referring to the notes:</p>
+<p style="padding-left: 40px;">(a) <span class="code-chonk">int factorial(int n)</span></p>
+<p style="padding-left: 40px;">(b) <span class="code-chonk">bool isPalindrome(string s)</span></p>
+<p style="padding-left: 40px;">(c) <span class="code-chonk">void printString(string s)</span></p>
+<p>3. The <span class="code-chonk">printString()</span> function from today's lecture is somewhat inefficient because it is repeatedly constructing new strings with the <span class="code-chonk">s.substr()</span> call. Write a different version of the function that takes a <em>reference</em> to a string and passes that reference to all recursive calls to save time and space. Add a second parameter to the function (an integer parameter) to keep track of how far along we are in the string, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br />void</strong> printStringHelper(<strong>string</strong><span style="background-color: #ffcc99;">&amp;</span> s, <span style="background-color: #ffcc99;"><strong>int</strong> k</span>)<br />{<br />   <strong>if</strong> (<span style="background-color: #000000;"> <strong><span style="color: #ffffff;">???</span></strong> </span>)<br />   {<br />      <strong>cout</strong> &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; s[<span style="background-color: #000000; color: #ffffff;"><strong> ??? </strong></span>];<br />   printStringHelper(s, <span style="background-color: #000000; color: #ffffff;"><strong> ??? </strong></span>);<br />}<br /><br /><strong>void</strong> printString(<strong>string</strong><span style="background-color: #ffcc99;">&amp;</span> s)<br />{<br />   printStringHelper(s, <span style="background-color: #000000; color: #ffffff;"><strong> ??? </strong></span>);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>string</strong> s = "hello";<br />   printString(s);<br />   printString(s);<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p>Highlight for solution:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #ced4d9; color: #ced4d9;">#include &lt;iostream&gt;</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">#include "console.h"</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">using namespace std;</span><br /><span style="background-color: #ced4d9; color: #ced4d9;"><strong><br />void</strong> printStringHelper(<strong>string</strong>&amp; s, <strong>int</strong> k)</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">{</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">   <strong>if</strong> (k == s.length())</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">   {</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">      <strong>cout</strong> &lt;&lt; <strong>endl</strong>;</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">      <strong>return</strong>;</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">   }</span><br /><br /><span style="background-color: #ced4d9; color: #ced4d9;">   <strong>cout</strong> &lt;&lt; s[k];</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">   printStringHelper(s, k + 1);</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">}</span><br /><br /><span style="background-color: #ced4d9; color: #ced4d9;"><strong>void</strong> printString(<strong>string</strong>&amp; s)</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">{</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">   printStringHelper(s, 0);</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">}</span><br /><span style="background-color: #ced4d9; color: #ced4d9;"><strong><br />int</strong> main()</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">{</span><br /><span style="background-color: #ced4d9; color: #ced4d9;"><strong>   string</strong> s = "hello";</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">   printString(s);<br /><span style="background-color: #ced4d9;">   printString(s);</span></span><br /><br /><span style="background-color: #ced4d9; color: #ced4d9;"><strong>   return</strong> 0;</span><br /><span style="background-color: #ced4d9; color: #ced4d9;">}</span></pre>
+<p>4. Modify <span class="code-chonk">printStringReverse()</span> and <span class="code-chonk">printStringReverseHelper()</span> so that the program below prints a newline <em>after</em> our string has been printed in reverse, but with the following restrictions:</p>
+<p style="padding-left: 50px;">(a) You cannot add new lines to <span class="code-chonk">printStringReverse()</span> or remove lines from that function. You can, however, modify the one line in that function.</p>
+<p style="padding-left: 50px;">(b) You cannot rearrange the order of the last two lines of the <span class="code-chonk">printStringReverseHelper()</span> function. You <em>must</em> call <span class="code-chonk">printStringReverseHelper()</span> recursively before executing the <span class="code-chonk">cout</span> statement. See the comment in the code below for more detail.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br />void</strong> printStringReverseHelper(<strong>string</strong> s)<br />{<br />   <strong>if</strong> (s.length() == 0)<br />   {<br />      <strong>return</strong>;<br />   }<br /><br /><em>   </em><span style="background-color: #ffcc99;">// You can modify the following lines, but do <strong>not</strong> swap their order. So, the<br /></span>   <span style="background-color: #ffcc99;">// cout statement must come <strong>after</strong> the printStringReverseHelper() statement.<br /></span>   <span style="background-color: #ffcc99;">// You can, however, add lines before or after the following, or even change</span><br />   <span style="background-color: #ffcc99;">// how the printStringReverseHelper() function is called.</span><br />   printStringReverseHelper(s.substr(1));<br />   <strong>cout</strong> &lt;&lt; s[0];<br />}<br /><br /><strong>void</strong> printStringReverse(<strong>string</strong> s)<br />{<br />   <span style="background-color: #ffcc99;">// You can modify the following line, but it must call printStringReverseHelper(),</span><br />   <span style="background-color: #ffcc99;">// and you cannot add any other lines of code to this function.</span><br />   printStringReverseHelper(s);<br />}<br /><br /><strong>int</strong> main()<br />{<br /> &nbsp; <strong>string</strong> s = "hello";<br />   printStringReverse(s);<br />   printStringReverse(s);<br /><br />  &nbsp;<strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">olleholleh</span></pre>
+<p><span style="font-size: 10pt;"><strong>Highlight for hint:</strong></span></p>
+<p><span style="font-size: 10pt; background-color: #ced4d9; color: #ced4d9;">There's a way to do this that involves passing an extra parameter to the helper function.</span></p>
+<p><strong><span style="font-size: 10pt;">Highlight for solution:</span></strong></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #ced4d9; background-color: #ced4d9;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<strong><br /><br />void</strong> printStringReverseHelper(<strong>string</strong> s, <strong>bool</strong> isOriginalCall)</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">{</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   <strong>if</strong> (s.length() == 0)</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   {</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">      <strong>return</strong>;</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   }</span><br /><br /><span style="color: #ced4d9; background-color: #ced4d9;">   printStringReverseHelper(s.substr(1), false);</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   <strong>cout</strong> &lt;&lt; s[0];</span><br /><br /><span style="color: #ced4d9; background-color: #ced4d9;">   // <em>This should only be true for the very first call to this function, which</em></span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   // <em>is exactly where we want to print the newline character (after returning</em></span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   // <em>from the other function calls).</em></span><br /><br /><span style="color: #ced4d9; background-color: #ced4d9;">   <strong>if</strong> (isOriginalCall)</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   {</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">      <strong>cout</strong> &lt;&lt; endl;</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   }</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">}</span><br /><br /><span style="color: #ced4d9; background-color: #ced4d9;"><strong>void</strong> printStringReverse(string s)</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">{</span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   // <em>Pass true to this function to convey that it is the originating call for</em></span><br /><span style="color: #ced4d9; background-color: #ced4d9;">   // <em>this string.</em></span><br /><br /><span style="color: #ced4d9; background-color: #ced4d9;">   printStringReverseHelper(s, true);</span><br /><span style="color: #000000; background-color: #ced4d9;"><span style="color: #ced4d9;">}</span><br /><br /><span style="color: #ced4d9;"><strong>int</strong> main()</span><br /><span style="color: #ced4d9;">{</span><br /><span style="color: #ced4d9;">&nbsp; &nbsp; <strong>string</strong> s = "hello";</span><br /><span style="color: #ced4d9;">&nbsp; &nbsp; printStringReverse(s);</span><br /><span style="color: #ced4d9;">&nbsp; &nbsp; printStringReverse(s);</span><br /><br /><span style="color: #ced4d9;">&nbsp; &nbsp; <strong>return</strong> 0;</span><br /><span style="color: #ced4d9;">}</span><br /></span></pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">olleh<br />olleh</span></pre>
+<p>5. Be sure to trace through the <span class="code-chonk">coinFlip()</span> function presented in the final Prezi above to see if you can make sense of how it's working. You might want to use your debugger to see how <span class="code-chonk">s</span> is changing with each successive function call, or introduce various <span class="code-chonk">cout</span> statements that print information about all the stack frames as the function makes its recursive calls.</p>
+<p>6. Be sure to read the textbook for further explanation, examples, and practice problems related to recursion.</p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-15
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

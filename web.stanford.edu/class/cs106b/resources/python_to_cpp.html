@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Python to C++ Guide</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Python to C++ Guide</h1>
+
+<hr>
+
+<p class="attribution">
+Written by Keith Schwarz, Jillian Tang, and Ethan Chi
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><style>
+table td, table td * {
+    vertical-align: top;
+}
+</style>
+
+<h2 id="denoting-structure-semicolons-parentheses-and-braces">Denoting Structure: Semicolons, Parentheses, and Braces</h2>
+
+<p>In Python, indentation and whitespace indicates where statements end and how structures nest inside one another. In C++, you need to explicitly indicate this using semicolons, parentheses, and braces.</p>
+
+<p>Curly braces – the <code class="language-c++ highlighter-rouge"><span class="p">{</span></code> and <code class="language-c++ highlighter-rouge"><span class="p">}</span></code> characters – are almost exactly equivalent to Python indentation. You’ll need to use them in if statements, for loops, while loops, and functions. For example:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">myFunction</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="n">string</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<p>Although indentation alone does not tell the C++ compiler how structures nest inside one another, it’s important to indent things nonetheless to better convey the meaning of your code.</p>
+
+<p>When using curly braces, it’s customary to put each close brace on its own line and aligned with the part of the code it’s closing out. This makes it easier to see how things are nested.</p>
+
+<p>Parentheses – the <code class="language-c++ highlighter-rouge"><span class="p">(</span></code> and <code class="language-c++ highlighter-rouge"><span class="p">)</span></code> characters – also have the same meaning as in Python. The difference is that, in C++, several structures require the use of parentheses in places where they were optional in Python. For example, the conditions in an if statement and while loop require parentheses:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">137</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">/=</span> <span class="mi">2</span>
+
+
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">137</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">x</span> <span class="o">/=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<p>One of the more obvious differences between Python and C++ is the use of semicolons – the <code class="language-c++ highlighter-rouge"><span class="p">;</span></code>character. In Python, the end of a statement is denoted by a newline. In C++, every statement (except for control statements like <code class="language-c++ highlighter-rouge"><span class="k">for</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">if</span></code>, and <code class="language-c++ highlighter-rouge"><span class="k">while</span></code>) must end with a semicolon. For example:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***** C++ *****/</span>
+<span class="kt">int</span> <span class="n">number</span> <span class="o">=</span> <span class="mi">137</span><span class="p">;</span>
+<span class="n">callAFunction</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>However, make sure that you do <strong><em>not</em></strong> put a semicolon after a control statement like <code class="language-c++ highlighter-rouge"><span class="k">for</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">if</span></code>, or <code class="language-c++ highlighter-rouge"><span class="k">while</span></code>. Similarly, do not put a semicolon at the end of a statement beginning with <code class="language-c++ highlighter-rouge"><span class="cp">#</span></code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***** Bad C++: Do Not Do This! *****/</span>
+<span class="cp">#include</span> <span class="cpf">"strlib.h"</span><span class="c1">;               // &lt;-- Oops, no semicolon here!</span><span class="cp">
+</span><span class="k">if</span> <span class="p">(</span><span class="n">myNumber</span> <span class="o">==</span> <span class="mi">137</span><span class="p">);</span> <span class="p">{</span>            <span class="c1">// &lt;-- Oops, no semicolon here!</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">myNumber</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span> <span class="p">{</span>   <span class="c1">// &lt;-- Oops, no semicolon here!</span>
+        <span class="n">myNumber</span> <span class="o">/=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="types">Types</h2>
+
+<p>C++ is a typed language, which means that you sometimes need to explicitly say what type something is.</p>
+
+<p>A type is a fundamental kind of value. Examples include <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">string</span></code>, <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> (single character, not in Python), <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code> (equivalent of Python <code class="language-c++ highlighter-rouge"><span class="kt">float</span></code>). You must explicitly state the type when declaring a variable, but not while using it after that. For example:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/***** C++ *****/</span>
+<span class="kt">int</span> <span class="n">number</span> <span class="o">=</span> <span class="mi">137</span><span class="p">;</span> <span class="c1">// Declare number; type needed</span>
+<span class="n">number</span> <span class="o">+=</span> <span class="mi">106</span><span class="p">;</span>    <span class="c1">// number already declared; do not include type</span>
+</code></pre></div></div>
+
+<p>Function parameters must also have types; also, every function must include a return type. If the function doesn’t return anything, it has return type <code class="language-c++ highlighter-rouge"><span class="kt">void</span></code>. However, you don’t have to include the types when calling the function.</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">pizkwat</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+
+<span class="k">def</span> <span class="nf">squigglebah</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+
+
+<span class="n">ooboo</span> <span class="o">=</span> <span class="n">pizkwat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">squigglebah</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">pizkwat</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">squigglebah</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">ooboo</span> <span class="o">=</span> <span class="n">pizkwat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">squigglebah</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<h2 id="for-loops">For Loops</h2>
+
+<p>In Python, iterating over a range of numbers can be done using the <code class="language-c++ highlighter-rouge"><span class="k">for</span></code> … <strong>in</strong> loop. In C++, the syntax is a bit more involved:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<h2 id="conditionals">Conditionals</h2>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="k">if</span></code> and <code class="language-c++ highlighter-rouge"><span class="k">else</span></code> keywords work basically the same way in C++ as they do in Python:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">myNumber</span> <span class="o">==</span> <span class="mi">137</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Huzzah!"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Alas!"</span><span class="p">)</span>
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">myNumber</span> <span class="o">==</span> <span class="mi">137</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Huzzah!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Alas!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<p>In C++, there is no <code class="language-c++ highlighter-rouge"><span class="n">elif</span></code> keyword. Instead, write out <code class="language-c++ highlighter-rouge"><span class="k">else</span> <span class="k">if</span></code> as two words, like this:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">myNumber</span> <span class="o">==</span> <span class="mi">137</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Yeehaw!"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">myNumber</span> <span class="o">==</span> <span class="mi">106</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Golly gee!"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Oh fiddlesticks."</span><span class="p">)</span>
+
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">myNumber</span> <span class="o">==</span> <span class="mi">137</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Yeehaw!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">myNumber</span> <span class="o">==</span> <span class="mi">106</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Golly gee!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Oh fiddlesticks."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<p>In Python, you use <code class="language-c++ highlighter-rouge"><span class="n">and</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">not</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">or</span></code> to combine or modify predicates. While these keywords will technically work in C++, it's not considered good style to use them. Instead, use the (slightly more cryptic, but more standard) symbols</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="o">&amp;&amp;</span></code> in place of <code class="language-c++ highlighter-rouge"><span class="n">and</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="o">||</span></code> in place of <code class="language-c++ highlighter-rouge"><span class="n">or</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="o">!</span></code> in place of <code class="language-c++ highlighter-rouge"><span class="n">not</span></code></li>
+</ul>
+
+<p>For example:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">==</span> <span class="n">c</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Norwuz"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">==</span> <span class="n">c</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Rosh Hashanah"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="ow">not</span> <span class="n">predicate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Losar"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Just a day."</span><span class="p">)</span>
+
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">==</span> <span class="n">c</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Norwuz"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="o">||</span> <span class="n">b</span> <span class="o">==</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Rosh Hashanah"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="o">!</span><span class="n">predicate</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Losar"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Just a day."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<p>In Python, you can chain inequalities together. In C++, you cannot do this, and instead need to build multiple inequalities and use <code class="language-c++ highlighter-rouge"><span class="o">&amp;&amp;</span></code> to combine them together:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"One digit."</span><span class="p">)</span>
+
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="o">&amp;&amp;</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"One digit."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<h2 id="comments">Comments</h2>
+
+<p>Python has single-line comments that start with <code class="language-c++ highlighter-rouge"><span class="cp">#</span></code>. In C++, we use <code class="language-c++ highlighter-rouge"><span class="c1">//</span></code> instead.</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sporgle</span><span class="p">(</span><span class="n">quizbah</span><span class="p">)</span> <span class="c1"># Transform input
+</span></code></pre></div></div>
+
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sporgle</span><span class="p">(</span><span class="n">quizbah</span><span class="p">);</span> <span class="c1">// Transform input</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<p>C++ also has multiline comments that can be used to describe a dense block of code. They begin with the sequence <code class="language-c++ highlighter-rouge"><span class="o">/*</span></code> and end with <code class="language-c++ highlighter-rouge"><span class="err">*/</span></code>. For aesthetic reasons it’s common to see each line of the comment starting with a star, but this isn’t strictly necessary.</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Did you know that the ocean sunfish
+# is so large that, when a single 
+# sunfish is accidentally caught by
+# a fishing boat, it can account for 
+# about half the total catch?
+
+</span></code></pre></div></div>
+    </td>
+    <td>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Did you know that the ocean sunfish
+ * is so large that, when a single 
+ * sunfish is accidentally caught by
+ * a fishing boat, it can account for 
+ * about half the total catch?
+ */</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<p>Python uses docstrings to document what a function does <em>inside</em> the body of the function. In C++, the convention is to use a multiline comment <em>before</em> the body of the function:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">phchthshkh</span><span class="p">(</span><span class="n">o</span><span class="p">):</span>
+    <span class="s">"""
+    This function name and argument 
+    name are terrible. They're just 
+    examples.
+    """</span>
+    <span class="k">return</span> <span class="n">o</span> <span class="o">*</span> <span class="n">o</span>
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* This function name and argument
+ * name are terrible. They're just 
+ * examples.
+ */</span>
+<span class="kt">int</span> <span class="nf">phchthshkh</span><span class="p">(</span><span class="kt">double</span> <span class="n">o</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">o</span> <span class="o">*</span> <span class="n">o</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<h2 id="function-prototypes">Function Prototypes</h2>
+<p>C++ (for the most part) uses a model called <em>one-pass compilation</em>. This means that the C++ compiler starts at the top of the program, reading downward, and only knows about functions that it’s seen so far. As a result, if you want to call a function that you will eventually define but haven’t yet gotten to writing, you need to include a <em>prototype</em> for that function at the top of the program.</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="k">def</span> <span class="nf">eclair</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">croissant</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">croissant</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+
+<span class="k">print</span><span class="p">(</span><span class="n">eclair</span><span class="p">(</span><span class="mi">137</span><span class="p">))</span>
+
+
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">crossaint</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">);</span> <span class="c1">// Prototype</span>
+
+<span class="kt">int</span> <span class="nf">eclair</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">croissant</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">croissant</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">eclair</span><span class="p">(</span><span class="mi">137</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<h2 id="strings-and-characters">Strings and Characters</h2>
+
+<p>C++ makes a distinction between strings and characters. A <em>character</em> (denoted by the type <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code>) is a single glyph you can display on the screen. A <em>string</em> (denoted by the type <code class="language-c++ highlighter-rouge"><span class="n">string</span></code>) is a sequence of zero or more characters. Anything in single quotes (e.g. <code class="language-c++ highlighter-rouge"><span class="sc">'a'</span></code>) is considered a <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code>, while anything in doublequotes is considered a string (e.g. <code class="language-c++ highlighter-rouge"><span class="s">"a"</span></code>). For example:</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">papyrus</span> <span class="o">=</span> <span class="s">'a'</span>    <span class="c1"># String of length 1
+</span>
+<span class="n">quill</span> <span class="o">=</span> <span class="s">"a"</span>      <span class="c1"># String of length 1 
+</span>
+<span class="n">quill</span> <span class="o">=</span> <span class="n">papyrus</span>  <span class="c1"># Sure, no problem.
+</span><span class="n">papyrus</span> <span class="o">=</span> <span class="n">quill</span>  <span class="c1"># Sure, no problem.
+</span></code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">papyrus</span> <span class="o">=</span> <span class="sc">'a'</span><span class="p">;</span>  <span class="c1">// Character</span>
+
+<span class="n">string</span> <span class="n">quill</span> <span class="o">=</span> <span class="s">"a"</span><span class="p">;</span>  <span class="c1">// String</span>
+
+<span class="n">quill</span> <span class="o">=</span> <span class="n">papyrus</span><span class="p">;</span>     <span class="c1">// Error! Wrong types</span>
+<span class="n">papyrus</span> <span class="o">=</span> <span class="n">quill</span><span class="p">;</span>     <span class="c1">// Error! Wrong types</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<p>Many string functions built into Python are not present in C++, but you can get the same functionality by using functions from the "strlib.h" header file.</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+
+<span class="n">text</span> <span class="o">=</span> <span class="s">"Pirate"</span>
+<span class="k">if</span> <span class="n">text</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"Pi"</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"A circle"</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">text</span><span class="p">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">"irate"</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"It's angry"</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="s">"ra"</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Sun god!"</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">text</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"at"</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Preposition!"</span><span class="p">)</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">upper</span><span class="p">())</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s">"a walk in the park"</span>
+<span class="n">parts</span> <span class="o">=</span> <span class="n">text</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+
+
+<span class="n">text</span> <span class="o">=</span> <span class="s">"137"</span>
+<span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "strlib.h"
+#include "vector.h"
+</span>
+<span class="n">string</span> <span class="n">text</span> <span class="o">=</span> <span class="s">"Pirate"</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">startsWith</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s">"Pi"</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"A circle!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">endsWith</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s">"irate"</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"It's angry!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"ra"</span><span class="p">)</span> <span class="o">!=</span> <span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Sun god!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"at"</span><span class="p">)</span> <span class="o">!=</span> <span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Preposition!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">toLowerCase</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">toUpperCase</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s">"a walk in the park"</span><span class="p">;</span>
+<span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">parts</span> <span class="o">=</span> <span class="n">stringSplit</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s">" "</span><span class="p">);</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">part</span> <span class="o">:</span>  <span class="n">parts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">part</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s">"137"</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">stringToInt</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
+<span class="n">text</span> <span class="o">=</span> <span class="n">to_string</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+
+<h2 id="substrings">Substrings</h2>
+
+<p>Substrings in C++ work differently than in Python. In Python, the notation <code class="language-c++ highlighter-rouge"><span class="n">str</span><span class="p">[</span><span class="n">start</span><span class="o">:</span><span class="n">end</span><span class="p">]</span></code> gives you a substring starting at position <code class="language-c++ highlighter-rouge"><span class="n">start</span></code> and ending at position <code class="language-c++ highlighter-rouge"><span class="n">end</span></code>. In C++, the function call <code class="language-c++ highlighter-rouge"><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">len</span><span class="p">)</span> </code>gives you a substring of length <code class="language-c++ highlighter-rouge"><span class="n">len</span></code> starting just before position <code class="language-c++ highlighter-rouge"><span class="n">start</span></code>. You can also use <code class="language-c++ highlighter-rouge"><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">)</span></code> to get a substring starting at position <code class="language-c++ highlighter-rouge"><span class="n">start</span></code> and continuing to the end of the string. Negative indices are not allowed.</p>
+
+<table>
+
+<th>Python</th>
+<th>C++</th>
+
+<tr>
+    <td>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text</span> <span class="o">=</span> <span class="s">"appraising"</span>
+
+<span class="c1"># praising
+</span><span class="k">print</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+
+<span class="c1"># raisin
+</span><span class="k">print</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">9</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+    </td>
+    <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="n">text</span> <span class="o">=</span> <span class="s">"appraising"</span><span class="p">;</span>
+
+<span class="c1">// praising</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+<span class="c1">// raisin</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+    </td>
+</tr>
+</table>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Sep-14
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

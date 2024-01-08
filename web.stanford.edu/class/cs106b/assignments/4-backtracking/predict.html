@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Text prediction</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Text prediction</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+
+<div id="content"><p>In ancient times, the interface of a phone consisted of a simple numeric keypad where each key was used for both digits and letters.  Here is an old-school keypad labeled with the standard number-to-letter mappings.</p>
+
+<p class="w-50 mx-auto"><img src="img/phonekeypad.png" alt="telephone keypad" /></p>
+
+<p>Mapping 26 letters to 10 keys means each digit key did multi-duty for more than one letter. A variety of janky mechanisms were used to indicate which of the letters was intended; some interfaces were rather annoying (tap '2' once for A, twice for B, thrice for C, …); the more clever algorithms operated on a single tap and tried to infer which letter was intended based on context. One of these algorithms was <a href="https://en.wikipedia.org/wiki/T9_%28predictive_text%29">Tegic T9</a> (which stands for <em>Text on 9 keys</em>), a predictive algorithm that guesses the intended letter by looking for sequences that form valid English words.</p>
+
+<p>Let's work through an example to see how this algorithm works.</p>
+
+<ul>
+  <li>The user taps the digit keys <code class="language-c++ highlighter-rouge"><span class="mi">6263</span></code>.</li>
+  <li>On the keypad, the digit 6 maps to the set of potential letters {<code class="language-c++ highlighter-rouge"><span class="n">M</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">N</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">O</span></code>}, the digit 2 to {<code class="language-c++ highlighter-rouge"><span class="n">A</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">B</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">C</span></code>} and the digit 3 to {<code class="language-c++ highlighter-rouge"><span class="n">D</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">E</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">F</span></code>}.</li>
+  <li>The user's sequence has four digits and three letter choices per digit, leading to a total of <code class="language-c++ highlighter-rouge"><span class="mi">3</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="mi">3</span> <span class="o">=</span> <span class="mi">81</span></code> possible letter sequences to explore.</li>
+  <li>The goal of the function is to recursively explore all of the possible letter sequences and gather those are valid English words.</li>
+  <li>Visualize/sketch the tree corresponding to the recursive exploration of letter sequences. The first digit tapped was 6; the three possibilities for this digit are {<code class="language-c++ highlighter-rouge"><span class="n">M</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">N</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">O</span></code>}. The decision at the top of the tree has three branches: one to form words starting with <code class="language-c++ highlighter-rouge"><span class="n">M</span></code>, one to form words starting with <code class="language-c++ highlighter-rouge"><span class="n">N</span></code>, and one to form words words starting with <code class="language-c++ highlighter-rouge"><span class="n">O</span></code>.</li>
+  <li>Having chosen <code class="language-c++ highlighter-rouge"><span class="n">M</span></code> for the first digit, the recursion moves deeper into the tree and at the second decision (letter for  digit <code class="language-c++ highlighter-rouge"><span class="mi">2</span></code>) are three branches for {<code class="language-c++ highlighter-rouge"><span class="n">A</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">B</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">C</span></code>}. This continues downward for the remaining two digits. The letter sequences recursively explored down the <code class="language-c++ highlighter-rouge"><span class="n">M</span></code> branch include <code class="language-c++ highlighter-rouge"><span class="n">MAMD</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">MAME</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">MAMF</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">MBMD</span></code>, and many others. However, only one of these sequences is an actual word in the English dictionary: <code class="language-c++ highlighter-rouge"><span class="n">MANE</span></code>. When the recursion encounters this word, save it as a suggestion.</li>
+  <li>After unchoosing, the search will backtrack to try other choices and thereby explore other branches of the trees. When exploring sequences starting with <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> and then those starting with <code class="language-c++ highlighter-rouge"><span class="n">O</span></code>, the search finds two other valid words: <code class="language-c++ highlighter-rouge"><span class="n">NAME</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">OBOE</span></code>, which are also added to the set. The complete set of suggestions predicted for <code class="language-c++ highlighter-rouge"><span class="mi">6263</span></code> are the words "<code class="language-c++ highlighter-rouge"><span class="n">mane</span></code>," "<code class="language-c++ highlighter-rouge"><span class="n">name</span></code>," and "<code class="language-c++ highlighter-rouge"><span class="n">oboe</span></code>."</li>
+</ul>
+
+<h2 id="your-task">Your task</h2>
+<p>You are to write a function that use a T9-style prediction algorithm to suggest words that match a sequence of tapped digits. The function prototype is</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">predict</span><span class="p">(</span><span class="n">string</span> <span class="n">digits</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">suggestions</span><span class="p">,</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">lex</span><span class="p">)</span>
+</code></pre></div></div>
+<p>The function operates by recursively exploring all the possible letter sequences formed by the tapped digits and storing those sequences that are actual words in the set of suggestions.</p>
+
+<p>The starter code declares a program-wide constant <code class="language-c++ highlighter-rouge"><span class="n">keypad</span></code> that maps from digit to set of letters. This constant is declared outside of all functions and is accessible in program-wide scope. Take note of this very important distinction —<code class="language-c++ highlighter-rouge"><span class="n">keypad</span></code> is a <em>constant</em> and not a global <em>variable</em>. Declaring variables in global scope is considered poor style and can lead to functional errors and debugging challenges. The <a href="../../resources/style_guide.html" title="Style Guide">CS106B style guide</a> sets down a clear expectation that the global variables are <strong>never</strong> welcome in this course.</p>
+
+<div id="Q6" class="question alert alert-warning">
+  <p><strong>Q6</strong>. In your own words, identify the drawbacks to using global variables and explain why a program-wide constant like <code class="language-c++ highlighter-rouge"><span class="n">keypad</span></code> does not suffer from the same drawbacks.</p>
+</div>
+
+<h2 id="notes">Notes</h2>
+<ul>
+  <li><strong>Helper functions</strong>. The function <code class="language-c++ highlighter-rouge"><span class="n">predict</span></code> must be implemented to exactly match the prototype above. You are free to decide the names and parameters of any additional helper/wrapper functions you use. You will almost certainly need at least one helper function.</li>
+  <li><strong>English lexicon</strong>. The Stanford library includes <code class="language-c++ highlighter-rouge"><span class="n">Lexicon</span></code>, a special-purpose class to represent a word list. We also supply a lexicon data file containing a large list of English words. The sample code below demonstrates using a <code class="language-c++ highlighter-rouge"><span class="n">Lexicon</span></code> to lookup words and prefixes. For more details, see the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Lexicon.html" title="Documentation for Lexicon">Lexicon documentation</a>.
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">Lexicon</span> <span class="nf">lex</span><span class="p">(</span><span class="s">"res/EnglishWords.txt"</span><span class="p">);</span> <span class="c1">// initialize lex with words from file</span>
+    
+ <span class="k">if</span> <span class="p">(</span><span class="n">lex</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="s">"oboe"</span><span class="p">))</span> <span class="p">{</span>      <span class="c1">// if oboe is on the word list</span>
+ 	<span class="c1">// do something </span>
+ <span class="p">}</span>
+
+ <span class="k">if</span> <span class="p">(</span><span class="n">lex</span><span class="p">.</span><span class="n">containsPrefix</span><span class="p">(</span><span class="s">"ana"</span><span class="p">))</span> <span class="p">{</span> <span class="c1">// if any words on list begin "ana...</span>
+ 	<span class="c1">// do something else</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Pruning</strong>. The Lexicon <code class="language-c++ highlighter-rouge"><span class="n">containsPrefix</span></code> should be used to prune dead-end searches. For example, if the digits tapped were <code class="language-c++ highlighter-rouge"><span class="mi">7849</span></code> and the letter sequence being explored thus far is "PV," there is no point in continuing down this path because there are no words in the lexicon that begin with that prefix. Pruning is most cleanly handled by adding a base case to detect a dead end and immediately returning without making further recursive calls.</li>
+  <li><strong>Use of ADTs</strong>.  You will use <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> , <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">Lexicon</span></code> in solving this problem.  As it can be expensive to make copies of large data structures, pass these variables by reference to allow efficient sharing without copying. Note that the Lexicon lookup is case-insensitive; in contrast, a Set does distinguish by case when comparing two strings. The words in the set of suggestions should be in all lower-case to match our expected result.</li>
+  <li><strong>Efficiency</strong>. With a correct algorithm, effective pruning, and appropriate use of ADTs, finding predictions should be blindingly quick, finishing within a second or two.</li>
+  <li><strong>Valid digits</strong>. Your function may assume that the input will contain only digit characters that have assigned letters (e.g. only <code class="language-c++ highlighter-rouge"><span class="mi">2</span></code> through <code class="language-c++ highlighter-rouge"><span class="mi">9</span></code>). Inputs such as <code class="language-c++ highlighter-rouge"><span class="mi">0</span></code>, <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code>, <code class="language-c++ highlighter-rouge"><span class="cp">#</span></code>, <code class="language-c++ highlighter-rouge"><span class="o">*</span></code> or any other character are illegal. You do not have to handle these other characters, and we will not test on such illegal inputs.</li>
+  <li><strong>Testing</strong>.  A simple way to add test cases of your own is to choose a word, convert it to tapped digits, pass those digits to predict, and be sure the original word is in the set of suggestions. Verify that the other suggested words also match the tapped digits.</li>
+  <li><strong>Assumptions</strong>.  You may assume that the input digits contain only valid digit characters, that the suggestions set is empty to start, and that the Lexicon is a populated word list. The function adds to the suggestion set all letter sequences that are determined to be valid words, i.e. contained in the lexicon. If none are found, the suggestion set remains empty.</li>
+</ul>
+
+<h2 id="extensions">Extensions</h2>
+<ul>
+  <li><strong>Error correction</strong>. The real-world T9 algorithm included a feature to recognize and correct typing/texting errors, by looking at neighboring keys on the keypad to correct typos. For example, the word "testing" is entered with the digit keys <code class="language-c++ highlighter-rouge"><span class="mi">8378464</span></code>.  If the user mistyped a <code class="language-c++ highlighter-rouge"><span class="mi">2</span></code> for the <code class="language-c++ highlighter-rouge"><span class="mi">3</span></code> and a <code class="language-c++ highlighter-rouge"><span class="mi">9</span></code> for the <code class="language-c++ highlighter-rouge"><span class="mi">6</span></code>, the mis-entered digits <code class="language-c++ highlighter-rouge"><span class="mi">8278494</span></code> match no words. Rather than report no suggestions in that case, the fancier search would instead find words that are near matches. It would suggest words such as "tasting" (<code class="language-c++ highlighter-rouge"><span class="mi">8278464</span></code>), "testing" (<code class="language-c++ highlighter-rouge"><span class="mi">8378464</span></code>), and "tapping" (<code class="language-c++ highlighter-rouge"><span class="mi">8277464</span></code>) that have corrected up to two typos in the entered digits. Finding near-match suggestions is a marvelous further application of your recursive superpowers.</li>
+  <li><strong>Auto-complete</strong>. After tapping the initial sequence of few digits, recursion can be further applied to find ways to extend the sequence to form a valid word and to offer these auto-completions to the user. The search for possible auto-completions is similar to the basic T9 algorithm, with a few little tweaks. More practice to build your core strength with recursion!</li>
+  <li><strong>Other prediction/recognition tasks</strong>. Another cool recursive prediction algorithm is the "swipe-to-type" interface prevalent on modern cell phones. The same general prediction algorithm can be adapted to work for both T9 and swipe-to-type by configuring the set of possibilities for each user tap/gesture. Neat!</li>
+</ul>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-23
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

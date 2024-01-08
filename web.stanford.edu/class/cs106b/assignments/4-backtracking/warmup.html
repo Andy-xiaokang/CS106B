@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Backtracking Warmup</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Backtracking Warmup</h1>
+
+<hr>
+
+<p class="attribution">
+Warmup from Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p class="w-50 mx-auto border p-1"><img src="https://wizardzines.com/comics/reproduce-bug/reproduce-bug.png" alt="" />
+<small><a href="https://wizardzines.com/comics/reproduce-bug">"Reproduce the bug" by Julia Evans</a></small></p>
+
+<p>When you encounter a bug in a program, your first instinct is often to ask, <em>“Why <strong>isn’t</strong> my program doing what I want it to do?”</em></p>
+
+<p>One of the best ways to find that answer is to instead start with a different question: <em>“What <strong>is</strong> my program doing, and why is that different than what I intended?”</em></p>
+
+<p>The debugger is a powerful tool for observing exactly what a program is doing. With clear information about what is happening when a program is executing, you can relate that outcome to what the code asks for and then change the code to instead reflect your intentions.</p>
+
+<p>This warmup exercise will give you practice working with the debugger in the context of complex recursive problems.</p>
+
+<h2 id="towers-of-hanoi-animation">Towers of Hanoi animation</h2>
+<p>The <strong>Towers of Hanoi</strong> is a classic puzzle that has a beautiful recursive solution. You can read more about the puzzle and its history on the <a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi">Towers of Hanoi wikipedia page</a>.</p>
+
+<p>The recursive function below will move a tower of disks from the start peg to the end peg, following the puzzle rules (can only move single disk at a time, larger disk cannot be placed on top of smaller disk)</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">moveTower</span><span class="p">(</span><span class="kt">int</span> <span class="n">towerHeight</span><span class="p">,</span> <span class="n">string</span> <span class="n">startPeg</span><span class="p">,</span> <span class="n">string</span> <span class="n">endPeg</span><span class="p">,</span> <span class="n">string</span> <span class="n">tempPeg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">towerHeight</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="c1">// base case: tower of single disk is easy to move</span>
+        <span class="n">moveSingleDisk</span><span class="p">(</span><span class="n">startPeg</span><span class="p">,</span> <span class="n">endPeg</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// recursive case:</span>
+        <span class="c1">// move smaller tower aside onto temp, this uncovers the largest disk that was at bottom</span>
+        <span class="c1">// move the largest disk from start to end</span>
+        <span class="c1">// move the smaller tower from temp to end</span>
+        <span class="n">moveTower</span><span class="p">(</span><span class="n">towerHeight</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">startPeg</span><span class="p">,</span> <span class="n">tempPeg</span><span class="p">,</span> <span class="n">endPeg</span><span class="p">);</span>
+        <span class="n">moveSingleDisk</span><span class="p">(</span><span class="n">startPeg</span><span class="p">,</span> <span class="n">endPeg</span><span class="p">);</span>
+        <span class="n">moveTower</span><span class="p">(</span><span class="n">towerHeight</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tempPeg</span><span class="p">,</span> <span class="n">endPeg</span><span class="p">,</span> <span class="n">startPeg</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p class="w-50 mx-auto"><img src="img/hanoi.png" alt="towers of hanoi image here" /></p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> includes a correct solution for the Towers of Hanoi problem along with a charming graphical animation. Run the tests in <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> to watch the animation and marvel at how that tiny recursive function is capable of doing so much. Isn’t that amazing?</p>
+
+<p>Now let's dive into the debugger to see the mechanism of action behind all the recursive goodness.</p>
+
+<h2 id="1-debugger-step-commands">1) Debugger "Step" commands</h2>
+<p>In this exercise, you will explore the different types of step commands in the debugger and how that relates to tracing recursive code. The controls for stepping are on the middle toolbar of the debugger view in Qt Creator.
+They look like this:</p>
+
+<p class="w-50 mx-auto"><img src="img/debugging-controls.png" alt="Screenshot of step controls from QT debugger" /></p>
+
+<p>The five icons from left to right are the controls for <strong>Continue</strong>,
+<strong>Stop</strong>, <strong>Step Over</strong>, <strong>Step Into</strong> and <strong>Step Out</strong>. If you hover
+the mouse over an icon in Qt, a tool tip will pop up with a label to remind you of which control is which.</p>
+
+<p>Set a breakpoint on the first line of the <code class="language-c++ highlighter-rouge"><span class="n">hanoiAnimation</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code>. Run the program in Debug mode and, when prompted, run the tests for <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code>.</p>
+
+<h3 id="step-over">Step Over</h3>
+<p>When stopped at your breakpoint, locate the yellow arrow in the left gutter. The yellow arrow points to a line of code. Note that a breakpoint stops the program <em>before</em> this line has executed.</p>
+
+<p>The upper-right pane shows the <code class="language-c++ highlighter-rouge"><span class="n">myHeight</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">totalMoves</span></code> variables. Because these variables have not yet been initialized, their values are unspecified; they might be 0, or they might be random garbage values.</p>
+
+<p>Use <strong>Step Over</strong> to advance through each line of the <code class="language-c++ highlighter-rouge"><span class="n">hanoiAnimation</span></code> function:</p>
+
+<ul>
+  <li><strong>Step Over</strong> the initialization of <code class="language-c++ highlighter-rouge"><span class="n">myHeight</span></code>. Its value updates in the Variables pane (Pro tip: values highlighted in red are those that just changed). The yellow arrow in the left gutter advances to point to the subsequent line.</li>
+  <li><strong>Step Over</strong> the call to <code class="language-c++ highlighter-rouge"><span class="n">HanoiGui</span><span class="o">::</span><span class="n">initialize</span></code>. The execution of this function sets up the graphics window in the initial configuration and displays it.
+    <ul>
+      <li>If needed, move/resize your windows so that you can see both the Qt
+debugger and the graphics window side by side.</li>
+    </ul>
+  </li>
+  <li><strong>Step Over</strong> the call to <code class="language-c++ highlighter-rouge"><span class="n">pause</span></code>, and you'll note a short delay while the function is executing.</li>
+  <li><strong>Step Over</strong> the initialization of <code class="language-c++ highlighter-rouge"><span class="n">totalMoves</span></code>.</li>
+  <li><strong>Step Over</strong> the <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> call and watch as the entire sequence of moves is animated. That was a big step!</li>
+</ul>
+
+<div id="Q1" class="question alert alert-warning">
+  <p><strong>Q1</strong>. What is the value of <code class="language-c++ highlighter-rouge"><span class="n">totalMoves</span></code> after stepping over the call to <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> in <code class="language-c++ highlighter-rouge"><span class="n">hanoiAnimation</span></code>?</p>
+</div>
+
+<h3 id="step-into">Step Into</h3>
+<p>The <strong>Step Into</strong> debugger action is right next to <strong>Step Over</strong>. If the next line to execute contains a function call, the action of <strong>Step Into</strong> goes inside the function being called and executes the first internal statement and stops there.  If the next line to execute does not contain a function call, <strong>Step Into</strong> does the same thing as <strong>Step Over</strong>.</p>
+
+<p>Restart the program and again run under Debug mode with a breakpoint on the first line of <code class="language-c++ highlighter-rouge"><span class="n">hanoiAnimation</span></code>. Now let's practice with <strong>Step Into</strong>.</p>
+
+<ul>
+  <li><strong>Step Into</strong> the initialization of <code class="language-c++ highlighter-rouge"><span class="n">myHeight</span></code>. Since there is no function call on the line being stepped, Step Into does the same thing as Step Over: it simply executes the single statement.</li>
+  <li><strong>Step Into</strong> to the call to <code class="language-c++ highlighter-rouge"><span class="n">HanoiGui</span><span class="o">::</span><span class="n">initialize</span></code>.
+    <ul>
+      <li>The editor pane switches to show the contents of the <code class="language-c++ highlighter-rouge"><span class="n">hanoigui</span><span class="p">.</span><span class="n">cpp</span></code> file and the yellow arrow is pointing to the first line of the <code class="language-c++ highlighter-rouge"><span class="n">initialize</span></code> function. This code is unfamiliar; you didn't write it, and you didn't intend to start tracing it.</li>
+      <li><strong>Step Out</strong> is your escape hatch. This "giant step" finishes the current function. When you use Step Out here, it executes all of the rest of the <code class="language-c++ highlighter-rouge"><span class="n">HanoiGUI</span><span class="o">::</span><span class="n">initialize</span></code> function (window is displayed, etc.), and control returns back to <code class="language-c++ highlighter-rouge"><span class="n">hanoiAnimation</span></code>.</li>
+    </ul>
+  </li>
+  <li>Next up is the <code class="language-c++ highlighter-rouge"><span class="n">pause</span></code> function, another library function you don't want
+to trace inside. You could step in and step out, but it's simpler to
+just <strong>Step Over</strong>.</li>
+  <li>You are interested in tracing inside the <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> function, so use <strong>Step Into</strong> to go inside.
+    <ul>
+      <li>This first <strong>Step Into</strong> might bring you straight to the first line of <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code>. However, some platforms will also step you through the backstage code that copies the string arguments on the way into the function. If your first <strong>Step Into</strong> brings you to unfamiliar string-copying code, use the <strong>Step Out</strong> escape hatch to finish it, and then <strong>Step Into</strong> again. Repeat for each of the three string parameters and you should eventually arrive at the first line of <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code>.</li>
+    </ul>
+  </li>
+  <li>Once inside the <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> function, <strong>Step Over</strong> each line. Control proceeds to the recursive case
+in the <code class="language-c++ highlighter-rouge"><span class="k">else</span></code> statement. When you <strong>Step Over</strong> the recursive call to <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code>, the GUI window should
+animate the moves that transfer the smaller tower of height 3 from the left peg to the middle peg. The value of <code class="language-c++ highlighter-rouge"><span class="n">totalMoves</span></code> will update to count all moves made during the recursive call.</li>
+</ul>
+
+<div id="Q2" class="question alert alert-warning">
+  <p><strong>Q2</strong>. What is the value of the <code class="language-c++ highlighter-rouge"><span class="n">totalMoves</span></code> variable after stepping over the first recursive sub-call? (In other words, within <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> and just after stepping over the first recursive sub-call to <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> inside the <code class="language-c++ highlighter-rouge"><span class="k">else</span></code> statement.)</p>
+</div>
+
+<p>The next <strong>Step Over</strong> moves the largest disk from the left peg to the right peg. The final <strong>Step Over</strong> moves the three-disk tower from the middle to right.</p>
+
+<h3 id="step-out">Step Out</h3>
+<p>Now let's practice the <strong>Step Out</strong> debugger action. Remove all breakpoints, and set a breakpoint inside the base case of <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> (on the first line of code inside the <code class="language-c++ highlighter-rouge"><span class="k">if</span></code> statement). Run the program in Debug mode. When stopped at your breakpoint, use <strong>Step Out</strong>.</p>
+
+<div id="Q3" class="question alert alert-warning">
+  <p><strong>Q3</strong>. After breaking at the base case of <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> and then choosing Step Out, where do you end up? (What function are you in, and at what line number?) What is the value of the <code class="language-c++ highlighter-rouge"><span class="n">totalMoves</span></code> variable at this point?</p>
+</div>
+
+<h3 id="practice-with-step-intooverout">Practice with Step Into/Over/Out</h3>
+<p>Understanding the operations of the different step actions is a great way to develop your understanding of recursion and its mechanics. Re-run the program, stop in debugger again, and try your own tracing and exploration. As you watch the animated movement, consider how it relates to the sequence of
+recursive calls. Observe how stack frames are added and removed to the call stack. When stopped, select different levels on the call stack to see the value of the parameters in the upper-right pane and the nesting of
+recursive calls. Here are some suggestions for when to use each kind of step:</p>
+
+<ul>
+  <li><strong>Step Over</strong> a recursive call is useful when thinking holistically. A recursive call is a "black box" that handles an entire subproblem.</li>
+  <li><strong>Step Into</strong> a recursive call allows you to trace the nitty-gritty details when moving from an outer recursive call to an inner one.</li>
+  <li><strong>Step Out</strong> of a recursive call allows you to follow along when returning or backtracking from an inner recursive call to the outer one.</li>
+</ul>
+
+<p>Step In, Step Over, and Step Out allow you to watch recursion work at different levels of detail. Step In lets you trace along with each and every step. Step Over lets you see what a recursive function does in its entirety. Step Out lets you run the current stack frame to completion to see how the function behaves as a whole. These are handy actions to have in your debugger tool belt!</p>
+
+<h2 id="2-test-and-debug-the-buggy-subset-sum">2) Test and debug the buggy subset sum</h2>
+<p>Your next task is to use the debugger to do what it’s designed for – to debug a program!</p>
+
+<p>Forming all possible subsets of a collection uses the classic recursive pattern of include/exclude. Each node in the decision tree takes one element under consideration and branches into two recursive calls, one that includes the element and another that excludes it. The decision tree grows to a depth of N where N is the total number of elements in the collection. You have seen this in/out pattern in lecture examples to list subsets and form combinations. Similar patterns appear in exercises in <a href="../../section/section4/index.html" title="Recursive Backtracking">section4</a>.</p>
+
+<p>The warmup contains the provided <code class="language-c++ highlighter-rouge"><span class="n">countZeroSumSubset</span></code> which is a correctly implemented function to explore all subsets of an input and counts those subsets whose members sum to zero. If given the input <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">}</span></code>, the enumeration of all possible subsets would be <code class="language-c++ highlighter-rouge"><span class="p">{</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="o">-</span><span class="mi">3</span><span class="p">},</span> <span class="p">{}</span> <span class="p">}</span></code>. Two of those subsets sum to zero: <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">}</span></code> and <code class="language-c++ highlighter-rouge"><span class="p">{}</span></code>, so the function returns 2. Look over the implementation for <code class="language-c++ highlighter-rouge"><span class="n">countZeroSumSubsets</span></code> to be sure your understand how it works before you begin debugging.</p>
+
+<p>In addition to the correct implementation, there is a <code class="language-c++ highlighter-rouge"><span class="n">buggyCount</span></code> version that contains a small but significant error. This buggy version is not far off – in fact, the difference is simply the additional of one character  – but what difference a single character can make!</p>
+
+<p>In this exercise, we are going to walk you through debugging strategy step by step:</p>
+
+<ol>
+  <li>Use test cases to identify situations the buggy function has incorrect behavior then narrow to a minimal example.</li>
+  <li>Run minimal example under the debugger to better understand how the wrong behavior relates to the code. What is the function actually doing that produces that incorrect result?</li>
+  <li>Fix the bug by changing the code to correctly express the intended behavior.</li>
+</ol>
+
+<p>Start at step 1. You have just written the <code class="language-c++ highlighter-rouge"><span class="n">buggyCount</span></code> version and are ready to test it. Your test plan is to compare the result from <code class="language-c++ highlighter-rouge"><span class="n">buggyCount</span></code> to the expected answer from <code class="language-c++ highlighter-rouge"><span class="n">countZeroSumSubsets</span></code> on a wide variety of inputs to get solid test coverage.</p>
+
+<p>Add some student test cases now. These early test cases should try small to medium-size inputs. Although you would later want to also include larger stress cases, in this early stage, such cases can be cluttering and unhelpful.</p>
+
+<p>Once you have identified a test case that fails, winnow it down to the smallest possible form that exhibits the bug. Specifically, you’re aiming to find an input where</p>
+
+<ul>
+  <li>this input produces the wrong result, and</li>
+  <li>there is no simpler/shorter/smaller such input that produces a wrong result</li>
+</ul>
+
+<p>Put your minimized test case in a <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> of its own. Run this test under the debugger, and trace the operation of
+<code class="language-c++ highlighter-rouge"><span class="n">countZeroSumSubsets</span></code> (the correctly written version) to observe the correct behavior. Diagram the decision
+tree that is being traversed and match the tree to what see in the
+debugger as you step in/out/over. Select different stack frames in the
+call stack to see the state being maintained in each of the outer
+frames.</p>
+
+<p>After completing a thorough walkthrough of the correct version, now
+trace <code class="language-c++ highlighter-rouge"><span class="n">buggyCount</span></code> on the same input. Watch carefully to see
+where in the process the bug manifests itself and how things veer
+off-course.</p>
+
+<p>Once you have done these steps, answer the following questions by editing the <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>.</p>
+
+<div id="Q4" class="question alert alert-warning">
+  <p><strong>Q4</strong>. What is the smallest possible input that you used to trigger the bug in the program?</p>
+</div>
+
+<div id="Q5" class="question alert alert-warning">
+  <p><strong>Q5</strong>. Identify the one-character error in the code and explain why that bug causes the function to return the output you see when running on the minimal input you listed above. You should be able to specifically account for how the error causes the result to change from “completely correct” to “terribly wrong.”</p>
+</div>
+
+<p>This process we just walked you through forms a foundation for effective debugging.</p>
+<ul>
+  <li><strong>Test</strong> to identify the problem areas.</li>
+  <li><strong>Refine</strong> your test input to the simplest case that exhibits the bug.</li>
+  <li>Use the debugger to <strong>trace</strong> that tiny test case.</li>
+  <li><strong>Observe</strong> what is actually happening and how it differs from what you intended.</li>
+  <li><strong>Relate</strong> those observations to your code so you know what statements need to be changed to correctly reflect your intentions.</li>
+</ul>
+
+<p>Although we are introducing these techniques in the context of debugging recursive functions, finding a minimally reproducible test case and working backward from the observed to the intention can be an effective strategy for debugging <strong>any</strong> kind of code.</p>
+
+<p>Happy bug hunting!</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-23
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

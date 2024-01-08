@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Labyrinth Escape</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Labyrinth Escape</h1>
+
+<hr>
+
+<p class="attribution">
+This fun and educational puzzle came from our awesome colleague Keith Schwarz.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="where-am-i">Where am I?</h2>
+<p>You are trapped in a labyrinth and your only hope of escape is to
+cast the magic spell that will free you from its walls. Scattered
+within the labyrinth are three magical items:</p>
+
+<ul>
+  <li>The <strong>Spellbook</strong> (📕), which contains the script for the escape spell.</li>
+  <li>The <strong>Potion</strong> (🧪), containing the arcane compounds that power the
+spell.</li>
+  <li>The <strong>Wand</strong> (⚡️), which concentrates your focus to make the spell
+work. (Or is it actually Nick Parlante's legendary <a href="http://cslibrary.stanford.edu/104/themakingof/">wand of dereferencing</a>?)</li>
+</ul>
+
+<p>Collecting all three magical items will allow to cast the spell to escape to
+safety.</p>
+
+<h3 id="a-pointer-labyrinth">A pointer labyrinth</h3>
+<p>This is, of course, no ordinary labyrinth. It’s a <strong>pointer labyrinth</strong>. It is a linked arrangement of <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code>s. The <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> struct is defined in the <code class="language-c++ highlighter-rouge"><span class="n">labyrinth</span><span class="p">.</span><span class="n">h</span></code> file and reproduced here:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">MazeCell</span> <span class="p">{</span>   
+    <span class="n">string</span> <span class="n">contents</span><span class="p">;</span>   <span class="cm">/* Value is either "", "Spellbook", "Potion", or "Wand" */</span>
+    <span class="n">MazeCell</span><span class="o">*</span> <span class="n">north</span><span class="p">;</span>   <span class="cm">/* The cell to the north, or nullptr if no cell to the north. */</span>
+    <span class="n">MazeCell</span><span class="o">*</span> <span class="n">south</span><span class="p">;</span>   <span class="cm">/* The cell to the south, or nullptr if no cell to the south. */</span>
+    <span class="n">MazeCell</span><span class="o">*</span> <span class="n">east</span><span class="p">;</span>    <span class="cm">/* The cell to the east, or nullptr if no cell to the east. */</span>
+    <span class="n">MazeCell</span><span class="o">*</span> <span class="n">west</span><span class="p">;</span>    <span class="cm">/* The cell to the west, or nullptr if no cell to the west. */</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><img src="img/labyrinth.png" alt="A labyrinth diagram consisting of 16 cells arranged in a 4 by 4 grid. The cells from left to right and top to bottom have the following locations contents and links:  r0c0-empty-(link to south) r0c1-empty-(link to south and east) r0c2-wand-(link to west) r0c3-empty-(link to south) r1c0-empty-(link to north) r1c1-empty-(links to north,west,south) r1c2-empty-(link to south) r1c3-empty-(link to north and south) r2c0-spellbook-(link to south) r2c1-empty-(link to north and east) r2c2-smiley face-(links in all directions) r2c3-empty-(links to north,west,south) r3c0-empty-(links to north and east) r3c1-empty-(links to east and west) r3c2-empty-(links to north and west) r3c3-potion-(link to north)" style="float:right;" />
+The diagram to the right is  an example 4 × 4 labyrinth. The starting
+location is marked with a smiley face and the location of the three items with
+similarly cute emojis. The <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> containing the smiley face has
+<code class="language-c++ highlighter-rouge"><span class="n">north</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">south</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">east</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">west</span></code> pointers pointing to the <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> located one step in each of those directions. The <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> containing the book (📕) has <code class="language-c++ highlighter-rouge"><span class="n">north</span></code>,
+<code class="language-c++ highlighter-rouge"><span class="n">east</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">west</span></code> pointers set to <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code>, and only its <code class="language-c++ highlighter-rouge"><span class="n">south</span></code> pointer
+would point to another <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> (specifically, to the cell in the bottom-left
+corner).</p>
+
+<p>Each <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> has a field named <code class="language-c++ highlighter-rouge"><span class="n">contents</span></code> that indicates the
+item at that location. If the cell contains no item, its <code class="language-c++ highlighter-rouge"><span class="n">contents</span></code> field is an empty string.  A cell that holds the Spellbook, Potion, or Wand item would contain the string <code class="language-c++ highlighter-rouge"><span class="s">"Spellbook"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"Potion"</span></code>, or <code class="language-c++ highlighter-rouge"><span class="s">"Wand"</span></code>, respectively.</p>
+
+<p>Once dropped into this labyrinth at the starting location, you can roam around to find the items you need to cast the escape spell. There are many paths you can take; here are two of them:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">ESNWWNNEWSSESWWN</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">SWWNSEENWNNEWSSEES</span></code></li>
+</ul>
+
+<p>Each path is represented as a sequence of letters (<code class="language-c++ highlighter-rouge"><span class="n">N</span></code> for north, <code class="language-c++ highlighter-rouge"><span class="n">W</span></code>
+for west, etc.) that, when followed from left to right, trace out the
+steps. Starting from the smiley-face, the first path steps East, then South (collects Potion from this cell), then North, then West, and so on.</p>
+
+<p>Trace the two paths above through the example labyrinth and confirm that you understand how each is a valid path that gathers all three magical items. Then, answer the following question:</p>
+
+<div id="Q5" class="question alert alert-warning">
+  <p><strong>Q5</strong>. Give a different valid path through the example labyrinth that collects all three magical items.</p>
+</div>
+
+<h2 id="confirming-a-path-to-freedom">Confirming a path to freedom</h2>
+<p>Write a function that steps through a path to determine if it is valid and will successfully collect all items in the <code class="language-c++ highlighter-rouge"><span class="n">needed</span></code> set.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isPathToFreedom</span><span class="p">(</span><span class="n">MazeCell</span><span class="o">*</span> <span class="n">start</span><span class="p">,</span> <span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">needed</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The function arguments are a pointer to a <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> where to begin exploration, a string of characters <code class="language-c++ highlighter-rouge"><span class="sc">'N'</span></code>, <code class="language-c++ highlighter-rouge"><span class="sc">'S'</span></code>, <code class="language-c++ highlighter-rouge"><span class="sc">'E'</span></code>, and <code class="language-c++ highlighter-rouge"><span class="sc">'W'</span></code> representing a path of steps, and a Set of items to collect (items are represented as strings).  The function begins at the start cell, steps through the path,
+and collects items from each visited cell.  The function returns <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> if path is valid and collected all <code class="language-c++ highlighter-rouge"><span class="n">needed</span></code> items, false otherwise.</p>
+
+<p>A path successfully escapes the labyrinth if:</p>
+<ol>
+  <li>Each step in the path is legal, i.e. valid direction to move from current cell to neighbor cell.</li>
+  <li>Every item in the <code class="language-c++ highlighter-rouge"><span class="n">needed</span></code> set is collected along the path.</li>
+</ol>
+
+<h3 id="function-specifications">Function Specifications</h3>
+<ul>
+  <li>Your function should work for any start cell in any labyrinth, not just the example above. You may assume that the provided <code class="language-c++ highlighter-rouge"><span class="n">start</span></code> pointer is not <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code>.</li>
+  <li>Your function should work for any size Set of any items; not just exactly the three item set in the example.</li>
+  <li>The function should operate by iterating over the characters in the path string and attempting to move the direction for each step.
+    <ul>
+      <li>If the next step attempts to move through a non-existent link (pointer in that direction is <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code>), such as trying to move <code class="language-c++ highlighter-rouge"><span class="n">East</span></code> from the cell containing the wand in the example labyrinth, the function should stop and return false. <strong>Your function should not crash if the path attempts to traverse a link that does not exist.</strong></li>
+      <li>If the next step is an invalid character (any character other than <code class="language-c++ highlighter-rouge"><span class="sc">'N'</span></code>, <code class="language-c++ highlighter-rouge"><span class="sc">'S'</span></code>, <code class="language-c++ highlighter-rouge"><span class="sc">'E'</span></code>, or <code class="language-c++ highlighter-rouge"><span class="sc">'W'</span></code>), use the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report the problem and exit.</li>
+    </ul>
+  </li>
+  <li>As you visit each cell, collect the item it contains.
+    <ul>
+      <li>If collecting this item is the last one you needed, success! Return true. Any remaining steps in path are ignored.</li>
+    </ul>
+  </li>
+  <li>It is allowable for a path to visit the same cell more than once.</li>
+  <li><strong>You should not allocate any new <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> objects</strong>. You can declare variables of type <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span><span class="o">*</span></code> (pointers to existing <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> objects), but you should not use the <code class="language-c++ highlighter-rouge"><span class="k">new</span></code> keyword.</li>
+</ul>
+
+<h3 id="testing">Testing</h3>
+
+<p>Constructing test cases for labyrinth can be a bit of a chore  given the complex setup. To help you out, <strong>we supply a comprehensive suite of provided tests</strong>.</p>
+<ul>
+  <li>Our provided test cases construct a labyrinth from a custom string representation and call your <code class="language-c++ highlighter-rouge"><span class="n">isPathToFreedom</span></code> on various valid and invalid paths.</li>
+  <li>Review these provided test cases to understand what they test and how.</li>
+  <li>If you pass all provided tests, you should be good to go. You are welcome to add student tests of your own, but it is not expected that you do so.</li>
+</ul>
+
+<h2 id="escaping-from-your-personal-labyrinth">Escaping from your personal labyrinth</h2>
+<p>Now you are ready to find the escape path from your own personal labyrinth. We provide a function that builds a personalized labyrinth for you. By “personalized” we mean that “no one else in the course is going to have the exact same labyrinth as you.” Your job is to figure out a path through your labyrinth that collects all three magical items, allowing you to escape.</p>
+
+<p>At the top of <code class="language-c++ highlighter-rouge"><span class="n">labyrinth</span><span class="p">.</span><span class="n">cpp</span></code> are two constants marked with a <code class="language-c++ highlighter-rouge"><span class="s">"TODO"</span></code> message. The first one, <code class="language-c++ highlighter-rouge"><span class="n">kYourName</span></code>, is a spot for your name.  Edit this constant so that it contains your name. You will fill in the second constant <code class="language-c++ highlighter-rouge"><span class="n">kPathForYourName</span></code> with a path. A provided test case generates the personal labyrinth for <code class="language-c++ highlighter-rouge"><span class="n">kYourName</span></code> and confirms that <code class="language-c++ highlighter-rouge"><span class="n">kPathForYourName</span></code> is a valid path to escape it.</p>
+
+<h3 id="debugging-linked-structures">Debugging linked structures</h3>
+<p>To find that path, you will use your old friend the debugger! Set a breakpoint on the test case for your personal labyrinth escape. Run the program under the debugger. When stopped at the breakpoint, look to the Variables pane to see the state of the local variables.  The parameter <code class="language-c++ highlighter-rouge"><span class="n">start</span></code> is a pointer to the <code class="language-c++ highlighter-rouge"><span class="n">MazeCell</span></code> inside your labyrinth. Click the dropdown triangle to view the <code class="language-c++ highlighter-rouge"><span class="n">contents</span></code> field of <code class="language-c++ highlighter-rouge"><span class="n">start</span></code>, as well as the four pointers leading to the cell's neighbors.</p>
+
+<p>Depending on your labyrinth, your starting location may allow you
+to move in all four cardinal directions, or you may find that you can
+only move in some of them. A pointer in a direction you cannot move will
+be set to <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code>, which displays as <code class="language-c++ highlighter-rouge"><span class="mh">0x0</span></code> in the Variables pane.
+A pointer in a direction you can move will be set to a non-zero value
+and have dropdown arrow on the value in the Variables panel. Clicking the arrow will unfold to show
+the neighbor cell. You can navigate further by choosing one of its dropdown arrows, or you could back up to the starting cell and explore in other
+directions. It’s up to you!</p>
+
+<p><strong>Draw a lot of pictures</strong>. Grab a sheet of paper and map out your labyrinth. There is no guarantee where you start – you
+could be in the upper-left corner, dead center, etc. The items are
+scattered randomly, and you’ll need to seek them out. Once you’ve mapped
+it out, work out the steps in your escape path and assign those steps in string form to the constant
+<code class="language-c++ highlighter-rouge"><span class="n">kPathForYourName</span></code>; then see if you pass the escape test. If so,
+fantastic! You’ve escaped! If not, you have lots of options. You could
+step through your <code class="language-c++ highlighter-rouge"><span class="n">isPathToFreedom</span></code> function to see if one of the
+letters you entered isn’t what you intended and accidentally tries to
+move in an illegal direction. Or perhaps the issue is that you mis-drew
+the map of your personal labyrinth and you’ve ended up somewhere without all the items. You could
+alternatively set the breakpoint at the test case again and walk through
+things a second time, seeing whether the diagram of the labyrinth you drew
+was incorrect.</p>
+
+<p>To summarize, here’s what you need to do:</p>
+<ol>
+  <li>Edit the constant <code class="language-c++ highlighter-rouge"><span class="n">kYourName</span></code> to a string containing your full name. Don’t skip this step! If you forget to do this, you’ll be solving the wrong maze. Once you have set <code class="language-c++ highlighter-rouge"><span class="n">kYourName</span></code>, do not change it, as this would cause a different maze to be generated than the one you have already solved.</li>
+  <li>Set a breakpoint at the escape test case and run under the debugger.</li>
+  <li>Use the debugger to explore the labyrinth links and draw out the labyrinth on a sheet of paper and find where the items are.</li>
+  <li>Find a path that collects all three items and edit the constant <code class="language-c++ highlighter-rouge"><span class="n">kPathForYourName</span></code> with that path. Use the provided test case to confirm your path is a valid escape.</li>
+</ol>
+
+<h3 id="advice">Advice</h3>
+<ul>
+  <li>A labyrinth can have loops or multiple distinct paths between different cells. Keep this in mind as you’re exploring or you might find yourself going in
+circles!</li>
+  <li>You don’t necessarily need to map out the whole labyrinth. 
+You only need to explore enough of it to find the three magical items and create a path to collect them all.</li>
+  <li>In the example labyrinth above, every link that leads northward from cell A to B
+has a corresponding reverse south link from B back to the A (and the same for east/west links). <strong>This may not always be the case for all labyrinth configurations. It is possible for a labyrinth to have one-way links.</strong></li>
+</ul>
+
+<h2 id="concluding-thoughts">Concluding thoughts</h2>
+<p>At this point, you have a good command of how to use the debugger to examine linked structures. You know how to recognize a null pointer, how to manually follow links between objects, and how to reconstruct the shape of a linked data structure. We hope you find these skills useful as you continue to write code that works on linked lists and other linked structures!</p>
+
+<p class="w-50 mx-auto"><img src="https://imgs.xkcd.com/comics/labyrinth_puzzle.png" alt="xkcd comic on labyrinth puzzles" />
+<small><em>From the wacky imagination of <a href="https://xkcd.com/246/">xkcd</a>.</em></small></p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-10
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

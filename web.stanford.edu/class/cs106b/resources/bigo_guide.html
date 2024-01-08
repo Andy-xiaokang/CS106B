@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Guide to Big-O Notation</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Guide to Big-O Notation</h1>
+
+<hr>
+
+<p class="attribution">
+Written by Keith Schwarz
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>Big-O notation is a powerful tool for predicting how quickly a piece of code will run in a novel scenario. Once you know the big-O runtime of a piece of code, you can extrapolate its runtime, compare its performance against other alternative implementations, etc.</p>
+
+<p>But of course, that presumes you know how to get the big-O runtime of a piece of code. That skill – going from code to a big-O runtime – is a mix of an art and a science, and there are tons of beautiful strategies you can use to do it.</p>
+
+<p>This handout covers the basics of big-O runtime determination and gives several core techniques we recommend you use as you’re getting started</p>
+
+<h2 id="technique-1-when-in-doubt-work-inside-out">Technique 1: When in Doubt, Work Inside Out!</h2>
+
+<p>Many pieces of code consist of several loops nested inside one another. When you see a piece of code like that, it’s often helpful to analyze the runtime by starting with the most-deeply-nested loop and, from there, to work outwards toward the top-level loop.</p>
+
+<p>As an example, consider the following (silly, contrived) function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">omnesia</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">total</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span> 
+        <span class="p">}</span> 
+    <span class="p">}</span> 
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Our goal will be to work out the big-O runtime of this function. Since it consists of several nested loops, we’ll begin with the most-deeply-nested loop, which is shown here:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">total</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>How much work does this loop do? Well, it runs for a total of <em>n</em> iterations, and each iteration does a constant amount of work (the work required to add one to total is independent of the values of <em>n</em>, <em>k</em>, etc.) Therefore, this loop does O(<em>n</em>) total work. With that in mind, we can “simplify” our original loop nest by replacing this innermost loop with something to the effect of “do O(<em>n</em>) work.” That’s shown here:</p>
+
+<table>
+    <tr>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">omnesia</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">total</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span> 
+        <span class="p">}</span> 
+    <span class="p">}</span> 
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span> 
+<span class="p">}</span>
+</code></pre></div></div></td>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">omnesia</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/*************************
+             *      Do O(n) work     *
+             * **********************/</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+    </tr>
+
+</table>
+
+<p>We’ve now reduced how much code there is here, leaving us with a simpler piece of code to analyze. And hey – if we can keep simplifying things over and over, then through the Vast Power of Recursion we’ll eventually end up with something so easy we can solve it directly!</p>
+
+<p>We’ll therefore repeat the previous process. We’ll take the innermost loop in this code, which now looks like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/*************************
+     *      Do O(n) work     *
+     * **********************/</span>   
+<span class="p">}</span>
+</code></pre></div></div>
+<p>So – how much work does this loop do? Well, there will be O(<em>n</em>) total iterations of this loop (specifically, it’s going to run <em>n</em> times). Each iteration of the loop does O(<em>n</em>) work, since that’s literally what it says. Putting that together, we get</p>
+
+<blockquote>
+  <p><img src="img/bigo_equation.png" alt="equation to deduce the total n^2 work" width="80%" /></p>
+</blockquote>
+
+<p>Therefore, this loop does O(n 2 work. Feeding that back into our original code gives us this:</p>
+
+<table>
+    <tr>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">omnesia</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/*************************
+             *      Do O(n) work     *
+             * **********************/</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">omnesia</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/*************************
+         *                       *
+         *      Do O(n^2) work   *
+         *                       *
+         * **********************/</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div></td>
+    </tr>
+</table>
+
+<p>Let’s now take the innermost loop of what remains, which is this one here:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/*************************
+     *                       *
+     *      Do O(n^2) work   *
+     *                       *
+     * **********************/</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>So, how much work does this do? Well, each loop iteration does O(n^2) work. The number of iterations of this loop is O(n^2) as well, since it runs n^2 times. Overall, this means that the loop does</p>
+
+<blockquote>
+  <p><img src="img/bigo_equation2.png" alt="equation to deduce the total n^4 work" width="80%" /></p>
+</blockquote>
+
+<p>Simplifying our code once more gives us the following:</p>
+
+<table>
+    <tr>
+        <td>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">omnesia</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/*************************
+         *                       *
+         *      Do O(n^2) work   *
+         *                       *
+         * **********************/</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+</td>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">omnesia</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="cm">/*********************************
+     *                               *
+     *                               *
+     *        Do O(n^4) work         *
+     *                               *
+     *                               *
+     ********************************/</span>
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span>
+
+<span class="p">}</span>
+</code></pre></div></div></td>
+    </tr>
+</table>
+
+<p>At this point, we’re left with code that declares a single integer variable, does O(n^4) work, then returns an integer. This takes, collectively, O(n^4) time, and so that’s the overall runtime for this piece of code.</p>
+
+<h2 id="technique-2-multiply-when-you-can-add-when-you-cant">Technique 2: Multiply When You Can, Add When You Can’t</h2>
+
+<p>In the examples up to this point, we’ve generally used a rule of thumb that goes like this: figure out how much work is done per iteration, then multiply that by the number of iterations, and you have your total work done. That technique is fine in cases where the amount of work done on each loop iteration is the same. However, that technique won’t always work, and when that happens, you’ll need to use other techniques.</p>
+
+<p>For this section, we’ll use this piece of code as an example:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">amniscience</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">106</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We’ve got a stack of loops here, so, following the maxim of “when in doubt, work inside out!,” we’ll start with the innermost loop. That’s this one here:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">106</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So – how much work does this loop do? It runs exactly 106 times, doing a constant amount of work per iteration. The number of iterations of this loop is completely independent of the values of <em>n, i, j</em>, etc. This loop always does the same amount of work, regardless of context. To indicate that it does a fixed amount of work that doesn’t scale with anything, we’ll classify its runtime as O(1): something that doesn’t scale as other values change.</p>
+
+<p>With that in mind, we’ll simplify our loop nest, as shown here:</p>
+
+<table>
+    <tr>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">amniscience</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">106</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">amniscience</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/*************************
+             *      Do O(1) work     *
+             * **********************/</span>      
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+    </tr>
+</table>
+
+<p>We’re making progress! From here, let’s look at what’s now the innermost loop:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/*************************
+     *      Do O(1) work     *
+     * **********************/</span>      
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>How much work is done here? Each iteration of the loop does O(1) work, so we just need to figure out how many times the loop runs.</p>
+
+<p>Notice that the number of times this loop runs depends on the value of <strong>i</strong> from the outer loop. When <strong>i</strong> = 13, this will run 13 times. When <strong>i</strong> = 77, this will run 77 times. And more generally, this loop always runs exactly <strong>i</strong> times. Therefore, we’ll say that it runs O(<em>i</em>) times – the number of loop iterations scales directly with the value of <strong>i</strong>.</p>
+
+<p>We have O(1) work per iteration, and O(<em>i</em>) total iterations, so this loop does O(<em>i</em>) work. It might seem weird to express the runtime here in terms of i rather than n, but that’s actually perfectly fine. And in fact, it’s more precise to do things this way, since the value of i changes as the code runs and this captures that in detail.</p>
+
+<p>That simplifies our code like this:</p>
+
+<table>
+    <tr>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">amniscience</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/*************************
+             *      Do O(1) work     *
+             * **********************/</span>      
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">amniscience</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/*************************
+         *                       *
+         *      Do O(i) work     *
+         *                       *
+         * **********************/</span>  
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+    </tr>
+</table>
+
+<p>We’re now left with one final loop, the one shown above. How should we analyze it?</p>
+
+<p>This section started with a discussion about what you’re supposed to do when the amount of work done by each iteration of a loop isn’t the same from iteration to iteration. And that’s absolutely the case here. the iteration of this loop that happens when <em>i</em> = 1 is much faster than the iteration of the loop that happens when <em>i</em> = 1,000,000. We can’t just multiply the number of iterations by the work done per iteration, since the work per iteration depends on which iteration we’re on.</p>
+
+<p>Instead of doing that multiplication, instead, we can add up the work done by each iteration of the loop across all those iterations. Specifically, we can make the following reasonable approximations:</p>
+
+<p>When <em>i</em> = 0, this loop does “roughly” 0 units of work.</p>
+
+<ul>
+  <li>When <em>i</em> = 1, this loop does “roughly” 1 unit of work.</li>
+  <li>When <em>i</em> = 2, this loop does “roughly” 2 units of work.</li>
+  <li>…</li>
+  <li>When <em>i</em> = <em>n</em>-1, this loop does “roughly” <em>n</em>-1 units of work.</li>
+</ul>
+
+<p>If we add up the work done across each iteration of the loop, we get (roughly) the following:</p>
+
+<blockquote>
+  <p>0 + 1 + 2 + 3 + 4 + 5 + … + (<em>n</em>– 2) + (<em>n</em>– 1) units of work.</p>
+</blockquote>
+
+<p>That expression gives us the amount of work done, but it’s a bit messy to work with. Can we simplify it! Indeed we can. You might remember from class that we worked out that</p>
+
+<blockquote>
+  <p>1 + 2 + 3 + … + <em>m</em> = O(<em>m</em>^2).</p>
+</blockquote>
+
+<p>In our case, this means that</p>
+
+<blockquote>
+  <p>0 + 1 + 2 + 3 + 4 + 5 + … + (<em>n</em> – 2) + (<em>n</em> – 1) = O((<em>n</em> – 1)^2)</p>
+</blockquote>
+
+<p>Of course, we aren’t done yet. The expression O((<em>n</em> – 1)^2) is pretty messy. Remember – big-O notation likes to munch away smaller terms. We can clean this up by rewriting it like this:</p>
+
+<blockquote>
+  <p>O((<em>n</em> – 1)^2) = O(<em>n</em>^2 - 2n + 1)</p>
+</blockquote>
+
+<blockquote>
+  <p>= O(n^2)</p>
+</blockquote>
+
+<p>That last step follows because big-O notation only cares about the “biggest” of the terms in a sum, and here that biggest term is the <em>n</em>^2 term.</p>
+
+<p>This means that the loop does roughly 0 + 1 + 2 + … + (<em>n</em> – 1) = O(<em>n</em>^2) work, and we can simplify our code one last time as follows:</p>
+
+<table>
+    <tr>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">amniscience</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/*************************
+         *                       *
+         *      Do O(i) work     *
+         *                       *
+         * **********************/</span>  
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">amniscience</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/*********************************
+     *                               *
+     *                               *
+     *        Do O(n^2) work         *
+     *                               *
+     *                               *
+     ********************************/</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+    </tr>
+</table>
+
+<p>And so, overall, we see that the runtime is O(n^2).</p>
+
+<p>Let’s do one more example. Consider the following piece of code:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">avareed</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span><span class="p">;</span>
+            <span class="p">}</span> 
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'?'</span><span class="p">;</span> 
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is a stranger piece of code than the ones we’ve seen before, but we can still use the techniques we’ve seen to figure out its runtime. We’ll begin with the most deeply nested loop, which is this one here:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span><span class="p">;</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<p>That’s a total of O(<em>n</em>) iterations, each of which does O(1) work, and so the runtime ends up being O(<em>n</em>). Feeding that back in and simplifying gives this:</p>
+
+<table>
+    <tr>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">avareed</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span><span class="p">;</span>
+            <span class="p">}</span> 
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'?'</span><span class="p">;</span> 
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">avareed</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/*************************
+             *      Do O(n) work     *
+             * **********************/</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'?'</span><span class="p">;</span> 
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+</td>
+    </tr>
+</table>
+
+<p>We’re now left with just one loop, but that loop is unusual. In some cases we take the top branch and do O(<em>n</em>) work. In some cases we take the bottom branch and do O(1) work. Indeed, to make that clearer, let’s rewrite the <strong>else</strong> branch to show off how much work it does:</p>
+
+<table>
+    <tr>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">avareed</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span><span class="p">;</span>
+            <span class="p">}</span> 
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'?'</span><span class="p">;</span> 
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+        <td><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">avareed</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/*************************
+             *      Do O(n) work     *
+             ************************/</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="cm">/*      Do O(1) work    */</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div></td>
+    </tr>
+</table>
+
+<p>So – what are we to make of this? We can’t just multiply the number of loop iterations by the amount of work done per iteration, because the work done per iteration changes from iteration to iteration.</p>
+
+<p>Instead, let’s take a step back and see if we can spot what the code is actually doing here. Notice that about half the time (when <em>i</em> is between 25% and 75% of <em>n</em>), an iteration does O(<em>n</em>) work. The other remaining half the time (when <em>i</em> isn’t in this range), an iteration does O(1) work. What should we make of this?</p>
+
+<p>One insight that’s helpful here is to split the work done into “easy” iterations of the loop and “hard” iterations of the loop. An “easy” iteration is one where we do O(1) work. A “hard” iteration is one where we do O(<em>n</em>) work. We therefore have that</p>
+
+<blockquote>
+  <p>total work = (work done across “easy” iterations) + (work done across “hard” iterations).</p>
+</blockquote>
+
+<p>So let’s solve for these individually. We know we’ll do approximately ⁿ/₂ = O(<em>n</em>) “easy” iterations, where we do O(1) work per iteration, so the total work for the easy iterations is O(<em>n</em>) × O(1) = O(<em>n</em>). Similarly, we do roughly ⁿ/₂ = O(<em>n</em>) “hard” iterations, each of which does O(<em>n</em>) work. That means that we do a total of O(<em>n</em>) × O(<em>n</em>) = O(<em>n</em>^2) work across all the “hard” iterations. We therefore have that</p>
+
+<blockquote>
+  <p>total work = O(<em>n</em>) + O(<em>n</em>^2)</p>
+</blockquote>
+
+<blockquote>
+  <p>= O(<em>n</em>^2 + n)</p>
+</blockquote>
+
+<blockquote>
+  <p>= O(<em>n</em>^2).</p>
+</blockquote>
+
+<p>That last step is there because big-O notation only keeps track of the biggest growth terms, and <em>n</em>^2 grows a lot faster than <em>n</em>. So our overall runtime here is O(<em>n</em>^2).</p>
+
+<h2 id="technique-3-consult-the-documentation">Technique 3: Consult the Documentation</h2>
+
+<p>The examples we’ve done so far here have worked mostly with integers, but most of the code you’ll write in practice will work with containers like vectors, maps, sets, and the like. The good news is that the techniques for analyzing code written using those types is basically the same as for code that doesn’t use them, with one big caveat: the cost of operations on container types isn’t always what you might expect it to be.</p>
+
+<p>As an example, let’s take this piece of code here:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">grice</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">values</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>How much work does this piece of code do, as a function of <em>m</em>? (I’m using <em>m</em> rather than <em>n</em> here for reasons that will become clearer in a bit.) Well, we can see that there are O(<em>m</em>) total iterations of the loop, and so as soon as we know how much work the loop itself does, we’ll know the total amount of work done. So that then leads us to ask: how much work does the line <code class="language-c++ highlighter-rouge"><span class="n">values</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></code> do?</p>
+
+<p>To answer this, we’ll head to the Stanford C++ Library Documentation website, which lists all of the costs of each operation in detail. If you visit the site and pull up information about the <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> type, you’ll see that the add method takes time O(log <em>n</em>), where n is the number of items in the set. In our case, this set never has more than <em>m</em> items in it, so each time we call add it does at most O(log <em>m</em>) work.</p>
+
+<p>Overall, this means that we have O(<em>m</em>) iterations, each of which does O(log <em>m</em>) work, and so the total work done here is O(<em>m</em> log <em>m</em>).</p>
+
+<p>This above example showcases how important it is to pull up the library documentation when working with container types. Over the rest of the quarter, we’ll explore how these container types work, and you’ll get a deeper, intuitive feel for why they have the runtime costs that they do. But in the meantime, make sure to consult the docs, because otherwise you won’t be able to determine how much work is being done.</p>
+
+<p>Fun fact: one of the most common causes of slow code that we see in CS106B is accidentally using slow operations on container types without realizing it.</p>
+
+<h2 id="technique-4-run-time-trials">Technique 4: Run Time Trials</h2>
+
+<p>There’s one final technique we’d like to mention for working out big-O runtimes: you can always just run the code, get some data points back, and make your best guess of the runtime!</p>
+
+<p>For example, suppose we have a function</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">whiphithichishi</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>and run it on inputs of various sizes, producing this timetable:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">:</span> <span class="mx">23.7935ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">2000</span> <span class="o">:</span> <span class="mx">47.3231ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">3000</span> <span class="o">:</span> <span class="mx">103.957ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">4000</span> <span class="o">:</span> <span class="mx">184.809ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">5000</span> <span class="o">:</span> <span class="mx">298.894ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">6000</span> <span class="o">:</span> <span class="mx">434.666ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">7000</span> <span class="o">:</span> <span class="mx">589.499ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">8000</span> <span class="o">:</span> <span class="mx">764.828ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">9000</span> <span class="o">:</span> <span class="mx">994.704ms</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span><span class="o">:</span> <span class="mx">1236.59ms</span>
+</code></pre></div></div>
+
+<p>Given just this data, let’s make a reasonable estimate of the big-O runtime of whiphithichishi. It’s helpful to start off by comparing the ratios of runtimes here as the size of the input doubles. For example, notice that doubling the input size from 5,000 to 10,000 raises the runtime from 298.894ms to 1236.59ms, scaling by a factor of about 4.13. Doubling the input size from 2,000 to 4,000 grows the runtime from 47.3231ms to 184.809ms, a factor of about 3.9. And doubling the input size from 3,000 to 6,000 increases the runtime from 103.957ms to 434.666ms, a factor of about 4.18. So, generally speaking here, it looks like we’re seeing that doubling the input size is increasing the runtime by roughly a factor of 4. Sometimes it’s a bit lower than 4, sometimes it’s a bit higher than 4, but we’re generally orbiting around a factor of 4 here.</p>
+
+<p>So we can ask – what runtime has the property that if you double the input size, you 4× the output size? That’s the telltale sign of a quadratic growth rate, and so a reasonable guess for the runtime of this function is O(<em>n</em>^2).</p>
+
+<p>Of course, <em>that’s just a guess of the runtime</em>. We can’t be guaranteed that the runtime is exactly O(<em>n</em>^2), since we haven’t seen the code. And indeed, <strong><em>this guess is actually wrong</em></strong>. The code that I wrote that generated these numbers is shown here:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">whiphithichishi</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">values</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">n</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you do a precise analysis of the runtime of this code, you’ll find that it’s O(<em>n</em>^2 log <em>n</em>). That’s pretty close to O(<em>n</em>^2), but the extra log <em>n</em> factor means that it grows ever so slightly faster than O(<em>n</em>^2). This might account for why the ratios we saw were generally skewing a little bit higher than a factor of 4, but, then again, that could also just be random noise.</p>
+
+<p>But, with that being said, an empirical runtime analysis is a great way to get a quick check on a hypothesis or to otherwise get something in the ballpark of the overall answer. Just remember that when doing a purely empirical analysis you might miss a log factor here or there – or perhaps miss some other slowlygrowing terms.</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Nov-14
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Tree Encoding</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 8. Tree Encoding</h1>
+ <p class="subtle-heading">Thursday November 30</p>
+<hr>
+
+<p class="attribution">
+Section materials curated by Clinton Kwarteng, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>This week’s section exercises will also focus on Huffman Trees! Remember that every week we will also be releasing a Qt Creator project containing starter code and testing infrastructure for that week's section problems. When a problem name is followed by the name of a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the Qt Creator project. Here is the zip of the section starter code:</p>
+
+<p>📦 <a href="section8_starter.zip">Starter project</a></p>
+
+<p><strong>For all the problems in this handout, assume the following structures have been declared:</strong></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">TreeNode</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">TreeNode</span> <span class="o">*</span><span class="n">left</span><span class="p">;</span>
+    <span class="n">TreeNode</span> <span class="o">*</span><span class="n">right</span><span class="p">;</span>
+
+    <span class="c1">// default constructor does not initialize</span>
+    <span class="n">TreeNode</span><span class="p">()</span> <span class="p">{}</span>   
+
+    <span class="c1">// 3-arg constructor sets fields from arguments</span>
+    <span class="n">TreeNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">,</span> <span class="n">TreeNode</span><span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="n">TreeNode</span><span class="o">*</span> <span class="n">r</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="n">data</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">l</span><span class="p">;</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">TernaryTreeNode</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">ch</span><span class="p">;</span>
+    <span class="n">TernaryTreeNode</span> <span class="o">*</span><span class="n">left</span><span class="p">;</span>
+    <span class="n">TernaryTreeNode</span> <span class="o">*</span><span class="n">middle</span><span class="p">;</span>
+    <span class="n">TernaryTreeNode</span> <span class="o">*</span><span class="n">right</span><span class="p">;</span>
+
+    <span class="n">TernaryTreeNode</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="n">TernaryTreeNode</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">middle</span> <span class="o">=</span> <span class="n">right</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">TernaryTreeNode</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">,</span> <span class="n">TernaryTreeNode</span><span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="n">TernaryTreeNode</span><span class="o">*</span> <span class="n">m</span><span class="p">,</span> <span class="n">TernaryTreeNode</span><span class="o">*</span> <span class="n">r</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">l</span><span class="p">;</span>
+        <span class="n">middle</span> <span class="o">=</span> <span class="n">m</span><span class="p">;</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="nf">isLeaf</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">left</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">middle</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">right</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="k">struct</span> <span class="nc">ListNode</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="1-decode-text-ternarycpp">1) Decode Text (<code class="language-c++ highlighter-rouge"><span class="n">ternary</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p>We will be using the ternary tree definition above in this problem. A ternary tree is a tree where each node in the tree has at most 3 child nodes (left, middle and right). Each node in this tree, except the root, stores a character. Given a pointer to a ternary tree node and a string representing a sequence of directions , write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="n">string</span> <span class="n">decodeText</span><span class="p">(</span><span class="n">TernaryTreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">,</span> <span class="n">string</span> <span class="n">sequence</span><span class="p">)</span></code></p>
+</div>
+<p>that returns the string obtained by following the directions in the sequence. For example, in the tree below, a sequence like <strong>"RM"</strong> gives us the string <strong>"XG"</strong>. As another example, a sequence like <strong>"LMR"</strong> gives us the string <strong>"AT"</strong>. Notice that, in second example, we can't move right because the middle node with T has no right child. In such cases, you should stop processing the remaining directions and return the string you built so far. You can assume the sequence will always contain valid directions (ie L, M, R) and that you will get a non-empty ternary tree.</p>
+
+<p><img src="img/ternary.png" alt="This image depicts a ternary tree. The root node has character value _. The root node has 3 subtrees. The left subtree has character value A and three child nodes, who have character values B, T and D respectively. The middle subtree has character value F and has one middle child node with character value I. The right subtree has character value X and three child nodes, who have character values A, G and I respectively" width="60%" align="center" /></p>
+
+<div class="showtime" when="2023-12-01T18:00:00-07:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#agi")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>A few things to note here as you work on the Huffman Assignment. You can adapt this solution to the solution to decodeText of your Huffman assignment! Note that this tree and encoding structure is different from the Huffman Tree. First, in the Huffman Tree, the characters are only at the leaf nodes. Second, when decoding the text with a huffman tree, you don't stop when you hit a leaf; you will need to explore all remaining encoded bits.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">decodeSequence</span><span class="p">(</span><span class="n">TernaryTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">,</span> <span class="n">string</span> <span class="n">sequence</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">message</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">direction</span> <span class="o">:</span> <span class="n">sequence</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="sc">'L'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="sc">'M'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">-&gt;</span><span class="n">middle</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">tree</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span> 
+        <span class="n">message</span> <span class="o">+=</span> <span class="n">tree</span><span class="o">-&gt;</span><span class="n">ch</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">message</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-print-all-paths-ternarycpp">2) Print All Paths (<code class="language-c++ highlighter-rouge"><span class="n">ternary</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p>We will use the same ternary definition above. Now, write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">printAllPaths</span><span class="p">(</span><span class="n">TernaryTreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span></code></p>
+</div>
+<p>that prints all the valid paths to the leaves in the ternary tree. For example, in the ternary above, your function should print <strong>"LL", "LM", "LR", "MM", "RL", "RM", "RR"</strong>. The order of your output doesn't matter.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printAllPaths</span><span class="p">(</span><span class="n">TernaryTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">,</span> <span class="n">string</span> <span class="n">soFar</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">tree</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">isLeaf</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">soFar</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">printAllPaths</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="s">"L"</span><span class="p">);</span>
+    <span class="n">printAllPaths</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">middle</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="s">"M"</span><span class="p">);</span>
+    <span class="n">printAllPaths</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="s">"R"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">printAllPaths</span><span class="p">(</span><span class="n">TernaryTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printAllPaths</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="s">""</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-trees-treescpp">3) Trees (<code class="language-c++ highlighter-rouge"><span class="n">trees</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p>A binary tree (not necessarily a binary search tree) is called a palindromic tree if it’s its own mirror image. For example, the tree on the left is a palindromic tree, but the tree on the right is not:
+<img src="img/mirror.png" alt="This image depicts two different trees. The tree on the left has the following structure. The root node has value 3 and has a left subtree with root node 2 and a right subtree with root node 2. The node 2 on the left has a left child 5, which is a leaf, and a right subtree whose root is 4. The node 4 has left child 1 and right child 2, both of whom are leaves. The node 2 on the left a right subtree whose root is 4 and a right child 5, which is a leaf. The node 4 has left child 2 and right child 1, both of whom are leaves. The tree on the right has the following structure. The root of the tree is 3 and it has two subtrees, which are identical to one another. The structure of the subtrees is root node 1, with left child 1 and right child 2, both of whom are leaves." width="60%" align="center" /></p>
+
+<p>Write a function</p>
+<div align="center">
+  <p><code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="n">isPalindromicTree</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span></code></p>
+</div>
+<p>that takes in a pointer to the root of a binary tree and returns whether it’s a palindrome tree.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>To solve this problem, we’ll solve a slightly more general problem: given two trees, are they mirrors of one another? We can then check if a tree is a palindrome by seeing whether that tree is a mirror of itself.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isPalindromicTree</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">areMirrors</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">root</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">areMirrors</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root1</span><span class="p">,</span> <span class="n">TreeNode</span><span class="o">*</span> <span class="n">root2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* If either tree is empty, both must be. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root1</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">root2</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">root1</span> <span class="o">==</span> <span class="n">root2</span><span class="p">;</span>
+    <span class="p">}</span>
+ 
+    <span class="cm">/* Neither tree is empty. The roots must have equal values. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root1</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">!=</span> <span class="n">root2</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+ 
+    <span class="cm">/* To see if they're mirrors, we need to check whether the left subtree of
+    * the first tree mirrors the right subtree of the second tree and vice-versa.
+    */</span>
+    <span class="k">return</span> <span class="nf">areMirrors</span><span class="p">(</span><span class="n">root1</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">root2</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="n">areMirrors</span><span class="p">(</span><span class="n">root1</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">root2</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-30
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

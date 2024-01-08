@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B C++ Fundamentals</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 2. C++ Fundamentals</h1>
+ <p class="subtle-heading">Friday September 29</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Introduction to Fundamentals of C++ Programming</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> Ch. 1, 2.1-2.4</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/141410">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=12811469-e52e-47ea-a021-b083014df1db&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Announcements</p>
+<p>2. Productivity Tip: Hotkeys</p>
+<p>3. Preliminaries: Syntax vs. Semantics</p>
+<p>4. Preliminaries: Compilation and Execution</p>
+<p>5. Getting Started: The Blank Qt Project (and the return of "Hello, world!")</p>
+<p>6. Two Types of Comments in C++</p>
+<p>7. A Brief Guide to Commenting</p>
+<p>8. #include Directives</p>
+<p>9. Namespaces</p>
+<p>10. The <em>main()</em> Function</p>
+<p>11. The <em>main()</em> Function is Special</p>
+<p>12. Return Statements</p>
+<p>13. <em>cout</em></p>
+<p>14. <em>endl</em></p>
+<p>15. Variables and Data Types</p>
+<p>16. Common Pitfalls with Variables</p>
+<p>17. Uninitialized Variables</p>
+<p>18. While Loops</p>
+<p>19. The ++ Operator</p>
+<p>20. Wonky Spacing</p>
+<p>21. For Loops</p>
+<p>22. For-Each Loops (Range-Based Loops)</p>
+<p>23. Conditional (If-Else) Statements and Comparison Operators</p>
+<p>24. Boolean Operators</p>
+<p>25. Common Pitfall with the || Operator</p>
+<p>26. Void Functions</p>
+<p>27. Passing Parameters and Returning Values from Functions</p>
+<p>28. Function Placement and Functional Prototypes</p>
+<p>29. Variable Scope</p>
+<p>30. What's next?</p>
+<p>31. Exercises</p>
+
+<p><br /><strong>Announcements</strong></p>
+<p>Here are some announcements from the top of class today:</p>
+<ul>
+<li>Upcoming deadlines:
+<ul>
+<li>Section sign-up due Sunday 5 PM</li>
+<li>A0 due Monday 5 PM</li>
+</ul>
+</li>
+<li>Please be sure to report midterm conflicts via the form that you fill out for A0. (These do not have to be e-mailed.)</li>
+<li>Your first quiz will unlock sometime tonight, and it will be due next Wednesday at 2 PM. Please be sure to carefully track all deadlines this quarter. It's up to you to keep on top of all deadlines, even if there are not always reminders of those deadlines in class.</li>
+</ul>
+<p><br /><strong>Productivity Tip: Hotkeys</strong></p>
+<p>I mentioned today that learning hotkeys for a few common tasks is critical for maximizing your coding productivity. Here are a few I brought up at various points in class today:</p>
+<ul>
+<li><strong>CTRL+R</strong> will compile and&nbsp;<span style="text-decoration: underline;"><strong>r</strong></span>un your project.</li>
+<li><strong>CTRL+I</strong> will fix up the <span style="text-decoration: underline;"><strong>i</strong></span>ndentation of any code you have selected/highlighted.</li>
+</ul>
+<p><br /><strong>Preliminaries: Syntax vs. Semantics</strong></p>
+<p>Before diving into C++ basics, I defined the following terms:</p>
+<ul>
+<li><strong>syntax:</strong> the rules for constructing grammatical statements in a language (whether a coding language or a <a class="inline_disabled" href="https://ninjawords.com/natural%20language" target="_blank" rel="noopener">natural language</a>)</li>
+<li><strong>semantics:</strong> meaning</li>
+</ul>
+<p>Supplementary information:</p>
+<p>Consider, for example, the following sentence:</p>
+<p style="padding-left: 40px;"><em>The Count of Monte Cristo</em> is on the shelf by <em>The Picture of Dorian Gray</em>.</p>
+<p>There's a lot of stuff happening with that sentence, syntactically. The punctuation at the end of the sentence is part of the syntax, as is the italicization. The fact that we have a noun ("The Count of Monte Cristo"), followed by a verb ("is"), followed by a prepositional phrase ("on the shelf by 'The Picture of Dorian Gray'"), is also a matter of syntax. That is a grammatically sound sentence.</p>
+<p>The semantics of that sentence relate to its meaning. We know, for example, that there isn't some old count (i.e., a person) sitting on a shelf next to a picture, where the picture happens to be of some dude named Dorian Gray. Semantically, what the sentence actually conveys is that there's a book on the shelf, and it's next to another book.</p>
+<p><em>Why is this relevant?</em> <span>As I introduce you to different things you can do with the C++ programming language, I will generally introduce you to the </span><em>syntax</em><span>&nbsp;you have to follow (i.e., how to write lines of code that the compiler will be happy with) and the associated&nbsp;</span><em>semantics</em><span>&nbsp;(i.e., what that syntax&nbsp;</span><em>does</em><span>&nbsp;or&nbsp;</span><em>means</em><span>).</span></p>
+<p><br /><strong>Preliminaries: Compilation and Execution</strong></p>
+<p>A <strong>compiler</strong> is a program that takes code and builds it into a program that we can run. When we hit CTRL+R in the Qt Creator, our code is first run through a compiler. If compilation is successful, the program then gets executed.</p>
+<p>This is distinct from Python, where we often have an interpreter that executes our code line-by-line as we go.</p>
+<p><br /><strong>Getting Started: The Blank Qt Project (and the return of "Hello, world!")</strong></p>
+<p>After some preliminary definitions, we dove into C++ code.</p>
+<p>To kick that off, I went to the course homepage and downloaded the Blank Qt Project (also linked from the Resources page). This will be part of your normal process for creating new projects that use goodies from the Stanford C++ Library.</p>
+<p>Next, I plunked down the following code from Wednesday:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   cout &lt;&lt; "Hello, world!" &lt;&lt; endl;<br />   return 0;<br />}</pre>
+<p>From there, we started exploring what was happening on each line of code.</p>
+<p><br /><strong>Two Types of Comments in C++</strong></p>
+<p>I used comments extensively today to help communicate new concepts. We saw that C++ supports two commenting styles:</p>
+<p>Firstly, we have what's called a <strong>block comment</strong>. If we type <strong>/*</strong>, then everything after that is considered a comment until we first encounter a <strong>*/</strong>. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #ffcc99;">/* This is a comment!</span><br /><span style="background-color: #ffcc99;"> * This is also part of the same comment!</span><br /><span style="background-color: #ffcc99;"> * Qt Creator adds a star on each line for formatting purposes when we use this</span><br /><span style="background-color: #ffcc99;"> * type of comment.</span><br /><span style="background-color: #ffcc99;">Even though we don't have a star at the beginning of this line, it's still part of</span><br /><span style="background-color: #ffcc99;">our comment!</span><br /><span style="background-color: #ffcc99;"> * When we hit the end of this line, the star-slash causes our comment to end. */</span><br /><br />#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   cout &lt;&lt; "Hello, world!" &lt;&lt; endl;<br />   return 0;<br />}</pre>
+<p>Secondly, we have what's called a <strong>single-line comment</strong>. If we type <strong>//</strong>, then everything after that is considered a comment until we reach the end of that line. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #ffcc99;">// This is a comment!</span><br /><span style="background-color: #ffcc99;">// This is a comment, too, but the line below this one is not!</span><br />#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   cout &lt;&lt; "Hello, world!" &lt;&lt; endl;  <span style="background-color: #ffcc99;">// This is a comment, too!</span><br />   return 0;<br />}</pre>
+<p><br /><strong>A Brief Guide to Commenting</strong></p>
+<p>We want you to comment your code throughout the quarter, but don't go overboard. Comments should be used to enhance the readability of your code. Avoid comments that point out fundamentals of the language that the grader will already know. For example:</p>
+<p style="width: 600px; margin-left: 30px;"><span style="font-size: 10pt;"><span style="color: #ba372a;"><strong>Warning!</strong></span> <strong>All the comments below are unnecessary and should be removed. Please do not look to these as examples of useful comments!</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #f8cac6;">// include statements</span><br />#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><span style="background-color: #f8cac6;">// main function</span><br />int main()<br />{<br />   <span style="background-color: #f8cac6;">// prints "Hello, world!" to screen</span><br />   cout &lt;&lt; "Hello, world!" &lt;&lt; endl;<br />   return 0;<br />} <span style="background-color: #f8cac6;">// end of function</span></pre>
+<p>Below are some over-branching guidelines for writing helpful comments. Your SL will also give you feedback on comments when grading your assignments.</p>
+<ul>
+<li>In general, consider giving a high-level overview of any function you write whose purposes might not be immediately clear from its name. Say something about its input parameters, expected output, and return value (if applicable).</li>
+</ul>
+<ul>
+<li>Within your functions, rather than commenting every single line of code, give high-level comments that tell what <em>chunks</em> of code do. However:</li>
+</ul>
+<ul>
+<ul>
+<li>Avoid simply repeating things that are "obvious" in code, thereby making someone read your code twice (once in English and once in C++). I.e., avoid <a style="text-decoration: none;" href="http://ninjawords.com/transliterate">transliterating</a> your code from C++ to English.</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>Prefer comments that tell how/why something works rather than simply saying <em>what</em>&nbsp;something does, unless you're explaining the behavior of a chunk of code in a way that makes your code easier for a reader to digest.</li>
+</ul>
+</ul>
+<ul>
+<li>Try to use function names that are verb phrases, which therefore act as documentation of what your code is doing. (Avoid obscure function and variable names that would require us to add clarifying comments everywhere they appear.)</li>
+</ul>
+<ul>
+<li>Keep comments brief. An exception here is if you're writing a comment at the top of a sophisticated source file -- which is often a bit longer -- or documenting a particularly complex function.</li>
+</ul>
+<ul>
+<li>A good rule of thumb: Suppose you load up your code for an assignment five years from now, and you've lost the write-up for that assignment. What comments would help you quickly understand what you were doing with each of those functions?</li>
+</ul>
+<ul>
+<li>Another rule of thumb: If you find yourself really struggling to fix a bug in your code at some point, that <em>might</em> be a signal that you've found a complex bit of code that would be more clear if it had a concise comment.</li>
+</ul>
+<p><strong><br />#include Directives</strong></p>
+<p>In every language, we need to be able to import libraries of pre-written code. In Python and Java, we accomplish that with <em>import</em> statements. In C++, we use #include statements. The syntax for those is as follows:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>including standard system libraries:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;<span style="background-color: #999999; color: #ffffff;"> LIBRARY_NAME </span>&gt;</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>including user-defined libraries:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "<span style="background-color: #999999; color: #ffffff;"> LIBRARY_NAME </span>"</pre>
+<p>The Stanford C++ Libraries we #include this quarter will be in "double quotes," as they are user-defined libraries that we have piled on top of the standard goodies that you normally get with C++. The standard C++ libraries will be in &lt;angled brackets&gt;.</p>
+<p>You needn't worry too much about this for now. In all your assignments, we will give you the #include statements you need so you don't have to hunt down the library for every single function you want to call.</p>
+<p>(<em><span style="background-color: #eccafa; font-size: 10pt;">Not mentioned in class.</span></em>) These #include directives are different from the other statements we saw today in that they are not terminated with semicolons. When it comes to #include statements, C++ always just reads those until it hits the end of the line -- no semicolon needed.</p>
+<p>(<em><span style="background-color: #eccafa; font-size: 10pt;">Not mentioned in class.</span></em>) I didn't mention this in class, but here's what we're using those particular libraries for:</p>
+<ul>
+<li><strong>&lt;iostream&gt;</strong> gives us access to <em>cout</em> and <em>endl</em></li>
+<li><strong>"console.h"</strong> gives us a cute pop-up terminal for our program's output</li>
+</ul>
+<p><br /><strong>Namespaces</strong></p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important Note</em></span>) <em>You don't need to be super familiar with how namespaces work at this time. As long as you're comfortable writing </em><strong>using namespace std;</strong><em> in your programs, you're good to go. I'm including this section of notes because I never want to run the risk of leaving you frustrated, confused, or dissatisfied if you're the kind of person who loves to peek under the hood and really understand how everything is working. I personally find that being exposed to these sorts of details make me feel more comfortable using a new language.</em></p>
+<p>When we work on large software projects, we often import multiple libraries from various sources. One of the problems that arises there is that some libraries might have functions with the same names as one another.</p>
+<p>For example, a networking library that establishes connections to other computers on a network might have a&nbsp;<em>createConnection()</em> function, and a database library that establishes connections to databases stored on our machines might also have a <em>createConnnection()</em> function. If we build a project that relies on both those libraries and then call <em>createConnection()</em>, we need a way to determine which version of that function gets called.</p>
+<p>C++ uses namespaces to handle this issue. A namespace is just a named collection of functions (and other entities) that are grouped together. A networking library might articulate a&nbsp;<em>net</em> namespace, and a database library might articulate a&nbsp;<em>db</em> namespace. We would then call those <em>createConnection()</em> functions like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">net::createConnection();<br />db::createConnection();</pre>
+<p>The features of C++ we'll be using this quarter are pretty much all defined in a namespace called&nbsp;<em>std</em> (for "standard"). That includes features of C++'s standard libraries as well as the Stanford C++ Libraries. For example,&nbsp;<em>cout</em> and&nbsp;<em>endl</em> are both in the&nbsp;<em>std</em> namespace. To use them, we could do this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br /><br />int main()<br />{<br />   <span style="background-color: #ffcc99;">std::</span>cout &lt;&lt; "Hello, world!" &lt;&lt; <span style="background-color: #ffcc99;">std::</span>endl;<br />   return 0;<br />}</pre>
+<p>The problem is, we'll be using a&nbsp;<em>lot</em> of functions and other goodies from those libraries, and having to type <em>std::</em> for each one of them will be a huge waste of time and lead to unnecessarily lengthy, complicated lines of code.</p>
+<p>To get around that, we issue the <em>using namespace std;</em> statement above our function definitions. That tells C++ to look in the&nbsp;<em>std</em> namespace for the library components we use to build our programs, without the need to type <em>std::</em> in front of any of them. Here's the resulting change:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br /><br /><span style="background-color: #ffcc99;">using namespace std;</span><br /><br />int main()<br />{<br />   <span style="background-color: #ffcc99;">// removed both occurrences of std:: below</span><br />   cout &lt;&lt; "Hello, world!" &lt;&lt; endl;<br />   return 0;<br />}</pre>
+<p>If we get rid of both the&nbsp;<em>using namespace std;</em> statement and the&nbsp;<em>std::</em> tags, our program will not compile:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br /><br />int main()<br />{<br />   <span style="background-color: #ffcc99;">// removed both occurrences of std:: below</span><br />   cout &lt;&lt; "Hello, world!" &lt;&lt; endl;<br />   return 0;<br />}</pre>
+<p>Because we've given no indication of what namespace to pull <em>cout</em> and <em>endl</em> from, the compiler gives us the following errors:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">error: 'cout' was not declared in this scope; did you mean 'std::cout'?</span><br /><span style="color: #ffffff;">error: 'endl' was not declared in this scope; did you mean 'std::endl'?</span></pre>
+<p><strong><br />The <em>main()</em> Function</strong></p>
+<p>Next, we explored the definition of our program's <em>main()</em> function.</p>
+<p>In the math world, a function does three main things:</p>
+<ol start="1">
+<li>It takes an input value (or, in some cases, multiple input values).</li>
+</ol>
+<ol start="2">
+<li>It does some work. For example, the function f(x) = x<sup>2</sup> multiplies <em>x</em> by itself (i.e., it squares <em>x</em>).</li>
+</ol>
+<ol start="3">
+<li>It spits out a result. For example, for f(x) defined above, the result generated by f(5) is 25.</li>
+</ol>
+<p>Functions in C++ effectively do the same thing, but C++ doesn't like mystery or surprises when it comes to its functions' inputs and outputs. It wants us to say what&nbsp;<em>type</em> of parameter(s) we're going to pass to a function and what <em>type</em> of data a function will produce (called its <strong>return type</strong>).</p>
+<p>The syntax for defining a function is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #999999; color: #ffffff;"> DATA_TYPE </span> <span style="background-color: #999999; color: #ffffff;"> FUNCTION_NAME </span>(<span style="background-color: #999999; color: #ffffff;"> PARAMETERS </span>)<br />{<br /> &nbsp; <span style="background-color: #999999; color: #ffffff;"> STATEMENT(S) </span><br />}</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99; color: #000000;"><em>Key Take-Away</em></span>) Notice the need for opening and closing curly braces. In Python, we simply indent lines of code to signify that they make up the body of some function. In C++, we use a <strong>code block</strong> (a set of opening and closing curly braces that encapsulate lines of code).</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99; color: #000000;"><em>Key Take-Away</em></span>) In C++, whitespace (in most cases) is not for the compiler; it's for humans. Please be kind to humans. Use good spacing.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99; color: #000000;"><em>Style Requirement</em></span>) Any time you open a new code block, the code within that block should be indented one level deeper than the braces themselves.</p>
+<p>All this information offers us context for what's going on in <em>main()</em>. We return to the idea of writing new functions toward the end of today's notes, as well.</p>
+<p><br /><strong>The <em>main()</em> Function is Special</strong></p>
+<p>The C++ compiler goes line-by-line through our code, starting on the first line and working its way down.</p>
+<p>When we run a program that's written in C++, however, execution always begins in <em>main()</em>. That function gets executed automatically, without any need for us to call it manually. A program that doesn't have a&nbsp;<em>main()</em> function won't compile.</p>
+<p><br /><strong>Return Statements</strong></p>
+<p>The syntax for returning a value from a function is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">return <span style="background-color: #999999; color: #ffffff;"> EXPRESSION </span>;</pre>
+<p>The&nbsp;<em>expression</em> can be any expression that evaluates to the appropriate return type for our function and can include, among other things, variables, arithmetic operations, hard-coded values ("literals"), and other function calls.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99; color: #000000;"><em>Key Take-Away</em></span>) Recall that <em>main()</em> should always return 0 (zero) upon successful execution of a program. You can think of this as <em>main()</em>'s way of saying that it encountered zero errors. That value is sent back to the operating system and can be monitored and interpreted by other programs.</p>
+<p>We sometimes return non-zero values from <em>main()</em> if something goes awry and we want to signal to anyone listening that our program didn't accomplish what we wanted it to.</p>
+<p><strong><br /><em>cout</em></strong></p>
+<p><em>cout</em> is what we call a <strong>stream</strong>. By default, it acts as a direct line to our terminal. Anything we send to it with the &lt;&lt; operator gets printed to the screen. We saw today three primary things we can send to <em>cout</em>:</p>
+<ul>
+<li>string literals (a hard-coded string that appears in double quotes in our code, such as "Hello, world!")</li>
+<li>variables</li>
+<li><em>endl</em></li>
+</ul>
+<p>Several examples are included throughout today's notes.</p>
+<p><strong><br /><em>endl</em></strong></p>
+<p><em>endl</em> causes a newline character to print to the screen. Without it, all our output runs together. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   <span style="background-color: #ffcc99;">// Note the lack of endl in the following statements.</span><br />   cout &lt;&lt; "Hello, world!";<br />   cout &lt;&lt; "CS106B is awesome, and so are you!";<br /><br />   return 0;<br />}</pre>
+<p>The output for that program is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Hello, world!CS106B is awesome, and so are you!</span></pre>
+<p>Here's the fix, with changes highlighted in orange (or is it peach?):</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   cout &lt;&lt; "Hello, world!"<span style="background-color: #ffcc99;"> &lt;&lt; endl</span>;<br />   cout &lt;&lt; "CS106B is awesome, and so are you!"<span style="background-color: #ffcc99;"> &lt;&lt; endl</span>;<br /><br />   return 0;<br />}</pre>
+<p>Our output now becomes:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Hello, world!<br />CS106B is awesome, and so are you!</span></pre>
+<p><strong><br />Variables and Data Types</strong></p>
+<p>Unlike Python, which is very flexible with variable usage, C++ requires us to formally declare every variable we want to use and give it a specific data type `that cannot be changed after declaration. We saw today the following data types:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th>data type keyword</th>
+      <th>type description</th>
+      <th>example(s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>int</td>
+      <td>integer (whole number)</td>
+      <td>-3, 0, 1, 1051</td>
+    </tr>
+    <tr>
+      <td>float</td>
+      <td>floating point number (real number)</td>
+      <td>3.14159</td>
+    </tr>
+    <tr>
+      <td>double</td>
+      <td>floating point number (real number)</td>
+      <td>3.14159</td>
+    </tr>
+    <tr>
+      <td>char</td>
+      <td>character (single glyph)</td>
+      <td>'q', 'P', '$' (requires single quotes)</td>
+    </tr>
+    <tr>
+      <td>string</td>
+      <td>string of characters</td>
+      <td>"Hello, world!" (requires double quotes)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td>Boolean</td>
+      <td>true, false (no quotes)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>A <strong>variable declaration</strong> is a statement wherein we bring a new variable into existence and give it a data type. The syntax for that in C++ is:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #999999; color: #ffffff;"> DATA_TYPE </span> <span style="background-color: #999999; color: #ffffff;"> VARIABLE_NAME </span>;</pre>
+<p>See examples below.</p>
+<p>Notice that we can mix string literals with variables in our&nbsp;<em>cout</em> statements, and we can output multiple variables with a single <em>cout</em> statement, as well:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int a = 5;<br />   char ch = 'q';<br />   float f = 3.14159;<br />   double d = 3.14159;<br />   string s = "hello";<br /><br />   cout &lt;&lt; "Hello, world!" &lt;&lt; " " &lt;&lt; a &lt;&lt; endl;<br />   cout &lt;&lt; ch &lt;&lt; " " &lt;&lt; f &lt;&lt; " " &lt;&lt; d &lt;&lt; endl;<br />   cout &lt;&lt; s &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p>Side note: A&nbsp;<em>double</em> typically uses double the amount of memory that a <em>float</em> uses and can therefore store more digits after the decimal place. You do not need to know that for this class. That topic is explored further in CS107.</p>
+<p><strong><br />Common Pitfalls with Variables</strong></p>
+<p>Here are some common errors we see with variables:</p>
+<p style="margin-left: 30px; font-size: 10px;"><span style="font-size: 10pt;"><strong><br />Undeclared variable.</strong> We cannot use a variable that has not been declared. This code will not compile.</span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   a = 5;  <strong><span style="background-color: #e03e2d; color: #ffffff;">// ERROR: a is undeclared; we must give it a data type</span></strong><br /><br />   cout &lt;&lt; a &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px; font-size: 10px;"><span style="font-size: 10pt;"><strong><br />Type mismatch.</strong> In this example,&nbsp;<em>a</em> was designed to hold an integer. We cannot set it equal to a string.</span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int a = 5;<br />   a = "hello";  <strong><span style="background-color: #e03e2d; color: #ffffff;">// ERROR: type mismatch; a can hold an integer, not a string</span></strong><br /><br />   cout &lt;&lt; a &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px; font-size: 10px;"><span style="font-size: 10pt;"><strong><br />Attempting to change a variable's data type.</strong> Once a variable is declared to be of a certain type, it cannot be redeclared with a different type.</span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int a = 5;<br />   string a = "hello";  <strong><span style="background-color: #e03e2d; color: #ffffff;">// ERROR: a is already declared; cannot declare with new type</span></strong><br /><br />   cout &lt;&lt; a &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px; font-size: 10px;"><span style="font-size: 10pt;"><strong><br />Redefinition of variables.</strong> Here, we are trying to create a twice.</span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int a = 5;<br />   int a = 7;  <strong><span style="background-color: #e03e2d; color: #ffffff;">// ERROR: a is already declared on the line above</span></strong><br /><br />   cout &lt;&lt; a &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px; font-size: 10px;"><span style="font-size: 10pt;"><br />If you want to change the value of a variable you've already declared, simply do it on another line without re-declaring the data type, like so:</span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int a = 5;<br />   a = 7;  <strong><span style="background-color: #169179; color: #ffffff;">// OKAY</span></strong><br /><br />   cout &lt;&lt; a &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p><strong><br />Uninitialized Variables</strong></p>
+<p>In C++, variables are not auto-initialized for you. By default, if you don't assign a value to a variable, it contains garbage. (An exception here is string variables, which are empty by default.)</p>
+<p>Most C++ compilers will merrily allow you to compile code in which variables have not been initialized. The Qt Creator will not -- and so I (as someone who doesn't typically use an IDE when writing C++ code) was caught off guard today when I went to compile the following in the Qt Creator, and it actually stopped me:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int a;<br />   int b;<br />   int c;<br /><br />   cout &lt;&lt; a &lt;&lt; " " &lt;&lt; b &lt;&lt; " " &lt;&lt; c &lt;&lt; endl;  <span style="background-color: #e03e2d; color: #ffffff;"><strong>// YIKES. Uninitialized variables.</strong></span><br /><br />   <span style="background-color: #e03e2d; color: #ffffff;"><strong>// Some compilers will let this compile despite the uninitialized variables!</strong></span><br /><br />   return 0;<br />}</pre>
+<p><br /><strong>While Loops</strong></p>
+<p>We assume that everyone coming into this course has seen while loops before, and so I introduced the syntax rather quickly.</p>
+<p>Syntax:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">while (<span style="background-color: #999999; color: #ffffff;"> CONDITION </span>)<br />{<br /> &nbsp; <span style="background-color: #999999; color: #ffffff;"> STATEMENT(S) </span><br />}</pre>
+<p>Note that the parentheses around the condition are required.</p>
+<p>Example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int i = 1;<br /><br />   while (i &lt; 5)<br />   {<br />      cout &lt;&lt; i &lt;&lt; endl;<br />      i++;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>In Python, we would have done something like this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee;"><strong>// Python code! Not C++!</strong><br />i = 1<br />while i &lt; 5:<br />    print(i)<br />    i += 1</pre>
+<p><strong><br />The ++ Operator</strong></p>
+<p>Notice above that we used&nbsp;<em>i++</em> instead of&nbsp;<em>i += 1</em>. It is so common to want to increment an integer variable by one that C++ has a dedicated operator (the ++ operator) to do just that.</p>
+<p><br /><strong>Wonky Spacing</strong></p>
+<p>To reinforce that C++ doesn't worry too much about whitespace, I modified the while loop as follows and showed that the program still compiled:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int i = 1;<br /><br />   while (i &lt; 5)<br />   {<br />cout &lt;&lt; i &lt;&lt; endl;<br /><br /><br /><br /><br /><br /><br />      i++;<br />                      }<br /><br />   return 0;<br />}</pre>
+<p>We also saw that if we highlighted the while-loop and its code block, the Qt Creator was able to fix the indentation for us. Hit CTRL+I to fix indentation (or, if you can't remember the shortcut, right click and find that option in the menu that pops up).</p>
+<p>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not covered in class.</em></span>) Similarly, although I did not cover this in class, C++ would compile the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int i = 1;<br />   while (i &lt; 5) { cout &lt;&lt; i &lt;&lt; endl; i++; }<br />   return 0;<br />}</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99; color: #000000;"><em>Style Requirement</em></span>) The above approach is difficult to read, and putting multiple statements on a single line is actually prohibited in our style requirements for programming assignments.</p>
+<p><br /><strong>For Loops</strong></p>
+<p>C++ also has for-loops, although they are quite different from Python's for-loops. Here's the syntax:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">for (<span style="background-color: #999999; color: #ffffff;"> INITIALIZATION_STATEMENT </span>; <span style="background-color: #999999; color: #ffffff;"> CONDITION </span>; <span style="background-color: #999999; color: #ffffff;"> POST_ITERATION_STATEMENT </span>)<br />{<br /> &nbsp; <span style="background-color: #999999; color: #ffffff;"> STATEMENT(S) </span><br />}</pre>
+<p>Notice the need for semicolons between each of the three components of the for-loop. The initialization statement is executed exactly once (when we first hit the for-loop), the condition is evaluated before kicking off an iteration, and the post-incrementation statement is executed at the end of each iteration of the loop, right before re-evaluating the looping condition.</p>
+<p>Example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   for (int i = 1; i &lt; 5; i++)<br />   {<br />      cout &lt;&lt; i &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>This for-loop is <em>syntactically</em> distinct from the while-loop above, but it is <em>semantically</em> the same (aside from the fact that the&nbsp;<em>i</em> variable is out of scope once we leave the for-loop, which we discussed at the very end of lecture).</p>
+<p><br /><strong>For-Each Loops (Range-Based Loops)</strong></p>
+<p>This is a third type of loop that C++ offers. It's good for looping through all the elements in a container (such as all the characters in a string or all the elements in an array). We will see additional containers this quarter that are amenable to this sort of loop.</p>
+<p>Syntax:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">for (<span style="background-color: #999999; color: #ffffff;"> DATA_TYPE </span> <span style="background-color: #999999; color: #ffffff;"> VARIABLE_NAME </span> : <span style="background-color: #999999; color: #ffffff;"> CONTAINER </span>)<br />{<br /> &nbsp; <span style="background-color: #999999; color: #ffffff;"> STATEMENT(S) </span><br />}</pre>
+<p>Example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "giraffe";<br /><br />   // Initially, ch is set equal to the first character in s. With each subsequent<br />   // iteration of the loop, ch moves forward by one character in the string.<br />   for (char ch : s)<br />   {<br />      cout &lt;&lt; ch &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>This produced the following output, where the string is tall and elongated, just like a giraffe. :)</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">g<br />i<br />r<br />a<br />f<br />f<br />e</span></pre>
+<p><br /><strong>Conditional (If-Else) Statements and Comparison Operators</strong></p>
+<p>The syntax for an if-statement in C++ is very similar to that of a while-loop.</p>
+<p>Note that the parentheses around the condition are required.</p>
+<p>Syntax:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">if (<span style="background-color: #999999; color: #ffffff;"> CONDITION </span>)<br />{<br /> &nbsp; <span style="background-color: #999999; color: #ffffff;"> STATEMENT(S) </span><br />}</pre>
+<p>In class, we started with a small example and continued to extend it until we reached the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int numCupcakes = 5;<br /><br />   if (numCupcakes == 1)<br />   {<br />      cout &lt;&lt; "Oh no! Running low!" &lt;&lt; endl;<br />   }<br />   else if (numCupcakes &gt; 1)<br />   {<br />      cout &lt;&lt; "Hooray, cupcakes!" &lt;&lt; endl;<br />   }<br />   else<br />   {<br />      cout &lt;&lt; "Oh nooOoOoOOoo!" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>The comparison operators in C++ are:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th>operator</th>
+      <th>meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>&lt;</td>
+      <td>less than</td>
+    </tr>
+    <tr>
+      <td>&lt;=</td>
+      <td>less than or equal to</td>
+    </tr>
+    <tr>
+      <td>&gt;</td>
+      <td>greater than</td>
+    </tr>
+    <tr>
+      <td>&gt;=</td>
+      <td>greater than or equal to</td>
+    </tr>
+    <tr>
+      <td>==</td>
+      <td>equal to</td>
+    </tr>
+    <tr>
+      <td>!=</td>
+      <td>not equal to</td>
+    </tr>
+    <tr><td></td><td></td></tr>
+  </tbody>
+</table>
+<p>Note that the &lt;= operator cannot be written as =&lt; (with the equal sign up front). The same holds for the &gt;= operator.</p>
+<p>Playing with each of these is left as an exercise.</p>
+<p><strong><br />Boolean Operators</strong></p>
+<p>We also examined the following three Boolean operators.</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th>operator</th>
+      <th>meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>!</td>
+      <td>Boolean "not"</td>
+    </tr>
+    <tr>
+      <td>&amp;&amp;</td>
+      <td>Boolean "and"</td>
+    </tr>
+    <tr>
+      <td>||</td>
+      <td>Boolean "or"</td>
+    </tr>
+    <tr><td></td><td></td></tr>
+  </tbody>
+</table>
+<p>The <em>not</em> operator inverts a boolean value; <em>true</em> becomes <em>false</em>, and <em>false</em> becomes <em>true</em>. Accordingly, the following chunk of code:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">if (numCupcakes != 13)<br />{<br />   cout &lt;&lt; "Not a baker's dozen." &lt;&lt; endl;<br />}</pre>
+<p>... is semantically equivalent to:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">if (!(numCupcakes == 13))<br />{<br />   cout &lt;&lt; "Not a baker's dozen." &lt;&lt; endl;<br />}</pre>
+<p>Notice that when applying the <em>not</em> operator, we use parentheses to wrap up the entire expression we wish to negate.</p>
+<p>The&nbsp;<em>and</em> operator evaluates to true if, and only if, both of its operands are true. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int numCupcakes = 13;<br />   bool stillMakingPoorLifeChoices = true;<br /><br />   if (numCupcakes == 13 &amp;&amp; stillMakingPoorLifeChoices)<br />   {<br />      cout &lt;&lt; "Hooray, cupcakes!" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>The <em>or</em> operator is true if at least one of its operands is true. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int numCupcakes = 13;<br /><br />   if (numCupcakes == 1 || numCupcakes == 2)<br />   {<br />      cout &lt;&lt; "Uh oh! We're running low on cupcakes!" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important Note!</em></span>) You must use two ampersands for the &amp;&amp; operator and two pipes for the || operator. If you just use a single &amp; or |, you actually get a different operation. (The &amp; and | operators are actually bitwise operators, which are discussed in CS107.)</p>
+<p><strong><br />Common Pitfall with the || Operator</strong></p>
+<p>In the following example, the&nbsp;<em>cout</em> statement is executed because C++ considers "2" to be <em>true</em>. If we want to check whether a variable is equal to one value or another, we need to apply the == operator twice.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int numCupcakes = 5;<br /><br />   if (numCupcakes == 1 <span style="background-color: #ffcc99;">|| 2</span>)  <span style="background-color: #e03e2d; color: #ffffff;"><strong>// Yikes! This evaluates to true!</strong></span><br />   {<br />      cout &lt;&lt; "Uh oh! We're running low on cupcakes!" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>Here's the correct version:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   int numCupcakes = 5;<br /><br />   if (numCupcakes == 1 <span style="background-color: #ffcc99;">|| numCupcakes == 2</span>)  <span style="background-color: #169179; color: #ffffff;"><strong>// Fixed!</strong></span><br />   {<br />      cout &lt;&lt; "Uh oh! We're running low on cupcakes!" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p><strong><br />Void Functions</strong></p>
+<p>Next, we defined a few functions other than <em>main()</em> and explored return types, return values, and parameters.</p>
+<p>If a function takes no parameters, we simply leave the parameter list within its parentheses blank.</p>
+<p>If we write a function that does some work for us, but which we never expect to produce a meaningful value at the end of its execution, then it needn't return a value at all. In this case, we give the function a return type of <em>void</em>, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />void greet()<br />{<br />   cout &lt;&lt; "hello :)" &lt;&lt; endl;<br />}<br /><br />int main()<br />{<br />   greet();<br />   return 0;<br />}</pre>
+<p>A <em>void</em> function does not require a <em>return</em> statement. We return to the function that called it when we reach the end of the function's definition.</p>
+<p>(<span style="font-size: 10pt; background-color: #eccafa;"><em>Not covered in lecture.</em></span>) Optionally, if we wish to leave a <em>void</em> function before its final line, we can simply return (without specifying a return value), like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />void processCupcakes(int numCupcakes)<br />{<br />   if (numCupcakes &lt; 0)<br />   {<br />      cout &lt;&lt; "Invalid number of cupcakes." &lt;&lt; endl;<br />      <span style="background-color: #ffcc99;">return;</span><br />   }<br /><br />   // One can imagine doing something useful with numCupcakes here.<br />   // If we pass a negative value to this function, the following line<br />   // will not print.<br />   cout &lt;&lt; "We reached the last line of the function." &lt;&lt; endl;<br />}<br /><br />int main()<br />{<br />   processCupcakes(-3);<br />   return 0;<br />}</pre>
+<p><br /><strong>Passing Parameters and Returning Values from Functions</strong></p>
+<p>The following&nbsp;<em>square()</em> function is designed to take a single integer parameter,&nbsp;<em>x</em>, and return&nbsp;<em>x</em><sup>2</sup>. To set this function up to accept a parameter, we give a full declaration for that variable within the parentheses in the function signature (the line with the function's name, return type, and parameter list).</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />// We pass an integer to this function, and it returns an integer.<br />int square(int x)<br />{<br />   return x * x;<br />}<br /><br />int main()<br />{<br />   square(5);<br />   return 0;<br />}</pre>
+<p>However, when we run the above program, nothing gets printed to the screen. That's because we never did anything in <em>main()</em> with the return value of our call to&nbsp;<em>square(5)</em>. We must capture that return value. Here are two ways to print the return value to the screen:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />// We pass an integer to this function, and it returns an integer.<br />int square(int x)<br />{<br />   return x * x;<br />}<br /><br />int main()<br />{<br />   // <strong>Option 1:</strong> Send the return value of square(5) directly to cout.<br />   cout &lt;&lt; square(5) &lt;&lt; endl;<br /><br />   // <strong>Option 2:</strong> Store the return value in a variable and print that.<br />   int result = square(5);<br />   cout &lt;&lt; result &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p>The program now produces the following output:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">25<br />25</span></pre>
+<p>(<span style="font-size: 10pt; background-color: #eccafa;"><em>Not covered in lecture.</em></span>) If we want our function to print the result directly, we could write it as follows. Notice that the modified behavior of this function is reflected both in its modified name and the <em>void</em> return type:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />void printSquare(int x)<br />{<br />   cout &lt;&lt; x * x &lt;&lt; endl;<br />}<br /><br />int main()<br />{<br />   printSquare(5);<br />   return 0;<br />}</pre>
+<p><strong><br />Function Placement and Functional Prototypes</strong></p>
+<p>I mentioned toward the beginning of class that the C++ compiler processes your code line-by-line, starting at the very first line. A consequence of that is that if the compiler encounters a function call for a function that hasn't been defined yet (or for which we have not yet written the requisite <em>#include</em> statement), it goes kaput. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   cout &lt;&lt; square(5) &lt;&lt; endl;  <strong><span style="background-color: #e03e2d; color: #ffffff;">// ERROR: square() function not yet defined.</span></strong><br />   return 0;<br />}<br /><br />int square(int x)<br />{<br />   return x * x;<br />}</pre>
+<p>What's happening above is that when we hit the&nbsp;<em>cout</em> line, C++ goes, "What's this <em>square()</em> function? Never heard of it." And it stops trying to compile the program in protest.</p>
+<p>There are two ways around this:</p>
+<ol style="list-style-type: decimal;">
+<li>Move the definition of the&nbsp;<em>square()</em> function above&nbsp;<em>main()</em>.</li>
+<li>Introduce a functional prototype!</li>
+</ol>
+<p>A <strong>functional prototype</strong> is just a function signature with a semicolon. A <strong>function signature</strong> is that first line of your function's definition that gives the return type, function name, and parameter list. Here's a functional prototype in action:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br /><br />using namespace std;<br /><br /><span style="background-color: #ffcc99;">// functional prototype</span><br /><span style="background-color: #ffcc99;">int square(int x);</span><br /><br />int main()<br />{<br />   cout &lt;&lt; square(5) &lt;&lt; endl;  <span style="background-color: #169179; color: #ffffff;"><strong>// This is okay now.</strong></span><br />   return 0;<br />}<br /><br />int square(int x)<br />{<br />   return x * x;<br />}</pre>
+<p>This time, when C++ reaches the&nbsp;<em>cout</em> line, even though it doesn't have a definition for the&nbsp;<em>square()</em> function, it has a good idea (from having already seen the functional prototype) of how that function should be called, including the number and type of arguments it takes and its return type. It checks out the&nbsp;<em>cout</em> line and says, "Alrighty. I don't know how the&nbsp;<em>square()</em> function works yet, but I do know that the way you're calling it here fits with how I expect it to be called. Good work." It then carries on and successfully compiles the program.</p>
+<p>(<span style="font-size: 10pt; background-color: #eccafa;"><em>Not covered in class.</em></span>) Note that if we never defined the <em>square()</em> function, the program would not compile, even if we had a functional prototype. The compiler would fail at the very end of the file, when it realized there was no more code to process and it never got a definition for <em>square()</em>:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br /><br />using namespace std;<br /><br />// functional prototype<br />int square(int x);<br /><br />int main()<br />{<br />   cout &lt;&lt; square(5) &lt;&lt; endl;<br />   return 0;<br />}<br /><br /><span style="background-color: #e03e2d; color: #ffffff;"><strong>// ERROR: Reached end of code without ever defining square() function.</strong></span></pre>
+<p><br /><strong>Variable Scope</strong></p>
+<p>At the very end of lecture, I mentioned that variables only exist within the code blocks where they are declared -- or, in the event that you declare a variable in the header of a for-loop, that variable only exists within the loop.</p>
+<p>For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   for (int i = 0; i &lt; 5; i++)<br />   {<br />      int q = 5;<br />      cout &lt;&lt; i &lt;&lt; endl;<br />   }<br /><br />   cout &lt;&lt; "i is: " &lt;&lt; i; &nbsp;<strong><span style="background-color: #e03e2d; color: #ffffff;">// ERROR: undeclared variable</span></strong><br />   cout &lt;&lt; "q is: " &lt;&lt; q;  <strong><span style="background-color: #e03e2d; color: #ffffff;">// ERROR: undeclared variable</span></strong><br /><br />   return 0;<br />}</pre>
+<p>In the code above, we say that the&nbsp;<em>i</em> and&nbsp;<em>q</em> variables only exist within the scope of the for-loop. To refer to them outside the for-loop, they would have to be declared elsewhere. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   <span style="background-color: #ffcc99;">int i;</span><br />   <span style="background-color: #ffcc99;">int q;</span><br /><br />   for (i = 0; i &lt; 5; i++)<br />   {<br />      q = 5;<br />      cout &lt;&lt; i &lt;&lt; endl;<br />   }<br /><br />   cout &lt;&lt; "i is: " &lt;&lt; i &lt;&lt; endl; &nbsp;<span style="background-color: #169179; color: #ffffff;"><strong>// OKAY</strong></span><br />   cout &lt;&lt; "q is: " &lt;&lt; q &lt;&lt; endl;  <span style="background-color: #169179; color: #ffffff;"><strong>// OKAY</strong></span><br /><br />   return 0;<br />}</pre>
+<p><strong><br />What's next?</strong></p>
+<p>On Monday, we continue our fast-paced introduction to C++! We'll talk about pass-by-value functions, pass-by-reference, strings in C++, and some things related to testing our code.</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. After reviewing the notes, be sure to spend some time coding up your own examples from scratch. Play with the various operators and data types we saw in class today, and be sure to write loops and conditional statements to solidify your understanding of the syntax for those things in C++.</p>
+<p>2. Be sure to glance through the notes labeled "(<span style="font-size: 10pt; background-color: #eccafa;"><em>Not covered in class.</em></span>)" to enrich and/or solidify your understanding of some of the finer points of this material. Those extra nuggets of information might prove useful at some point this quarter.<br /><br /></p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Sep-30
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

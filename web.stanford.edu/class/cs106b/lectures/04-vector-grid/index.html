@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Testing, Vectors, and Grids</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 4. Testing, Vectors, and Grids</h1>
+ <p class="subtle-heading">Wednesday October 4</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>In this lecture, we will introduce use of <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code> and talk about what testing fundamentals look like in CS106B.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 2.5-2.9, 5.1 and class documentation for <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Vector.html" title="Documentation for Vector">Vector</a> and <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Grid.html" title="Documentation for Grid">Grid</a></li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/141555">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=a112b6e9-07f0-45c6-a13f-b083014df210&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Preliminaries</p>
+<p>2. Announcements</p>
+<p>3. Warmup and Reinforcement</p>
+<p>4. Design Principles: Functional Decomposition and More</p>
+<p>5. Testing with <span class="code-title">SimpleTest.h</span></p>
+<p>6. Abstract Data Types (ADTs): Introduction and Overview</p>
+<p>7. <span class="code-title">Vector</span> Overview</p>
+<p>8. <span class="code-title">Vector</span> Functions and Sample Code</p>
+<p>9. Runtime Comparison: <span class="code-title">add(value)</span> vs. <span class="code-title">insert(0, value)</span></p>
+<p>10. <span class="code-title">Grid</span> Overview</p>
+<p>11. <span class="code-title">Grid</span> Functions and Sample Code</p>
+<p>12. Passing Containers by Reference</p>
+<p>13. Common Pitfalls</p>
+<p>14. What's next?</p>
+<p>15. Practice Problems</p>
+<p><br /><strong>Preliminaries</strong></p>
+<p>If the following function call does not appear in a fixed-width code font with a light gray background, please hit CTRL+SHIFT+R (not just CTRL+R) to ensure the style sheet for this site is reloaded and applied to this page: <span class="code-chonk">foo()</span></p>
+<blockquote>
+
+</blockquote>
+<p><br /><strong>Announcements</strong></p>
+<ul>
+<li>Please bring laptops to section this week.</li>
+</ul>
+<ul>
+<li>Section swaps are still possible in Paperless.</li>
+</ul>
+<ul>
+<li>Section attendance is worth 5% of your grade!</li>
+</ul>
+<ul>
+<li>Please head to LaIR for assignment help early. LaIR gets packed the day of and before each assignment deadline. Avoid frustration and long wait times by starting early and getting help early. :)</li>
+</ul>
+<ul>
+<li>Have a burning question during lecture? Julie and Clinton are creating a megathread at the start of each lecture where you can get responses from them in real time. This is great for questions that might not be relevant to the whole class or questions that we just don't have time to get to because of the pace at which we're covering material.</li>
+</ul>
+<p><br /><strong>Warmup and Reinforcement</strong></p>
+<p>We started with a program designed to determine whether a given username appears in a given password string -- and to print an alert if so:</p>
+<p style="padding-left: 30px; width: 600px;"><span style="font-size: 10pt;"><strong><span style="color: #e03e2d;">Warning:</span> This code suffers from several major design issues. See the following </strong><strong>section of notes ("Design Principles") for more.</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "Sean";<br />   string p = "sean'spassword";<br /><br /><strong><span style="color: #7e8c8d;">   // How can we determine whether the given username (s) appears in the password (p)?</span></strong><br /><br />   if (<span style="color: #ffffff; background-color: #000000;"><strong> ??? </strong></span>)<br />   {<br />      cout &lt;&lt; "Uh oh! Bad password." &lt;&lt; endl;<br />   }<br />   else<br />   {<br />      cout &lt;&lt; "Hooray!" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>The solution, which we found by glancing through the functions listed in the <span class="code-chonk">strlib.h</span> docs, is:</p>
+<p style="padding-left: 30px; width: 600px;"><span style="font-size: 10pt;"><strong><span style="color: #e03e2d;">Warning:</span> This code suffers from several major design issues. See the following </strong><strong>section of notes ("Design Principles") for more.</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br /><span style="background-color: #ffcc99;">#include "strlib.h"</span><br />using namespace std;<br /><br />int main()<br />{<br />   string s = "Sean";<br />   string p = "sean'spassword";<br /><br /><strong><span style="color: #7e8c8d;">   // How can we determine whether the given username (s) appears in the password (p)?</span></strong><br /><br />   if (<span style="background-color: #ffcc99;">stringContains(toLowerCase(p), toLowerCase(s))</span>)<br />   {<br />      cout &lt;&lt; "Uh oh! Bad password." &lt;&lt; endl;<br />   }<br />   else<br />   {<br />      cout &lt;&lt; "Hooray!" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>We then augmented this to check whether the username appears in the password string if we extract just the alphabetic portion:</p>
+<p style="padding-left: 30px; width: 600px;"><span style="font-size: 10pt;"><strong><span style="color: #e03e2d;">Warning:</span> This code suffers from several major design issues. See the following </strong><strong>section of notes ("Design Principles") for more.</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "strlib.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "Sean";<br />   string p = "<span style="background-color: #ffcc99;">s1e1a1n1'1s1p1a1s1s1w1o1r1d</span>";<br /><span style="background-color: #ffcc99;">   string p0;</span><br /><br /><span style="background-color: #ffcc99;">   for (int i = 0; i &lt; p.length(); i++)</span><br /><span style="background-color: #ffcc99;">   {</span><br /><span style="background-color: #ffcc99;">      if (isalpha(p[i]))</span><br /><span style="background-color: #ffcc99;">      {</span><br /><span style="background-color: #ffcc99;">         p0 += p[i];</span><br /><span style="background-color: #ffcc99;">      }</span><br /><span style="background-color: #ffcc99;">   }</span><br /><br />   if (stringContains(toLowerCase(<span style="background-color: #ffcc99;">p0</span>), toLowerCase(s)))<br />   {<br />      cout &lt;&lt; "Uh oh! Bad password." &lt;&lt; endl;<br />   }<br />   else<br />   {<br />      cout &lt;&lt; "Hooray!" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p><br /><strong>Design Principles: Functional Decomposition and More</strong></p>
+<p>The code above suffers from several flaws that make it difficult to read and, therefore, difficult to debug, augment, and maintain. Issues include:</p>
+<ul>
+<li>We are not using meaningful variable names.</li>
+</ul>
+<ul>
+<li>Everything is dumped into <span class="code-chonk">main()</span>, leading to code that is difficult for someone who's not familiar with the code to parse through and debug. As written, if our program isn't working correctly, it can be hard to determine where things are going wrong, because there's so much happening all in one place. It's also hard to subject individual components of the code to robust testing when they're all slopped into <span class="code-chonk">main()</span> like this.</li>
+</ul>
+<ul>
+<li>There are no comments to assist the reader in figuring out what's going on. However, the ideal scenario would be to rewrite the code in a way that makes comments somewhat unnecessary.</li>
+</ul>
+<p>We solved the broader structural issues by moving chunks of code into functions that serve a single purpose and naming those functions with verb phrases that conveyed what they do.</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key Concept!</em></span>) Breaking up a task into constituent functions that each fulfill a single purpose is called <strong>functional decomposition</strong> and improves the readability and maintainability of our code.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "strlib.h"<br />using namespace std;<br /><br />string extractAlpha(string s)<br />{<br />   string result;<br /><br />   for (int i = 0; i &lt; s.length(); i++)<br />   {<br />      if (isalpha(s[i]))<br />      {<br />         result += s[i];<br />      }<br />   }<br />   return result;<br />}<br /><br />bool passwordChecksOut(string username, string password)<br />{<br />   string alphaPortion = extractAlpha(password);<br />   return !stringContains(toLowerCase(alphaPortion), toLowerCase(username));<br />}<br /><br />int main()<br />{<br />   string username = "Sean";<br />   string password = "s1e1a1n1'1s1p1a1s1s1w1o1r1d";<br /><br />   if (passwordChecksOut(username, password))<br />   {<br />      cout &lt;&lt; "Hooray!" &lt;&lt; endl;<br />   }<br />   else<br />   {<br />      cout &lt;&lt; "Oh no! Bad password." &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p>This code is now much more readable, and we have a few units that can be independently and rigorously tested: the&nbsp;<span class="code-chonk">extractAlpha()</span> and&nbsp;<span class="code-chonk">passwordChecksOut()</span> functions. The introduction of meaningful variable names and function names also means that we needn't bog down our code with comments explaining what's going on.</p>
+<p>A nice side effect of this approach is that we now have one place where all the password-checking logic is neatly bundled together and isolated from the rest of the code. If we want to add new restrictions (such as requiring the password be at least 8 characters long), there is a very clear place to add the code for that: the&nbsp;<span class="code-chonk">passwordChecksOut()</span> function.</p>
+<p><br /><strong>Testing</strong></p>
+<p>At this point, we turned our attention to testing. The Stanford C++ Library has a powerful testing framework that you can use with just a few simple steps:</p>
+<ol style="list-style-type: decimal;">
+<li><span class="code-chonk">#include "SimpleTest.h"</span> in your code</li>
+<li>Write your own tests using <span class="code-chonk">STUDENT_TEST("description of test") { ... }</span></li>
+<li>Populate each <span class="code-chonk">SIMPLE_TEST</span> with <span class="code-chonk">EXPECT_EQUAL( ... )</span> statements that verify the results of various operations.</li>
+<li>Call&nbsp;<span class="code-chonk">runSimpleTests(ALL_TESTS)</span> to cause the tests to be run.</li>
+</ol>
+<p>Further information about all these steps -- as well as information about other testing functionality that is available to you -- can be found in the <a style="text-decoration: none;" href="../../resources/testing_guide.html">SimpleTest Guide</a>.</p>
+<p>Note that in programming assignments, you can (and should!) make use of <span class="code-chonk">STUDENT_TEST</span> to add your own test cases, but you should be careful not to modify any test we have provided for you. Those are created using <span class="code-chonk">PROVIDED_TEST</span> instead of <span class="code-chonk">STUDENT_TEST</span>.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) In discussing things to test for in <span class="code-chonk">extractAlpha()</span>, we came up with all kinds of scenarios:</p>
+<ul>
+<li>What if all the characters are alphabetic?</li>
+<li>What if there are non-alpha characters are at the end of the string?</li>
+<li>What if there are non-alpha characters are at the beginning of the string?</li>
+<li>What if there are non-alphabetic characters in the middle of the string?</li>
+<li>What if there are alternating alphabetic and non-alphabetic characters?</li>
+<li>What if we have only non-alphabetic characters, and no alphabetic ones?</li>
+<li>What if our non-alphabetic characters are not digits, but other symbols ('$', '*', etc.)?</li>
+<li>What if we have an empty string (a string with zero characters)?</li>
+<li>What if we have a string with exactly 1, 2, or 3 characters?</li>
+<li>What if we have a very long string?</li>
+<li>What if our string is even in length? What if the length is odd?</li>
+</ul>
+<p>These are the sorts of things we hope you will be thinking about as you develop test cases for your own programs this quarter.</p>
+<p>Here is the resulting code with test cases for the&nbsp;<span class="code-chonk">extractAlpha()</span> function.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br /><span style="background-color: #ffcc99;">#include "SimpleTest.h"</span><br />#include "strlib.h"<br />using namespace std;<br /><br />string extractAlpha(string s)<br />{<br />   string result;<br /><br />   for (int i = 0; i &lt; s.length(); i++)<br />   {<br />      if (isalpha(s[i]))<br />      {<br />         result += s[i];<br />      }<br />   }<br />   return result;<br />}<br /><br />bool passwordChecksOut(string username, string password)<br />{<br />   string alphaPortion = extractAlpha(password);<br />   return !stringContains(toLowerCase(alphaPortion), toLowerCase(username));<br />}<br /><br /><span style="background-color: #ffcc99;">STUDENT_TEST("various tests of extractAlpha() function")</span><br /><span style="background-color: #ffcc99;">{</span><br /><span style="background-color: #ffcc99;">   EXPECT_EQUAL(extractAlpha("sean"), "sean");</span><br /><span style="background-color: #ffcc99;">   EXPECT_EQUAL(extractAlpha("sean11"), "sean");</span><br /><span style="background-color: #ffcc99;">   EXPECT_EQUAL(extractAlpha("1sean"), "sean");</span><br /><span style="background-color: #ffcc99;">   EXPECT_EQUAL(extractAlpha("s1ean"), "sean");</span><br /><span style="background-color: #ffcc99;">   EXPECT_EQUAL(extractAlpha("s1e1a1n"), "sean");</span><br /><span style="background-color: #ffcc99;">   EXPECT_EQUAL(extractAlpha("s9e$a***&amp;n"), "sean");</span><br /><span style="background-color: #ffcc99;">   EXPECT_EQUAL(extractAlpha(""), "");</span><br /><span style="background-color: #ffcc99;">   EXPECT_EQUAL(extractAlpha("9$&amp;"), "");</span><br /><span style="background-color: #ffcc99;">}</span><br /><br />int main()<br />{<br />   <span style="background-color: #ffcc99;">runSimpleTests(ALL_TESTS);</span><br /><br />   string username = "Sean";<br />   string password = "s1e1a1n1'1s1p1a1s1s1w1o1r1d";<br /><br />   if (passwordChecksOut(username, password))<br />   {<br />      cout &lt;&lt; "Hooray!" &lt;&lt; endl;<br />   }<br />   else<br />   {<br />      cout &lt;&lt; "Oh no! Bad password." &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p><br /><strong>Abstract Data Types (ADTs): Introduction and Overview</strong></p>
+<p>Next, we waded into a unit on ADTs (abstract data structures).</p>
+<p>The implementation details of an ADT might vary greatly from one language to another, and there are often many different ways to implement a particular ADT in any one language, as well. Having a set of data structures that provide an agreed-upon model for how data is stored and manipulated means we can:</p>
+<p style="padding-left: 40px;">(a) have a common language for discussing solutions to a wide range of problems with other people in our field</p>
+<p style="padding-left: 40px;">(b) write code that is fairly comprehensible even when viewed by someone who isn't familiar with the specifics of the language it's written in</p>
+<p style="padding-left: 40px;">(c) focus on problem-solving without getting bogged down in unnecessary, low(ish)-level implementation details</p>
+<p>As we explore ADTs initially, we will approach them from the client perspective. That is, we will act as consumers of ADTs that have been implemented for us in C++ with a focus on <em>what</em> those ADTs allow us to accomplish, without getting bogged down with the behind-the-scenes details of exactly <em>how</em> those ADTs are implemented. This will rapidly open up entire vistas of new problems that we can solve with code.</p>
+<p>We will, however, return to the implementation details of these data structures later this quarter.</p>
+<p><strong><br /><span class="code-title">Vector</span> Overview</strong></p>
+<p>The first ADT we explored was the Vector:</p>
+<ul>
+<li>A vector is a type of list that expands and shrinks automatically as new elements are added or removed.</li>
+<li>The elements in a vector are inherently ordered. Each element in a vector is assigned a position relative to the others.</li>
+<li>The elements in a vector are indexed 0 through <em>n</em> - 1 (where&nbsp;<em>n</em> is the number of elements in the vector).</li>
+<li>The vector is a homogenous container. All the elements in a given vector must be of the same type.</li>
+</ul>
+<p>Underlying the Vector from the Stanford C++ Libraries is an array, which means:</p>
+<ul>
+<li>Elements are stored in contiguous blocks in memory.</li>
+<li>We can quickly access the element at any given index in the the vector.</li>
+</ul>
+<p>The vector we are describing is, of course, analogous to a list in Python or an ArrayList in Java. This ADT is ubiquitous in the real world. One place where you see a vector in action pretty much daily is if you open multiple tabs in your web browser. Tabs have an inherent ordering, and the size of the underlying data structure used to keep track of them can grow and shrink as you open and close more tabs.</p>
+<p>To create a vector, we must include the following library:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "vector.h"</pre>
+<p>The syntax for creating a vector is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">Vector&lt;<span style="background-color: #999999; color: #ffffff;"> <strong>DATA_TYPE</strong> </span>&gt; <span style="background-color: #999999; color: #ffffff;"> <strong>VARIABLE_NAME</strong> </span>;</pre>
+<p>Optionally, we can provide an initial list of elements that the vector contains:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">Vector&lt;<span style="background-color: #999999; color: #ffffff;"> <strong>DATA_TYPE</strong> </span>&gt; <span style="background-color: #999999; color: #ffffff;"> <strong>VARIABLE_NAME</strong> </span> {<span style="background-color: #999999; color: #ffffff;"> <strong>ELEMENT_1</strong> </span>, <span style="background-color: #999999; color: #ffffff;"> <strong>ELEMENT_2</strong> </span>, ..., <span style="background-color: #999999; color: #ffffff;"> <strong>ELEMENT_N</strong> </span>};</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Important note!</em></span>) C++ has a built-in vector that we will not be using this quarter. The C++ vector has a lowercase 'v'. The vector from the Stanford C++ Libraries has an uppercase 'V'.</p>
+
+<p><strong><br /><span class="code-title">Vector</span> Functions and Sample Code</strong></p>
+<p><span class="code-chonk">myVector[i]</span> accesses the element at index <em>i</em>.</p>
+
+<p>Additionally, we have the following functions:</p>
+
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Member Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>size()</td>
+      <td>returns number of elements in the vector</td>
+    </tr>
+    <tr>
+      <td>isEmpty()</td>
+      <td>returns <em>true</em> if the vector is empty, <em>false</em> otherwise</td>
+    </tr>
+    <tr>
+      <td>add(value)</td>
+      <td>adds a new element to the end of the vector</td>
+    </tr>
+    <tr>
+      <td>insert(index, value)</td>
+      <td>inserts the value before the specified index, moving the values after it up by one index</td>
+    </tr>
+    <tr>
+      <td>remove(index)</td>
+      <td>removes the element at the specified index, moving the rest of the elements down by one index</td>
+    </tr>
+    <tr>
+      <td>clear()</td>
+      <td>removes all elements from the vector</td>
+    </tr>
+    <tr>
+      <td>. . .</td>
+      <td>For an exhaustive list, see: <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Vector.html">Stanford <span class="code-link">Vector</span> class</a></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>Here's the example we saw in class today:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Vector&lt;int&gt; v {15, 20, 18};<br /><br />   // A this point, we have:<br />   // +----+----+----+<br />   // | 15 | 20 | 18 |<br />   // +----+----+----+<br />   //   0    1    2<br /><br />   // We have a size() function that tells us how many elements are in a vector,<br />   // and we can access individual elements using VARIABLE_NAME[INDEX]. Putting those<br />   // together, we can loop through the vector and print its contents:<br /><br />   for (int i = 0; i &lt; v.size(); i++)<br />   {<br />      cout &lt;&lt; "index " &lt;&lt; i &lt;&lt; ": " &lt;&lt; v[i] &lt;&lt; endl;<br />   }<br /><br />   // We can also check whether a vector is empty using the isEmpty() function:<br /><br />   if (v.isEmpty())<br />   {<br />      cout &lt;&lt; "Empty vector." &lt;&lt; endl;<br />   }<br /><br />   // The add() function adds an element to the <span style="text-decoration: underline;"><strong>end</strong></span> of the vector.<br /><br />   v.add(33);<br /><br />   // We now have:<br />   // +----+----+----+----+<br />   // | 15 | 20 | 18 | 33 |<br />   // +----+----+----+----+<br />   //   0    1    2    3<br /><br />   // The insert() function adds an element at a given index, first scooting over<br />   // all elements at and to the right of that index in order to make room for the<br />   // new element.<br /><br />   v.insert(2, 90);<br /><br />   // We now have:<br />   // +----+----+----+----+----+<br />   // | 15 | 20 | 90 | 18 | 33 |<br />   // +----+----+----+----+----+<br />   //   0    1    2    3    4<br /><br />   // The remove() function removes the element at a given index, then scoots over<br />   // all elements to the right of that index so as not to leave a gap in the vector.<br /><br />   v.remove(0);<br /><br />   // We now have:<br />   // +----+----+----+----+<br />   // | 20 | 90 | 18 | 33 |<br />   // +----+----+----+----+<br />   //   0    1    2    3<br /><br />   return 0;<br />}</pre>
+
+<p><br /><strong>Runtime Comparison: <span class="code-title">add(value)</span> vs. <span class="code-title">insert(0, value)</span></strong></p>
+<p>We saw that inserting at the beginning of a vector with <span class="code-chonk">v.insert(0, value)</span> forces us to spend time scooting over every single element that the vector already contains. Repeatedly inserting at the beginning of a vector, then, is dangerously slow. Each new insertion must perform more work than the last, because there is one more element to scoot over each time.</p>
+<p>The <span class="code-chonk">v.add(value)</span> function is, in comparison, quite fast. It just plunks a new element onto the end of the vector. This occasionally causes the vector to quietly expand behind the scenes (a detail we will explore later this quarter), but is otherwise a fast operation.</p>
+<p>To demonstrate the enormous runtime disparity between repeated calls to <span class="code-chonk">v.insert(0, value)</span> and&nbsp;<span class="code-chonk">v.add(value)</span>, I produced the following code and used <span class="code-chonk">TIME_OPERATION</span> from our SimpleTest library to see how long&nbsp;<span class="code-chonk">vectorAdd()</span> and&nbsp;<span class="code-chonk">vectorInsert()</span> were taking on various input sizes:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "SimpleTest.h"<br />#include "vector.h"<br />using namespace std;<br /><br />void vectorAdd(int size)<br />{<br />   Vector&lt;int&gt; v;<br /><br />   for (int i = 0; i &lt; size; i++)<br />   {<br />      v.add(i);<br />   }<br />}<br /><br />void vectorInsert(int size)<br />{<br />   Vector&lt;int&gt; v;<br /><br />   for (int i = 0; i &lt; size; i++)<br />   {<br />      v.insert(0, i);<br />   }<br />}<br /><br />PROVIDED_TEST("runtime comparison")<br />{<br />   int size = 500000;<br /><br />   TIME_OPERATION(size, vectorAdd(size));<br />   TIME_OPERATION(size, vectorInsert(size));<br />}<br /><br />int main()<br />{<br />   runSimpleTests(ALL_TESTS);<br />   return 0;<br />}</pre>
+<p>We saw that the time it takes to execute <span class="code-chonk">vectorInsert()</span> is <strong>E<span style="font-size: 120%;">X</span>P<em>L</em><span style="font-size: 130%;">OS</span>i<em>V</em>E</strong>, and the difference between that and the time it takes to execute <span class="code-chonk">addInsert()</span> is absolutely astounding -- especially as&nbsp;<span class="code-chonk">size</span> increases.</p>
+<p>Our in-class experiments yielded the the following runtimes:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th>size</th>
+      <th>vectorAdd() runtime</th>
+      <th>vectorInsert() runtime</th>
+      <th>how much slower?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td>50,000</td>
+        <td>0.005s</td>
+        <td>0.086s</td>
+        <td>17.2x</td>
+    </tr>
+    <tr>
+        <td>500,000</td>
+        <td>0.029s</td>
+        <td>9.794s</td>
+        <td>337.8x 😳</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong><br /><span class="code-title">Grid</span> Overview</strong></p>
+<p>We then saw the Grid ADT, which is effectively a rectangular array. You could conceive of it as a vector of vectors. Grids can be used to represent all kinds of things, including:</p>
+<ul>
+<li>spreadsheets (where element in a grid corresponds to a cell in a spreadsheet)</li>
+<li>game boards (e.g., an 8x8 grid of characters indicating locations of pieces on a chess board)</li>
+<li>images (a grid of color codes, one for each pixel in an image)</li>
+<li>... and so many more</li>
+</ul>
+<p>Like a vector, the elements in a grid are ordered and indexed. A grid has some number of rows (horizontal) and columns (vertical).</p>
+<p>To create a grid, we must include the following library:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "grid.h"</pre>
+<p>The syntax for creating a vector is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">Grid&lt;<span style="background-color: #999999; color: #ffffff;"> <strong>DATA_TYPE</strong> </span>&gt; <span style="background-color: #999999; color: #ffffff;"> <strong>VARIABLE_NAME</strong> </span>(<span style="background-color: #999999; color: #ffffff;"> <strong>NUM_ROWS</strong> </span>, <span style="background-color: #999999; color: #ffffff;"> <strong>NUM_COLUMNS</strong> </span>);</pre>
+<p><span style="color: var(--ic-brand-font-color-dark); font-family: inherit; font-size: 1rem;">(</span><span style="font-size: 10pt; background-color: #ffff99;"><em>Important note!</em></span><span style="color: var(--ic-brand-font-color-dark); font-family: inherit; font-size: 1rem;">) We must capitalize the 'G' in "Grid," just as we capitalize the 'V' in "Vector."</span></p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key take-away!</em></span>) We saw that this data structure is "row-major" because the elements within a row are clustered together in memory. If you can remember the phrase "row-major," you can remember that the row, being such a "major" aspect of the grid's structure, always comes before the column -- both when creating a grid and accessing individual elements within a grid.</p>
+
+<p><strong><br /><span class="code-title">Grid</span> Functions and Sample Code</strong></p>
+<p><span class="code-chonk">myGrid[i][j]</span> accesses the element at row <em>i</em>, column <em>j</em>.</p>
+
+<p>Additionally, we have the following functions:</p>
+
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Member Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>numRows()</td>
+      <td>returns the number of rows in the grid</td>
+    </tr>
+    <tr>
+      <td>numCols()</td>
+      <td>returns the number of columns in the grid</td>
+    </tr>
+    <tr>
+      <td>resize(rows, cols)</td>
+      <td>changes the dimensions of the grid and re-initializes all entries to their default values</td>
+    </tr>
+    <tr>
+      <td>inBounds(row, col)</td>
+      <td>returns <em>true</em> if the specified (row, col) position is in the grid, <em>false</em> otherwise</td>
+    </tr>
+    <tr>
+        <td>. . .</td>
+        <td>For an exhaustive list, see: <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Grid.html">Stanford <span class="code-link">Grid</span> class</a></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>Here's the example we saw in class today:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "grid.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Grid&lt;int&gt; g(3, 4);<br /><br />   // Values in an integer grid are zeroed out by default. At this point, we have:<br />   //     +----+----+----+----+<br />   //  0  | 0  | 0  | 0  | 0  |<br />   //     +----+----+----+----+<br />   //  1  | 0  | 0  | 0  | 0  |<br />   //     +----+----+----+----+<br />   //  2  | 0  | 0  | 0  | 0  |<br />   //     +----+----+----+----+<br />   //       0    1    2    3<br /><br />   // We can update the value at row 2, column 3, like so:<br /><br />   g[2][3] = 18;<br /><br />   // We now have:<br />   //    +----+----+----+----+<br />   //  0 | 0  | 0  | 0  | 0  |<br />   //    +----+----+----+----+<br />   //  1 | 0  | 0  | 0  | 0  |<br />   //    +----+----+----+----+<br />   //  2 | 0  | 0  | 0  |<span style="background-color: #ffcc99;"> 18 </span>|<br />   //    +----+----+----+----+<br />   //      0    1    2    3<br /><br />   // Print an entire grid. For each row, print the values in each column.<br /><br />   for (int i = 0; i &lt; g.numRows(); i++)<br />   {<br />      for (int j = 0; j &lt; g.numCols(); j++)<br />      {<br />         cout &lt;&lt; g[i][j];<br /><br />         // If not the last element in this row, print a comma and a space.<br />         if (j != g.numCols() - 1)<br />         {<br />            cout &lt;&lt; ", ";<br />         }<br />      }<br />      cout &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p><br /><strong>Passing Containers by Reference</strong></p>
+<p>We often pass containers to functions by reference, even if we don't want a function to be able to modify the original container. That's because containers can store huge amounts of data, and passing them by value could therefore take up a lot of extra memory, on top of being a slow operation; copying the contents of a large container to a new location in memory takes more time than just establishing a reference.</p>
+<p>The syntax for passing a vector of integers by reference is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">void printVector(Vector&lt;int&gt;<span style="background-color: #ffcc99;"><strong>&amp;</strong></span> v)<br />{<br />   ...<br />}</pre>
+<p><br /><strong>Common Pitfalls</strong></p>
+<p>A common pitfall with both vectors and grids is to access indices that are out of bounds. This will cause your program to crash spectacularly:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Vector&lt;int&gt; v {10, 20, 30};<br />   v[3] = 40;<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ff4e4e;">*** STANFORD C++ LIBRARY<br />*** The Day04Lecture program has terminated unexpectedly (crashed)<br />*** A fatal error was reported:<br /><br />&nbsp; &nbsp; Vector::operator []: index of 3 is outside of valid range [0..2]<br /><br />*** To get more information about a program crash,<br />*** run your program again under the debugger.</span></pre>
+<p><br /><strong>What's next?</strong></p>
+<p>On Friday, we continue our discussion of ADTs. We will delve into the&nbsp;<a class="code-title" style="text-decoration: none;" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Stack" target="_blank" rel="noopener">Stack</a> and&nbsp;<a class="code-title" style="text-decoration: none;" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Queue" target="_blank" rel="noopener">Queue</a> containers from the Stanford C++ Libraries.</p>
+<p>If you're the sort of person who likes to read ahead, check out the course schedule in the Living Omni-Grid, which now lists what chapters/sections of the textbook we will cover in each lecture.</p>
+<p><br /><strong>Practice Problem</strong></p>
+<p>1. We wrote various tests for the&nbsp;<span class="code-chonk">extractAlpha()</span> function in class today. Add to that code a separate <span class="code-chonk">STUDENT_TEST</span> that contains a suite of test cases for the <span class="code-chonk">passwordChecksOut()</span> function. What sorts of things would you test to ensure you have robust testing coverage for that function?</p>
+<p>2. Write a function that takes a vector of integers as its only argument and prints it in the following format:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee;">+----+----+----+----+----+----+<br />| 43 | 19 | 12 | 95 | 83 | 13 |<br />+----+----+----+----+----+----+<br />  0    1    2    3    4    5</pre>
+<p>The function signature is:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee;">printVector(Vector&lt;int&gt;&amp; v)</pre>
+<p>To simplify the problem, you may assume all the integers in the vector have exactly two digits.</p>
+<p>Additional challenge (this is fairly advanced; don't worry too much about this one if you don't have time):</p>
+<ul>
+<li>How could you ensure when printing the contents of a vector that the largest box has exactly enough space for the largest integer in the vector to be surrounded by one space on either side, and all other boxes have the same amount of space, with each integer being centered within its cell to the extend possible? For example:</li>
+</ul>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee;">+------+------+------+------+------+------+<br />|  43  |  1   |  9   | 129  | 5821 |  3   |<br />+------+------+------+------+------+------+<br />   0      1      2      3      4      5</pre>
+<p>3. In the previous problem, why would we pass the vector by reference if we have no intention of modifying it in the&nbsp;<em>printVector()</em> function?</p>
+<p>4. As always, see the following resources for additional practice problems and reinforcement of this material:</p>
+<ul>
+<li>The course reader (free PDF available online; see readings listed at the top of today's notes).</li>
+<li>Today's lecture quiz.</li>
+<li>Assignment 1.</li>
+<li>Problems covered in section.</li>
+</ul>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-04
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

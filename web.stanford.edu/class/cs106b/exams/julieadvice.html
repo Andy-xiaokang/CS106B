@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Advice about exams</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Advice about exams</h1>
+
+<hr>
+
+<p class="attribution">
+ Written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><style>
+blockquote {
+    margin-left:  60px;
+    margin-right:  60px;
+    font-size: small;
+}
+</style>
+
+<h2 id="philosophy">Philosophy</h2>
+<p>First, a quote from Will Shortz, the crossword puzzle editor of the New York Times:</p>
+
+<blockquote>
+  <p>A crossword puzzle is a battle between the puzzle maker and editor on one side and the solver on the other. But unlike most battles, both sides here have the same goal – for the solver to win. A perfect puzzle may put up lots of resistance. It may, in fact, seem impossible at first. Ideally, though, in the end the solver should triumph and think, Oh, how clever I am! – Will Shortz, <a href="https://mobile.nytimes.com/2001/04/08/magazine/endpaper-how-to-solve-the-new-york-times-crossword-puzzle.html">How to solve</a></p>
+</blockquote>
+
+<p>I <strong>love</strong> the spirit of this quote as it applies to exams. We absolutely want you to come out on top! The lectures, sections, and assignments work together to guide you toward mastery of the course learning goals and the exams serve as an assessment of your progress. The absolute best outcome everyone has a great grasp on the material to nail the exam. Read on for more advice on how to make that happen for you!</p>
+
+<h2 id="what-to-expect">What to expect</h2>
+<p>Our exams are designed to evaluate your mastery of the course learning goals. We will focus on material from the <strong>assignments</strong>, <strong>section</strong>, <strong>lecture</strong>, and <strong>reading</strong> (this list is in order of decreasing emphasis). Having spent two solid weeks on recursion in all its glory, you can count on the exam asking you to demonstrate recursive problem solving. On the other hand, we would never test you on an obscure fact that only had  the briefest of mentions buried in the textbook.</p>
+
+<p>Answering the exam questions is typically going to require good comprehension of the foundational concepts and the ability to analyze and apply them in a given situation. We are evaluating that not only did you successfully complete the assignments and sections, but that you came away with a comprehension you can demonstrate. We will not ask superficial questions about terminology (e.g. "Define hashing") or details that can/should be looked up on demand ("Which header file has this prototype?").</p>
+
+<p>Many questions will ask you to write C++ code. Other questions may ask you to analyze C++ code: to trace its behavior, to analyze its Big O runtime, to identify and fix flaws, or draw a picture of the memory layout. There may also be short-answer thought questions about various algorithmic techniques (searching, sorting, hashing), tradeoffs in data structure design, and the like.</p>
+
+<p>When scoring answers, we will not be picky about minor syntax and oversights (missing braces around a block of clearly indented code, we don't ask for #include's etc.). The lion's share of the points are reserved for demonstrating a correct conceptual understanding and a valid approach to solving the problem, with somewhat fewer points for the minute details of executing on your plan.  In our view, a solid first-pass approximation that shows the correct conceptual understanding of the key issues deserves to be strongly distinguished from code that exhibits significant conceptual issues and would require much trial-and-error with compiler/debugger to turn into working code.</p>
+
+<h2 id="why-no-ide">Why no IDE?</h2>
+<p>The intent of our assessments is to evaluate your ability to think logically and apply problem-solving skills to reading and writing code. If you were facing an actual compiler, there would also be a multitude of syntax hurdles, typos, and mundane build issues you would have to overcome to turn the code into reality. In your assignments, you have already shown us many times over that you can work through these issues, and we do not wish to further assess these skills.</p>
+
+<p>Bear in mind that your answers will be scored by our very capable human section leaders, not inflexible compilers! We look beyond the nit-picky details to evaluate the heart of your problem-solving approach and its correctness.</p>
+
+<p>Here are more of our thoughts on the advantages of <a href="whynoide.html">coding without an IDE</a>.</p>
+
+<h2 id="before-the-exam-prep-for-success">Before the exam: prep for success</h2>
+<ul>
+  <li><strong>The long view</strong>. The mastery for the exams isn't created by a night of cramming, it is built up throughout the quarter. Make it a priority to monitor your own progress and identify holes or confusion to be shored up before moving on. The only exam-specific preparation is that you practice under exam-like conditions (i.e. without IDE, on paper, timed).</li>
+  <li><strong>Invest in your summary/notesheet</strong>. The exam is closed-book.  We provide a reference sheet and you may bring in your own prepared notesheet.  Creating your notesheet is itself a great way to study for the exam.  Reviewing the topics and determining what information is worth including on your notesheet will remind you of where we've been and help you take stock of your comfort level with the course topics. Use this opportunity to identify any areas on which you feel weak and resolve dangling issues before heading into the exam.</li>
+  <li><strong>Recreate the environment</strong>. It is not a given that your real-world skills will translate to the exam setting without first becoming familiar with how the experience is different. The best practice is to solve problems without aid of compiler/debugger, in longhand using pencil and paper under a time limit, just as you will have to during the exam.</li>
+  <li><strong>Practice makes perfect</strong>. Take problems (lecture or section example, textbook exercise, sample exam problem) and write out a solution under exam-like conditions. Review it to see how you did. This is much more valuable than a passive review of the problem and its solution where it is too easy to conclude "ah yes, I would have done that" only to find yourself adrift during the real exam when there is no provided solution to guide you!</li>
+  <li><strong>Get your questions answered</strong>. If there is a concept you're a bit fuzzy on, or you'd like to check your answer to an exercise, or you wonder why a solution is written a particular way, get those questions answered before the exam.  Swing by the lair, come to office hours, or post on the forum and we're happy to help.</li>
+</ul>
+
+<h2 id="during-the-exam-in-the-heat-of-battle">During the exam: in the heat of battle</h2>
+<ul>
+  <li><strong>Scan the entire exam first</strong>.  Quickly peruse all questions before starting on any one.  This allows you to "multi-task"— as you are writing the more mundane parts of one answer, your mind can be brainstorming strategies or ideas for another problem in the background.  You can also sketch out how to allocate your time between questions in the first pass.</li>
+  <li><strong>Spend your time wisely</strong>.  There are only a handful of questions, and each is worth a significant amount. Don't get stuck on any particular problem. There is much opportunity for partial credit, so it's better to make good efforts on all problems than to perfect an answer to one leaving others untouched.</li>
+  <li><strong>Consider the point value of each question</strong>.  Divide the total minutes by the total number of points to figure the time per point and use that as guide when allocating your time across the problems.</li>
+  <li><strong>Pay attention to specific instructions</strong>.  A problem statement may include detailed constraints and hints such as "you must solve this recursively" or "you should not destructively modify the input list" or "you do not have to handle the case when the string is empty" or "this operation must run in constant time". You may want to underline or highlight these instructions to be sure you don't overlook them. These constraints are not intended to make things difficult, typically we are trying to guide you in the direction of a straightforward and simple solution.  If you disregard these instructions, you are likely to lose points, either for not meeting the problem specification and/or for errors introduced when attempting a convoluted alternative.</li>
+  <li><strong>Ask a question rather than answer the wrong one</strong>. If you are uncertain about what a question is asking or find some part of the question ambiguous, it's worth your time to ask the course staff for a clarification so you can be sure you are solving the right problem before you start working on it.</li>
+  <li><strong>Syntax is not that important if it is clear what you mean</strong>.  We won't trouble you about most syntax as long as your intentions are clear. But if there is ambiguity in your attempt, correct syntax can help us get the correct meaning. For example, if we see a <code class="language-c++ highlighter-rouge"><span class="k">for</span></code> statement followed by two lines, where both lines are vaguely indented or a third line has been added in after the fact, we may be confused. If there are braces around all the lines, it will be clear you intended both to be a part of the loop body, but without the braces, we can't be sure and it may make your answer incorrect.</li>
+  <li><strong>Style and decomposition are secondary to correctness</strong>. Unlike the assignments where we hold you to high standards in all areas, for an exam, the correctness of the answers that dominates the grading. Decomposition and style are thus somewhat de-emphasized. However, good design may make it easier for you to get the functionality correct and require less code, which takes less time and has fewer opportunities for error. Comments are never required unless specifically indicated by a problem. When a solution is incorrect, commenting may help us determine what you were trying to do and award partial credit.</li>
+  <li><strong>Answer in pseudocode only if you must</strong>. If the syntax of C++ is blocking you from writing a solution, you can answer in pseudocode for possible partial credit. We discourage this approach as pseudocode is often lacking in detail or just restates the problem description ("I would recursively try all the subsequences to find the longest"). Such answers will earn little, if any, credit. Sufficiently detailed pseudocode (e.g. "scan the next token from input, if it the first char is a digit, then convert to an integer") would have been easier and more concise to write in C++ and will earn more points that way.</li>
+  <li><strong>Save a little time for checking your work.</strong>
+Reserve a few minutes to go back over your work. We try not to deduct points for minor things if it is obvious what you meant, but sometimes it is difficult to decipher your true intention. You might save yourself a few lost points by tidying up the details at the end.</li>
+</ul>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>Always remember why you are here! Your efforts to build practice skills and real understanding will take you a lot further than a pristine transcript. If you work hard toward mastery and feel good about your understanding of computer science that is an achievement you can be proud of!</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-14
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

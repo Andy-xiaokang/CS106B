@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Sorting Algorithms</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 13. Sorting Algorithms</h1>
+ <p class="subtle-heading">Wednesday October 25</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>In today's lecture we will delve into sorting algorithms, a group of real-world algorithms with wide-reaching applications across computer science.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 10.1-10.5</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/144293">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=0a3d1d1c-f0a4-4740-a8ed-b083014df2fc&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Overview</p>
+<p>2. Selection Sort and Insertion Sort</p>
+<p>3. Comparison-Heavy vs. Swap-Heavy</p>
+<p>4. Other Trade-offs</p>
+<p>5. Merge Sort</p>
+<p>6. Some Downsides to Merge Sort</p>
+<p>7. Implementations</p>
+<p>8. Runtime Comparisons</p>
+<p>9. Aside: Quicksort</p>
+<p>10. What's next?</p>
+<p>11. Exercises</p>
+<p><br /><strong>Overview</strong></p>
+<p><em>Attachment: <a href="resources/sorting-stuff.zip">sorting-stuff.zip</a></em></p>
+<p>We talked about three sorting algorithms today: selection sort, insertion sort, and merge sort. The slides and code for these sorting algorithms are included in the zip file attached above. A summary of key points is included below.</p>
+<p><br /><strong>Selection Sort and Insertion Sort</strong></p>
+<p>The first two sorting algorithms we talked about today were selection sort and insertion sort. The slides attached above walk through how the algorithms work. Here are some key points I made about each algorithm along the way:</p>
+<ul>
+<li><strong>Selection Sort</strong>
+<ul>
+<li>Overview: Each pass "selects" the smallest elements and then swaps it down into the first position of the unsorted portion of the vector.</li>
+<li>Worst-case runtime: O(n<sup>2</sup>). The first pass examines <em>n</em> elements, then performs a single swap, the next examines (n - 1) elements before performing a single swap, and so on. The number of comparisons is represented with the Gauss sum we keep seeing: 1 + 2 + ... + n = n * (n + 1) / 2, which is O(n<sup>2</sup>).</li>
+<li>Best-case runtime: O(n<sup>2</sup>). Every call to selection sort follows the pattern described above for the worst-case runtime.</li>
+<li>Operations: Heavy on comparisons, light on swaps. I described this as the "wait and see" algorithm. It spends a lot of time comparing elements in each pass before settling on which one to swap into the next target position.</li>
+</ul>
+</li>
+<li><strong>Insertion Sort</strong>
+<ul>
+<li>Overview: Each pass takes the first element from the unsorted portion of the vector and "inserts" it into the sorted portion by dragging it down until it either encounters a smaller value smaller to its left or reaches the beginning of the vector.</li>
+<li>Worst-case runtime: O(n<sup>2</sup>). The first pass could move an element down one position, the second could move an element down two positions, the third could move an element down three positions, and so on. It's that Gauss sum once again. The last pass of insertion sort will only move an element down by (n - 1) positions at most, so the sum is slightly modified, but the big-oh result is the same: 1 + 2 + ... + (n - 1) = (n - 1) * n / 2, which is O(n<sup>2</sup>).</li>
+<li>Best-case runtime: O(n). This is a vast improvement over selection sort's best-case runtime! Insertion sort encounters this runtime if it receives an already-sorted vector. In that case, each pass stops after a single comparison without having to do any swaps.</li>
+<li>Operations: Heavy on swaps, potentially light on comparisons. I described this as the "let's gooooooooo!" algorithm. It picks up an element at the beginning of each pass and drags it down through the vector, performing a swap at each index it passes. (<span style="font-size: 10pt;"><em>*swap!* *swap!* *swap!* *swap!*</em></span>) A pass of insertion sort stops as soon as it encounters an element smaller than the one it's dragging down, though, meaning that it could potentially stop each pass early and end up doing fewer comparisons than selection sort. Neat.</li>
+</ul>
+</li>
+</ul>
+<p>Recall that even though these algorithms are not the fastest ones we'll see this semester, one of the reasons we study them in CS106B is so you'll see lots of different algorithmic approaches to the same problem. The idea here is that the more algorithms you see, the more likely you are to ramp up your algorithmic thinking and come up with your own algorithms to solve any new problems you encounter in the future. These algorithms also provided us with reasonable big-oh analysis exercises, and they gave us an opportunity to explore the kind of comparative analysis we often do when we have multiple solutions to the same problem in CS, as we discussed the comparative advantages and disadvantages of these two algorithms.</p>
+<p><br /><strong>Comparison-Heavy vs. Swap-Heavy</strong></p>
+<p>I gave a few examples in class of situations in which we might prefer one of these algorithms over the other. See the segment from 26:20 to 32:27 in today's lecture video for a recap. There, we talked about:</p>
+<ul>
+<li>Computational biology: costly comparisons with expensive simulations that we run on very large sets of genomic data, but perhaps our vector only holds a small, unique, numeric ID for each of those sequences, so the swaps are actually not costly at all.</li>
+<li>Student records: low-cost comparisons between unique, numeric student IDs, but perhaps we have a ton of data associated with each student record, and so the write operations are someone intensive compared to our comparison operations.</li>
+<li>Moving refrigerators: if we want to sort a bunch of refrigerators in a warehouse and line them up from lowest price to highest price, the comparison is really easy, but the actual movement is very costly.</li>
+<li>Fastest runner: if we want to figure out who is the fastest runner within a group of people by having individuals race one another, the actual comparison is costly and exhausting for the runners involved, but swapping two people in rank is very easy in comparison.</li>
+</ul>
+<p><strong><br />Other Trade-offs</strong></p>
+<p>A few other trade-offs we discussed with these algorithms included:</p>
+<ul>
+<li>Consistency vs. ultra-fast performance in a limited set of special cases. See the segment from 32:38 to 34:10 in today's lecture for details.</li>
+<li>Ease of coding and debugging vs. performance. See the segment from 34:25 to 35:30 in today's lecture for details.</li>
+</ul>
+<p><br /><strong>Merge Sort</strong></p>
+<p>We then saw merge sort, whose O(n log n) runtime is a drastic improvement over the sorting algorithms above. For a review of how merge sort works and a discussion of the runtime, see the slides attached toward the top of today's lecture notes, as well as the segment starting at 37:21 in today's lecture. A discussion of the runtime begins at the 46:11 mark.</p>
+<p><br /><strong>Some Downsides to Merge Sort</strong></p>
+<p>So, that O(n log n) runtime is looking super awesome. So, why would we ever consider using selection or insertion sort over merge sort?! Well, merge sort does have a few drawbacks:</p>
+<ul>
+<li>It takes up extra space for the auxiliary vector used when merging the two halves back together. Tight on space? Merge sort might not be the right algorithm for you. The recursive calls to merge sort also take up space in the call stack.</li>
+<li>Speaking of the call stack, all the recursive calls we make to merge sort take time! We have to put a new call on our program stack, instantiate local variables, and then almost immediately to all of that over again to make two more recursive calls. The overhead involved with those recursive calls is significant enough that for small(ish) vectors, selection and insertion sort can actually end up out-performing merge sort.</li>
+<li>As mentioned earlier, the ease of coding up and debugging an algorithm can also play a role in whether it's worthwhile to use it for a particular application. Sometimes when we're trying to rapidly prototype software or run a quick one-off experiment, we just need a quick and dirty solution to some sub-problem we've encountered, and it's a better use of our time to implement a slow but straightforward and easy-to-debug algorithm than one that is more complex, more difficult to implement, and more likely to have bugs in obscure corner cases that we don't think to test.</li>
+</ul>
+<p><br /><strong>Implementations</strong></p>
+<p>Below are my implementations of these three sorting algorithms. See also the file attached above, which has complete implementations and some functions for testing.</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Selection Sort:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> swap(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> i, <strong>int</strong> j);<br /><br /><strong>void</strong> selectionSort(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v)<br />{<br />&nbsp; &nbsp; <strong>for</strong> (<strong>int</strong> start = 0; start &lt; v.size(); start++)<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>int</strong> indexOfMin = start;<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>for</strong> (<strong>int</strong> j = start + 1; j &lt; v.size(); j++)<br />&nbsp; &nbsp; &nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>if</strong> (v[j] &lt; v[indexOfMin])<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; indexOfMin = j;<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />&nbsp; &nbsp; &nbsp; &nbsp; }<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; swap(v, start, indexOfMin);<br />&nbsp; &nbsp; }<br />}<br /><br /><span style="color: #236fa1;"><em>// Swaps values at indices i and j in given vector. Assumes indices are valid.</em></span><br /><strong>void</strong> swap(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> i, <strong>int</strong> j)<br />{<br />&nbsp; &nbsp; <strong>int</strong> temp = v[i];<br />&nbsp; &nbsp; v[i] = v[j];<br />&nbsp; &nbsp; v[j] = temp;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Insertion Sort:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> insertionSort(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v)<br />{<br />&nbsp; &nbsp; <strong>for</strong> (<strong>int</strong> start = 1; start &lt; v.size(); start++)<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>int</strong> peach = v[start];<br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>int</strong> gap;<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>for</strong> (gap = start; gap &gt; 0 &amp;&amp; peach &lt; v[gap - 1]; gap--)<br />&nbsp; &nbsp; &nbsp; &nbsp; {<br />  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; v[gap] = v[gap - 1];<br />&nbsp; &nbsp; &nbsp; &nbsp; }<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; v[gap] = peach;<br />&nbsp; &nbsp; }<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Merge Sort:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> mergeSort(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> lo, <strong>int</strong> hi)<br />{<br /><em><span style="color: #236fa1;">&nbsp; &nbsp; // Base case: one (or fewer) elements in this portion of the vector.</span></em><br />&nbsp; &nbsp; <strong>if</strong> (lo &gt;= hi)<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>return</strong>;<br />&nbsp; &nbsp; }<br /><br />&nbsp; &nbsp; <strong>int</strong> mid = lo + (hi - lo) / 2;<br /><br /><em><span style="color: #236fa1;">&nbsp; &nbsp; // Sort left and right halves recursively.</span></em><br />&nbsp; &nbsp; mergeSort(v, lo, mid);<br />&nbsp; &nbsp; mergeSort(v, mid + 1, hi);<br /><br /><span style="color: #236fa1;"><em>&nbsp; &nbsp; // Merge results back together in auxiliary vector.</em></span><br />&nbsp; &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; aux;<br /><br />&nbsp; &nbsp; <strong>int</strong> i = lo;<br />&nbsp; &nbsp; <strong>int</strong> j = mid + 1;<br /><br />&nbsp; &nbsp; <strong>while</strong> (i &lt;= mid || j &lt;= hi)<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>if</strong> (i &gt; mid)<br />&nbsp; &nbsp; &nbsp; &nbsp; {<br /><em><span style="color: #236fa1;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // If i is invalid, j must be valid.</span></em><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; aux.add(v[j]);<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; j++;<br />&nbsp; &nbsp; &nbsp; &nbsp; }<br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>else if</strong> (j &gt; hi)<br />&nbsp; &nbsp; &nbsp; &nbsp; {<br /><em><span style="color: #236fa1;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // If j is invalid, i must be valid.</span></em><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; aux.add(v[i]);<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; i++;<br />&nbsp; &nbsp; &nbsp; &nbsp; }<br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>else if</strong> (v[i] &lt; v[j])<br />&nbsp; &nbsp; &nbsp; &nbsp; {<br /><span style="color: #236fa1;"><em>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // If both i and j are valid, we check whether </em></span><span style="color: #236fa1;"><em>v[i] &lt; v[j] or not.<br />            // We want the smaller value.</em></span><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; aux.add(v[i]);<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; i++;<br />&nbsp; &nbsp; &nbsp; &nbsp; }<br />&nbsp; &nbsp; &nbsp; &nbsp; <strong>else</strong><br />&nbsp; &nbsp; &nbsp; &nbsp; {<br /><span style="color: #236fa1;"><em>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // This is the case where i and j are valid, and v[j] &lt;= v[i].</em></span><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; aux.add(v[j]);<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; j++;<br />&nbsp; &nbsp; &nbsp; &nbsp; }<br />&nbsp; &nbsp; }<br /><br /><span style="color: #236fa1;"><em>&nbsp; &nbsp; // Copy everything from the auxiliary vector back into the original.</em></span><br />&nbsp; &nbsp; <strong>for</strong> (i = lo; i &lt;= hi; i++)<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &nbsp; v[i] = aux[i - lo];<br />&nbsp; &nbsp; }<br />}</pre>
+<p><br /><strong>Runtime Comparisons</strong></p>
+<p>Check out this super fresh runtime comparison I performed tonight, which shows both the dominance of insertion sort over merge sort for small values of <em>n</em> (&le; 100) and the <strong><em>extreme</em></strong> dominance of merge sort over both selection and insertion sort for larger values of <em>n</em>. These results are from randomized vectors and are averaged over several trials for each algorithm and each value of <em>n</em>:</p>
+<table style="margin-left: 30px; border-collapse: collapse; width: 56.0548%; height: 242px;" border="1">
+<tbody>
+<tr style="height: 21px;">
+<td style="width: 24.9763%; height: 38px; text-align: center;" rowspan="2"><span style="font-size: 10pt;"><strong>Vector Length</strong></span></td>
+<td style="width: 74.9289%; height: 21px; text-align: center;" colspan="3"><span style="font-size: 10pt;"><strong>AVERAGE RUNTIME PER TRIAL</strong></span></td>
+</tr>
+<tr style="height: 17px;">
+<td style="width: 24.9763%; height: 17px; text-align: center;"><span style="font-size: 10pt;"><strong>Selection Sort</strong></span></td>
+<td style="width: 24.9763%; height: 17px; text-align: center;"><span style="font-size: 10pt;"><strong>Insertion Sort</strong></span></td>
+<td style="width: 24.9763%; height: 17px; text-align: center;"><span style="font-size: 10pt;"><strong>Merge Sort</strong></span></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt;">10</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #f8cac6;">0.001076 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #bfedd2;">0.000793 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #fbeeb8;">0.001027 ms</span></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt;">100</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #f8cac6;">0.014081 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #bfedd2;">0.007409 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #fbeeb8;">0.007910 ms</span></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt;">200</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #f8cac6;">0.048799 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #fbeeb8;">0.024599 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #bfedd2;">0.016929 ms</span></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt;">1,000</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #f8cac6;">1.042306 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #fbeeb8;">0.555023 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #bfedd2;">0.101754 ms</span></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt;">5,000</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #f8cac6;">25.808860 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #fbeeb8;">13.696100 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #bfedd2;">0.592700 ms</span></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt;">10,000</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #f8cac6;">99.094250 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #fbeeb8;">54.985860 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #bfedd2;">1.275500 ms</span></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt;">50,000</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #f8cac6;">2433.940600 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #fbeeb8;">1375.351200 ms</span></td>
+<td style="width: 24.9763%; height: 15px; text-align: center;"><span style="font-size: 10pt; background-color: #bfedd2;">7.449200 ms</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong><br />Aside: Quicksort</strong></p>
+<p>The merge sort algorithm we saw today is an "easy split, hard join" sorting algorithm. The split is really easy: we just make two recursive calls. Joining the two sorted halves together is the more complicated part of the algorithm.</p>
+<p>There's another very popular sorting algorithm (which we unfortunately don't have time to cover) called quick sort that does rather the opposite: it's a "hard split, easy join" sorting algorithm. The split involves an O(n) partitioning algorithm that feels a bit unruly when you first see it, but the join is super simple: you just return from your recursive calls, and that's it; the join happens as a natural consequence of the recursive nature of the algorithm.</p>
+<p>It might be worth looking into quicksort on your own if you have extra time, but that might not be necessary; you'll encounter it in our curriculum if you end up taking CS161.</p>
+<p><br /><strong>What's next?</strong></p>
+<p>On Friday, we'll shift gears rather significantly and start talking about object-oriented programming.</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. Code up all the sorting algorithms we talked about today from scratch! There's some subtlety to each of those algorithms that might be worth confronting in code, and you have my implementations to refer to if you get stuck</p>
+<p>2. After implementing the above sorting algorithms (or downloading my implementations attached at the top of today's notes, if you prefer), use the <span class="code-chonk">TIME_OPERATION</span> macro from our testing framework to get a handle on the runtimes for each of those algorithms on vectors of different sizes, and see if you can experimentally verify their O(n<sup>2</sup>) and O(log n) runtimes.</p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-07
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

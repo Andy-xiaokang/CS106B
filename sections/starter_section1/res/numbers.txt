@@ -1,0 +1,4 @@
+42 is the Answer to the Ultimate Question of Life, the Universe, and Everything
+This is a negative number: -9
+Welcome to CS106B!
+I want to own 9 cats and 9 dogs.

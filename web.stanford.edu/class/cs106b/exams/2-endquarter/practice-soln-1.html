@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Final Practice 1 Solutions</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Final Practice 1 Solutions</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="q1-recursive-backtracking">Q1) Recursive backtracking</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">canPair</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">students</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxOk</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">maxOk</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">students</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">students</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// choose: match student[0] with student[i]</span>
+            <span class="c1">// if score returns 0, usedOk is "true" which is int value 1</span>
+        <span class="kt">int</span> <span class="n">usedOk</span> <span class="o">=</span> <span class="p">(</span><span class="n">score</span><span class="p">(</span><span class="n">students</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">students</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+            <span class="c1">// copy of vector without pair just matched</span>
+        <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">students</span><span class="p">.</span><span class="n">subList</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">students</span><span class="p">.</span><span class="n">subList</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">canPair</span><span class="p">(</span><span class="n">rest</span><span class="p">,</span> <span class="n">maxOk</span> <span class="o">-</span> <span class="n">usedOk</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h2 id="q2-classes">Q2) Classes</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">private:</span>
+    <span class="n">string</span> <span class="o">*</span><span class="n">_recents</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">_capacity</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">_totalCalls</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CallHistory</span><span class="o">::</span><span class="n">CallHistory</span><span class="p">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">_capacity</span>   <span class="o">=</span> <span class="n">capacity</span><span class="p">;</span>
+    <span class="n">_recents</span>    <span class="o">=</span> <span class="k">new</span> <span class="n">string</span><span class="p">[</span><span class="n">_capacity</span><span class="p">];</span>
+    <span class="n">_totalCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
+<span class="p">}</span>
+
+<span class="n">CallHistory</span><span class="o">::~</span><span class="n">CallHistory</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">_recents</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CallHistory</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="n">string</span> <span class="n">caller</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">_recents</span><span class="p">[</span><span class="n">_totalCalls</span> <span class="o">%</span> <span class="n">_capacity</span><span class="p">]</span> <span class="o">=</span> <span class="n">caller</span><span class="p">;</span>
+    <span class="n">_totalCalls</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="n">CallHistory</span><span class="o">::</span><span class="n">getRecent</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Invalid n would be negative, greater than allowed capacity, </span>
+    <span class="c1">// or within unitialized range (i.e. only 3 calls in history</span>
+    <span class="c1">// with capacity 5, try to access 4)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">_capacity</span> <span class="o">||</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">_totalCalls</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"Requested recent is out of range!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">_recents</span><span class="p">[(</span><span class="n">_totalCalls</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span> <span class="o">%</span> <span class="n">_capacity</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">CallHistory</span><span class="o">::</span><span class="n">getTotalCalls</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">_totalCalls</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="q3-linked-lists">Q3) Linked lists</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">transform</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">prev</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">front</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// if move cur</span>
+            <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>    <span class="c1">// splice out </span>
+            <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span>         <span class="c1">// push on front</span>
+            <span class="n">front</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>          <span class="c1">// advance cur, NOT prev</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>             <span class="c1">// else not move cur</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>      <span class="c1">// advance BOTH cur and prev</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="q4-trees">Q4) Trees</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">tighten</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tighten</span><span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+        <span class="n">tighten</span><span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+
+        <span class="n">Node</span> <span class="o">*</span><span class="n">onlyChild</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">t</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">onlyChild</span> <span class="o">=</span> <span class="n">t</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">t</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">onlyChild</span> <span class="o">=</span>  <span class="n">t</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">onlyChild</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// this is improper node</span>
+            <span class="k">delete</span> <span class="n">t</span><span class="p">;</span>     <span class="c1">// deallocate and replace with child</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">onlyChild</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="q5-short-answer">Q5) Short answer</h2>
+
+<p><strong>Sorting</strong>. A reverse sort directly following a forward sort will be a worst-case input for this QuickSort (data is in reverse-sorted order, pivot will partition into 1 and N-1). The worst-case input, will degenerate to <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code> time and the depth of call stack grows to N frames (one for each message in mailbox). When N exceeds system capacity, this results in stack overflow and program crash. The other sort operations were either not worst-case degenerate or small enough mailbox to successfully complete.</p>
+
+<p><strong>Binary Heap</strong>.</p>
+<ol>
+  <li>Do a linear search of array to find the <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> with matching label. Cost = <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> </code></li>
+  <li>Update priority and call one of bubble up/down to resettle <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> into correct position within min-heap (whether bubble up or down depends if whether priority increased/decreased). Cost = <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">logN</span><span class="p">)</span></code></li>
+</ol>
+
+<p>Total runtime = <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span></code></p>
+
+<p><strong>Binary Search Trees</strong>.
+An in-order traversal of valid BST must visit nodes in sorted order. In-order traversal of Variant 1 or Variant 3 follows same order as original tree, thus required order is preserved and these trees are valid BSTs. In-order traversal of Variant 2 jumbles up required order, e.g. visits tan wood (root) after blue but tan wood should be penultimate accordingly to original tree. Variant 2 is not a valid BST.</p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-19
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

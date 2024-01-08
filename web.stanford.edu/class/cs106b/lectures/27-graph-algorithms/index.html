@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Dijkstra, A*, and Topological Sort</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 27. Dijkstra, A*, and Topological Sort</h1>
+ <p class="subtle-heading">Monday December 4</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=ab18bcf4-aa3a-4932-a80e-b083014df4e2&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Dijkstra's Algorithm</p>
+<p>2. Finding the Smallest <span class="code-chonk">dist[i]</span> Value: Runtime Considerations</p>
+<p>3. <strong><span style="display: inline-block; font-size: 10pt; padding-top: 3px; background-color: #236fa1; color: #ffffff;">&nbsp;&nbsp;Supplementary&nbsp;&nbsp;</span></strong> &nbsp;Dijkstra's Algorithm and the Negative Edge Weight Problem</p>
+<p>4. <strong><span style="display: inline-block; font-size: 10pt; padding-top: 3px; background-color: #236fa1; color: #ffffff;">&nbsp;&nbsp;Supplementary&nbsp;&nbsp;</span></strong> &nbsp;A Dijkstra Modification That Doesn't Work</p>
+<p>5. <strong><span style="display: inline-block; font-size: 10pt; padding-top: 3px; background-color: #236fa1; color: #ffffff;">&nbsp;&nbsp;Supplementary&nbsp;&nbsp;</span></strong> &nbsp;Dealing with Negative Edge Weights: Bellman-Ford</p>
+<p>6. Further Runtime Considerations: Repeated Minheap Insertions (or Deletions)</p>
+<p>7. A* Search Algorithm</p>
+<p>8. Topological Sort</p>
+<p>9. Cycles Topological Sort</p>
+<p>10. Topological Sort Code</p>
+<p>11. What's next?</p>
+<p>12. Exercises</p>
+<p><strong><br />Dijkstra's Algorithm</strong></p>
+<p><em>Attachment: <a href="resources/dijkstra-slides.pdf">dijkstra-slides.pdf</a></em></p>
+<p>We started class today with an exploration of Dijkstra's "single-source shortest path algorithm." Whereas BFS can find the shortest path from one vertex to another in an <em>unweighted</em> graph (we saw that last Friday), Dijkstra's algorithm finds shortest paths in&nbsp;<em>weighted</em> graphs. Moreover, Dijkstra finds the lowest-cost path from some source vertex to&nbsp;<em>every</em> <em>other vertex in a graph</em>! That is, when our algorithm is finished running on a graph with vertices v<sub>1</sub>, v<sub>2</sub>,&nbsp;... v<sub>n</sub>, we will have found:</p>
+<ul>
+<li>the shortest path from&nbsp;<em>source</em> to&nbsp;<em>v</em><sub>1</sub></li>
+<li>the shortest path from&nbsp;<em>source</em> to&nbsp;<em>v</em><sub>2</sub></li>
+<li>...</li>
+<li>the shortest path from&nbsp;<em>source</em> to&nbsp;<em>v</em><sub>n</sub></li>
+</ul>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important note!</em></span>) When we say "shortest path" in the context of Dijkstra's algorithm, we're referring to a <em>lowest-cost</em> path -- so, we're taking into consideration not the <em>number</em> of edges in a path (which is our traditional definition of "path length"), but the <em>sum of the weights</em> of those edges. For example, in the following diagram, the shortest path from A to H is not A <span>&rarr;</span> H (which has a cost of 18). Rather, it is A <span>&rarr; I &rarr; G &rarr; H (which has a total cost of 6):</span></p>
+<p style="margin-left: 30px;"><img src="resources/dijkstra-graph.png" width="450" /></p>
+<p>In contrast, for the graph above, BFS would have found A <span>&rarr;</span> H as the shortest path from A to H.</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important note!</em></span>) A key limitation of Dijkstra's algorithm is that it does not work on graphs with negative edge weights. We saw this in class today.</p>
+<p>In the graph above, if we choose A as our source vertex, the shortest paths discovered by Dijkstra's algorithm will be:</p>
+<table class="table table-sm" style="margin-left: 30px; width:450px;">
+  <thead>
+    <tr>
+      <th>lowest-cost path</th>
+      <th>total cost (sum of edge weights)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A <span>&rarr;</span> B</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>A <span>&rarr;</span> I <span>&rarr; </span>C</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>A <span>&rarr;</span> I <span>&rarr; C &rarr; </span>D</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td>A <span>&rarr;</span> I <span>&rarr; </span>E</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>A <span>&rarr;</span> I <span>&rarr; G &rarr; </span>F</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>A <span>&rarr;</span> I <span>&rarr; </span>G</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>A <span>&rarr;</span> I <span>&rarr; G &rarr; </span>H</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>A <span>&rarr;</span> I</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>Finding the shortest path from some source vertex to every vertex in a graph has so many potential applications, such as:</p>
+<ul style="list-style-type: disc;">
+<li>transmitting a message from a single computer in a network to every other computer in the network as quickly as possible</li>
+<li>shipping goods from a central distribution center and taking the shortest path possible to all destinations</li>
+<li>modeling the spread of infectious diseases through social networks</li>
+</ul>
+<p>... and more! The sky is the limit with all the interesting and awesome problems we can model using graph theory.</p>
+<p>For a walkthrough of the algorithm, see the slides attached above.</p>
+<p><strong><br />Finding the Smallest <span class="code-chonk">dist[i]</span> Value: Runtime Considerations</strong></p>
+<p>Each iteration of Dijkstra's algorithm asks us to find which of the unvisited nodes has the smallest <span class="code-chonk">dist[i]</span> value associated with it. It might seem tempting to use a priority queue for that. After all, serving up the element with the smallest priority associated with it is what priority queues are <em>really</em> good at!</p>
+<p>There's a problem with using a priority queue to drive Dijkstra's algorithm, though: When we process a node, we check the<span class="code-chonk">dist[i]</span> values associated with that node's unvisited neighbors and update them if appropriate. Those <span class="code-chonk">dist[i]</span> values serve as the priorities that determine where those nodes are located in our priority queue, and updating them is not something that we cannot do efficiently with a traditional implementation of that data structure, which does not permit us to go rummaging around inside of it to find arbitrary values. (The Stanford <span class="code-chonk">PriorityQueue</span> allows that, but it's an O(n) operation, which is&nbsp;<em>very</em> expensive for a data structure that has O(log n) worst-case runtimes for all its other key operations.)</p>
+<p>So, we have a few options:</p>
+<ol style="list-style-type: decimal;" start="1">
+<li>If we want to update the priority associated with some node, remove elements from our priority queue until we find that node, then add it back in with the updated priority -- along with all the other elements we just removed. This is clearly absurd. Doing that for a <em>single</em> node would have a worst-case runtime of O(n log n) (where we end up pulling&nbsp;<em>all</em> n nodes out in order to find the one we're looking for), and we might want to do this for <em>multiple</em> nodes (not just one) in <em>each</em> iteration of Dijkstra's algorithm. Yikes!</li>
+</ol>
+<ol style="list-style-type: decimal;" start="2">
+<li>Use a priority queue, but don't bother updating the priorities associated with the nodes it contains. Instead, just add new copies of the nodes any time you update their priorities. Those new copies (with lower priorities) will percolate to the top while the old copies (with higher priorities) linger in the bottom. Effectively, we let a bunch of outdated trash accumulate in the minheap. Having extra clutter in our minheap isn't the best for our runtimes, but it's also not the worst thing I've seen, and this approach gets points for being super whimsical and a bit Bohemian. There's always a possibility that we'll pull out some node that we've already processed (with a higher, outdated priority), but we can just keep track of the nodes we've processed and discard any duplicates as we pull them out of the minheap. At worst, we end up with O(n<sup>2</sup>) items in our minheap with this approach (that's where all the unvisited nodes have their <span class="code-chonk">dist[i]</span> values updated/improved at every iteration of the algorithm), and our runtime for Dijkstra's algorithm becomes O(n<sup>2</sup> log n<sup>2</sup>) as a result -- and since log n<sup>2</sup> = 2 log n (a super rad property of logs), we can actually rewrite that runtime as O(n<sup>2</sup> log n).</li>
+</ol>
+<ol style="list-style-type: decimal;" start="3">
+<li>Find a priority queue that supports average-case O(1) updates to the priority of an element that is already in the queue. (A <a class="inline_disabled" href="https://en.wikipedia.org/wiki/Fibonacci_heap" target="_blank" rel="noopener">Fibonacci heap</a> will do the trick.) If we do that in conjunction with an adjacency list representation for your graph (instead of an adjacency matrix), we can get the runtime down to O(|E| + n log n), where |E| is the number of edges in the graph. If you want to do a deep dive on those runtime details, see the <a class="inline_disabled" href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm" target="_blank" rel="noopener">Wikipedia article on Dijkstra's algorithm</a>.</li>
+</ol>
+<ol style="list-style-type: decimal;" start="4">
+<li>Just use an unsorted array. That's what Dijkstra did originally. Finding the smallest <span class="code-chonk">dist[i]</span> value in an unsorted array takes O(n) time, and we can remove an item from an unsorted array in O(1) time by simply swapping the last element of the array into the position we're removing from. (There's no need to scooch a bunch of elements over to fill in the space we are creating by removing an element. We only scooch when we're trying to preserve order, and since the array is unsorted in this case, we don't have to worry about that.) We end up doing <em>n</em> iterations of Dijkstra's algorithm in this approach (one for each node that gets processed), and the runtime for each iteration is O(n), so the algorithm has an overall runtime of O(n<sup>2</sup>) with this approach -- better than the O(n<sup>2</sup> log n) approach described in #2 above. For the purpose of comparing this runtime to the approach in #3 above, note that the number of edges in a complete graph is O(n<sup>2</sup>), so approach #3 can approach an O(n<sup>2</sup>) runtime in the worst case, but it can be faster if the graph is more sparse than that.</li>
+</ol>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key take-away!</em></span>) Some of the details above (like the idea of using a Fibonacci heap to achieve an O(|E| + n log n) runtime for Dijkstra's algorithm) are a bit beyond the scope of the class and are included more as a reference should you want to do a deeper dive into this algorithm, the nuances of its implementation details, and the runtime implications of those implementation decisions. The main take-aways here are:</p>
+<ul>
+<li>A regular old priority queue might seem like a logical choice of data structure for implementing this algorithm, but it's not the most efficient approach because updating the priorities of existing elements in a traditional priority queue is an expensive operation.</li>
+</ul>
+<ul>
+<li>We can just use an unsorted array to keep track of our priorities, and that leads to an implementation of Dijkstra's algorithm that has an O(n<sup>2</sup>) runtime. (You should totally code that up, by the way.)</li>
+</ul>
+<p><strong><br /><span style="display: inline-block; font-size: 10pt; padding-top: 3px; background-color: #236fa1; color: #ffffff;">&nbsp;&nbsp;Supplementary&nbsp;&nbsp;</span>&nbsp; Dijkstra's Algorithm and the Negative Edge Weight Problem</strong></p>
+<p>I mentioned in class today that Dijkstra's algorithm doesn't work on graphs that have negative edge weights. Check out what happens if we try running it on one that does:</p>
+<p style="margin-left: 30px;"><img src="resources/dijkstra-negative-weights01.png" /></p>
+<p>If <strong>A</strong> is our source vertex, here is how the <em>dist</em> array changes as we run&nbsp;Dijkstra's algorithm (where&nbsp;<em>dist</em> is the array of values associated with each vertex):</p>
+<p style="padding-left: 30px;">Immediately after initialization: {0, <span style="font-size: 18px;">&infin;</span>, <span style="font-size: 18px;">&infin;</span>}</p>
+<p style="padding-left: 30px;">After visiting <strong>A</strong> and considering its (unvisited) neighbors: {0, 7, 6}</p>
+<p style="padding-left: 30px;">After visiting <strong>C</strong> and considering its (unvisited)&nbsp;neighbors: {0, 7, 6}</p>
+<p style="padding-left: 30px;">After visiting <strong>B</strong> and considering its (unvisited)&nbsp;neighbors: {0, 7, 6}</p>
+<p>Notice that the minimum cost listed for reaching <strong>C</strong> from <strong>A</strong>&nbsp;(6) does not reflect the cost of the path <strong>A &rarr; B &rarr; C</strong>&nbsp;(4), which is smaller. That's because when we visit vertex <strong>B</strong>, its neighboring vertices are already marked as visited, and so we don't update <em>dist</em>[<em>v</em>] for any neighboring vertex, <em>v</em>. The mere presence of a negative edge weight has thrown off Dijkstra's algorithm.</p>
+<p>With a graph this small, it might be tempting to say that we can recover from this problem. We might propose that when we visit vertex <strong>B</strong>, we could just peek at its visited neighbor, <strong>C</strong>, see that 7 - 3 would give us a better value than what we have there, and go ahead and update that 6 to a 4. The problem with this approach is that if <strong>C</strong> had other neighbors, we would then need to re-process <strong>C</strong> to see if we could use this new, smaller value to find shorter paths to those neighbors as well. There's no telling how many times we might need to re-process each node in that fashion if we were to allow those updates to continue, and that could dramatically increase the algorithm's runtime. This is not the way.</p>
+<p><br /><strong><span style="display: inline-block; font-size: 10pt; padding-top: 3px; background-color: #236fa1; color: #ffffff;">&nbsp;&nbsp;Supplementary&nbsp;&nbsp;</span>&nbsp; A Dijkstra Modification That Doesn't Work</strong></p>
+<p>A not altogether uncommon proposal that I encounter for modifying Dijkstra's algorithm to work with negative edge weights is as follows: Find the minimum edge weight in the graph (call it <em>x</em>), and then add (|<em>x</em>| + 1) to every edge weight in the graph. Run Dijkstra's algorithm. When it's finished, subtract (|<em>x</em>| + 1) from your resulting shortest path values (the values in the <em>dist</em>&nbsp;array), except for the one stored for the <em>source</em> vertex.</p>
+<p>Check out what happens with this algorithm, though. Here's the new version of the graph from the previous example, adjusted to add (|-3| + 1 = 4) to each edge weight:</p>
+<p style="margin-left: 30px;"><img src="resources/dijkstra-negative-weights02.png" /></p>
+<p>When we perform Dijkstra's algorithm, we get the following&nbsp;<em>dist</em> arrays:</p>
+<p style="padding-left: 30px;">Immediately after initialization: {0,&nbsp;<span style="font-size: 18px;">&infin;</span>,&nbsp;<span style="font-size: 18px;">&infin;</span>}</p>
+<p style="padding-left: 30px;">After visiting&nbsp;<strong>A</strong>&nbsp;and considering its (unvisited) neighbors: {0, 11, 10}</p>
+<p style="padding-left: 30px;">After visiting&nbsp;<strong>C</strong>&nbsp;and considering its (unvisited)&nbsp;neighbors: {0, 11, 10}</p>
+<p style="padding-left: 30px;">After visiting&nbsp;<strong>B</strong>&nbsp;and considering its (unvisited)&nbsp;neighbors: {0, 11, 10}</p>
+<p style="padding-left: 30px;">After the algorithm concludes and we subtract (|-3| + 1 = 4) from each result (except at the source): {0, 7, 6}.</p>
+<p>Clearly, this doesn't produce the desired solution, which is {0, 7, 4}. The conversion of negative edge weights in many (all?) cases prevents us from doing anything useful with them at all.</p>
+<p><br /><strong><span style="display: inline-block; font-size: 10pt; padding-top: 3px; background-color: #236fa1; color: #ffffff;">&nbsp;&nbsp;Supplementary&nbsp;&nbsp;</span>&nbsp; Dealing with Negative Edge Weights: Bellman-Ford</strong></p>
+<p>Someone asked me after class today about how we can solve the single-source shortest paths problem if our graph has negative edge weights. One possibility is to use the Bellman-Ford algorithm, but it comes at a cost: the runtime is O(n<sup>3</sup>), as opposed to Dijkstra's runtime of O(n<sup>2</sup>). If you're interested, you can read more about that algorithm at the following links:</p>
+<ul>
+<li><a class="inline_disabled" href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm" target="_blank" rel="noopener">Bellman-Ford Algorithm (Wikipedia)</a></li>
+<li><a class="inline_disabled" href="https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/" target="_blank" rel="noopener">Bellman-Ford Algorithm (Geeks for Geeks)</a></li>
+</ul>
+<p>Note that if we have a negative cycle in a graph (or a single negative edge weight in an undirected graph, which we could run back and forth across in order to effectively produce a negative cycle), Bellman-Ford won't necessarily be of use; there is no (finite) shortest path between any two nodes that are a party to a negative cycle in a graph, because we can just keep pumping that negatively cycle infinitely to get better and better results.</p>
+<p><strong><br />Further Runtime Considerations: Repeated Minheap Insertions (or Deletions)</strong></p>
+<p>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not covered in class, but I would like everyone to have passing familiarity with this idea.</em></span>) When inserting <em>n</em> elements into a minheap, it might be tempting to say that since the worst-case runtime for insertion is O(log n), the overall runtime for inserting all elements must be O(n log n). After all, we could encounter that O(log n) runtime for each of our <em>n</em> insertion operations, no?</p>
+<p>In fact, no! We cannot encounter that worst-case runtime of O(log n) for the first several (or however many) insertions because there aren't even <em>n</em> elements in the minheap yet. The worst-case runtime for each insertion is more accurately represented as O(log k), where <em>k</em> is the number of elements (out of&nbsp;<em>n&nbsp;</em>total) that we have inserted into the minheap&nbsp;<em>so far</em>. Since&nbsp;<em>k</em> is changing (1, 2, 3, ...), our runtime for all those insertions (adding up the time for each individual insertion) should be something along the lines of the following:</p>
+<p style="padding-left: 40px;"><img src="https://latex.codecogs.com/gif.download?log_2%281%29%20+%20log_2%282%29%20+%20...%20+%20log_2%28n%20%29%3D%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20log_2%28i%29" /></p>
+<p>There's a rule for logs that says log(a) + log(b) = log(ab). Applying that repeatedly to the summation above, we get:</p>
+<p style="padding-left: 40px;"><img src="https://latex.codecogs.com/gif.download?%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20log_2%28i%29%20%3D%20log_%7B2%7D%28n%21%29" /></p>
+<p>Finally, <a class="inline_disabled" href="https://en.wikipedia.org/wiki/Stirling%27s_approximation" target="_blank" rel="noopener">Stirling's approximation</a> gives us:</p>
+<p style="padding-left: 40px;"><img src="https://latex.codecogs.com/gif.download?log_2%28n%21%29%20%3D%20n%5C%20log_2%28n%29%20-%20n%5C%20log_2%28e%29%20+%20O%28log_2%28n%29%29" /></p>
+<p>The first term on the right-hand side of that equation is the dominant one, and so our runtime is O(n log n).</p>
+<p>It might seem silly to go through all that trouble just to come up with the O(n log n) runtime, which is what we got at first glance by just multiplying the insertion runtime, O(log n), by the number of insertions, <em>n</em>. The reason it's important to give that summation careful consideration, however, is because we saw earlier this quarter how wishy-washy, hand-wavy analysis can lead us to overestimates of runtimes. Recall that when we first looked at the <a href="../17-pqheap.html">heapify algorithm</a>, the temptation was to say, "We've got an O(n) for-loop calling an O(log n) percolate-down operation, so the runtime must be O(n log n)." However, we saw that O(n log n) was an overestimate of the runtime in that case. That's the one where the runtime <a href="../23-loose-ends.html">actually ended up being O(n)</a>.</p>
+<p>The heapify result should give us pause about engaging in that kind of analysis -- especially when the size of our data structure is changing. So, I wanted you to see how to analyze this one a bit more formally.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) <img src="https://latex.codecogs.com/gif.download?log_2%281%29%20+%20log_2%282%29%20+%20...%20+%20log_2%28n%29" /> is <img src="https://latex.codecogs.com/gif.download?O%28n%5C%20log%28n%29%29" />.</p>
+<p><strong><br />A* Search Algorithm</strong></p>
+<p>For the purpose of pathfinding (searching for a shortest path from a specific source node to a specific target node in a graph), one shortcoming of Dijkstra's algorithm is its willingness to explore in every direction from its source vertex with myopic focus on finding short paths to all the nodes it encounters, but no regard for whether it's making significant strides toward the target node.</p>
+<p>We saw that on Friday (and again in class today) with the following pathfinding visualization tool:</p>
+<ul>
+<li><a href="https://qiao.github.io/PathFinding.js/visual/" target="_blank" rel="noopener">https://qiao.github.io/PathFinding.js/visual/</a></li>
+</ul>
+<p>BFS is painfully slow in that particular example, and while Dijkstra's algorithm is an improvement, it still explores without any bias in favor of nodes closer to the goal (or against nodes farther away). In the images below, Dijkstra appears very similarly to BFS, but explores the graph in a more radial shape. In the graphs being explored by these algorithms, the nodes represent the large pixels, and the weights of all edges are equal.</p>
+<p>In the images below, source node is green, target node is red, gray nodes act as walls, and blue nodes surrounded with green border are the space that has been searched so far:</p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><strong>Breadth-First Search</strong></span></p>
+<p style="padding-left: 40px;"><img src="resources/bunny-bfs.png" width="450" /></p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><strong>Dijkstra's Algorithm</strong></span></p>
+<p style="padding-left: 40px;"><img src="resources/bunny-dijkstra.png" width="450" /></p>
+<p>The A* search algorithm (pronounced "a-star") is very similar to Dijkstra's algorithm, except the priority for each node combines edge weights with a heuristic that nudges the search toward the goal. We traced through an example of this in class today. For details, see timestamp 30:31 through 45:26 in today's lecture.</p>
+<p>Here we can see an example of A* in action. Notice that it explores fewer nodes than BFS and Dijkstra' algorithm and finds the shortest path to the goal faster. It also does not explore quite as far in northwesterly and southwesterly directions as the other two algorithms:</p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><strong>A* Search Algorithm</strong></span></p>
+<p style="padding-left: 40px;"><img src="resources/bunny-a-star.png" width="450" /></p>
+<p>A few notes about A*:</p>
+<ul>
+<li>In order to use A*, we need awareness of a particular target node we're trying to reach and some way of measuring whether we're getting closer to that target node. (Thank you to the person who asked about this in class today!)</li>
+</ul>
+<ul>
+<li>While A* biases search toward the goal, it doesn't completely prohibit exploration of nodes in the opposite direction of the goal. That can be seen in the diagram above, where the search expands westward (but not quite as far northwest or southwest as BFS and Dijkstra did). This is actually a good thing! Even if we want to drive, say, north from Palo Alto to San Francisco, an optimal route might first take us a tiny bit south to get us to a nearby on-ramp for a freeway that will get us to our destination quickly.</li>
+</ul>
+<ul>
+<li>Unlike Dijkstra's algorithm, A* does not find the shortest path from a source node to every other vertex in the graph; it is only looking for the shortest path to the target node, and that is the only one for which it is guaranteed to find a lowest-cost path (pursuant to certain conditions; see the following bullet point).</li>
+</ul>
+<ul>
+<li>In order to ensure A* finds the shortest path from the source node to the target, our heuristic needs to be "admissible" (meaning that it never overestimates the actual cost to get to the goal). I touched on that briefly in class today, but if you're interested in exploring that idea in more detail, I've included some readings at the bottom of today's notes.</li>
+</ul>
+<p><strong><br />Topological Sort</strong></p>
+<p>At the end of class, I returned to the idea of topological sort, which we touched upon briefly last Friday.</p>
+<p>A topological sort is an ordering of vertices in a directed graph where we can only list some node, <em>j</em>, after we have listed all nodes <em>i</em> where there is an edge from&nbsp;<em>i</em> to&nbsp;<em>j</em> in the&nbsp;graph. The word "ordering" here refers to a permutation (or arrangement) of our vertices. A valid topological sort must contain every node in our graph exactly once. If any node is missing, or if a node is listed more than once, that's not a valid topological sort.</p>
+<p>For example, in the graph below, node&nbsp;<strong>h</strong> has two incoming edges: one from&nbsp;<strong>b</strong>, and one from&nbsp;<strong>e</strong>. Accordingly, any valid topological sort for this graph must list nodes <strong>b</strong> and&nbsp;<strong>e</strong> before listing node <strong>h</strong>:</p>
+<p style="margin-left: 40px"><img src="resources/topological01.png" width="300" /></p>
+<p>One valid topological sort for this graph is as follows:</p>
+<p style="padding-left: 40px;"><strong>b&nbsp; &nbsp;g&nbsp; &nbsp;k&nbsp; &nbsp;d&nbsp; &nbsp;a&nbsp; &nbsp;e&nbsp; &nbsp;h&nbsp; &nbsp;f&nbsp; &nbsp;c</strong></p>
+<p>If we rearrange these nodes into a straight line in that order (without adding or removing any edges), we see a sort of flow in which all edges point to the right, never the left:</p>
+<p style="margin-left: 40px"><img src="resources/topological02.png" width="550" /></p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Important note!</em></span>) A topological sort does <span style="text-decoration: underline;"><strong>not</strong></span> have to correspond to a valid path through the graph!</p>
+<p>Here are two potential applications for topological sort:</p>
+<ul>
+<li>Suppose the nodes in our graph represent tasks on a to-do list, and there's an edge from node&nbsp;<strong>x</strong> to node&nbsp;<strong>y</strong> if we need to complete task&nbsp;<strong>x</strong> before we can move on to task&nbsp;<strong>y</strong>. (For example, if&nbsp;<strong>x</strong> is "buy flour" and&nbsp;<strong>y</strong> is "bake cookies," we need to do&nbsp;<strong>x</strong> before&nbsp;<strong>y</strong>, assuming we don't already have enough flour at home.) A topological sort would give us an order in which we could execute our tasks without having any unmet dependencies before diving into each one.</li>
+</ul>
+<ul>
+<li>Suppose the nodes in our graph represent courses, and there's an edge from node <strong>x</strong> to node&nbsp;<strong>y</strong> if&nbsp;<strong>x</strong> is a prereq for&nbsp;<strong>y</strong>. A topological sort would give us an order in which we could take those individual courses without ever enrolling in one that still had unsatisfied prereqs.</li>
+</ul>
+<p><br /><strong>Cycles and Topological Sort</strong></p>
+<p>Note that if a graph has a cycle, then it has no valid topological sort. Consider, for example, the following graph. A topological sort of a graph must include every node in that graph exactly once, but there is no way for us to list nodes B, C, or D in this example because of the cyclical dependencies in that part of the graph:</p>
+<p style="margin-left: 40px"><img src="resources/topological03.png" width="220" /></p>
+<p><br /><strong>Topological Sort Code</strong></p>
+<p>Here's an implementation of topological sort that I wrote this evening for your consideration. It assumes the function is a member of a <span class="code-chonk">Graph</span> class that has <span class="code-chonk">_numNodes</span> and <span class="code-chonk">_matrix</span> member variables (the number of nodes in the graph and an adjacency matrix that uses booleans to indicate whether there is an edge from one node to another).</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> Graph::printTopologicalSort()<br />{<br /><em><span style="color: #236fa1;">   // First, count how many incoming edges each node has. All our nodes are numbered</span></em><br /><em><span style="color: #236fa1;">   // 0 through _numNodes - 1, even though this function later assumes we have labels</span></em><br /><em><span style="color: #236fa1;">   // associated with each node (such as A, B, C, and so on). The following syntax, not</span></em><br /><em><span style="color: #236fa1;">   // covered in class this quarter, initializes all the values in our array to 0 to</span></em><br /><em><span style="color: #236fa1;">   // begin with.</span></em><br />   <strong>int</strong> incoming[_numNodes] = {};<br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; _numNodes; i++)<br />   {<br />      <strong>for</strong> (<strong>int</strong> j = 0; j &lt; _numNodes; j++)<br />      {<br /><em><span style="color: #236fa1;">         // If _matrix[i][j] is true, we have an edge from i to j. So, increment the</span></em><br /><em><span style="color: #236fa1;">         // number of incoming edges at node j.</span></em><br />         <strong>if</strong> (_matrix[i][j])<br />         {<br />            incoming[j]++;<br />         }<br />      }<br />   }<br /><br /><em><span style="color: #236fa1;">   // Now check which nodes have no incoming edges. Those are the ones we can choose</span></em><br /><em><span style="color: #236fa1;">   // from when selecting the first node for our topological sort, since they have no<br />   // unsatisfied "prerequisites," so to</span></em><em><span style="color: #236fa1;"> speak. We store them in a queue -- not because<br />   // their order matters (it doesn't), but because this is just a convenient and easy-</span></em><br /><span style="color: #236fa1;"><em>   // to-use container for O(1) insertions and removals.</em></span><br />   <strong>Queue</strong>&lt;<strong>int</strong>&gt; q;<br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; _numNodes; i++)<br />   {<br />      <strong>if</strong> (incoming[i] == 0)<br />      {<br />         q.enqueue(i);<br />      }<br />   }<br /><br />   <span style="color: #236fa1;"><em>// This vector will store our final topological sort. We postpone printing it until<br /></em><em>   // we know whether we're able to process all nodes (which we won't be able to do if</em></span><br /><span style="color: #236fa1;"><em>   // there's a cycle).</em></span><br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; result;<br /><br />   <strong>while</strong> (!q.isEmpty())<br />   {<br /><em><span style="color: #236fa1;">      // Pull out a node and add it to the topological sort we're building.</span></em><br />      <strong>int</strong> current = q.dequeue();<br />      result.add(current);<br /><br /><span style="color: #236fa1;"><em>      // If there is an edge from the current node to another node in the graph (let's</em></span><br /><span style="color: #236fa1;"><em>      // call that other node 'i'), then 'i' has one less incoming edge that is</em></span><br /><span style="color: #236fa1;"><em>      // preventing us from processing that node. Let's loop through the current node's</em></span><br /><span style="color: #236fa1;"><em>      // row in our adjacency matrix to see which nodes it leads us to.</em></span><br />      <strong>for</strong> (<strong>int</strong> i = 0; i &lt; _numNodes; i++)<br />      {<br />         <strong>if</strong> (_matrix[current][i])<br />         {<br />            --incoming[i];<br /><br /><span style="color: #236fa1;"><em>            // If the decrement above causes this counter to reach 0, then we've</em></span><br /><span style="color: #236fa1;"><em>            // just satisfied the final "prerequisite" for node i and can add it to</em></span><br /><span style="color: #236fa1;"><em>            // the queue of nodes that are ready for processing.</em></span><br />            <strong>if</strong> (incoming[i] == 0)<br />            {<br />               q.enqueue(i);<br />            }<br />         }<br />      }<br />   }<br /><br /><span style="color: #236fa1;"><em>   // If our final result does not have every node in our graph, then the graph must</em></span><br /><span style="color: #236fa1;"><em>   // have a cycle. In that case, there is no valid topological sort, so we throw an</em></span><br /><span style="color: #236fa1;"><em>   // error.</em></span><br />   <strong>if</strong> (result.size() != _numNodes)<br />   {<br />      error("Graph contains cycle in printTopologicalSort()!");<br />   }<br /><br /><span style="color: #236fa1;"><em>   // If we get here, all nodes were processed, and we have a valid topological sort</em></span><br /><span style="color: #236fa1;"><em>   // to print. Here, I assume the existence of a _nodeNames vector that has a label<br /></em><em>   // for each node in the graph. These could be simple labels (A, B, C) or more<br /></em><em>   // elaborate strings ("San Francisco", "Palo Alto", "Mountain View").</em></span><br />   <strong>cout</strong> &lt;&lt; "Topological Sort:" &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "=================" &lt;&lt; <strong>endl</strong>;<br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; result.size(); i++)<br />   {<br />      <strong>int</strong> current = result[i];<br />      <strong>cout</strong> &lt;&lt; " - " &lt;&lt; _nodeNames[current] &lt;&lt; <strong>endl</strong>;<br />   }<br />}</pre>
+<p><br /><strong>What's next?</strong></p>
+<p>Wednesday is our course wrap-up where I'll put a bow on some of the topics we've talked about this quarter, share some expectations for the final exam (and other end-of-quarter logistics), and talk a bit about what comes next in life after 106B.</p>
+<p>On Friday, Julie, Clinton, and I will host an <a class="inline_disabled" href="https://www.google.com/search?q=abbreviation+ama" target="_blank" rel="noopener">AMA</a> where we'll field any questions you might have for us.</p>
+<p><strong><br />Exercises</strong></p>
+<p>1. Code up Dijkstra's algorithm! Start by writing a function that can read a graph from a text file into an adjacency matrix. An adjacency matrix isn't always the best representation to use for a graph (remember, for a sparse graph, the adjacency matrix has a lot of wasted space), but I'm suggesting that here because it's a fairly straightforward one to work with in code.</p>
+<p>2. Be sure to review the implementation of topological sort included in the notes above. After taking a break from reading these notes, implement that algorithm from scratch. Challenge yourself to do so without looking back at these notes.</p>
+<p>3. What is the runtime for the implementation of topological sort given in today's lecture notes?</p>
+<p>4. Be sure to review the section titled "Further Runtime Considerations: Repeated Minheap Insertions (or Deletions)" in today's notes.</p>
+<p>5. If you want to learn more about shortest path algorithms and pathfinding, consider diving into the following sources (some of which are also linked above in today's notes):</p>
+<ul>
+<li>A*
+<ul>
+<li><a class="inline_disabled" href="https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html" target="_blank" rel="noopener">A*'s Use of the Heuristic (post by Stanford alum Amit Patel)</a></li>
+<li><a class="inline_disabled" href="https://theory.stanford.edu/~amitp/GameProgramming/index.html" target="_blank" rel="noopener">Amit's Thoughts on Pathfinding (more extensive index of Amit Patel's writings on A*)</a></li>
+<li><a class="inline_disabled" href="https://www.redblobgames.com/pathfinding/a-star/introduction.html" target="_blank" rel="noopener">Introduction to the A* Algorithm (Amit Patel's newer A* guide)</a></li>
+<li><a class="inline_disabled" href="https://en.wikipedia.org/wiki/A*_search_algorithm" target="_blank" rel="noopener">A* Search Algorithm (Wikipedia)</a></li>
+</ul>
+</li>
+<li>Bellman-Ford<br />
+<ul>
+<li><a class="inline_disabled" href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm" target="_blank" rel="noopener">Bellman-Ford Algorithm (Wikipedia)</a></li>
+<li><a class="inline_disabled" href="https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/" target="_blank" rel="noopener">Bellman-Ford Algorithm (Geeks for Geeks)</a></li>
+</ul>
+</li>
+<li>Dijkstra's Algorithm (and much more; includes various exercises and applications)
+<ul>
+<li><a class="inline_disabled" href="https://algs4.cs.princeton.edu/44sp/" target="_blank" rel="noopener">Shortest Paths (notes from Professor Sedgewick at Princeton)</a></li>
+</ul>
+</li>
+</ul>
+<p>6. Be sure you're preparing for the upcoming final exam! For details, see the following:</p>
+<ul>
+<li><a class="inline_disabled" href="../../exams/2-endquarter/index.html" target="_blank" rel="noopener">End-Quarter Exam Page (includes practice exams with solutions)</a></li>
+<li><a class="inline_disabled" href="https://edstem.org/us/courses/45672/discussion/3975109" target="_blank" rel="noopener">Important Final Exam Logistics (Clinton's post on Ed)</a></li>
+</ul>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Dec-05
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

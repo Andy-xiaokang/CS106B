@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Classes and Dynamic Memory</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 5. Classes and Dynamic Memory</h1>
+ <p class="subtle-heading">Thursday November 2</p>
+<hr>
+
+<p class="attribution">
+Section materials curated by Clinton Kwarteng, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>This week’s section exercise consists of several larger problems that will give you practice with designing classes and working with dynamic array allocation. These problems will help you get practice with the skills that you need for the next assignment, where you will start to implement your very own data structures! As you work on these problems, you may find this <a href="syntax.html">Classes and Objects Syntax Sheet</a> to be helpful.</p>
+
+<p>Remember that every week we will also be releasing a Qt Creator project containing starter code and testing infrastructure for that week's section problems. When a problem name is followed by the name of a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the Qt Creator project. Here is the zip of the section starter code:</p>
+
+<p>📦 <a href="section5_starter.zip">Starter project</a></p>
+
+<h2 id="1-circle-of-life-circlehcpp">1) Circle of Life (<code class="language-c++ highlighter-rouge"><span class="n">Circle</span><span class="p">.</span><span class="n">h</span><span class="o">/</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p><em>Topics: Classes</em></p>
+
+<p>Write a class named <code class="language-c++ highlighter-rouge"><span class="n">Circle</span></code> that stores information about a circle. Your class must implement the following public interface:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Circle</span> <span class="p">{</span>
+	<span class="c1">// constructs a new circle with the given radius</span>
+	<span class="n">Circle</span><span class="p">(</span><span class="kt">double</span> <span class="n">r</span><span class="p">);</span> 
+	<span class="c1">// returns the area occupied by the circle</span>
+	<span class="kt">double</span> <span class="n">area</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+	<span class="c1">// returns the distance around the circle </span>
+	<span class="kt">double</span> <span class="n">circumference</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+	<span class="c1">// returns the radius as a real number</span>
+	<span class="kt">double</span> <span class="n">getRadius</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+	<span class="c1">// returns a string representation such as "Circle{radius=2.5}"</span>
+	<span class="n">string</span> <span class="n">toString</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>You are free to add any private member variables or methods that you think are necessary. It might help you to know that there is a global constant <code class="language-c++ highlighter-rouge"><span class="n">PI</span></code> storing the approximate value of π, roughly <code class="language-c++ highlighter-rouge"><span class="mf">3.14159</span></code>.</p>
+
+<div class="showtime" when="2023-11-03T18:00:00-07:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#williamfromcrothers")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// .h file starts</span>
+<span class="cp">#pragma once
+</span>
+<span class="k">class</span> <span class="nc">Circle</span> <span class="p">{</span>
+<span class="nl">public:</span>
+	<span class="n">Circle</span><span class="p">(</span><span class="kt">double</span> <span class="n">radius</span><span class="p">);</span>
+
+	<span class="kt">double</span> <span class="n">area</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">circumference</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">getRadius</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+	<span class="n">string</span> <span class="n">toString</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="nl">private:</span>
+	<span class="kt">double</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// .h file ends</span>
+
+
+<span class="c1">// .cpp file starts </span>
+<span class="cp">#include</span> <span class="cpf">"Circle.h"</span><span class="cp">
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="n">Circle</span><span class="o">::</span><span class="n">Circle</span><span class="p">(</span><span class="kt">double</span> <span class="n">radius</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">r</span> <span class="o">=</span> <span class="n">radius</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">double</span> <span class="n">Circle</span><span class="o">::</span><span class="n">area</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+	<span class="k">return</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">double</span> <span class="n">Circle</span><span class="o">::</span><span class="n">circumference</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+	<span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">double</span> <span class="n">Circle</span><span class="o">::</span><span class="n">getRadius</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+	<span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="n">Circle</span><span class="o">::</span><span class="n">toString</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+	<span class="k">return</span> <span class="n">string</span><span class="p">(</span><span class="s">"Circle{radius="</span><span class="p">)</span> <span class="o">+</span> <span class="n">realToString</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">+</span> <span class="n">string</span><span class="p">(</span><span class="s">"}"</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// .cpp file ends</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-the-notorious-rbq-ringbufferqueuehcpp">2) The Notorious RBQ (<code class="language-c++ highlighter-rouge"><span class="n">RingBufferQueue</span><span class="p">.</span><span class="n">h</span><span class="o">/</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p><em>Topics: Classes, dynamic arrays</em></p>
+
+<p>Think back to week 2 when we studied collections. We learned about Queues, a "first-in, first-out" data structure. Today in section, we're going to implement a special type of queue called a Ring Buffer Queue. A Ring Buffer Queue, or RBQ, is implemented by using an underlying array. In our implementation, the capacity is capped; once the array is full, additional elements cannot be added until something is dequeued. Another "interesting" thing about RBQs is that we don't want to shift elements when an element is enqueued or dequeued. Instead, we want to keep track of the front and tail of the Queue. For example, say our queue can hold 5 elements and we enqueue 3 elements: 1, 2, 3. Our queue would look like this:</p>
+
+<div align="center">
+  <p><img src="img/queue1.png" alt="Array with 5 elements. The leftmost 3 elements are 1,2,3 in that order and the rightmost 2 elements are empty. The element 1 is marked with an arrow that says &quot;head&quot; and the element 3 is marked with an arrow that says &quot;tail&quot;." width="50%" /></p>
+</div>
+
+<p>If we enqueued two more elements, our queue would then be full:</p>
+
+<div align="center">
+  <p><img src="img/queue2.png" alt="Array with 5 elements. All elements are populated 1,2,3,4,5 in that order from left to right. The element 1 is marked with an arrow that says &quot;head&quot; and the element 5 is marked with an arrow that says &quot;tail&quot;." width="50%" /></p>
+</div>
+
+<p>At this point, we cannot add any additional elements until we dequeue at least one element. Dequeuing will remove the element at head, and head will move onto the next element. If we dequeue 2 elements, our queue will look like this:</p>
+
+<div align="center">
+  <p><img src="img/queue3.png" alt="Array with 5 elements. The leftmost two spots are empty. The rightmost 3 elements are populated 3,4,5. The element 3 is marked with an arrow that says &quot;head&quot; and the element 5 is marked with an arrow that says &quot;tail&quot;." width="50%" /></p>
+</div>
+
+<p>Now there's room to add more elements! Since we still don't want to shift any elements, adding an additional element will wrap around. So, if we enqueue an element, our queue will look like this:</p>
+
+<div align="center">
+  <p><img src="img/queue4.png" alt="Array with 5 elements. The leftmost element is the value 6, and then there is one empty spot to the right of it. The rightmost 3 elements are populated 3,4,5. The element 3 is marked with an arrow that says &quot;head&quot; and the element 6 is marked with an arrow that says &quot;tail&quot;." width="50%" /></p>
+</div>
+
+<p>Notice that the tail's index is less than the head's index!</p>
+
+<p>Your job is to implement a <code class="language-c++ highlighter-rouge"><span class="n">RingBufferQueue</span></code> class. Your class should have the following public methods:</p>
+
+<style>
+	td, th {
+	    border: 2px solid grey
+	}
+	table { width:100% }
+</style>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Method</strong></th>
+      <th style="text-align: left"><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">enqueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="p">)</span></code></td>
+      <td style="text-align: left">Enqueues <code class="language-c++ highlighter-rouge"><span class="n">elem</span></code> if the queue has room; throws an error if queue is full</td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="kt">int</span> <span class="n">dequeue</span><span class="p">()</span></code></td>
+      <td style="text-align: left">Returns and removes the element at the front of the queue; throws a string exception if queue is empty</td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="kt">int</span> <span class="n">peek</span><span class="p">()</span></code></td>
+      <td style="text-align: left">Returns element at the front of the queue; throws a string exception if queue is empty</td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span></code></td>
+      <td style="text-align: left">Returns <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> if queue is empty and <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code> otherwise</td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="n">isFull</span><span class="p">()</span></code></td>
+      <td style="text-align: left">Returns <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> if queue is full and <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code> otherwise</td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="kt">int</span> <span class="n">size</span><span class="p">()</span></code></td>
+      <td style="text-align: left">Returns number of elements in the queue</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You are welcome to add any private methods or fields that are necessary.</p>
+
+<p>It can be hard to know where to start when writing an entire class, so we've given you this breakdown:</p>
+<ol>
+  <li>Start by identifying the private fields you will need, then write the constructor and destructor to initialize the fields and do any cleanup, if necessary. Questions to think about:
+    <ul>
+      <li>Is it easier to keep track of head and tail (as pictured in the diagrams above)? Or would it be better to track head and size?</li>
+    </ul>
+  </li>
+  <li>Write <code class="language-c++ highlighter-rouge"><span class="n">isEmpty</span><span class="p">()</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">isFull</span><span class="p">()</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">size</span><span class="p">()</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">peek</span><span class="p">()</span></code>. 
+Questions to think about:
+    <ul>
+      <li>Which of these methods can be const? In general, how do you know when a method can be const?</li>
+    </ul>
+  </li>
+  <li>Write <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span><span class="p">()</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span><span class="p">()</span></code>. Remember to handle error conditions! 
+Questions to think about:
+    <ul>
+      <li>Can you call the methods from part 2 to reduce redundancy?</li>
+      <li>Would using modular math help with wrapping around?</li>
+      <li>Should either of these methods be const?</li>
+    </ul>
+  </li>
+  <li>Finally, deal with ostream insertion!</li>
+</ol>
+
+<p>If you want more practice with writing classes, think about how you could modify this class to implement a double-ended queue. (A double-ended queue, or deque, is one where you can enqueue and dequeue from either the front or the back).</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<hr />
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">RingBufferQueue</span><span class="p">.</span><span class="n">h</span></code></p>
+
+<hr />
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma once 
+</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="k">class</span> <span class="nc">RBQueue</span> <span class="p">{</span>
+<span class="nl">public:</span>
+	<span class="cm">/* Constructs a new empty queue. */</span>
+	<span class="n">RBQueue</span><span class="p">();</span>
+	
+	<span class="o">~</span><span class="n">RBQueue</span><span class="p">();</span>
+ 	
+ 	<span class="cm">/* Returns true if the queue contains no elements. */</span>
+ 	<span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+	
+	<span class="cm">/* Returns true if no additional elements can be enqueued. */</span>
+	<span class="kt">bool</span> <span class="n">isFull</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+	<span class="cm">/* Returns number of elements in queue. */</span>
+	<span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+	<span class="cm">/* Adds the given element to back of queue. */</span>
+	<span class="kt">void</span> <span class="n">enqueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="p">);</span>
+
+	<span class="cm">/*
+	* Removes and returns the front element from the queue
+	* Throws a string exception if the queue is empty.
+	*/</span>
+	<span class="kt">int</span> <span class="n">dequeue</span><span class="p">();</span>
+
+	<span class="cm">/*
+	* Returns the front element from the queue without removing it.
+	* Throws a string exception if the queue is empty.
+	*/</span>
+	<span class="kt">int</span> <span class="n">peek</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+<span class="nl">private:</span>
+	<span class="c1">// member variables (instance variables / fields)</span>
+	<span class="kt">int</span><span class="o">*</span> <span class="n">_elements</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">_capacity</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">_numUsed</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">_head</span><span class="p">;</span>
+	
+	<span class="c1">// by listing this here as a "friend", it can access the private member variables</span>
+	<span class="k">friend</span> <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span> <span class="k">const</span> <span class="n">RBQueue</span><span class="o">&amp;</span> <span class="n">queue</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<!--/* Prints the queue to the given output stream. */
+std::ostream& operator <<(std::ostream& out, const RBQueue& queue);-->
+
+<hr />
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">RingBufferQueue</span><span class="p">.</span><span class="n">cpp</span></code></p>
+
+<hr />
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"RingBufferQueue.h"</span><span class="cp">
+</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">kDefaultCapacity</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="n">RBQueue</span><span class="o">::</span><span class="n">RBQueue</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">_capacity</span> <span class="o">=</span> <span class="n">kDefaultCapacity</span><span class="p">;</span>
+	<span class="n">_elements</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">_capacity</span><span class="p">];</span>
+	<span class="n">_head</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">_numUsed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">RBQueue</span><span class="o">::~</span><span class="n">RBQueue</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">delete</span><span class="p">[]</span> <span class="n">_elements</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">RBQueue</span><span class="o">::</span><span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">_numUsed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">RBQueue</span><span class="o">::</span><span class="n">isFull</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">_numUsed</span> <span class="o">==</span> <span class="n">_capacity</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">RBQueue</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">_numUsed</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">RBQueue</span><span class="o">::</span><span class="n">peek</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+ 		<span class="n">error</span><span class="p">(</span><span class="s">"Can't peek from an empty queue!"</span><span class="p">);</span>
+	<span class="p">}</span>
+ 	
+ 	<span class="k">return</span> <span class="n">_elements</span><span class="p">[</span><span class="n">_head</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">RBQueue</span><span class="o">::</span><span class="n">dequeue</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+		<span class="n">error</span><span class="p">(</span><span class="s">"Can't dequeue from an empty queue!"</span><span class="p">);</span>
+	<span class="p">}</span>
+	
+	<span class="kt">int</span> <span class="n">front</span> <span class="o">=</span> <span class="n">_elements</span><span class="p">[</span><span class="n">_head</span><span class="p">];</span>
+	<span class="n">_head</span> <span class="o">=</span> <span class="p">(</span><span class="n">_head</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">_capacity</span><span class="p">;</span>
+	<span class="n">_numUsed</span><span class="o">--</span><span class="p">;</span>
+	<span class="k">return</span> <span class="n">front</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">RBQueue</span><span class="o">::</span><span class="n">enqueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">isFull</span><span class="p">())</span> <span class="p">{</span>
+		<span class="n">error</span><span class="p">(</span><span class="s">"Can't enqueue to already full queue!"</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="kt">int</span> <span class="n">tail</span> <span class="o">=</span> <span class="p">(</span><span class="n">_head</span> <span class="o">+</span> <span class="n">_numUsed</span><span class="p">)</span> <span class="o">%</span> <span class="n">_capacity</span><span class="p">;</span>
+	<span class="n">_elements</span><span class="p">[</span><span class="n">tail</span><span class="p">]</span> <span class="o">=</span> <span class="n">elem</span><span class="p">;</span>
+	<span class="n">_numUsed</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ostream</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span> <span class="k">const</span> <span class="n">RBQueue</span><span class="o">&amp;</span> <span class="n">queue</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="s">"{"</span><span class="p">;</span>
+ 
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">queue</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+		<span class="c1">// we can access the inner '_elements' member variable because</span>
+		<span class="c1">// this operator is declared as a 'friend' of the queue class</span>
+		<span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">queue</span><span class="p">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">queue</span><span class="p">.</span><span class="n">_head</span><span class="p">];</span>
+
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">queue</span><span class="p">.</span><span class="n">_numUsed</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">queue</span><span class="p">.</span><span class="n">_head</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">%</span> <span class="n">queue</span><span class="p">.</span><span class="n">_capacity</span><span class="p">;</span>
+			<span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">queue</span><span class="p">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+ 
+	<span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="s">"}"</span><span class="p">;</span>
+	<span class="k">return</span> <span class="n">out</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-29
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

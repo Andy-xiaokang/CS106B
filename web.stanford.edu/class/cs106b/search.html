@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Search</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Search</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><style>
+  .search-container input {
+    padding: 6px;
+    font-size: 17px;
+    border: none;
+  }
+  .search-container #search-text {
+    background: #e8e8e8;
+  }
+  .search-container #search-button {
+    background: #aaaaaa;
+  }
+  #search-results .alert {
+    display:inline-block;
+  }
+</style>
+
+<center>
+<div class="search-container">
+<!-- no action, will submit to this page -->
+<form method="get" role="search">
+  <input type="text" id="search-text" name="query" placeholder="🔍 Search CS106B..." size="40" title="Query string" autofocus="autofocus" onfocus="this.select()" /><input type="submit" id="search-button" value="Search" />
+</form>
+</div>
+</center>
+<hr />
+
+<ul id="search-results" class="list-unstyled"></ul>
+
+<script src="_assets/js/lunr.js"></script>
+
+<script>
+  (function() {
+
+    // show portion of contents that match search term, boldface matches
+    function formatContent(content, searchTerm) {
+        var termIdx = content.toLowerCase().indexOf(searchTerm.toLowerCase());
+        if (termIdx >= 0) {
+            var startIdx = Math.max(0, termIdx - 140);
+            var endIdx = Math.min(content.length, termIdx + searchTerm.length + 140);
+            var trimmedContent = (startIdx === 0) ? "" : "&hellip;";
+            trimmedContent += content.substring(startIdx, endIdx);
+            trimmedContent += (endIdx >= content.length) ? "" : "&hellip;"
+            var highlightedContent = trimmedContent.replace(new RegExp(searchTerm, "ig"), function matcher(match) {
+                return "<strong>" + match + "</strong>";
+            });
+            return highlightedContent;
+        }
+        else {
+            var emptyTrimmedString = content.substr(0, 280);
+            emptyTrimmedString += (content.length < 280) ? "" : "&hellip;";
+            return emptyTrimmedString;
+        }
+    }
+
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+
+        if (pair[0] === variable) {
+          return decodeURIComponent(pair[1].replace(/\+/g, '%20'));
+        }
+      }
+    }
+    var searchTerm = getQueryVariable('query');   // get query from url
+
+    if (searchTerm) {  // query from url, put into text field
+      var field = document.getElementById('search-text');
+      field.setAttribute("value", searchTerm);
+      field.setSelectionRange(0, searchTerm.length)
+
+        // Read search_data.json file (file was generated during jekyll build)
+        $.getJSON('search_data.json', function(loaded_data) {
+
+          var ndocs = 0;
+          var idx = lunr(function () {
+            var bldr = this;
+            bldr.field('id');
+            bldr.field('url'); // init with fields to be searched
+            bldr.field('pretty');
+            bldr.field('content');
+            var bldr = this;
+            $.each(loaded_data, function(index, value) {
+              ndocs += 1;
+              bldr.add({
+                'id': index,
+                'url': value.url,
+                'pretty': value.pretty,
+                'content': value.content
+              });
+            });
+          });
+
+          var results = idx.search(searchTerm);
+
+          // display results
+          var searchResults = document.getElementById('search-results');
+          if (results.length) {
+            var appendString = '';
+            for (var i = 0; i < results.length; i++) {
+              var item = loaded_data[results[i].ref];
+              appendString += '<li><a href="https://web.stanford.edu/class/cs106b/'&#32;+&#32;item.url&#32;+&#32;'"><h3>' + item.pretty + '</h3></a>';
+              appendString += '<p>' + formatContent(item.content,searchTerm) + '...</p></li>';
+            }
+            searchResults.innerHTML = appendString;
+          } else {
+            searchResults.innerHTML = '<li><center><div class="alert alert-warning">No results found for <B>' + searchTerm + '</B> (' + ndocs + ' pages searched) </div><center></li>';
+          }
+        });
+    }
+  }
+)();
+</script>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2020-Sep-03
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

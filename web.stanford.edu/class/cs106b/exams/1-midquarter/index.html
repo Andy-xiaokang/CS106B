@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Mid-quarter exam</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Mid-quarter exam</h1>
+ <p class="subtle-heading">Thursday November 2</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="exam-logistics">Exam logistics</h2>
+<ul class="alert alert-warning">
+  <li>The exam is <strong>7-9pm Thursday November 2</strong>.</li>
+  <li>We are using <strong>multiple exam rooms</strong>; your location is assigned according to the first letter of your surname/family/last name.
+    <ul>
+      <li>If your surname falls between <strong>A-J</strong>, you'll be in <strong>Cemex Auditorium</strong></li>
+      <li>If your surname falls between <strong>K-T</strong>, you'll be in <strong>Hewlett 200</strong></li>
+      <li>If your surname falls between <strong>U-Z</strong>, you'll be in <strong>Hewlett 201</strong></li>
+      <li>Students with special circumstances (SCPD, OAE, athletic conflicts) will receive an email from the Head TA with arrangements on time and place.</li>
+    </ul>
+  </li>
+  <li>You will write your answers directly on the <strong>paper exam</strong>.</li>
+  <li>The exam is <strong>closed-book</strong> and <strong>closed-device</strong>.
+    <ul>
+      <li>We will provide this printed <strong><a href="refsheet.pdf">reference</a></strong> to jog your memory about the Stanford library functions.</li>
+      <li>You also may bring your own prepared notesheet.
+        <ul>
+          <li>Your notesheet is <strong>one sheet of letter-size paper</strong> (8-1/2" x 11") where you have written/printed/drawn on both sides and included whatever information you would like to have handy during the exam.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="motivation">Motivation</h2>
+<p>The midterm exam is intended to gauge your comfort and facility with the content from the first half of the course. Since the course topics build on each other, confirming you have a good grasp of the foundations and identifying which gaps to shore up now puts you on a solid path to be ready for what comes next.</p>
+
+<h2 id="coverage-practice-materials">Coverage, practice materials</h2>
+<ul>
+  <li><strong>Coverage</strong>. The exam will cover material from the start of the quarter through recursive backtracking. This means all content up through and including Lecture 12, Section 4, and Assignment 4.</li>
+  <li><strong>Format</strong>. Most questions will ask you to write a function or short passage of code that accomplishes a particular task. Other questions may ask you to read a provided passage of code and analyze or reason about its behavior. There may also be short answer questions to answer in prose.</li>
+  <li><strong>Practice</strong>. Here are two practice exams with solutions.
+    <ul>
+      <li><a href="practice-mid-1.pdf">Practice 1</a> and <a href="practice-soln-1.html">solution</a></li>
+      <li><a href="practice-mid-2.pdf">Practice 2</a> and <a href="practice-soln-2.html">solution</a></li>
+      <li>These are actual exams given in recent quarters and they should largely representative in scope, content, difficulty, and format to what you can expect on our exam.</li>
+    </ul>
+  </li>
+  <li><strong>Additional practice exercises</strong> For additional pratice, we recommend:
+    <ul>
+      <li>Revisit our <a href="../../about_section.html" title="Sections">section materials</a>. We pack each weekly section handout with many more exercises that fit in the section meeting, so there are plenty of good options there. Section exercises are similar size and scope to those we use for exams (in fact, many section exercises originally appeared on exams in previous quarters).
+        <ul>
+          <li>Here are some <a href="sectionextra.html">additional section exercises</a> used in previous quarters, too!</li>
+        </ul>
+      </li>
+      <li>The exercises in the <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">textbook</a> are another great source for practice.</li>
+      <li>The online coding practice site <a href="http://codestepbystep.com">Code Step By Step</a> has been recommended by past students as a useful tool. It offers many practice problems and autogrades your answers to give immediate feedback.</li>
+    </ul>
+  </li>
+  <li><strong>Midterm Q&amp;A group study sessions</strong> Wed Nov 1st 7-11pm 3rd floor Durand. We will use the Wed night Lair session as a gathering for students and SLs to prep for midterm. Bring your questions, work through problems, share tips, and cheer each other on.</li>
+</ul>
+
+<h2 id="advice">Advice</h2>
+<p>We absolutely want you to come out on top! The lectures, sections, and assignments work together to guide you toward mastery of the course learning goals and the exams serve as an assessment of your progress. The absolute best outcome everyone has a great grasp on the material to nail the exam.</p>
+
+<p>Read on for <a href="../julieadvice.html">our advice</a> on how to make that happen for you!</p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-30
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

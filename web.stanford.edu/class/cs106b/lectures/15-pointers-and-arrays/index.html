@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Pointers and Arrays</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 15. Pointers and Arrays</h1>
+ <p class="subtle-heading">Monday October 30</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Today we'll learn about pointers and arrays in C++ as we build up the toolkit we will need to implement awesome ADTs like vectors and stacks.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 11.1, 11.2, 11.3</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/144295">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7938f477-4599-4309-b0a6-b083014df340&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Preliminary Note: Don't Panic!</p>
+<p>2. Preliminaries: Returning Vectors from Functions</p>
+<p>3. Memory Addresses</p>
+<p>4. Pointers</p>
+<p>5. Style Note: Pointer Declarations</p>
+<p>6. The Ampersand Operator Means Different Things in Different Contexts!</p>
+<p>7. Dreferencing Pointers</p>
+<p>8. The Asterisk Operator Means Different Things in Different Contexts!</p>
+<p>9. Other Odds and Ends</p>
+<p>10. Treasure Hunt</p>
+<p>11. Arrays</p>
+<p>12. The Relationship Between Pointers and Arrays: Naked Array Variable Names</p>
+<p>13. Arrays Are Dangerous!</p>
+<p>14. What's next?</p>
+<p>15. Exercises</p>
+<p><br /><strong>Preliminary Note: Don't Panic!</strong></p>
+<p>A word before we dive into today's lecture notes:</p>
+<p>Pointers can feel quite intimidating when you first see them. Memory addresses look wonky and wild (they're just numbers, but they're represented using base 16, or "hexadecimal"), and there are a lot of obnoxious syntax details to parse through, like the fact that the <span class="code-chonk">&amp;</span> and <span class="code-chonk">*</span> operators mean different things in different contexts. If you're feeling a bit lost in today's lecture, don't panic! That's totally normal. To get comfortable with pointers, you'll need to spend a lot of time toying with code, moving asterisks and ampersands around in your code, printing out memory addresses, and drawing lots of diagrams to help make sense of what's going on in memory.</p>
+<p>The other intimidating thing is that the utility of pointers won't be immediately clear from today's lecture, but I promise we will see a use for them soon (in our next class). In the meantime, take some time to focus on mastering the use of pointers in small, somewhat accessible programs that don't do anything particularly useful.</p>
+<p><strong><br />Preliminaries: Returning Vectors from Functions</strong></p>
+<p>I started class today by talking about the following function:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>Vector</strong>&lt;<strong>int</strong>&gt; createRandoVector(<strong>int</strong> n)<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br />      v.add(randomInteger(1, 100));<br />   }<br /><br />   <strong>return</strong> v;<br />}</pre>
+<p>Recall from our discussion of C++ classes and object-oriented programming last week (when we talked about destructor functions) that local variables die when we leave a function. Since the vector in our <span class="code-chonk">createRandoVector()</span> function dies when we hit the <span class="code-chonk">return</span> statement in the code above, it is not actually returning the vector that function created. Rather, our program generates a <em>copy</em> of that vector back back in the function that called this one. This is a problem because creating a new copy of that vector could potentially be a slow operation. This is especially problematic if that vector contains a lot of elements that need to be copied.</p>
+<p>So, our goal over the next few classes is to talk about how we can create variables that live beyond the lifespan of a function -- a sort of programming necromancy, if you will. If we can do that, then we'll be able to return a vector from a function without having to go through the slow operation of creating a new copy of that vector! Before we can get there, however, we need to spend a day discussing one of the primary tools of this so-called programming necromancy: <strong>pointers</strong>.</p>
+<p><strong><br />Memory Addresses</strong></p>
+<p>Before we defined what a pointer is, we saw today that every variable we create in C++ has an address where it resides in memory. To access the address associated with a variable, we place an ampersand in front of the variable name, like so:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> x = 55;<br /><br />   <strong>cout</strong> &lt;&lt; "x : " &lt;&lt; x &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "&amp;x : " &lt;&lt; &amp;x &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>main():</strong><br /><br />  x   0x7fe7f49e0c34<br />  +----------------+<br />  |       55       |<br />  +----------------+</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">x : 55<br />&amp;x : 0x7fe7f49e0c34</pre>
+<p><br /><strong>Pointers</strong></p>
+<p>What if we want to store that memory address in a variable? It's quite a wonky-looking thing. It's certainly not an integer, and it's actually not a string, either. If we want to store that address in a variable, we need a new datatype. That's where pointers come in.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) A <strong>pointer</strong> is simply a variable that holds a memory address.</p>
+<p>To create a pointer, we need to know what&nbsp;<em>kind</em> of address it will be holding. Is it the address of an <span class="code-chonk">int</span>? A <span class="code-chonk">string</span>? A <span class="code-chonk">Quokka</span> object?</p>
+<p>The syntax for creating a pointer is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #7e8c8d; color: #ffffff;"><strong> DATA_TYPE_POINTED_TO </strong></span> *<strong><span style="background-color: #7e8c8d; color: #ffffff;"> VARIABLE_NAME </span></strong>;</pre>
+<p>For example, to create a variable named <span class="code-chonk">p</span> that can hold the address of an integer, the syntax is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">int *p;</pre>
+<p>Here's that idea in action:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> x = 55;<br />   <strong>int</strong> *p = &amp;x;<br /><br />   <strong>cout</strong> &lt;&lt; "x : " &lt;&lt; x &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "&amp;x : " &lt;&lt; &amp;x &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>cout</strong> &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>cout</strong> &lt;&lt; "p : " &lt;&lt; p &lt;&lt; <strong>endl</strong>;<br /><strong>   cout</strong> &lt;&lt; "&amp;p : " &lt;&lt; &amp;p &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>main():</strong><br /><br />  x &nbsp; <span style="background-color: #ffff99;">0x7fbc09bdfc2c</span><br />  +----------------+<br />  |       55       |<br />  +----------------+<br /><br />  p &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="background-color: #eccafa;">0x7fbc09bdfc30</span><br />  +--------------------------------+<br />  | &nbsp; &nbsp; &nbsp; &nbsp;  <span style="background-color: #ffff99;">0x7fbc09bdfc2c</span> &nbsp; &nbsp; &nbsp; &nbsp;|<br />  +--------------------------------+</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">x : 55<br />&amp;x : 0x7fbc09bdfc2c<br /><br />p : 0x7fbc09bdfc2c<br />&amp;p : 0x7fbc09bdfc30</pre>
+<p>Notice above that the value inside <span class="code-chonk">p</span> is the address of <span class="code-chonk">x</span>, but <span class="code-chonk">p</span> has its own address, distinct from the address of <span class="code-chonk">x</span>.</p>
+<p>We say that <span class="code-chonk">p</span> now <strong>points to</strong> <span class="code-chonk">x</span>. We say also that <span class="code-chonk">p</span> is now <strong>a pointer</strong> to <span class="code-chonk">x</span>. One can imagine going up to the variable <span class="code-chonk">p</span> and saying, "Hey, do you know where <span class="code-chonk">x</span> is?" and <span class="code-chonk">p</span>&nbsp;<strong>pointing</strong> over at <span class="code-chonk">x</span> (which it can do because it knows the address where <span class="code-chonk">x</span> is hanging out).</p>
+<p>In other words, we have this:</p>
+<p style="padding-left: 30px;"><img src="resources/pointer-meme.jpg" /></p>
+<p><br /><strong>Style Note: Pointer Declarations</strong></p>
+<p>When creating pointers, some people prefer this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong>* p;</pre>
+<p>...over this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> *p;</pre>
+<p>Both compile just fine and mean the same thing, but some people prefer the former approach because variable declarations have always looked like this in C++:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong><span style="background-color: #7e8c8d; color: #ecf0f1;"><span style="color: #ffffff;"> DATA_TYPE</span> </span> <span style="background-color: #7e8c8d;"> <span style="color: #ffffff;">VARIABLE_NAME </span></span></strong></pre>
+<p>The former approach matches that pattern, since <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">int*</span> is our data type. The latter approach seems aberrant, as it introduces a space in the middle of the data type itself rather than between the data type and the variable name.</p>
+<p>However, if we do this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong>* p, q, r;</pre>
+<p>...we actually only get one pointer: <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">p</span>. In this case, <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">q</span> and <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">r</span> are actually just regular integers -- not pointers! 🤯</p>
+<p>So, some people consider the former approach to pointer declaration to be a bit misleading, since it makes it look like the <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">*</span> would apply to all the variables declared on a single line, when it in fact only applies to the first variable in a list like that. People who fall into this camp instead prefer the following style to emphasize that there needs to be a <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">*</span> for each variable:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> *p;<br /><strong>int</strong> *q, *r, *s;</pre>
+<!--<p>The same <strong>cannot</strong> be said for references. The <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">&</span> applies to all the variables declared on a given line, so it's pretty standard to attach the <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">&amp;</span> to the rest of the data type, as in:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> x;<strong><br />int&amp;</strong> ref1 = x, ref2 = x;</pre>-->
+<p>With that said, both are acceptable, and you are welcome to use whichever one feels more comfortable to you.</p>
+<p><strong><br />The Ampersand Operator Means Different Things in Different Contexts!</strong></p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Super Important!</em></span>) One of the more obnoxious things about learning how pointers work in C++ is that C++ uses the ampersand operator to mean a few completely different things in different contexts. As relates to memory manipulation, there are actually <span style="text-decoration: underline;"><strong>two</strong></span> uses of the <span class="code-chonk">&amp;</span> operator:</p>
+<ul>
+<li>When we use <span class="code-chonk">&amp;</span> in a variable DECLARATION, that creates a REFERENCE.</li>
+<li>When we use <span class="code-chonk">&amp;</span> on an ALREADY-EXISTING variable, that gives us its ADDRESS.</li>
+</ul>
+<p>For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><span style="color: #236fa1;"><em>// On the following line, the &amp; is used in a <span style="text-decoration: underline;"><strong>variable declaration</strong></span> (we are creating a</em></span><br /><span style="color: #236fa1;"><em>// new variable, v), and so it is being used to create a <span style="text-decoration: underline;"><strong>reference</strong></span>.</em></span><br /><strong>void</strong> populateVector(<strong>Vector</strong>&lt;<strong>int</strong>&gt;&amp; v, <strong>int</strong> value)<br />{<br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      v[i] = value;<br />   }<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> x = 55;<br /><br /><span style="color: #236fa1;"><em>   // On the following line, the &amp; is being applied to an <span style="text-decoration: underline;"><strong>already-existing variable</strong></span>, x,</em></span><br /><span style="color: #236fa1;"><em>   // and so it is being used to give us the <span style="text-decoration: underline;"><strong>address</strong></span> of that variable. It is <span style="text-decoration: underline;"><strong>not</strong></span><br />   // creating a new reference variable.</em></span><br />   <strong>cout</strong> &lt;&lt; "&amp;x : " &lt;&lt; &amp;x &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Dreferencing Pointers</strong></p>
+<p>We can actually use a pointer to modify the contents of the variables they point to indirectly. To do that, we apply an asterisk (<span class="code-chonk">*</span>) to a pointer variable. The asterisk says, "Hey, I know you're a pointer. That means the value you hold is some memory address. Let's go to that memory address!" This is called <strong>dereferencing</strong> our pointer.</p>
+<p>Here's an example of that in action:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> x = 55;<br />   <strong>int</strong> *p = &amp;x;<br /><br /><span style="color: #236fa1;"><em>   // Here, we <strong>dereference</strong> p. We go to the address p holds, and that is where</em></span><br /><span style="color: #236fa1;"><em>   // we drop off the value 30. Notice that we are <strong>not</strong> setting p = 30. (We're</em></span><br /><span style="color: #236fa1;"><em>   // <strong>not</strong> dropping the value 30 into the box called p.)</em></span><br />   <span style="background-color: #ffcc99;">*p = 30;</span><br /><br />   <strong>cout</strong> &lt;&lt; "x : " &lt;&lt; x &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "&amp;x : " &lt;&lt; &amp;x &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>cout</strong> &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>cout</strong> &lt;&lt; "p : " &lt;&lt; p &lt;&lt; <strong>endl</strong>;<br /><strong>   cout</strong> &lt;&lt; "&amp;p : " &lt;&lt; &amp;p &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // We can also dereference p to find out what value is in the variable that</em></span><br /><span style="color: #236fa1;"><em>   // it's pointing to! The following line does <strong>not</strong> print the value inside p</em></span><br /><span style="color: #236fa1;"><em>   // itself. It goes to the address that p contains and tells us what it finds</em></span><br /><span style="color: #236fa1;"><em>   // in the box at <strong>that</strong> address.</em></span><br />   <strong>cout</strong> &lt;&lt; "*p : " &lt;&lt; *p &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>main():</strong><br /><br />  x &nbsp; <span style="background-color: #ffff99;">0x7fbc09bdfc2c</span><br />  +----------------+<br />  |       <span style="background-color: #ffcc99;">30</span>       |<br />  +----------------+<br /><br />  p &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="background-color: #eccafa;">0x7fbc09bdfc30</span><br />  +--------------------------------+<br />  | &nbsp; &nbsp; &nbsp; &nbsp;  <span style="background-color: #ffff99;">0x7fbc09bdfc2c</span> &nbsp; &nbsp; &nbsp; &nbsp;|<br />  +--------------------------------+</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">x : 30<br />&amp;x : 0x7fbc09bdfc2c<br /><br />p : 0x7fbc09bdfc2c<br />&amp;p : 0x7fbc09bdfc30<br />*p : 30</pre>
+<p><br /><strong>The Asterisk Operator Means Different Things in Different Contexts!</strong></p>
+<p>Just as the ampersand operator means different things in C++ in different contexts, so too does the asterisk. As relates to memory manipulation, there are actually <span style="text-decoration: underline;"><strong>two</strong></span> uses of the <span class="code-chonk">*</span> operator:</p>
+<ul>
+<li>When we use <span class="code-chonk">*</span> in a variable DECLARATION, that creates a POINTER.</li>
+<li>When we use <span class="code-chonk">*</span> on an ALREADY-EXISTING variable, that DEREFERENCES our pointer. (In other words, it GOES to the address that our pointer is pointing to and then proceeds to operate on whatever variable it finds there.)</li>
+</ul>
+<p>For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 620px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> x = 55;<br /><br /><span style="color: #236fa1;"><em>   // On the following line, the * is used in a <span style="text-decoration: underline;"><strong>variable declaration</strong></span> (we are creating a</em></span><br /><span style="color: #236fa1;"><em>   // new variable, p), and so it is being used to create a <span style="text-decoration: underline;"><strong>pointer</strong></span>.</em></span><br />   <strong>int</strong> *p = &amp;x;<br /><br /><span style="color: #236fa1;"><em>   // On the following line, the * is being applied to an <span style="text-decoration: underline;"><strong>already-existing variable</strong></span>, p,</em></span><br /><span style="color: #236fa1;"><em>   // and so it is being used to <span style="text-decoration: underline;"><strong>dereference</strong></span> of that variable. It is telling us to go<br /></em><em>   // to whatever address p contains (the address of x) and drop the 30 off there (in x).</em></span><br />   *p = 30;<br /><br /><span style="color: #236fa1;"><em>   // This will print 30 now.</em></span><br />   <strong>cout</strong> &lt;&lt; x &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Other Odds and Ends</strong></p>
+<p>We also saw in class that we can have multiple pointers to the same variable, and we can create pointers to other datatypes, such as strings. I will flesh out this section with those examples sometime soon.</p>
+<p><br /><strong>Treasure Hunt</strong></p>
+<p>Consider the following function that we saw earlier this quarter when discussing pass-by-reference functions:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 620px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> treasureHunt(<strong>int</strong>&amp; a, <strong>int</strong>&amp; b, <strong>int</strong>&amp; c)<br />{<br />   <strong>int</strong> totalBooty = 0;<br /><br />   totalBooty += a;<br />   totalBooty += b;<br />   totalBooty += c;<br /><br />   a = 0;<br />   b = 0;<br />   c = 0;<br /><br />   <strong>return</strong> totalBooty;<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> treasureHoard1 = 200;<br />   <strong>int</strong> treasureHoard2 = 300;<br />   <strong>int</strong> treasureHoard3 = 500;<br /><br />   <strong>cout</strong> &lt;&lt; treasureHunt(treasureHoard1, treasureHoard2, treasureHoard3) &lt;&lt; <strong>endl</strong> &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>cout</strong> &lt;&lt; "treasureHoard1: " &lt;&lt; treasureHoard1 &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "treasureHoard2: " &lt;&lt; treasureHoard2 &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "treasureHoard3: " &lt;&lt; treasureHoard3 &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span><strong></strong></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 620px; background-color: #000000; color: #ffffff;">1000<br /><br />treasureHoard1: 0<br />treasureHoard2: 0<br />treasureHoard3: 0</pre>
+<p>We saw in class today that we could accomplish the same thing with pointers, like so:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> treasureHunt(<strong>int</strong> *a, <strong>int</strong> *b, <strong>int</strong> *c)<br />{<br />   <strong>int</strong> totalBooty = 0;<br /><br /><em><span style="color: #236fa1;">   // Print memory addresses contained in a, b, and c.</span></em><br />   <strong>cout</strong> &lt;&lt; "a: " &lt;&lt; a &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "b: " &lt;&lt; b &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "c: " &lt;&lt; c &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // If we didn't dereference a, b, and c below, we would just be attempting to add<br />   // <span style="text-decoration: underline;"><strong>memory addresses</strong></span></em></span><span style="color: #236fa1;"><em> to totalBooty rather than going to main() and getting the<br />   // integer values that a,</em></span><span style="color: #236fa1;"><em> b, and c are pointing to.</em></span><br />   totalBooty += *a;<br />   totalBooty += *b;<br />   totalBooty += *c;<br /><br /><span style="color: #236fa1;"><em>   // If we didn't dereference a, b, and c below, we would just be attempting to set</em></span><br /><span style="color: #236fa1;"><em>   // these local pointers to zero rather than going back to main() and setting the</em></span><br /><span style="color: #236fa1;"><em>   // various treasureHoard variables to zero.</em></span><br />   *a = 0;<br />   *b = 0;<br />   *c = 0;<br /><br />   <strong>return</strong> totalBooty;<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> treasureHoard1 = 200;<br />   <strong>int</strong> treasureHoard2 = 300;<br />   <strong>int</strong> treasureHoard3 = 500;<br /><br /><span style="color: #236fa1;"><em>   // Print memory addresses of treasure hoard variables.</em></span><br />   <strong>cout</strong> &lt;&lt; "&amp;treasureHoard1: " &lt;&lt; &amp;treasureHoard1 &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "&amp;treasureHoard2: " &lt;&lt; &amp;treasureHoard2 &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "&amp;treasureHoard3: " &lt;&lt; &amp;treasureHoard3 &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // Notice that we need the ampersands (&amp;) below because our function is using</em></span><br /><span style="color: #236fa1;"><em>   // three pointer parameters.</em></span><br />   <strong>cout</strong> &lt;&lt; treasureHunt(&amp;treasureHoard1, &amp;treasureHoard2, &amp;treasureHoard3) &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>cout</strong> &lt;&lt; "treasureHoard1: " &lt;&lt; treasureHoard1 &lt;&lt; <strong>endl</strong>;<br /><strong>   cout</strong> &lt;&lt; "treasureHoard2: " &lt;&lt; treasureHoard2 &lt;&lt; <strong>endl</strong>;<br /><strong>   cout</strong> &lt;&lt; "treasureHoard3: " &lt;&lt; treasureHoard3 &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram (while in the treasureHunt() function, before wiping out the three hoards)</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>treasureHunt():</strong><br /><br />  totalBooty (0x7fd0223e0c04)<br />  +----------------+<br />  |       0        |<br />  +----------------+<br /><br />  a &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0x7fd0223e0bf8<br />  +--------------------------------+<br />  | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="background-color: #ffff99;">0x7fd0223e0c2c</span> &nbsp; &nbsp; &nbsp; &nbsp;|<br />  +--------------------------------+<br /><br />  b &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0x7fd0223e0bf0<br />  +--------------------------------+<br />  | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="background-color: #eccafa;">0x7fd0223e0c30</span> &nbsp; &nbsp; &nbsp; &nbsp;|<br />  +--------------------------------+<br /><br />  c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0x7fd0223e0be8<br />  +--------------------------------+<br />  | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="background-color: #c2e0f4;">0x7fd0223e0c34</span> &nbsp; &nbsp; &nbsp; &nbsp;|<br />  +--------------------------------+<br /><br /><br /><strong>main():</strong><br /><br />  treasureHoard1 (<span style="background-color: #ffff99;">0x7fd0223e0c2c</span>)<br />  +----------------+<br />  |      200       |<br />  +----------------+<br /><br />  treasureHoard2 (<span style="background-color: #eccafa;">0x7fd0223e0c30</span>)<br />  +----------------+<br />  |      300       |<br />  +----------------+<br /><br />  treasureHoard3 (<span style="background-color: #c2e0f4;">0x7fd0223e0c34</span>)<br />  +----------------+<br />  |      500       |<br />  +----------------+</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">&amp;treasureHoard1: 0x7fd0223e0c2c<br />&amp;treasureHoard2: 0x7fd0223e0c30<br />&amp;treasureHoard3: 0x7fd0223e0c34<br />a: 0x7fd0223e0c2c<br />b: 0x7fd0223e0c30<br />c: 0x7fd0223e0c34<br />1000<br />treasureHoard1: 0<br />treasureHoard2: 0<br />treasureHoard3: 0</pre>
+<p><br /><strong>Arrays</strong></p>
+<p>After exploring the basics of pointers, I shifted gears a bit to talk about arrays. We saw the syntax for creating an array and accessing its elements.</p>
+<p>An array is a variable that is able to hold multiple values of some type. An array is made up of <strong>cells</strong>. Each cell holds a single value. Those cells are numbered starting at 0 (zero); an array of length <em>n</em> has cells 0 through (<em>n</em> - 1). Recall that if we do not initialize the cells in an array, they contain unpredictable garbage values.</p>
+<p>Recall that the elements in an array are stored in a contiguous block in memory. When we apply an offset to an array (that's the index in square brackets), that tells C++ to go to the beginning of the array and skip forward a certain number of places in memory. C++ figures out how far to skip ahead in memory based on its knowledge of how much memory a single cell takes, given the type of the array in question.</p>
+<p>For example:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br /><span style="color: #236fa1;"><em>   // Creates an array of 5 integers. They are indexed 0 through 5.</em></span><br />   <strong>int</strong> array[5];<br /><br /><em><span style="color: #236fa1;">   // Print contents of array. The cells contain unpredictable garbage values by<br />   // default.</span></em><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; 5; i++)<br />   {<br />      <strong>cout</strong> &lt;&lt; array[i] &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>memory diagram</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;"><strong>main():</strong><br /><br />  array (0x7f762d3dec20)<br />  +-----+-----+-----+-----+-----+<br />  | ??? | ??? | ??? | ??? | ??? | &lt;-- uninitialized (garbage values)<br />  +-----+-----+-----+-----+-----+<br />     0     1     2     3     4</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">-1345686632<br />22008<br />834537024<br />32626<br />2</pre>
+<p><br /><strong>The Relationship Between Pointers and Arrays: Naked Array Variable Names</strong></p>
+<p>Toward the end of class, I showed that if we print a naked array variable name (i.e., an array variable with no square brackets attached), we get the base address of the array (i.e., the address of cell zero):</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> array[5];<br /><br /><em><span style="color: #236fa1;">   // Prints addresses of all cells in the array.</span></em><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; 5; i++)<br />   {<br />      <strong>cout</strong> &lt;&lt; "&amp;(array[" &lt;&lt; i &lt;&lt; "]): " &lt;&lt; &amp;(array[i]) &lt;&lt; <strong>endl</strong>;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // Prints base address of array. Notice this is the same as &amp;(array[0]).</em></span><br />   <strong>cout</strong> &lt;&lt; <strong>endl</strong> &lt;&lt; "Base address of array: " &lt;&lt; array &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">&amp;(array[0]): 0x7f762d3dec20<br />&amp;(array[1]): 0x7f762d3dec24<br />&amp;(array[2]): 0x7f762d3dec28<br />&amp;(array[3]): 0x7f762d3dec2c<br />&amp;(array[4]): 0x7f762d3dec30<br /><br />Base address of array: 0x7f762d3dec20</pre>
+<p>So, <span class="code-chonk">array</span> looks a lot like a pointer. It contains, in fact, the address of an integer -- the first integer in our array. It stands to reason that if we create a pointer of type <span class="code-chonk">int *</span>, we should be able to use that to loop through our array, as well. The square brackets operator in C++ acts as an offset whether applied to an array variable or an actual pointer:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> array[5] = {10, 15, 20, 25, 30};<br /><br /><span style="color: #236fa1;"><em>   // p now contains the base address of the array.</em></span><br />   <strong>int</strong> *p = array;<br /><br /><em><span style="color: #236fa1;">   // Print all values in the array using p.</span></em><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; 5; i++)<br />   {<br />      <strong>cout</strong> &lt;&lt; p[i] &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">10<br />15<br />20<br />25<br />30</pre>
+<p>Note that while an array might look a lot like a pointer, the key difference is that a pointer can be assigned a new value, causing it to point elsewhere. An array variable name, on the other hand, is bound to the array it represents and cannot be made to point elsewhere.</p>
+<p><strong><br />Arrays Are Dangerous!</strong></p>
+<p>We saw in class that we can accidentally go out of bounds in an array. This is so dangerous! We can corrupt memory this way and get into all kinds of wacky trouble. I will expand upon this in the lecture notes sometime soon.</p>
+<p><br /><strong>What's next?</strong></p>
+<p>On Wednesday, we'll talk about dynamic memory management. We'll see how <span class="code-chonk">new</span> and <span class="code-chonk">delete</span> work in C++, and we'll finally implement an ADT from scratch and fully see how it works behind the scenes.</p>
+<p><br /><strong>Exercises</strong></p>
+<p><em>For the following exercises, check your answers by attempting to compile and run the code you come up with.</em></p>
+<p>1. Both declarations below create integer pointers. What reasons did I give in the notes above for preferring the second approach over the first one? What reason do some people give for preferring the first approach?</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong>* p;<br /><strong>int</strong> *q;</pre>
+<p>2. Given the following code, what are some reasonable possibilities we could use to fill in the blank?</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> i = 10087;<br /><strong>int</strong> *p = &amp;i;<br /><strong>int</strong> *q = _________;</pre>
+<p>3. In the following chunk of code, if we want to execute the line <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">y = &amp;x</span>, what should be the data type for <span style="font-family: monospace; font-size: 14px; padding-left: 2px; padding-right: 2px; font-weight: normal; background-color: #eee; color: #000; padding: 3px 5px 3px 5px; margin-left: 2px; margin-right: 2px;">y</span>?</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>double</strong> x = 3.14;<br />_____ y;<br />y = &amp;x;</pre>
+<p>4. As always, the textbook and this week's section are chock full of great exercises and additional examples to help reinforce this material.</p>
+<p><br /></p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-07
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

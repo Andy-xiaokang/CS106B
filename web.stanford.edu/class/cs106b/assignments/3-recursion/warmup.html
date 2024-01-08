@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursion warmup</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Recursion warmup</h1>
+
+<hr>
+
+<p class="attribution">
+Warmup from Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p class="w-50 mx-auto border p-1"><img src="https://wizardzines.com/comics/bugs-are-normal/bugs-are-normal.png" alt="" />
+<small><a href="https://wizardzines.com/comics/bugs-are-normal">"Bugs are normal" by Julia Evans</a></small></p>
+
+<h2 id="1-examine-recursive-stack-frames-factorial">1) Examine recursive stack frames (<code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code>)</h2>
+
+<p>The factorial <code class="language-c++ highlighter-rouge"><span class="n">n</span><span class="o">!</span></code> is defined as the product <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">...</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span></code>. The recursive approach to computing factorials uses the insight that:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="mi">0</span><span class="o">!</span></code> is defined to be <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">n</span><span class="o">!</span></code> can be computed as <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">!</span></code></li>
+</ul>
+
+<p>To express in code, we have a <em>base case</em> that returns 1 for zero and use a <em>recursive case</em> to compute the result for <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> building on the result from <code class="language-c++ highlighter-rouge"><span class="n">n</span><span class="o">-</span><span class="mi">1</span></code>.</p>
+
+<p>Open the assignment starter project in Qt Creator. Find the file <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> and review the provided code for the recursive <code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code> function. We will use this function as practice for examining recursive stack frames.</p>
+
+<p>Place a breakpoint on the line <code class="language-c++ highlighter-rouge"><span class="k">return</span> <span class="mi">1</span></code> within the base case of <code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code>. Run the program in Debug mode and when prompted, select the test group <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code>. When your program stops at the breakpoint, look to the lower middle/left of your debugger and find <strong>Call Stack pane</strong> (see screenshot below):</p>
+
+<p class="w-75 mx-auto border"><img src="img/debugger-callstack.png" alt="screenshot of call stack showing sequence of function calls" /></p>
+
+<p>This pane displays the current <em>call stack</em>, the sequence of active functions leading up to the point where the breakpoint was reached. Each entry in the call stack corresponds to a function that has been called and not yet finished executing.</p>
+
+<p>The innermost level (Level 1) is the currently executing function. It was called from the function at Level 2, who was called from Level 3 and so on.</p>
+
+<p>The small yellow arrow next to Level 1 indicates that this function is
+currently selected. Elsewhere in debugger window, the <strong>Editor pane</strong> (upper left of debug window) shows the source lines for the selected function and the <strong>Variables pane</strong> (upper right of debug window) displays the value of the variables of the selected function.</p>
+
+<p>In the call stack pane, click the function at Level 2 and the yellow arrow
+moves to indicate this function is now selected. The Editor pane and the Variables pane update to show the source code and data for this function. Click to select Level 3, and then Level 4. As you move through the levels, look at the Variables pane and note that each recursive call has its own independent copy of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> that is distinct from the other <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> variables that belong to the other function calls.</p>
+
+<p>Each active function on the call stack has a place designated in the computer's memory to store its own parameters and variables. The function's storage is called its "stack frame."</p>
+
+<p>When stepping through a deep recursive sequence, it is easy to become confused with so many similar stack frames. Look for that yellow arrow in the call stack pane to confirm which level of the recursion is currently selected.</p>
+
+<div id="Q1" class="question alert alert-warning">
+  <p><strong>Q1</strong>. Looking at a call stack listing in a debugger, what is the indication that the program being debugged uses recursion?</p>
+</div>
+
+<h2 id="2-recognize-stack-overflow-factorial">2) Recognize stack overflow (<code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code>)</h2>
+<p class="w-75 mx-auto"><img src="img/stack-overflow-meme.png" alt="screenshot of call stack showing sequence of function calls" /></p>
+
+<p>The one provided test makes a single call to <code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code> and confirms the result is correct. What other inputs should be tested?  In mathland, factorial is defined only for non-negative numbers, hmm…. so what <em>should</em> happen in C++ land if you try to evaluate <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span></code>? Perhaps an error? Trace the code and make your own prediction of the outcome.</p>
+
+<p>Add a <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> that expects an error from <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span></code>. Run the program normally, <strong>not in Debug mode</strong>, and observe. Boom! When attempting to run that test, the program unceremoniously exits, right in the middle of execution with no explanation of what went wrong.</p>
+
+<p>In the past when our program raised an error, SimpleTest caught the error and reported it with a helpful message. But this particular error,  <em>stack overflow</em>, is too slippery to be tamed.  A stack overflow occurs when a function recursively calls itself without end. Each call to the function requires storage space for its stack frame and the unceasing growth of stack frames eventually exhausts the amount of memory available for the call stack.</p>
+
+<p>For ordinary errors, our libraries can detect and report the problem and perhaps even gracefully recover. But the catastrophic
+nature of stack overflow in C++ causes a hard, unavoidable program crash. The <code class="language-c++ highlighter-rouge"><span class="n">Application</span> <span class="n">Output</span></code> tab in the Qt Creator window gives only a terse mention that the program <strong>"crashed"</strong> or <strong>"unexpectedly quit"</strong> and nothing more.</p>
+
+<p>This is an opportunity for the debugger to save the day! By running under the debugger, you gain the ability to stop at the time of the crash and use the debugger to inspect the program state at the critical moment.</p>
+
+<p>Delete any breakpoints and re-run the program in <strong>Debug mode</strong>. Your student test causes a stack overflow just as before, but the program is now running under the watchful eye of the debugger. The debugger sees the crash coming, prevents the program from exiting, suspends the current state and shows it in the debugger window. Using the debugger, you can find out what code was executing at the time of the crash, examine the values of your variables and so on.</p>
+
+<p>Viewing the call stack in the debugger tells you where the program was executing at the time of the crash and the sequence of steps that led up to it. When the call stack pane is filled with level after level of the same recursive function calling itself non-stop, this is the evidence that loudly shouts, "Uh oh, stack overflow".</p>
+
+<p>This will probably not be the last time you need to diagnose a stack overflow, so learn how to recognize it!</p>
+
+<p>In a non-error situation, the call stack displays all frames back to the <code class="language-c++ highlighter-rouge"><span class="n">main</span></code> function at the bottom of the stack. In a stack overflow situation, it will abbreviate to show only a selection of the topmost frames.  Scroll down and click on the "More…" entry to expand to show additional frames. To fully expand the entire call stack ,you  may have to hit "More…" several times.</p>
+
+<p>The level at the top (numbered Level 0 or Level 1) is the innermost. At the bottom is the outermost level; it has the largest level number. You may have to drag the column divider to enlarge the column width to fit all the digits when the level number is larger.</p>
+
+<p>Click to select different levels on the call stack (say, Level 1, then Level 2, and few beyond) and look at the <strong>Variables</strong> pane to observe how the value of the parameter <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> is different for each level.</p>
+
+<p>There is a fixed amount of memory set aside for the call stack, and if that space is exhausted, it's game over. Poke around in the debugger at the time of the stack overflow to determine how many functions call is "too many" on your system. You can estimate that count by subtracting the innermost level number from the outermost in the call stack pane or looking at the value of the parameter <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> in one of the innermost frames and comparing to the value of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> in one of the outermost frames.</p>
+
+<div id="Q2" class="question alert alert-warning">
+  <p><strong>Q2</strong>. Give an estimate of the maximum number of function calls that can be stacked up on your system before a stack overflow is triggered.</p>
+</div>
+
+<p><em>Note:</em> If a program has hit stack overflow, the situation is rather fragile and the debugger may run into trouble when you try to examine the call stack. Here are a few oddities to watch out for:</p>
+<ul>
+  <li>The <strong>variables of the innermost frame may have unreliable values</strong>. The innermost frame was the final straw that broke the camel's back. The crash occurred while adding this frame, interrupting the process of initializing the parameters and variables. In such a case, instead look at the frame one level away which should have reliable values.</li>
+  <li>Scrolling down to the outermost frame <strong>may hit an abrupt end before you get to the true bottom of the call stack</strong>.  The display might be misleading (e.g. Qt Creator limiting the number of frames to display and eliding the rest) or in dicier situations, Qt can itself crash when you ask it to show more frames. If Qt isn't being cooperative, you can estimate of the count of frames stack by subtracting the value of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> in an innermost frame from the value of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> in the outermost recursive call (which you know is the initial call <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span></code>).</li>
+</ul>
+
+<p>In the warmup of last week's assignment, you used the debugger to diagnose the symptom of an <em>infinite loop</em>. Above you have just learned to diagnose <em>infinite recursion</em>.  Although the root cause to both errors is somewhat similar (a repeating process that fails to terminate), they present with different symptoms.</p>
+
+<div id="Q3" class="question alert alert-warning">
+  <p><strong>Q3</strong>. Describe how the symptoms of infinite recursion differ from the symptoms of an infinite loop.</p>
+</div>
+
+<p>Edit the code of <code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code> to fix the problem.  When given a negative argument, <code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code> should call <code class="language-c++ highlighter-rouge"><span class="n">error</span></code>. Re-run to confirm that your fix works. There should be no infinite recursion, no stack overflow, your student test case should pass and provide a helpful error message. Much better!</p>
+
+<h2 id="3-generating-test-cases">3) Generating test cases</h2>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> file contains two functions to compute raising a base to a power. The function <code class="language-c++ highlighter-rouge"><span class="n">iterativePower</span></code> uses a loop and <code class="language-c++ highlighter-rouge"><span class="n">recPower</span></code> operates recursively. Assuming that the iterative version works correctly, let's practice using it as a cross-comparison to test the recursive power function.</p>
+
+<p>One simple approach is to call the two functions passing the same arguments and compare the results for equality:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PROVIDED_TEST</span><span class="p">(</span><span class="s">"Test recursive power against iterative power"</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">recPower</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">iterativePower</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The above provided test is a simple "spot check" on a single input. It's a good start, but not particular thorough or comprehensive.</p>
+
+<p>Rather than tediously lots of enumerating individual cases, consider how you can write code witin the test case to mechanically generate a whole swath of inputs, such as shown in the loop below. Neat!  With this approach, you can easily broaden your coverage with a simple change to the loop range.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PROVIDED_TEST</span><span class="p">(</span><span class="s">"Test recursive power against iterative power, generated inputs"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">base</span> <span class="o">=</span> <span class="o">-</span><span class="mi">8</span><span class="p">;</span> <span class="n">base</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">;</span> <span class="n">base</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">exp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">exp</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">exp</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">recPower</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">exp</span><span class="p">),</span> <span class="n">iterativePower</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">exp</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Mechanically-generating test inputs is a great technique to keep in your bag of tricks, it is sure to come in handy.</p>
+
+<div id="Q4" class="question alert alert-warning">
+  <p><strong>Q4</strong>. In place of selecting values over a defined range, an alternate approach would be to randomly select values for base and exponent. Such a test case would test something different each time you ran it. This test approach is part of a larger approach known as "fuzz" testing. What do you see as possible benefit and downside of randomness being used in a test case?</p>
+</div>
+
+<h2 id="4-timing-a-recursive-function">4) Timing a recursive function</h2>
+<p>Lastly, a little foray in time trials and Big-O analysis of a recursive function.</p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">recPower</span></code> takes two arguments, <code class="language-c++ highlighter-rouge"><span class="n">base</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">exp</span></code>. Our goal is to understand how changing the size of the the input values affects the function's runtime. If you call the function a few times, doubling the value for <code class="language-c++ highlighter-rouge"><span class="n">base</span></code> while keeping constant <code class="language-c++ highlighter-rouge"><span class="n">exp</span></code>, do you expect that all calls will perform the same number of operations or will the larger base values require more?  What if you double the value of <code class="language-c++ highlighter-rouge"><span class="n">exp</span></code> while holding <code class="language-c++ highlighter-rouge"><span class="n">base</span></code> constant?</p>
+
+<p>Let's run some time trials to see what effects we can observe empirically. The code has two provided time trials, one that measures the runtime while changing <code class="language-c++ highlighter-rouge"><span class="n">base</span></code>, the other while changing <code class="language-c++ highlighter-rouge"><span class="n">exp</span></code>.
+If you run these tests as-is, you will discover that all reported times are 0 seconds. Any single call to the function
+executes so quickly that it is beneath our threshold of measurement. Modern computers are fast! – executing literally <em>billions</em> of operations in a second.</p>
+
+<p>A common strategy to get around this is to execute the function a large enough number of iterations that it aggregates to a measurable amount of time, as shown in the <code class="language-c++ highlighter-rouge"><span class="n">manyPowerCalls</span></code> helper function.
+Try increasing values for <code class="language-c++ highlighter-rouge"><span class="n">NUM_ITERATIONS</span></code> and re-testing until you hit a sufficient number of iterations for the first time trial to take roughly a quarter of second.</p>
+
+<div id="Q5" class="question alert alert-warning">
+  <p><strong>Q5</strong>. What was the number of iterations of <code class="language-c++ highlighter-rouge"><span class="n">recPower</span></code> did it take on your system to amount to a quarter second? Copy/paste the time results of the two time trial sequences running on that number of iterations.</p>
+</div>
+
+<p>Look over the times reported for the sequence of trials and note how the time changes (or not) with the change in size of the input changes. When changing <code class="language-c++ highlighter-rouge"><span class="n">base</span></code>, the times are not expected to change. (although unlikely to hold exact constant due to noise, the overall trend should be flat).  When changing <code class="language-c++ highlighter-rouge"><span class="n">exp</span></code>, the times are not changing much, but do reflect the very slight upward trend of <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">logN</span><span class="p">)</span></code>.  As discussed in lecture, <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">logN</span><span class="p">)</span></code> grows extremely slowly, just barely distinguishable from a flat <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code>. It's neat to see how our empirical results can be used to confirm our theoretical understanding!</p>
+
+<div id="Q6" class="question alert alert-warning">
+  <p><strong>Q6</strong>. Explain how the recursive structure of <code class="language-c++ highlighter-rouge"><span class="n">recPower</span></code> results in a Big-O runtime of <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">logN</span><span class="p">)</span></code> relative to the size of its <code class="language-c++ highlighter-rouge"><span class="n">exp</span></code> argument.</p>
+</div>
+
+<p>One nice design feature of our testing framework is that it allows to you to add any arbitrary code you'd like within a test case. Having the entire C++ language at your disposal is an ocean of options: loops, randomness, function calls, data structures, and more that let you go far beyond just enumerating individual test cases. Hooray for <code class="language-c++ highlighter-rouge"><span class="n">SimpleTest</span></code>!</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-15
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Balanced Operators</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Balanced Operators</h1>
+
+<hr>
+
+<p class="attribution">
+Balanced problem from Eric Roberts
+</p>
+
+
+
+<div id="content"><p>In the syntax of most programming languages, there are characters that occur only in nested pairs, which are called <em>bracketing operators</em>.  C++, for example, has these bracketing operators:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span> <span class="p">.</span> <span class="p">.</span> <span class="p">.</span> <span class="p">)</span>
+<span class="p">[</span> <span class="p">.</span> <span class="p">.</span> <span class="p">.</span> <span class="p">]</span>
+<span class="p">{</span> <span class="p">.</span> <span class="p">.</span> <span class="p">.</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The compiler validates that all bracketing operators are properly nested and each opener is matched to its closer. If you have ever failed to follow protocol, you have encountered the compiler's ire expressed in a swath of highlighted red text. For this assignment task, you will write a recursive function to confirm that the bracketing operators are balanced.</p>
+
+<p>To process an input, first extract the sequence of parentheses, brackets, and braces, ignoring all other characters:</p>
+<pre><code class="language-output"> int main() { int x = 2 * (vec[2] + 3); x = (1 + random()); }
+</code></pre>
+
+<p>The above input filters to:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(){([])(())}</span>
+</code></pre></div></div>
+<p>A careful matching of opener to closer shows that this sequence of operators is correctly balanced.</p>
+
+<p>The following strings, however, are unbalanced for the reasons stated below:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span> <span class="p">(</span> <span class="p">[</span> <span class="n">a</span> <span class="p">]</span> <span class="p">)</span>   <span class="n">The</span> <span class="n">line</span> <span class="n">is</span> <span class="n">missing</span> <span class="n">a</span> <span class="n">closing</span> <span class="n">parenthesis</span><span class="p">.</span>
+<span class="mi">3</span> <span class="p">)</span> <span class="p">(</span>         <span class="n">The</span> <span class="n">closing</span> <span class="n">parenthesis</span> <span class="n">comes</span> <span class="n">before</span> <span class="n">the</span> <span class="n">opening</span> <span class="n">parenthesis</span><span class="p">.</span>
+<span class="p">{</span> <span class="p">(</span> <span class="n">x</span> <span class="p">}</span> <span class="n">y</span> <span class="p">)</span>   <span class="n">The</span> <span class="n">parentheses</span> <span class="n">and</span> <span class="n">braces</span> <span class="n">are</span> <span class="n">improperly</span> <span class="n">nested</span><span class="p">.</span>
+</code></pre></div></div>
+
+<p>The function <code class="language-c++ highlighter-rouge"><span class="n">isBalanced</span></code> takes an input string <code class="language-c++ highlighter-rouge"><span class="n">str</span></code> and returns <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> if the bracketing operators in <code class="language-c++ highlighter-rouge"><span class="n">str</span></code> are balanced. Our provided code for <code class="language-c++ highlighter-rouge"><span class="n">isBalanced</span></code> first calls <code class="language-c++ highlighter-rouge"><span class="n">operatorsFrom</span></code> to extract the sequence of bracketing operators which is then passed to <code class="language-c++ highlighter-rouge"><span class="n">operatorsAreMatched</span></code> to determine if the sequence of operators is balanced.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isBalanced</span><span class="p">(</span><span class="n">string</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">ops</span> <span class="o">=</span> <span class="n">operatorsFrom</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">operatorsAreMatched</span><span class="p">(</span><span class="n">ops</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Your job is to implement the two recursive functions:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">operatorsFrom</span><span class="p">(</span><span class="n">string</span> <span class="n">str</span><span class="p">);</span>
+
+<span class="kt">bool</span> <span class="nf">operatorsAreMatched</span><span class="p">(</span><span class="n">string</span> <span class="n">ops</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">operatorsFrom</span></code> function returns a string consisting of only the bracketing characters from <code class="language-c++ highlighter-rouge"><span class="n">str</span></code>. You implemented various string cleaning operations in previous assignments, but in those situations you processed the string using an iterative loop. This time you are to take a <strong>recursive</strong> approach. Recursively processing a string takes this general form:</p>
+
+<ul>
+  <li>Process the first character of the string and determine how/whether it contributes to the returned output/result.</li>
+  <li>Make a recursive call to process the rest of the string and save that result.</li>
+  <li>Combine the results (from first character and recursive rest) to form the result to return.</li>
+</ul>
+
+<p>Writing this function is a good warmup for practicing recursive decomposition. <strong>Be sure to thoroughly test your function before moving on. You should add at least 2-3 tests of your own to validate the behavior of your <code class="language-c++ highlighter-rouge"><span class="n">operatorsFrom</span></code> function.</strong></p>
+
+<p>Next up is the <code class="language-c++ highlighter-rouge"><span class="n">operatorsAreMatched</span></code> function, which is also to be implemented <strong>recursively</strong>. Consider the following recursive insight about how to approach this task. A string consisting of only bracketing characters is balanced if and only if one of the following conditions holds:</p>
+
+<ul>
+  <li>The string is empty.</li>
+  <li>The string contains <code class="language-c++ highlighter-rouge"><span class="s">"()"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"[]"</span></code>, or <code class="language-c++ highlighter-rouge"><span class="s">"{}"</span></code> as a substring and the rest of the string is balanced after removing that substring.</li>
+</ul>
+
+<p>For example, the operators <code class="language-c++ highlighter-rouge"><span class="s">"[(){}]"</span></code> are shown to be balanced by the following chain of calls:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">operatorsAreMatched</span><span class="p">(</span><span class="s">"[(){}]"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">"()"</span> <span class="n">exists</span><span class="p">,</span> <span class="n">remove</span> <span class="n">it</span> <span class="n">and</span> <span class="n">check</span> <span class="n">whether</span> <span class="n">rest</span> <span class="n">is</span> <span class="n">matched</span> 
+  <span class="n">operatorsAreMatched</span><span class="p">(</span><span class="s">"[{}]"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">"{}"</span> <span class="n">exists</span><span class="p">,</span> <span class="n">remove</span> <span class="n">it</span> <span class="n">and</span> <span class="n">check</span> <span class="n">whether</span> <span class="n">rest</span> <span class="n">is</span> <span class="n">matched</span> 
+    <span class="n">operatorsAreMatched</span><span class="p">(</span><span class="s">"[]"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">"[]"</span> <span class="n">exists</span><span class="p">,</span> <span class="n">remove</span> <span class="n">it</span> <span class="n">and</span> <span class="n">check</span> <span class="n">whether</span> <span class="n">rest</span> <span class="n">is</span> <span class="n">matched</span> 
+      <span class="n">operatorsAreMatched</span><span class="p">(</span><span class="s">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">true</span>
+</code></pre></div></div>
+
+<p><strong>Thoroughly test this function by add at least 3-4 tests of your own to validate the behavior of your <code class="language-c++ highlighter-rouge"><span class="n">operatorsAreMatched</span></code> function.</strong></p>
+
+<div id="Q7" class="question alert alert-warning">
+  <p><strong>Q7</strong>. Compare your recursive solution to the iterative approach used for the Check Balance problem in <a href="../../section/section2/index.html" title="ADTs">Section 2</a>. Which version do you find easier to read and understand? In which version did you find it easier to confirm the correct behavior?</p>
+</div>
+
+<h2 id="notes">Notes</h2>
+<ul>
+  <li>Both of your functions must operate <strong>recursively</strong> and should not use a loop over the input string. You also should not use any auxiliary data structures (no Stacks, Queues, Vectors, etc.) to store or build up intermediate results.</li>
+  <li>We have provided a few tests to get you started. As mentioned above, you will need to add student tests of your own for complete coverage. Given thorough independent testing of the <code class="language-c++ highlighter-rouge"><span class="n">operatorsFrom</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">operatorsAreMatched</span></code> functions, you won't likely need much additional test coverage specific to <code class="language-c++ highlighter-rouge"><span class="n">isBalanced</span></code>.</li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">operatorsAreMatched</span></code> function requires that the input string contain only bracketing operators.  When given an input string that erroneously includes non-bracketing characters, <code class="language-c++ highlighter-rouge"><span class="n">operatorsAreMatched</span></code> will return false. This is expected, as the input doesn't meet the function's precondition.</li>
+</ul>
+
+<hr />
+<p class="float-right"><img src="https://imgs.xkcd.com/comics/(.png" alt="xkcd comic about frustration of unmatched parenthesis" />
+<br />
+<em>Courtesy of <a href="https://xkcd.com/859/">xkcd</a></em>.</p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-15
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Style Guide</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Style Guide</h1>
+
+<hr>
+
+<p class="attribution">
+Written by Julie Zelenski, based on earlier work by Marty Stepp and Keith Schwarz
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><style>
+    pre {
+        padding: 0.2em;
+        background-color: #f8f8ff;
+        border: 1px dashed #ccccff;
+        border-radius: 4px;
+        margin: .5em 0 1em 0;
+        min-width: 45%;
+    }
+
+    div.bad pre {
+        background-color: #ffcccc;
+    }
+    div.good pre {
+        background-color: #dbefcd;
+    }
+</style>
+
+<p>You may think the motivation for good style is earning that ✔+ from your section leader, but the most important beneficiary of your efforts is <strong>you yourself</strong>.  Committing yourself to writing tidy, well-structured code from the start sets you up for good times to come. Your code will be easier to test, will have fewer bugs, and what bugs there are will be more isolated and easier to track down. You finish faster, your results are better, and your life is more pleasant. What's not to like?</p>
+
+<p>The guidelines below identify some of style qualities we will be looking for when grading your programs.  As with any complex activity, there is no one "best" style, nor a definitive checklist that covers every situation. That said, there are better and worse choices and we want to guide you toward the better choices.</p>
+
+<p>In grading, we will expect that you make a concerted effort to follow these practices. While it is possible to write code that violates these guidelines and yet still exhibits good style, we recommend that you adopt our habits for practical purposes of grading. If you have theoretical points of disagreement, come hash that out with us in person. In most professional work environments you are expected to follow that company's style standards. Learning to carefully obey a style guide, and
+writing code with a group of other developers where the style is
+consistent among them, are valuable job skills.</p>
+
+<p>This guide gives our general philosophy and priorities, but even more valuable will be the guidance on your own particular style choices. Interactive grading with your section leader is your chance to receive one-on-one feedback, ask questions, and learn about areas for improvement. Don't miss out on this opportunity!</p>
+
+<hr />
+
+<h2 id="layout-indentation-and-whitespace">Layout, Indentation, and Whitespace</h2>
+
+<ul>
+  <li>
+    <p><strong>Indentation:</strong> Consistent use of whitespace/indentation always! Proper whitespace/indentation illuminates the structure of your program and makes it easier to follow the code and find errors.</p>
+
+    <ul>
+      <li>Increment indent level on each opening
+brace <code class="language-c++ highlighter-rouge"><span class="p">{</span></code>, and decrement on each closing brace <code class="language-c++ highlighter-rouge"><span class="p">}</span></code>.</li>
+      <li>Chose an increment of 2-4 spaces per indent level. Be consistent.</li>
+      <li>Do not place more than one statement on the same line.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// confusing, hard to follow</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> 
+   <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">binky</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> 
+   <span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span> <span class="n">winky</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+    <span class="n">y</span><span class="o">--</span><span class="p">;</span> <span class="p">}}</span>
+  <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// indentation follows structure</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="n">binky</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">winky</span><span class="p">(</span><span class="n">y</span><span class="p">);</span> 
+        <span class="n">y</span><span class="o">--</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Long lines:</strong> When any line is longer than 100 characters, break
+it into two lines. Indent the overflow text to align with text above.</li>
+</ul>
+
+<div class="language-c++ bad highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// too long, can't see all</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">longFunctionName</span><span class="p">(</span><span class="n">argument</span><span class="p">,</span> <span class="mi">106</span> <span class="o">*</span> <span class="n">expression</span> <span class="o">*</span> <span class="n">variable</span><span class="p">)</span> <span class="o">+</span> <span class="n">variable</span> <span class="o">-</span> <span class="n">longerFunctionName</span><span class="p">()</span> <span class="o">+</span> <span class="n">otherFunction</span><span class="p">(</span><span class="n">variable</span><span class="p">);</span>
+</code></pre></div></div>
+<div class="language-c++ good highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// nicely reformatted</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">longFunctionName</span><span class="p">(</span><span class="n">argument</span><span class="p">,</span> <span class="mi">106</span> <span class="o">*</span> <span class="n">expression</span> <span class="o">*</span> <span class="n">variable</span><span class="p">)</span> <span class="o">+</span> <span class="n">variable</span> <span class="o">-</span>
+         <span class="n">longerFunctionName</span><span class="p">()</span> <span class="o">+</span> <span class="n">otherFunction</span><span class="p">(</span><span class="n">variable</span><span class="p">);</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p><strong>Blank lines:</strong> Use blank lines to separate functions and logical
+groups of statements within a function.</p>
+  </li>
+  <li>
+    <p><strong>Whitespace:</strong> Add space between operators and their operands. Add parentheses to show grouping where precedence might be unclear to reader.</p>
+  </li>
+</ul>
+
+<div class="language-c++ bad highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// hard for reader to parse</span>
+<span class="kt">int</span> <span class="n">root</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">+</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-c++ good highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ah... breathing room!</span>
+<span class="kt">int</span> <span class="n">root</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span><span class="p">)))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="names">Names</h2>
+
+<p>Choose meaningful identifiers. This reduce the cognitive load for reader and self-documents the purpose of each variable and function.</p>
+
+<ul>
+  <li><strong>Nouns for variable names:</strong>  For variables, the question is 
+  "What is it?" Use a noun (<code class="language-c++ highlighter-rouge"><span class="n">name</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">scores</span></code>) add modifier to clarify (<code class="language-c++ highlighter-rouge"><span class="n">courseName</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">maxScore</span></code>). Do not repeat the variable type in its name (not <code class="language-c++ highlighter-rouge"><span class="n">titleString</span></code>, just <code class="language-c++ highlighter-rouge"><span class="n">title</span></code>).  Avoid one-letter names like <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">p</span></code> (exceptions for loop counters <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">j</span></code> or, coordinates <code class="language-c++ highlighter-rouge"><span class="n">x</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">y</span></code>). Never name a variable <code class="language-c++ highlighter-rouge"><span class="n">l</span></code>, much too easily confused with the number one.</li>
+  <li>
+    <p><strong>Verbs for function names:</strong> For functions, the question is 
+  "What does it do?" Functions which perform actions are best identified by verbs ( <code class="language-c++ highlighter-rouge"><span class="n">findSmallest</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">stripPunctuation</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">drawTriangle</span></code>).  Functions used primarily for their return value are named according to property being returned (<code class="language-c++ highlighter-rouge"><span class="n">isPrime</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">getAge</span></code>).</p>
+  </li>
+  <li>
+    <p><strong>Use named constants:</strong> Avoid sprinkling magic numbers throughout your code.  Instead declare a named <code class="language-c++ highlighter-rouge"><span class="k">const</span></code> value and use where that value is needed. This aids readability and gives one place to edit value when needed.</p>
+
+    <div class="language-c++ good highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="kt">int</span> <span class="n">VOTING_AGE</span> <span class="o">=</span> <span class="mi">18</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Capitalization:</strong> Use camel-case for names of functions and variables
+(<code class="language-c++ highlighter-rouge"><span class="n">countPixels</span></code>), capitalize names of classes/types (<code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code>), and uppercase names of constants (<code class="language-c++ highlighter-rouge"><span class="n">MAX_WIDTH</span></code>). Conventions allows reader to quickly determine which category a given identifier belongs to.</li>
+</ul>
+
+<h2 id="variable-scope">Variable scope</h2>
+<ul>
+  <li><strong>Scope:</strong> Declare variables in the narrowest possible scope. For
+ example, if a variable is used only inside a loop, declare it inside the scope for the loop body rather than at the  top of the function or at the top of the file.</li>
+  <li><strong>Don't reuse same name in inner scope</strong>: Declaring a variable in inner scope with same name as a variable in outer scope will cause inner use of name to "shadow" the outer definition. Not only is this confusing, it often leads to difficult bugs.</li>
+  <li><strong>No global variables:</strong> Do not declare variables at global scope. When there is information to be shared across function calls, it should flow into and out via parameters and return values, <strong>not</strong> reach out and access global state.</li>
+</ul>
+
+<h2 id="use-of-c-language-features">Use of C++ language features</h2>
+
+<ul>
+  <li>
+    <p><strong>Stanford library structures over STL structures</strong>: You should be using the data structures and other libraries included in the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford library</a> instead of the ones included in the C++ standard template library (i.e. use <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> instead of <code class="language-c++ highlighter-rouge"><span class="n">vector</span></code>)</p>
+  </li>
+  <li>
+    <p><strong>Prefer C++ idioms over C idioms:</strong> Since C++ is based on C, there is
+often a "C++ way" to do a given task and also a "C way". For example, the "C++
+way" to print output is via the output stream <code class="language-c++ highlighter-rouge"><span class="n">cout</span></code>, while the "C way" is using <code class="language-c++ highlighter-rouge"><span class="n">printf</span></code>. C++ strings use the <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> class, older code uses the C-style <code class="language-c++ highlighter-rouge"><span class="kt">char</span><span class="o">*</span></code>.  Prefer the modern C++ way.</p>
+
+    <div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// old school</span>
+  <span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"My message"</span><span class="p">;</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+</code></pre></div>    </div>
+
+    <div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// modern and hip</span>
+  <span class="n">string</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"My message"</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">str</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>for vs while:</strong> Use a <code class="language-c++ highlighter-rouge"><span class="k">for</span></code> loop when the number of repetitions is
+known (definite); use a <code class="language-c++ highlighter-rouge"><span class="k">while</span></code> loop when the number of repetitions is
+unknown (indefinite).</p>
+
+    <div class="language-c++ good highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// loop exactly n times</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">...</span>
+  <span class="p">}</span>
+
+  <span class="c1">// loop until there are no more lines</span>
+  <span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">input</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">...</span>
+  <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>break and continue in loops:</strong>  Wherever possible, a loop should be structured in the ordinary way with clear loop start, stop, advance and no disruptive loop control. That said, there are limited uses of <code class="language-c++ highlighter-rouge"><span class="k">break</span></code> that are okay, such as loop-and-a-half (<code class="language-c++ highlighter-rouge"><span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span> </code>with <code class="language-c++ highlighter-rouge"><span class="k">break</span></code>) or need to exit loop mid-iteration.
+Use of <code class="language-c++ highlighter-rouge"><span class="k">continue</span></code> is quite rare and often confusing to reader, better to avoid.</p>
+  </li>
+  <li>
+    <p><strong>Use of fallthrough in switch cases:</strong>  A switch case should almost always end with a <code class="language-c++ highlighter-rouge"><span class="k">break</span></code> or <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> that prevents continuing into the subsequent case. In the very rare case that you intend to fallthrough, add a comment to make that clear. Accidental fallthrough is the source of many a difficult bug.</p>
+
+    <div class="language-c++ good highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">switch</span> <span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+          <span class="n">handleOne</span><span class="p">();</span>
+          <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+          <span class="n">handleTwo</span><span class="p">();</span> 
+          <span class="c1">// HEADS UP: fallthrough from case 2 into case 3</span>
+      <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+          <span class="n">handleTwoOrThree</span><span class="p">();</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>return statements</strong>  Although it is allowed for a function to have multiple <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> statements, in most situations it is preferable to funnel through a single <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> statement at the end of the function. 
+An early <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> can be a clean option for a recursive base case or error handled at the beginning of a function. <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> can also serve as a loop exit.  However, scattering other <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> throughout the function is not a good idea– experience shows they are responsible for a disproportionate number of bugs. It is easy to overlook the early-return case and mistakenly assume the function runs all the way to its end.</p>
+  </li>
+  <li>
+    <p><strong>Always include <code class="language-c++ highlighter-rouge"><span class="p">{}</span></code> on control statements:</strong> The body an <code class="language-c++ highlighter-rouge"><span class="k">if</span><span class="o">/</span><span class="k">else</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">for</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">while</span></code>, etc., should always be wrapped in <code class="language-c++ highlighter-rouge"><span class="p">{}</span></code> and have proper line breaks, even if the body is only a single line. Using braces prevents accidents like the one shown below.</p>
+  </li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ugh</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"not found"</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">draw</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+    <span class="n">doFirst</span><span class="p">();</span>
+    <span class="n">doSecond</span><span class="p">();</span>
+    <span class="c1">// inside? Indent looks so, but no braces!</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// better</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">error</span><span class="p">(</span><span class="s">"not found"</span><span class="p">);</span>
+<span class="p">}</span> 
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">draw</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">doFirst</span><span class="p">();</span>
+    <span class="n">doSecond</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Booleans:</strong> 
+Boolean expressions are prone to redundant/awkward constructions. Prefer concise and direct alternatives. A boolean value <strong>is</strong> true or false, you do not need to further compare to true/false or convert a boolean expression to true/false.</li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">isWall</span> <span class="o">==</span> <span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">matches</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// better</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">isWall</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="p">(</span><span class="n">matches</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Favor <code class="language-c++ highlighter-rouge"><span class="o">&amp;&amp;</span></code>, <code class="language-c++ highlighter-rouge"><span class="o">||</span></code>, and <code class="language-c++ highlighter-rouge"><span class="o">!</span></code> over <code class="language-c++ highlighter-rouge"><span class="n">and</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">or</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">not</span></code>:</strong> For various
+reasons mostly related to international compatibility, C++ has two ways
+of representing the logical connectives AND, OR, and NOT. Traditionally, the operators <code class="language-c++ highlighter-rouge"><span class="o">&amp;&amp;</span></code>, <code class="language-c++ highlighter-rouge"><span class="o">||</span></code>, and <code class="language-c++ highlighter-rouge"><span class="o">!</span></code> are used for AND, OR, and NOT, respectively, and
+the operators are the preferred ways of expressing compound booleans. The words <code class="language-c++ highlighter-rouge"><span class="n">and</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">or</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">not</span></code> can be used instead, but it would be highly unusual to do so and a bit jarring for C++ programmers used to the traditional operators.</li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// non-standard</span>
+<span class="k">if</span> <span class="p">((</span><span class="n">even</span> <span class="n">and</span> <span class="n">positive</span><span class="p">)</span> <span class="n">or</span> <span class="n">not</span> <span class="n">zero</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// preferred</span>
+<span class="k">if</span> <span class="p">((</span><span class="n">even</span> <span class="o">&amp;&amp;</span> <span class="n">positive</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="n">zero</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Use error to report fatal conditions:</strong> 
+The <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> function from the Stanford library can be used to report a fatal error with your custom message. The use of <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> is preferred over throwing a raw C++ exception because it plays nicely with the debugger and our SimpleTest framework.</li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// raw exception</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">arg</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="n">arg</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// preferred</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">arg</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">error</span><span class="p">(</span><span class="s">"arg must be positive!"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="efficiency">Efficiency</h2>
+
+<p>In CS106B, we value efficient choices in data structure and algorithms especially where there is significant payoff, but are not keen on micro-optimizations that serve to clutter the code for little gain.</p>
+
+<ul>
+  <li>
+    <p><strong>Better BigO class</strong>: Given a choice of options for implementing an algorithm, the preference is generally for the one with better Big O, i.e. an O(NlogN) algorithm is preferable to quadratic O(N^2), constant O(1) or logarithmic O(logN) beats out linear O(N).</p>
+  </li>
+  <li>
+    <p><strong>Choose best performing ADT for situation:</strong> For example, if you need to do many lookup operations on collection, <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> would be preferable to <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> because of efficient <code class="language-c++ highlighter-rouge"><span class="n">contains</span></code> operation. All Stack/Queue operations are O(1) making <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code> an ideal choice if you only add/remove at top or <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code> perfect if you remove from head and add at tail. There is a small win for choosing <code class="language-c++ highlighter-rouge"><span class="n">HashSet</span></code>/<code class="language-c++ highlighter-rouge"><span class="n">HashMap</span></code> over <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code>/<code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> when you do not require access to elements in sorted order.</p>
+  </li>
+  <li>
+    <p><strong>Save expensive call result and re-use:</strong> If you are calling an
+expensive function and using its result multiple times, save that result
+in a variable rather than having to call the function multiple times. This optimization is especially valuable inside a loop body.</p>
+  </li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// computes search twice</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reallySlowSearch</span><span class="p">(</span><span class="n">term</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">remove</span><span class="p">(</span><span class="n">reallySlowSearch</span><span class="p">(</span><span class="n">term</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// avoid recompute</span>
+<span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">reallySlowSearch</span><span class="p">(</span><span class="n">term</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">remove</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Avoid copying large objects:</strong> When passing an object as a parameter or returning an object from a function, the entire object must be copied.  Copying large objects, such as collection ADTs, can be
+expensive. Pass the object by reference avoid this expense. The client and the function then share access to the single instance.</li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// slow because parameter is copied</span>
+<span class="kt">void</span> <span class="nf">process</span><span class="p">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">fillVector</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+    <span class="c1">// add data to v</span>
+    <span class="p">...</span>
+    <span class="k">return</span> <span class="n">v</span><span class="p">;</span> <span class="c1">// makes copy</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// pass by reference for efficiency</span>
+<span class="kt">void</span> <span class="nf">process</span><span class="p">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="c1">// shares vector without making copy</span>
+<span class="kt">void</span> <span class="nf">fillVector</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// add data to v</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="unify-common-code-avoid-redundancy">Unify common code, avoid redundancy</h2>
+
+<p>When drafting code, you may find that you repeat yourself or copy/paste blocks of code when you need to repeately perform the same/similar tasks.  Unifying that repeated code into one passage simplifies your design and means only one piece of code to write, test, debug, update, and comment.</p>
+
+<ul>
+  <li><strong>Decompose to helper function:</strong>  Extract common code and move to helper function.</li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// repeated code</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">&amp;&amp;</span> 
+    <span class="n">g</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">left</span> <span class="o">!=</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">g</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">right</span><span class="p">)</span> <span class="o">&amp;&amp;</span> 
+    <span class="n">g</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">right</span> <span class="o">!=</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// unify common into helper</span>
+<span class="kt">bool</span> <span class="nf">isViable</span><span class="p">(</span><span class="n">GridLocation</span> <span class="n">loc</span><span class="p">,</span> 
+              <span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">g</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span> <span class="o">&amp;&amp;</span> 
+      <span class="n">g</span><span class="p">[</span><span class="n">loc</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">loc</span> <span class="o">!=</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="k">return</span> <span class="nf">isViable</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="o">||</span> 
+       <span class="n">isViable</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">g</span><span class="p">);</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Factoring out common code:</strong> Factor out common code from different cases of a chained if-else or switch.</li>
+</ul>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// repeated code</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">tool</span> <span class="o">==</span> <span class="n">CIRCLE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">setColor</span><span class="p">(</span><span class="s">"black"</span><span class="p">);</span>
+    <span class="n">drawCircle</span><span class="p">();</span>
+    <span class="n">waitForClick</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">tool</span> <span class="o">==</span> <span class="n">SQUARE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">setColor</span><span class="p">(</span><span class="s">"black"</span><span class="p">);</span>
+    <span class="n">drawSquare</span><span class="p">();</span>
+    <span class="n">waitForClick</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">tool</span> <span class="o">==</span> <span class="n">LINE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">setColor</span><span class="p">(</span><span class="s">"black"</span><span class="p">);</span>
+    <span class="n">drawLine</span><span class="p">();</span>
+    <span class="n">waitForClick</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// factor out common</span>
+<span class="n">setColor</span><span class="p">(</span><span class="s">"black"</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">tool</span> <span class="o">==</span> <span class="n">CIRCLE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">drawCircle</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">tool</span> <span class="o">==</span> <span class="n">SQUARE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">drawSquare</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">tool</span> <span class="o">==</span> <span class="n">LINE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">drawLine</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="n">waitForClick</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h2 id="function-design">Function design</h2>
+
+<p>A <strong>well-designed function</strong> exhibits properties such as the following:</p>
+
+<ul>
+  <li>Performs a single independent, coherent task.</li>
+  <li>Does not do too large a share of the work.</li>
+  <li>Is not unnecessarily entangled with other functions.</li>
+  <li>Uses parameters for flexibility/re-use (rather that one-task tool).</li>
+  <li>Clear relationship between information in (parameters) and out (return value)</li>
+</ul>
+
+<p><strong>Function structure:</strong> An overly long function (say more than 20-30 lines) is unwieldy and should be decomposed into smaller sub-functions.
+  If you try to describe the function's purpose and find yourself
+    using the word "and" a lot, that probably means the function does too
+    many things and should be subdivided.</p>
+
+<p><strong>Value vs. reference parameters:</strong> Use reference parameters when need to modify value of parameter passed in, or to send information out from a function. Don't use reference parameters when it is not
+necessary or beneficial. Notice that <code class="language-c++ highlighter-rouge"><span class="n">a</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">b</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">c</span></code> are not reference
+parameters in the following function because they don't need to be.</p>
+
+<div class="language-c++ good highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* 
+ * Solves a quadratic equation ax^2 + bx + c = 0,
+ * storing the results in output parameters root1 and root2.
+ * Assumes that the given equation has two real roots.
+ */</span>
+<span class="kt">void</span> <span class="nf">quadratic</span><span class="p">(</span><span class="kt">double</span> <span class="n">a</span><span class="p">,</span> <span class="kt">double</span> <span class="n">b</span><span class="p">,</span> <span class="kt">double</span> <span class="n">c</span><span class="p">,</span>
+               <span class="kt">double</span><span class="o">&amp;</span> <span class="n">root1</span><span class="p">,</span> <span class="kt">double</span><span class="o">&amp;</span> <span class="n">root2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">discr</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span><span class="p">);</span>
+    <span class="n">root1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">discr</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">);</span>
+    <span class="n">root2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">discr</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Prefer return value over reference 'out' parameter for single value return:</strong> If a single value needs to
+be sent back from a function, it is cleaner to do with return value than a reference <code class="language-c++ highlighter-rouge"><span class="n">out</span></code> parameter.</p>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// harder to follow</span>
+<span class="kt">void</span> <span class="nf">max</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// better as</span>
+<span class="kt">int</span> <span class="nf">max</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">a</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Avoid "chaining" calls</strong>, where many functions call each other in a
+chain without ever returning to <code class="language-c++ highlighter-rouge"><span class="n">main</span></code>. Here is a diagram of call flow
+with (left) and without (right) chaining:</p>
+
+<div class="language-c++ bad col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// chained control flow</span>
+<span class="n">main</span>
+<span class="o">|</span>
+<span class="o">+--</span> <span class="n">doGame</span>
+    <span class="o">|</span>
+    <span class="o">+--</span> <span class="n">initAndPlay</span>
+        <span class="o">|</span>
+        <span class="o">+--</span> <span class="n">configureAndPlay</span>
+            <span class="o">|</span>
+            <span class="o">+--</span> <span class="n">readCubes</span>
+            <span class="o">|</span>
+            <span class="o">+--</span> <span class="n">playGame</span>
+                <span class="o">|</span>
+                <span class="o">+--</span> <span class="n">doOneTurn</span>
+</code></pre></div></div>
+
+<div class="language-c++ good col-sm-6 highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// better structured as</span>
+<span class="n">main</span>
+<span class="o">|</span>
+<span class="o">+--</span> <span class="n">welcome</span>
+<span class="o">|</span>
+<span class="o">+--</span> <span class="n">initializeGame</span>
+<span class="o">|</span>   <span class="o">|</span>
+<span class="o">|</span>   <span class="o">+--</span> <span class="n">configureBoard</span>
+<span class="o">|</span>       <span class="o">|</span>
+<span class="o">|</span>       <span class="o">+--</span> <span class="n">readCubes</span>
+<span class="o">|</span>
+<span class="o">+--</span> <span class="n">playGame</span>
+<span class="o">|</span>   <span class="o">|</span>
+<span class="o">|</span>   <span class="o">+--</span> <span class="n">doOneTurn</span>
+</code></pre></div></div>
+
+<h2 id="commenting">Commenting</h2>
+
+<p>Some of the best documentation comes from giving types, variables, functions, etc. meaningful names to begin and using straightforward and clear algorithms so the code speaks for itself. Certainly you will need comments where things get complex but don't bother writing a large number of low-content comments to explain self-evident code.</p>
+
+<p>The audience for all commenting is a C++-literate programmer. Therefore you should not explain the workings of C++ or basic programming techniques.</p>
+
+<p>Some programmers like to comment before writing any code, as it helps them establish what the program is going to do or how each function will be used. Others choose to comment at the end, now that all has been revealed. Some choose a combination of the two, commenting some at the beginning, some along the way, some at the end. You can decide what works best for you.  But do watch that your final comments do match your final result. It's particularly unhelpful if the comment says one thing but the code does another thing. It's easy for such inconsistencies to creep in the course of developing and changing a function. Be careful to give your comments a once-over at the end to make sure they are still accurate to the final version of the program.</p>
+
+<ul>
+  <li>
+    <p><strong>File/class header:</strong> Each file should have an overview comment
+describing that file's purpose. For an assignment, this header should include your name, course/section, and a brief description of this file's relationship to the assignment.</p>
+  </li>
+  <li>
+    <p><strong>Citing sources:</strong> If your code was materially influenced by consulting an external resource (web page, book, another person, etc.), <strong>the source must be cited</strong>. Add citations in a comment at the top of the file. Be explicit about what assistance was received and how/where it influenced your code.</p>
+  </li>
+  <li><strong>Function header:</strong> Each function should have a header comment that
+describes the function's behavior at a high level, as well as information about:
+    <ul>
+      <li><strong>Parameters/return:</strong> Give type and purpose of each parameter going into function and type and purpose of return value.</li>
+      <li><strong>Preconditions/assumptions:</strong> Constraints/expectations that client should be aware of.("this function expects the file to be open for reading").</li>
+      <li><strong>Errors:</strong> List any special cases or error conditions the function handles (e.g. "…raises error if divisor is 0", or "…returns the constant NOT_FOUND if the word doesn't exist").</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Inline comments:</strong>  Inline comments should be used sparingly where code complex or unusual enough to warrant such explanation. A good rule of thumb is: explain what the code accomplishes rather than repeat what the code says. If what the code accomplishes is obvious, then don't bother.</p>
+
+    <div class="language-c++ bad highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// inline babbling just repeats what code already says, please don't!</span>
+
+<span class="kt">int</span> <span class="n">counter</span><span class="p">;</span>                <span class="c1">// declare a counter variable</span>
+<span class="n">counter</span><span class="o">++</span><span class="p">;</span>                  <span class="c1">// increment counter</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">)</span>      <span class="c1">// while index less than length</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>TODOs:</strong> Remove any <code class="language-c++ highlighter-rouge"><span class="c1">// TODO:</span></code> comments from a program
+before turning it in.</p>
+  </li>
+  <li>
+    <p><strong>Commented-out code:</strong> It is considered bad style to submit a
+program with large chunks of code "commented out". It's fine to comment
+out code as you are working on a program, but if the program is done
+and such code is not needed, just remove it.</p>
+  </li>
+  <li><strong>Doc comments:</strong> You can use "doc" style (<code class="language-c++ highlighter-rouge"><span class="cm">/** ... */</span></code>) comment
+style if you like, but it is not required for this class. A style of
+commenting using <code class="language-c++ highlighter-rouge"><span class="c1">//</span></code> or <code class="language-c++ highlighter-rouge"><span class="cm">/* ... */</span></code> is just fine.</li>
+</ul>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Sep-30
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

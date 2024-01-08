@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B C++ Strings</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 3. C++ Strings</h1>
+ <p class="subtle-heading">Monday October 2</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>In today's lecture, we explore operations on the C++ <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> datatype.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 3.1-3.7</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/141485">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=73e5fb7b-aa3e-420a-9b26-b083014df1f5&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Announcements</p>
+<p>2. Lightning Review</p>
+<p>3. Pass-by-Value Functions</p>
+<p>4. Pass-by-Reference Functions</p>
+<p>5. Qt Creator's Indication of Pass-by-Reference</p>
+<p>6. ASCII Characters (and Typecasting!)</p>
+<p>7. Magic Numbers</p>
+<p>8. The Nature of Strings in C++</p>
+<p>9. C++ String Member Functions</p>
+<p>10. Stanford C++ String Library (<em>strlib.h</em>)</p>
+<p>11. Accessing (and Modifying) Individual Characters in Strings</p>
+<p>12. Looping Through Strings</p>
+<p>13. C++ Character Processing Library (cctype)</p>
+<p>14. C++'s Two Types of Strings</p>
+<p>15. Common Pitfall with Strings in C++</p>
+<p>16. What's next?</p>
+<p>17. Practice Problems</p>
+<p><strong><br />Announcements</strong></p>
+<ul>
+<li>A0 is due tonight at 5 PM.</li>
+<li>A1 unlocks tonight at 5 PM and is due next Monday at 5 PM.</li>
+<li>You have quizzes due this Wednesday at 2 PM. This is a batch deadline that covers last Friday's lecture quiz as well as the quiz I post tonight for today's lecture.</li>
+<li>Section starts this week! You will receive a notification this week about your lecture assignment. Once those are pushed out, you will be able to make adjustments in Paperless.</li>
+</ul>
+<p><br /><strong>Lightning Review</strong></p>
+<p>We started class today with the following problem:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">// Lightning review!<br />// What all is wrong? Goal is to print:<br />//<br />// 3...<br />// 2...<br />// 1...<br />// Blastoff!<br /><br />#include &lt;iostream&gt;<br />#include &lt;console.h&gt;<br /><br />int main()<br />{<br />   blastoff(3);<br />   return 1;<br />}<br /><br />void blastoff(int n)<br />{<br />   while n &gt; 0<br />   {<br />      cout &lt;&lt; n &lt;&lt; "...";<br />      n += 1;<br />   }<br /><br />   cout &lt;&lt; "Blastoff!";<br />}</pre>
+<p>There are&nbsp;<em>so many</em> problems here! See 6:40 through 12:45 of today's lecture for a recap. As we worked through this, we revisited and reinforced several ideas from Friday's lecture.</p>
+<p>There were also some <em>awesome</em> questions today that helped clear up some key concepts from last week.</p>
+<p>Our final version of the code looked like this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">// Lightning review!<br />// What all is wrong? Goal is to print:<br />//<br />// 3...<br />// 2...<br />// 1...<br />// Blastoff!<br /><br />#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />void blastoff(int n);<br /><br />int main()<br />{<br />   blastoff(3);<br />   return 0;<br />}<br /><br />void blastoff(int n)<br />{<br />   while (n &gt; 0)<br />   {<br />      cout &lt;&lt; n &lt;&lt; "..." &lt;&lt; endl;<br />      n--;<br />   }<br /><br />   cout &lt;&lt; "Blastoff!" &lt;&lt; endl;<br />}</pre>
+<p><br /><strong>Pass-by-Value Functions</strong></p>
+<p>We then explored this example of a <em>pass-by-value</em> function and saw that when we call <em>foo(n)</em>, that creates an&nbsp;additional&nbsp;<em>n</em> variable in memory that is separate from&nbsp;<em>main()</em>'s&nbsp;<em>n</em> variable:</p>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>pass-by-value approach:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />void foo(int n)<br />{<br />   n++;<br />}<br /><br />int main()<br />{<br />   int n = 3;<br />   foo(n);<br /><br />   <span style="background-color: #ffcc99;">// This prints 3. The ++ operator in foo() only increments foo()'s local copy</span><br />   <span style="background-color: #ffcc99;">// of n -- not our n variable back in main().</span><br />   cout &lt;&lt; n &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>Here's what's happening in memory. Notice that <em>main()</em> and <em>foo()</em> have separate <em>n</em> variables:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee;">main()<br />+----------------+<br />|  n             |<br />|  +-------+     |<br />|  |   3   |     |<br />|  +-------+     |<br />+----------------+<br /><br />foo()<br />+----------------+<br />|  n             |<br />|  +-------+     |<br />|  |   4   |     |<br />|  +-------+     |<br />+----------------+</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">3</span></pre>
+<p><strong><br />Pass-by-Reference Functions</strong></p>
+<p>We then saw an example of a&nbsp;<em>pass-by-reference</em> function in C++. Here, we have turned <em>foo()</em>'s <em>n</em> variable into a <strong>reference</strong> by appending an ampersand (&amp;) to its data type.</p>
+<p>In this example, <em>foo()</em>'s <em>n</em> is masquerading as a normal integer, but under the hood, it's actually acting as a portal to&nbsp;<em>n</em> back in&nbsp;<em>main()</em>. In this way, it <strong>refers</strong> to <em>main()</em>'s <em>n</em> variable (hence the term "reference"). When we execute the <em>n++</em> line, the program actually goes back to <em>main()</em> and modifies the value of&nbsp;<em>n</em> that we find there.</p>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>pass-by-reference approach:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><span style="background-color: #ffcc99;">// This is now a pass-by-reference function. Note the addition of the ampersand.</span><br />void foo(int<strong><span style="background-color: #ffcc99;">&amp;</span></strong> n)<br />{<br />   n++;<br />}<br /><br />int main()<br />{<br />   int n = 3;<br />   foo(<em>n</em>);<br /><br />   <span style="background-color: #ffcc99;">// This prints 3. The ++ operator in foo() only increments foo()'s local copy</span><br />   <span style="background-color: #ffcc99;">// of n -- not our n variable back in main().</span><br />   cout &lt;&lt; n &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>Here's what's happening in memory. Notice that <em>foo()</em>'s&nbsp;<em>n</em> variable now acts as a wormhole to <em>main()</em>'s <em>n</em> variable:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee;">main()<br />+----------------+<br />|  n             |<br />|  +-------+     |<br />|  |   4   |     |<br />|  +-------+     |<br />+------&uarr;---------+<br />       |<br />foo()  |<br />+------|---------+<br />|  n   |         |<br />|  +---|---+     |<br />|  |   🌀  |     |<br />|  +-------+     |<br />+----------------+</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">4</span></pre>
+<p>There are at least two great reasons to use references in C++:</p>
+<ol style="list-style-type: decimal;">
+<li>They help us get around the fact that functions in C++ only return a single value. If we want to write a function that produces more than one value that we're interested in capturing, references help us do that. Some examples include:</li>
+</ol>
+<ol>
+<li style="list-style-type: none;">
+<ol style="list-style-type: lower-alpha;">
+<li>A&nbsp;<em>swap()</em> function that takes two integers by reference and results in them swapping values. This is a common operation in all kinds of algorithms -- especially sorting algorithms, which we'll explore later this quarter.</li>
+<li>A&nbsp;<em>solveQuadratic()</em> function that takes three integers by value (a, b, and c, the coefficients for the quadratic equation) and two integers by reference (<em>result1</em> and <em>result2</em>) and uses those references to communicate the roots of the equation back to the calling function. See Section 2.5 of the course textbook for the implementation.</li>
+</ol>
+</li>
+</ol>
+<ol style="list-style-type: decimal;" start="2">
+<li>They can be used to save time and space when working with large amounts of data. For example, if we have a string that contains 1 GB of text, passing it to a function by value causes us to use another GB of memory to create a separate copy of it, and it takes time to copy that GB of text from one variable to another. In contrast, if we pass the string by reference, we use a tiny amount of memory (typically just 64 bits!) to establish the tether between that reference variable and the original variable being referenced. Because we use so little memory, the transaction involved is very fast, too.</li>
+</ol>
+<p>The other example we saw involved a treasure hunt. A pass-by-value approach to raiding a series of treasure hoards makes no sense, as it does not empty out the original hoards in memory:</p>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>pass-by-value approach:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int treasureHunt(int h1, int h2, int h3)<br />{<br />   int myTreasarrrrrr = 0;<br /><br /> &nbsp; myTreasarrrrrr += h1;<br />   h1 = 0;<br /><br /> &nbsp; myTreasarrrrrr += h2;<br />   h2 = 0;<br /><br /> &nbsp; myTreasarrrrrr += h3;<br />   h3 = 0;<br /><br />   return myTreasarrrrrr;<br />}<br /><br />int main()<br />{<br />   int hoard1 = 350;<br />   int hoard2 = 43;<br />   int hoard3 = 5003;<br /><br />   int totalBooty = treasureHunt(hoard1, hoard2, hoard3);<br /><br />   cout &lt;&lt; "Total Booty: " &lt;&lt; totalBooty &lt;&lt; endl &lt;&lt; endl;<br /><br />   <span style="background-color: #ffcc99;">// We've pirated and pillaged, but these hoards don't reflect that.</span><br />   cout &lt;&lt; "hoard1: " &lt;&lt; hoard1 &lt;&lt; endl;<br />   cout &lt;&lt; "hoard2: " &lt;&lt; hoard2 &lt;&lt; endl;<br />   cout &lt;&lt; "hoard3: " &lt;&lt; hoard3 &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Total Booty: 5396<br /><br />hoard1: 350<br />hoard2: 43<br />hoard3: 5003</span></pre>
+<p>A minor adjustment turns this into a pass-by-reference function and gives us the desired behavior of wiping out the treasure hoards as we pillage:</p>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>pass-by-reference approach:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int treasureHunt(int<span style="background-color: #ffcc99;"><strong>&amp;</strong></span> h1, int<span style="background-color: #ffcc99;"><strong>&amp;</strong></span> h2, int<strong><span style="background-color: #ffcc99;">&amp;</span></strong> h3)<br />{<br />   int myTreasarrrrrr = 0;<br /><br /> &nbsp; myTreasarrrrrr += h1;<br />   h1 = 0;<br /><br /> &nbsp; myTreasarrrrrr += h2;<br />   h2 = 0;<br /><br /> &nbsp; myTreasarrrrrr += h3;<br />   h3 = 0;<br /><br />   return myTreasarrrrrr;<br />}<br /><br />int main()<br />{<br />   int hoard1 = 350;<br />   int hoard2 = 43;<br />   int hoard3 = 5003;<br /><br />   int totalBooty = treasureHunt(<em>hoard1</em>, <em>hoard2</em>, <em>hoard3</em>);<br /><br />   cout &lt;&lt; "Total Booty: " &lt;&lt; totalBooty &lt;&lt; endl &lt;&lt; endl;<br /><br />   <span style="background-color: #ffcc99;">// These are now zeroed out.</span><br />   cout &lt;&lt; "hoard1: " &lt;&lt; hoard1 &lt;&lt; endl;<br />   cout &lt;&lt; "hoard2: " &lt;&lt; hoard2 &lt;&lt; endl;<br />   cout &lt;&lt; "hoard3: " &lt;&lt; hoard3 &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Total Booty: 5396<br /><br />hoard1: 0<br />hoard2: 0<br />hoard3: 0</span></pre>
+<p><strong><br />Qt Creator's Indication of Pass-by-Reference</strong></p>
+<p>Note that when we call a function, Qt Creator uses italics to indicate whether any parameters are pass-by-value. Unitalicized parameters are pass-by-value. (See calls to <em>treasureHunt()</em> above.)</p>
+<p><br /><strong>ASCII Characters (and Typecasting!)</strong></p>
+<p>We then explored the ASCII values underlying the&nbsp;<em>char</em> data type in C++. ASCII is an international standard for character representation. To force C++ to show us the ASCII values underlying specific characters, I used a typecast, which involved placing "(int)" in front of a char variable to cajole C++ into treating it as an int within that context.</p>
+<p>Furthermore, we saw that because chars in C++ are actually just ints behind the scenes, we can apply comparison and arithmetic operators to them. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   for (char ch = 'a'; ch &lt;= 'z'; ch++)<br />   {<br />      <span style="background-color: #ffcc99;">// typecast!</span><br />      cout &lt;&lt; ch &lt;&lt; " (" &lt;&lt; <span style="background-color: #ffcc99;">(int)ch</span> &lt;&lt; ")" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">a (97)</span><br /><span style="color: #ffffff;">b (98)</span><br /><span style="color: #ffffff;">c (99)</span><br /><span style="color: #ffffff;">d (100)</span><br /><span style="color: #ffffff;">e (101)</span><br /><span style="color: #ffffff;">f (102)</span><br /><span style="color: #ffffff;">g (103)</span><br /><span style="color: #ffffff;">h (104)</span><br /><span style="color: #ffffff;">i (105)</span><br /><span style="color: #ffffff;">j (106)</span><br /><span style="color: #ffffff;">k (107)</span><br /><span style="color: #ffffff;">l (108)</span><br /><span style="color: #ffffff;">m (109)</span><br /><span style="color: #ffffff;">n (110)</span><br /><span style="color: #ffffff;">o (111)</span><br /><span style="color: #ffffff;">p (112)</span><br /><span style="color: #ffffff;">q (113)</span><br /><span style="color: #ffffff;">r (114)</span><br /><span style="color: #ffffff;">s (115)</span><br /><span style="color: #ffffff;">t (116)</span><br /><span style="color: #ffffff;">u (117)</span><br /><span style="color: #ffffff;">v (118)</span><br /><span style="color: #ffffff;">w (119)</span><br /><span style="color: #ffffff;">x (120)</span><br /><span style="color: #ffffff;">y (121)</span><br /><span style="color: #ffffff;">z (122)</span></pre>
+<p><br /><strong>Magic Numbers</strong></p>
+<p>I then presented the challenge of printing ordinal numbers 1 through 26 next to those characters. A simple tweak is as follows (see highlighted code):</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   for (char ch = 'a'; ch &lt;= 'z'; ch++)<br />   {<br />      cout &lt;&lt; ch &lt;&lt; " (" &lt;&lt; (int)ch<span style="background-color: #ffcc99;"> - 96</span> &lt;&lt; ")" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">a (1)</span><br /><span style="color: #ffffff;">b (2)</span><br /><span style="color: #ffffff;">c (3)</span><br /><span style="color: #ffffff;">d (4)</span><br /><span style="color: #ffffff;">e (5)</span><br /><span style="color: #ffffff;">f (6)</span><br /><span style="color: #ffffff;">g (7)</span><br /><span style="color: #ffffff;">h (8)</span><br /><span style="color: #ffffff;">i (9)</span><br /><span style="color: #ffffff;">j (10)</span><br /><span style="color: #ffffff;">k (11)</span><br /><span style="color: #ffffff;">l (12)</span><br /><span style="color: #ffffff;">m (13)</span><br /><span style="color: #ffffff;">n (14)</span><br /><span style="color: #ffffff;">o (15)</span><br /><span style="color: #ffffff;">p (16)</span><br /><span style="color: #ffffff;">q (17)</span><br /><span style="color: #ffffff;">r (18)</span><br /><span style="color: #ffffff;">s (19)</span><br /><span style="color: #ffffff;">t (20)</span><br /><span style="color: #ffffff;">u (21)</span><br /><span style="color: #ffffff;">v (22)</span><br /><span style="color: #ffffff;">w (23)</span><br /><span style="color: #ffffff;">x (24)</span><br /><span style="color: #ffffff;">y (25)</span><br /><span style="color: #ffffff;">z (26)</span></pre>
+<p>A problem with this approach is that we're hard-coding an integer that to the average ready might seem so mysterious and opaque that they would look at the code and say, "What does that number mean? How does that even work? It looks like&nbsp;<em>magic!</em>"</p>
+<p>We call such literal values "<strong>magic numbers</strong>," and it's considered best practice to avoid them. You might be able to get away with a really obvious literal in your code (such as the number 26 when working with the alphabet), but the 96 is rather obscure. We rewrote the code as follows, replacing the magic number with ('a' - 1):</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   for (char ch = 'a'; ch &lt;= 'z'; ch++)<br />   {<br />      cout &lt;&lt; ch &lt;&lt; " (" &lt;&lt; (int)ch<span style="background-color: #ffcc99;"> - ('a' - 1)</span> &lt;&lt; ")" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p><br /><strong>The Nature of Strings in C++</strong></p>
+<p>We then dove into the nature of strings in C++ and saw two key points on that topic:</p>
+<p><em>1. Strings are arrays of characters.</em></p>
+<p>At its core, a string is really just an array of characters. That is, a string is a block of characters that are contiguous in memory that are index from 0 through n-1 (where <em>n</em> is the overall number of characters in the string). For example, the string "hello there" is represented as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee;">+---+---+---+---+---+---+---+---+---+---+---+<br />|'h'|'e'|'l'|'l'|'o'|' '|'t'|'h'|'e'|'r'|'e'|<br />+---+---+---+---+---+---+---+---+---+---+---+<br />  0   1   2   3   4   5   6   7   8   9   10</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Important Note</em></span>) Recall that strings in C++ must be given in double quotes, not single quotes. We only use single quotes for single characters.</p>
+<p><em>2. Strings are objects (not primitive data types).</em></p>
+<p>I also pointed out that when we declare a string variable in the Qt Creator, the default color for the word <em>string</em>&nbsp;is different from the color used for <em>int</em>,&nbsp;<em>float</em>,&nbsp;<em>double</em>, and&nbsp;<em>char.</em> That's because strings in C++ are fundamentally different from the latter data types, which are called "<strong>primitive types</strong>." Primitive types form the foundation for all other data types in C++.</p>
+<p>A string, in contrast, is an <strong>object</strong>. We will explore objects in more detail closer to the mid-term. For now, I'd like you to know that this means a string is a bundle -- not just of the character array representing that string, but also of a bunch of built-in functions that we can access by using the dot operator (.) on one of our strings.</p>
+<p>For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "hello there";<br /><br />   <span style="background-color: #ffcc99;">// Notice that we are not passing s to a length function. Rather, we use the dot</span><br />   <span style="background-color: #ffcc99;">// operator on the s variable to call a length() function that is packed up with</span><br />   <span style="background-color: #ffcc99;">// the string and which gives us the length of that string (11, as there are 11</span><br />   <span style="background-color: #ffcc99;">// characters in "hello there"). (The space counts a character.)</span><br /><br />   cout &lt;&lt; s<span style="background-color: #ffcc99;">.length()</span> &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">11</span></pre>
+<p><br /><strong>C++ String Member Functions</strong></p>
+<p>String objects in C++ have a ton of built-in functions. To use these functions, we technically have to #include &lt;string&gt;. However, including either &lt;iostream&gt; or "console.h" actually indirectly causes the string library to be imported behind the scenes, so we don't need to do that directly in order for our code to compile and run.</p>
+<p>Here's an index of some of the most handy functions we can call using a string's dot operator in C++:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Member Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>s.append(str)</td>
+      <td>add text to the end of a string</td>
+    </tr>
+    <tr>
+      <td>s.compare(str)</td>
+      <td>return -1, 0, or 1 depending on relative ordering</td>
+    </tr>
+    <tr>
+      <td>s.erase(index, length)</td>
+      <td>delete text from a string starting at given index</td>
+    </tr>
+    <tr>
+      <td>s.find(str)<br />s.rfind(str)</td>
+      <td>return first or last index where the start of <em>str</em> appears in this
+string (returns <em>string::npos</em> if not found)</td>
+    </tr>
+    <tr>
+      <td>s.insert(index, str)</td>
+      <td>add text into string at a given index</td>
+    </tr>
+    <tr>
+      <td>s.length()<br />s.size()</td>
+      <td>return number of characters in the string</td>
+    </tr>
+    <tr>
+      <td>s.replace(index, len, str)</td>
+      <td>replace <em>len</em> chars at given index with new text</td>
+    </tr>
+    <tr>
+      <td>s.substr(start, length)<br />s.subsr(start)</td>
+      <td>return a new string with the next <em>length</em> chars beginning at <em>start</em> (inclusive); if <em>length</em> is omitted, grabs till end of string</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>We saw this example in class of the&nbsp;<em>substr()</em> function:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "hello there";<br /><br />   <span style="background-color: #ffcc99;">// Start at index 1 in the string and pull out the first 4 characters there.</span><br />   cout &lt;&lt; s<span style="background-color: #ffcc99;">.substr(1, 4)</span> &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">ello</span></pre>
+<p><br /><strong>Stanford C++ String Library (<em>strlib.h</em>)</strong></p>
+<p>Similarly, the Stanford C++ string library has some powerful functions for processing strings. This library is really well documented and fairly straightforward.</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Function Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>endsWith(str, suffix)<br />startsWith(str, prefix)</td>
+      <td>returns <em>true</em> if the given string begins or ends with the given prefix/suffix text</td>
+    </tr>
+    <tr>
+      <td>integerToString(int)<br />realToString(double)<br />stringToInteger(str)<br />stringToReal(str)</td>
+      <td>returns a conversion between numbers and strings</td>
+    </tr>
+    <tr>
+      <td>equalsIgnoreCase(s1, s2)</td>
+      <td>returns true if <em>s1</em> and <em>s2</em> have same chars, ignoring case</td>
+    </tr>
+    <tr>
+      <td>toLowerCase(str)<br />toUpperCase(str)</td>
+      <td>returns an upper/lowercase version of a string (pass-by-value!)</td>
+    </tr>
+    <tr>
+      <td>trim(str)</td>
+      <td>returns string with surrounding whitespace removed</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Super Handy Productivity Tip</em></span>) If you #include "strlib.h" in a Qt Creator project, you can CTRL+CLICK on <em>strlib.h</em> to go into that file and see a list of functional prototypes with descriptions of what those functions do. Alternatively, you can click over to the Resources page on the course website, click "Stanford Library documentation," then click&nbsp;<a class="inline_disabled" style="text-decoration: none;" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/strlib.html" target="_blank" rel="noopener"><em>strlib.h</em></a> on that page.</p>
+<p>We saw the following example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "strlib.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "hello there";<br />   toUpperCase(s);<br />   cout &lt;&lt; s &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">hello there</span></pre>
+<p>Notice that this does&nbsp;<em>not</em> convert&nbsp;<em>s</em> to uppercase! That's because <em>toUpperCase()</em> is a pass-by-value function. We can determine that in the Qt Creator simply by observing that when we call <em>toUpperCase(s)</em>, the&nbsp;<em>s</em> parameter does not get italicized.</p>
+<p><em>toUpperCase(s)</em> returns the uppercase version of the string it receives. To get this example working, we need to store that return value somewhere:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "strlib.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "hello there";<br />   <span style="background-color: #ffcc99;">s = </span>toUpperCase(s);<br />   cout &lt;&lt; s &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">HELLO THERE</span></pre>
+<p><strong><br />Accessing (and Modifying) Individual Characters in Strings</strong></p>
+<p>We saw that we can access (and change!) individual characters in C++ strings. This is unusual compared to Python and Java, where we can't just tweak one character. If we want to modify a Python or Java string, we need to call functions or apply operators that ultimately build new strings in the background.</p>
+<p>We say C++'s strings are&nbsp;<strong>mutable</strong> (able to be changed), whereas Python and Java strings are <strong>immutable</strong>. If a string appears to be changing in Python or Java, it's really not; what you're seeing is really a new, separate string.</p>
+<p>Along those lines, we examined the following code:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "hello";<br />   cout &lt;&lt; s &lt;&lt; endl;<br /><br />   // This changes the character at index 0. I read "s[0]" out loud as "s-sub-zero."<br />   s[0] = 'Y';<br />   cout &lt;&lt; s &lt;&lt; endl;<br /><br />   // We can <strong>concatenate</strong> a single character to a string using the + operator. We know<br />   // the w below is just a character (not a string) because it's in single quotes.<br />   s += 'w';<br />   cout &lt;&lt; s &lt;&lt; endl;<br /><br />   // We can also <strong>concatenate</strong> an entire string.<br />   s += " squashes";<br />   cout &lt;&lt; s &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">hello<br />Yello<br />Yellow<br />Yellow squashes<br /></span></pre>
+<p><strong><br />Looping Through Strings</strong></p>
+<p>We then saw two ways to loop through strings:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "hello";<br /><br />   // We can loop through a string using a for-loop.<br />   for (int i = 0; i &lt; s.length(); i++)<br />   {<br />      cout &lt;&lt; i &lt;&lt; ": " &lt;&lt; s[i] &lt;&lt; endl;<br />   }<br /><br />   // We can also use a for-each loop (aka "range-based loop"), but this approach doesn't<br />   // give us a handy variable to tell us what index we're at in the string.<br />   cout &lt;&lt; endl;<br />   for (char ch : s)<br />   {<br />      cout &lt;&lt; ch &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">0: h<br />1: e<br />2: l<br />3: l<br />4: o<br /><br />h<br />e<br />l<br />l<br />o<br /></span></pre>
+<p><strong><br />C++ Character Processing Library (<em>cctype</em>)</strong></p>
+<p>Finally, we saw this example for extracting all the lowercase alphabetic characters from a string:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string password = "p4ssw0rd";<br />   string alphaPortion;<br /><br />   for (int i = 0; i &lt; password.length(); i++)<br />   {<br />      <span style="background-color: #ffcc99;">// checks whether password[i] is a lowercase char</span><br />      if (password[i] &gt;= 'a' &amp;&amp; password[i] &lt;= 'z')<br />      {<br />         alphaPortion += password[i];<br />      }<br />   }<br /><br />   cout &lt;&lt; alphaPortion;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">psswrd<br /></span></pre>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important Note</em></span>) We talked a bit more today about how uninitialized variables are problematic in C++. That doesn't apply to C++'s&nbsp;<em>string</em> variables, though. Those actually get auto-initialized to an empty string (double quotes with nothing -- not even a space -- between them: "") if you don't give them some other value.</p>
+<p>A variation on this approach relies on the&nbsp;<em>isalpha()</em> function from C++'s&nbsp;<em>cctype</em> library:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string password = "p4ssw0rd";<br />   string alphaPortion;<br /><br />   for (int i = 0; i &lt; password.length(); i++)<br />   {<br />      if (<span style="background-color: #ffcc99;">isalpha(password[i])</span>)<br />      {<br />         alphaPortion += password[i];<br />      }<br />   }<br /><br />   cout &lt;&lt; alphaPortion &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">psswrd</span></pre>
+<p>The&nbsp;<em>cctype</em> library is chock full of char processing functions, almost all of which take a single char argument and are named <em>isXXXXX()</em> (where <em>XXXXX</em> is some five-letter string indicating what type of character the function is checking for).</p>
+<p>For your reference, here are the functions from that library:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Member Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+     <tr>
+      <td>isalnum(ch)</td>
+      <td>checks if a character is alphanumeric</td>
+    </tr>
+    <tr>
+      <td>isalpha(ch)</td>
+      <td>checks if a character is alphabetic</td>
+    </tr>
+    <tr>
+      <td>islower(ch)</td>
+      <td>checks if a character is a lowercase alphabetic character</td>
+    </tr>
+    <tr>
+      <td>isupper(ch)</td>
+      <td>checks if a character is an uppercase alphabetic character</td>
+    </tr>
+    <tr>
+      <td>isdigit(ch)</td>
+      <td>checks if a character is a digit</td>
+    </tr>
+    <tr>
+      <td>isxdigit(ch)</td>
+      <td>checks if a character is a hexadecimal character</td>
+    </tr>
+    <tr>
+      <td>iscntrl(ch)</td>
+      <td>checks if a character is a control character</td>
+    </tr>
+    <tr>
+      <td>isgraph(ch)</td>
+      <td>checks if a character is a graphical (i.e., visible) character</td>
+    </tr>
+    <tr>
+      <td>isspace(ch)</td>
+      <td>checks if a character is a space character (typically tab or space)</td>
+    </tr>
+    <tr>
+      <td>isblank(ch)</td>
+      <td>checks if a character is a blank character</td>
+    </tr>
+    <tr>
+      <td>isprint(ch)</td>
+      <td>checks if a character is a printing character according to locale</td>
+    </tr>
+    <tr>
+      <td>ispunct(ch)</td>
+      <td>checks if a character is punctuation (visible non-alnum/non-space)</td>
+    </tr>
+    <tr>
+      <td>toupper(ch)</td>
+      <td>converts a character to uppercase (pass-by-value!)</td>
+    </tr>
+    <tr>
+      <td>tolower(ch)</td>
+      <td>converts a character to lowercase (pass-by-value!)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p><br /><strong>C++'s Two Types of Strings</strong></p>
+<p>C++ actually has two types of strings. We have seen the&nbsp;<em>string</em> variable type, but any time we type a&nbsp;<strong>string literal</strong> (i.e., a hard-coded string in double quotes), we are actually getting a C-style string.</p>
+<p>Applying operators to two C-style strings is dangerous and can lead to code that won't compile -- or worse: wonky, unexpected results.</p>
+<p>However, we can apply operators to two strings if <strong>at least</strong> one of them is a C++ style string, and we can always get a C++ style string by assigning a C-style string to a C++ <em>string</em> variable.</p>
+<p>Here are some examples to clarify:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   // <span style="background-color: #ba372a; color: #ffffff;"><strong> BAD! </strong></span> Before we do the "=" operation, we resolve the right-hand side of that<br />   // operator. That involves trying to apply the "+" operator to two string literals,<br />   // which are C-style strings. C++ will not even allow this to compile.<br />   string s1 = "abc" + "xyz";<br /><br />   // <span style="background-color: #169179; color: #ffffff;"><strong> OKAY. </strong></span> We can assign C-style strings directly to C++ string variables.<br />   string s2 = "abc";<br />   string s3 = "xyz";<br /><br />   // <strong><span style="background-color: #169179; color: #ffffff;"> </span><span style="background-color: #169179; color: #ffffff;">OKAY. </span></strong> Both s2 and s3 are C++ style strings. We can apply the "+" operator<br />   // to two C++ strings to concatenate them.<br />   string s4 = s2 + s3;<br />   cout &lt;&lt; s4 &lt;&lt; endl;<br /><br />   // <strong><span style="background-color: #169179; color: #ffffff;"> </span><span style="background-color: #169179; color: #ffffff;">OKAY. </span></strong> This works, too! The right-hand side of the "=" operator gets resolved<br />   // first, and since s5 + "hello" involves at least one C++ style string, the<br />   // operation is good to go.<br />   string s5 = "hello";<br />   string s6 = s5 + " there";<br />   cout &lt;&lt; s6 &lt;&lt; endl;<br /><br />   // <strong><span style="background-color: #169179; color: #ffffff;"> </span><span style="background-color: #169179; color: #ffffff;">OKAY. </span></strong> Same as above, but with (C + C++) instead of (C++ + C).<br />   string s7 = " there";<br />   string s8 = "hello" + s7;<br />   cout &lt;&lt; s8 &lt;&lt; endl;<br /><br />   // <strong><span style="background-color: #169179; color: #ffffff;"> </span><span style="background-color: #169179; color: #ffffff;">OKAY. </span></strong> There is a function called <em>string()</em> that we can use to create a C++<br />   // style string out of a C-style string. As long as we apply it to at least one of<br />   // the C-style strings below, we end up with at least one C++ style string, and we<br />   // are then in the clear to use the concatenation operator.<br />   string s9 = "hello" + string(" there");<br />   cout &lt;&lt; s9 &lt;&lt; endl;<br /><br />   // <strong><span style="background-color: #169179; color: #ffffff;"> </span><span style="background-color: #169179; color: #ffffff;">OKAY. </span></strong> Similarly, C++ allows us to typecast a C-style string to a C++ string.<br />   string s10 = "hello" + (string)" there";<br />   cout &lt;&lt; s10 &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p><strong><br />Common Pitfall with Strings in C++</strong></p>
+<p>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not covered in class.</em></span>) C++ lets you access invalid indices when playing with strings. This can cause all kinds of wonky things to happen in your programs. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "hello";<br /><br />   <span style="background-color: #f8cac6;">// UH OH! Accessing invalid index! Who knows what will happen?</span><br />   cout &lt;&lt; <span style="background-color: #f8cac6;">s[10]</span> &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output (which may be different when you run this on your system):</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">�</span></pre>
+<p>Going far enough out of bounds in your string can actually cause a program to crash:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string s = "hello";<br /><br />   <span style="background-color: #f8cac6;">// UH OH! Accessing invalid index! Who knows what will happen?</span><br />   cout &lt;&lt; <span style="background-color: #f8cac6;">s[100000000]</span> &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="margin-left: 30px;"><span style="font-size: 10pt;"><strong>output (which may be different when you run this on your system):</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ff4e4e;">*** The Day03Lecture program has terminated unexpectedly (crashed)</span><br /><span style="color: #ff4e4e;">*** A segmentation fault (SIGSEGV) occurred during program execution</span><br /><span style="color: #ff4e4e;"><br />&nbsp; &nbsp; This error indicates your program attempted to dereference a pointer</span><br /><span style="color: #ff4e4e;">&nbsp; &nbsp; to an invalid memory address (possibly out of bounds, deallocated, nullptr, ...)</span><br /><span style="color: #ff4e4e;"><br />*** To get more information about a program crash,</span><br /><span style="color: #ff4e4e;">*** run your program again under the debugger.</span></pre>
+<p><strong><br />What's next?</strong></p>
+<p>I had hoped to talk about testing in class today, but we actually got a bit behind on material. I think it was worth it, though, to field some of the awesome questions that came up in class and to take a moment to really reinforce some of the concepts from Friday's lecture.</p>
+<p>On Wednesday, we'll talk briefly about testing (including the <em>SimpleTest</em> framework in the Stanford C++ Libraries) and then delve into two abstract data types that are implemented in the Stanford libraries: Vector and Grid.</p>
+<p><strong><br />Practice Problems</strong></p>
+<p><em>Your biggest training grounds for the material we're covering in lecture will be (a) your weekly section meeting, where you'll get more detailed explanations of some of these topics as well as hands-on experience with practical applications, and (b) the assignments, which are constructed to guide you through the material and help you ramp up your understanding quite quickly.</em></p>
+<p><em>Nonetheless, I will occasionally post additional practice problems for those who are looking for even more reinforcement and hands-on experience or stepping stones to help work up to the week's assignment and/or section problems.</em></p>
+<p>1. (<em>Pass-by-Reference Functions</em>) Write a pass-by-reference function called <em>mySwap()</em> that takes two integers and swaps their values. Your function should pass the test case provided below. What should the return type be? What types should we use for the function parameters? (Note: The function is called <em>mySwap()</em> because there is already a native&nbsp;<em>swap()</em> function in C++.)</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "SimpleTest.h"<br /><br />using namespace std;<br /><br />PROVIDED_TEST("basic test of swap() function with two integers")<br />{<br />&nbsp; &nbsp; int a = 53;<br />&nbsp; &nbsp; int b = 42;<br /><br />  &nbsp; mySwap(a, b);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(a, 42);<br />&nbsp; &nbsp; EXPECT_EQUAL(b, 53);<br />}<br /><br />int main()<br />{<br />&nbsp; &nbsp; runSimpleTests(ALL_TESTS);<br />&nbsp; &nbsp; return 0;<br />}</pre>
+<p>Highlight for solution:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "SimpleTest.h"<br /><br />using namespace std;<br /><br /><span style="background-color: #7e8c8d; color: #7e8c8d;">// Note: Alternatively, we could put this below main() and</span><br /><span style="background-color: #7e8c8d; color: #7e8c8d;">// drop a functional prototype here.</span><br /><span style="background-color: #7e8c8d; color: #7e8c8d;">void mySwap(int&amp; a, int&amp; b)</span><br /><span style="background-color: #7e8c8d; color: #7e8c8d;">{</span><br /><span style="background-color: #7e8c8d; color: #7e8c8d;">   int temp = a;</span><br /><span style="background-color: #7e8c8d; color: #7e8c8d;">   a = b;</span><br /><span style="background-color: #7e8c8d; color: #7e8c8d;">   b = temp;</span><br /><span style="background-color: #7e8c8d; color: #7e8c8d;">}</span><br /><br />PROVIDED_TEST("basic test of swap() function with two integers")<br />{<br />&nbsp; &nbsp; int a = 53;<br />&nbsp; &nbsp; int b = 42;<br /><br />  &nbsp; mySwap(a, b);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(a, 42);<br />&nbsp; &nbsp; EXPECT_EQUAL(b, 53);<br />}<br /><br />int main()<br />{<br />&nbsp; &nbsp; runSimpleTests(ALL_TESTS);<br />&nbsp; &nbsp; return 0;<br />}</pre>
+<p>2. (<em>Pass-by-Reference Functions</em>) Now that you have some practice with pass-by-reference functions from Exercise 1, see if you can close out the the notes and recreate the functionality of today's <em>treasureHunt()</em> function from scratch, without peeking back at the notes for assistance.</p>
+<p>3. (<em>Pass-by-Reference Functions</em>) Trace through the following program by hand to see if you can determine the output it will produce. Then run compile and run the program to check your result.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br />void mystery(int&amp; b, int c, int&amp; a)<br />{<br />   a++;<br />   b--;<br />   c += a;<br />}<br /><br />int main()<br />{<br />   int a = 5;<br />   int b = 2;<br />   int c = 8;<br /><br />   mystery(c, a, b);<br />   cout &lt;&lt; a &lt;&lt; " " &lt;&lt; b &lt;&lt; " " &lt;&lt; c &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p><br />Looking for more practice problems? Be sure to consult the course reader linked at the top of today's notes.<br /><br /></p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-03
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

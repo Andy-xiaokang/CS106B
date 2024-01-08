@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursive Backtracking</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 4. Recursive Backtracking</h1>
+ <p class="subtle-heading">Thursday October 26</p>
+<hr>
+
+<p class="attribution">
+Section materials curated by Clinton Kwarteng, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>This week’s section exercises continue our exploration of recursion to tackle even more challenging and interesting problems. In particular, many of this week's section problems center around recursive backtracking, a very powerful and versatile problem solving technique.</p>
+
+<p>Remember that every week we will also be releasing a Qt Creator project containing starter code and testing infrastructure for that week's section problems. When a problem name is followed by the name of a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the Qt Creator project. Here is the zip of the section starter code:</p>
+
+<p>📦 <a href="section4_starter.zip">Starter project</a></p>
+
+<h2 id="1-win-some-lose-sum-sumcpp">1) Win some, lose sum (<code class="language-c++ highlighter-rouge"><span class="n">sum</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p><em>Topics: recursive backtracking</em></p>
+
+<p>Write a recursive function named <code class="language-c++ highlighter-rouge"><span class="n">canMakeSum</span></code> that takes a reference to a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span></code> and an <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code> target value and returns true if it is possible to have some selection of values from the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> that sum to the target value. In particular, you should be implementing a function with the following declaration</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">canMakeSum</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>For example, let's say that we executed the following code</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nums</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">};</span>
+<span class="n">canMakeSum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</code></pre></div></div>
+<p>We should expect that the call to <code class="language-c++ highlighter-rouge"><span class="n">canMakeSum</span></code> should return true. Given the values specified in <code class="language-c++ highlighter-rouge"><span class="n">nums</span></code>, we can select 1, 3, and 5 such that <code class="language-c++ highlighter-rouge"><span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">9</span></code>.</p>
+
+<p>However, let's say that we executed the following code instead</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nums</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">};</span>
+<span class="n">canMakeSum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+</code></pre></div></div>
+<p>We should expect that the call to <code class="language-c++ highlighter-rouge"><span class="n">canMakeSum</span></code> in this case should return false, since there is no possible combination of values from the vector that sum up to the target value of 8.</p>
+
+<div class="showtime" when="2023-10-27T18:00:00-07:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#cr7")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SOLUTION</span> <span class="mi">1</span>
+<span class="kt">bool</span> <span class="nf">canMakeSumHelper</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sumSoFar</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">sumSoFar</span> <span class="o">==</span> <span class="n">target</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="cm">/* Here we choose the last element in the vector.
+	 * We could have chosen any element, but the last
+	 * is the easiest and fastest method.
+	 */</span>
+	<span class="kt">int</span> <span class="n">choice</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+	<span class="n">v</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+
+	<span class="kt">bool</span> <span class="n">with</span> <span class="o">=</span> <span class="n">canMakeSumHelper</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">sumSoFar</span> <span class="o">+</span> <span class="n">choice</span><span class="p">);</span>
+	<span class="kt">bool</span> <span class="n">without</span> <span class="o">=</span> <span class="n">canMakeSumHelper</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">sumSoFar</span><span class="p">);</span>
+
+	<span class="c1">// And then we unchoose, by adding this back!</span>
+	<span class="n">v</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">choice</span><span class="p">);</span>
+
+	<span class="k">return</span> <span class="n">with</span> <span class="o">||</span> <span class="n">without</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">canMakeSum</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">canMakeSumHelper</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">SOLUTION</span> <span class="mi">2</span>
+<span class="cm">/*
+ * This solution is similar to the one above, except it uses 
+ * an additional index parameter in a vector to make the choices, 
+ * instead of removing from the vector like solution 1 did.
+ */</span>
+<span class="kt">bool</span> <span class="nf">canMakeSumHelper</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sumSoFar</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">sumSoFar</span> <span class="o">==</span> <span class="n">target</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="c1">// This is our choice now. Remember we can choose any element</span>
+	<span class="c1">// in the vector, so we choose the element at 'index'</span>
+	<span class="kt">int</span> <span class="n">choice</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+
+	<span class="kt">bool</span> <span class="n">with</span> <span class="o">=</span> <span class="n">canMakeSumHelper</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">sumSoFar</span> <span class="o">+</span> <span class="n">choice</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="kt">bool</span> <span class="n">without</span> <span class="o">=</span> <span class="n">canMakeSumHelper</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">sumSoFar</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+	
+	<span class="c1">// We don't have to add back, because we never removed!</span>
+	<span class="k">return</span> <span class="n">with</span> <span class="o">||</span> <span class="n">without</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">canMakeSum</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">canMakeSumHelper</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-change-we-can-believe-in-changecpp">2) Change We Can Believe In (<code class="language-c++ highlighter-rouge"><span class="n">change</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p><em>Topic: Recursive Backtracking</em></p>
+
+<p>In the US, as is the case in most countries, the best way to give change for any total is to use a greedy strategy – find the highest-denomination coin that’s less than the total amount, give one of those coins, and repeat. For example, to pay someone 97¢ in the US in cash, the best strategy would be to</p>
+<ul>
+  <li>give a half dollar (50¢ given, 47¢ remain), then</li>
+  <li>give a quarter (75¢ given, 22¢ remain), then</li>
+  <li>give a dime (85¢ given, 12¢ remain), then</li>
+  <li>give a dime (95¢ given, 2¢ remain), then</li>
+  <li>give a penny (96¢ given, 1¢ remain), then</li>
+  <li>give another penny (97¢ given, 0¢ remain).</li>
+</ul>
+
+<p>This uses six total coins, and there’s no way to use fewer coins to achieve the same total.</p>
+
+<p>However, it’s possible to come up with coin systems where this greedy strategy doesn’t always use the fewest number of coins. For example, in the tiny country of Recursia, the residents have decided to use the denominations 1¢, 12¢, 14¢, and 63¢, for some strange reason. So suppose you need to give back 24¢ in change. The best way to do this would be to give back two 12¢ coins. However, with the greedy strategy of always picking the highest-denomination coin that’s less than the total, you’d pick a 14¢ coin and ten 1¢ coins for a total of eleven coins. That’s pretty bad!</p>
+
+<p>Your task is to write a function</p>
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">fewestCoinsFor</span><span class="p">(</span><span class="kt">int</span> <span class="n">cents</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">coins</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+<p>that takes as input a number of cents and a Set<int> indicating the different denominations of coins used in a country, then returns the minimum number of coins required to make change for that total. In the case of US coins, this should always return the same number as the greedy approach, but in
+general it might return a lot fewer!</int></p>
+
+<p>You can assume that the set of coins always contains a 1¢ coin, so you never need to worry about the case where it’s simply not possible to make change for some total. You can also assume that there are no coins worth exactly 0¢ or a negative number of cents. Finally, you can assume that the number of cents to make change for is nonnegative.</p>
+
+<p>Makes cents? I certainly hope so.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>The idea behind both solutions is the following: if we need to make change for zero cents, the only (and, therefore, best!) option is to use 0 coins. Otherwise, we need to give back at least one coin. What’s the first coin we should hand back? We don’t know which one it is, but we can say that it’s got to be one of the coins from our options and that that coin can’t be worth more than the total. So we’ll try each of those options in turn, see which one ends up requiring the fewest coins for the remainder, then go with that choice. The code for this is really elegant and is shown here:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SOLUTION</span> <span class="mi">1</span>
+
+<span class="cm">/**
+ * Given a collection of denominations and an amount to give in change, returns
+ * the minimum number of coins required to make change for it.
+ *
+ * @param cents How many cents we need to give back.
+ * @param coins The set of coins we can use.
+ * @return The minimum number of coins needed to make change.
+ */</span>
+<span class="kt">int</span> <span class="nf">fewestCoinsFor</span><span class="p">(</span><span class="kt">int</span> <span class="n">cents</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">coins</span><span class="p">)</span> <span class="p">{</span>
+	<span class="cm">/* Base case: You need no coins to give change for no cents. */</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">cents</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="cm">/* Recursive case: try each possible coin that doesn’t exceed the
+	* total as as our first coin.
+	*/</span>
+	<span class="k">else</span> <span class="p">{</span>
+		<span class="kt">int</span> <span class="n">bestSoFar</span> <span class="o">=</span> <span class="n">cents</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Can never need this many coins;</span>
+
+		<span class="cm">/* What is this for loop doing? We use this loop to explore 
+		* all the options of coins we have. To make the change, all of 
+		* the coins in our set are valid options, so we make recursive
+		* calls, each of which chooses a coin. It is very similar to 
+		* the subset problems we've done in class, where we have two 
+		* choices(either add or don't add to the set). Here, we either
+		* add coin1 or coin2, ..., coinN.
+		*/</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">coin</span><span class="o">:</span> <span class="n">coins</span><span class="p">)</span> <span class="p">{</span>
+			<span class="c1">// If this coin doesn’t exceed the total, try using it.</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">coin</span> <span class="o">&lt;=</span> <span class="n">cents</span><span class="p">)</span> <span class="p">{</span>
+				<span class="cm">/* Use this coin in the change. We add 1 because 
+				we've used one coin
+				*/</span>
+				<span class="kt">int</span> <span class="n">numCoinsUsed</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> 
+					<span class="n">fewestCoinsFor</span><span class="p">(</span><span class="n">cents</span> <span class="o">-</span> <span class="n">coin</span><span class="p">,</span> <span class="n">coins</span><span class="p">);</span>
+				<span class="cm">/* We want to find the fewest number of coins, 
+				* so compare number of coins used when we use
+				* the current coin to the minimum number of 
+				* coins so far.
+				*/</span>
+				<span class="n">bestSoFar</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">bestSoFar</span><span class="p">,</span> <span class="n">numCoinsUsed</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="n">bestSoFar</span><span class="p">;</span>
+ 	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-weights-and-balances-weightscpp">3) Weights and Balances (<code class="language-c++ highlighter-rouge"><span class="n">weights</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p><em>Topics: recursive backtracking</em></p>
+
+<div align="center">
+I am the only child of parents who weighed,<br />
+measured, and priced everything; for whom<br />
+what could not be weighed, measured, and<br />
+priced had no existence.<br />
+—Charles Dickens, Little Dorrit, 1857
+</div>
+<p><br /></p>
+
+<p>In Dickens’s time, merchants measured many commodities using weights and a two-pan balance – a practice that continues in many parts of the world today. If you are using a limited set of weights, however, you can only measure certain quantities accurately.</p>
+
+<p>For example, suppose that you have only two weights: a 1-ounce weight and a 3-ounce weight. With these you can easily measure out 4 ounces, as shown below:</p>
+
+<!-- <div align="center" markdown="1"> --->
+<p><img src="img/balance1.png" alt="two-pan balance with unmarked weight on the left side and two weights on the right side, marked 1 and 3. The balance is level." /> <!-- {: width="30%"} --->
+<!-- </div> --></p>
+
+<p>It’s more interesting to discover that you can also measure out 2 ounces by shifting the 1-ounce weight to the other side, as follows below:</p>
+
+<div align="center">
+  <p><img src="img/balance2.png" alt="two-pan balance with weight marked 1 and unmarked weight on the left side and one weight on the right side, marked 3. The balance is level." width="30%" /></p>
+</div>
+
+<p>Write a recursive function</p>
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isMeasurable</span><span class="p">(</span><span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">weights</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+<p>that determines whether it is possible to measure out the desired target amount with a given set of weights, which is stored in the vector weights.</p>
+
+<p>As an example, the function call</p>
+<div>
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">weights</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>
+<span class="n">isMeasurable</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="p">);</span>
+</code></pre></div>  </div>
+</div>
+<p>should return <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> because it is possible to measure out two ounces using the sample weight set as illustrated in the preceding diagram. On the other hand, calling</p>
+<div>
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">weights</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>
+<span class="n">isMeasurable</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">weights</span><span class="p">);</span>
+</code></pre></div>  </div>
+</div>
+<p>should return <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code> because it is impossible to use the 1- and 3-ounce weights to add up to 5 ounces. However, the call</p>
+<div>
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">weights</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">};</span>
+<span class="n">isMeasurable</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">weights</span><span class="p">);</span>
+</code></pre></div>  </div>
+</div>
+<p>should return <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code>: you can measure the six-ounce weight by placing it and the one-ounce weight on one side of the scale and by placing the seven-ounce weight on the other.</p>
+
+<p>Here’s a function question to ponder: let’s say that you get to choose n weights. Which ones would you pick to give yourself the best range of weights that you’d be capable of measuring?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>Imagine that we start off by putting the amount to be measured (call it <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>) on the left side of the balance (as shown in the picture on the handout). This makes the target of measurement equal to n. Imagine that there is some way to reach this target <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>. If we put the weights on the scale one at a time, we can look at where we put that first weight (let’s suppose it weighs <code class="language-c++ highlighter-rouge"><span class="n">w</span></code>). It must either</p>
+<ul>
+  <li>go on the left side, making the target weight on the scale <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">+</span> <span class="n">w</span></code>,</li>
+  <li>go on the right side, making the target weight on the scale <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">-</span> <span class="n">w</span></code></li>
+</ul>
+
+<p>We've seen the first two options before, the classic with and without. In this question, there's a third option too:</p>
+<ul>
+  <li>not get used at all, leaving the target weight on the scale <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>. To see why this is the case, consider a case where you're measuring something weighing 0 ounces. You'd not need any weight to measure 0 ounces so you don't have to put anything on the scale.</li>
+</ul>
+
+<p>If it is indeed truly possible to measure <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>, then one of these three options has to be the way to do it, even if we don’t know which one it is. The question we then have to ask is whether it’s then possible to measure the new net imbalance using the weights that remain – which we can determine recursively! On the other hand, if it’s not possible to measure <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>, then no matter which option we choose, we’ll find that there’s no way to use the remaining weights to make everything balanced!</p>
+
+<p>If we’re proceeding recursively, which we are here, we need to think about our base case. There are many options we can choose from. One simple one is the following: imagine that we don’t have any weights at all, that we’re asked to see whether some weight is measurable using no weights. In what circumstances can we do that? Well, if what we’re weighing has a nonzero weight, we can’t possibly measure it – placing it on the scale will tip it to some side, but that doesn’t tell us how much it weighs. On the other hand, if what we’re weighing is completely weightless, then putting it on the scale won’t cause it to tip, convincing us that, indeed, it is weightless! So as our base case, we’ll say that when we’re down to no remaining weights, we can measure <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> precisely if <code class="language-c++ highlighter-rouge"><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span></code>. With that in mind, here’s our code:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isMeasurable</span><span class="p">(</span><span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">weights</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">weights</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">target</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// base case; no weights left to place</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="kt">int</span> <span class="n">last</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">weights</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span> <span class="c1">//using last index is fastest</span>
+		<span class="n">weights</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">weights</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+
+		<span class="c1">// "choose and explore" all of the three possibilities</span>
+		<span class="c1">// This exactly matches the analysis we did above.</span>
+		<span class="kt">bool</span> <span class="n">weightOnLeftSide</span> <span class="o">=</span> <span class="n">isMeasurable</span><span class="p">(</span><span class="n">target</span> <span class="o">+</span> <span class="n">last</span><span class="p">,</span> <span class="n">weights</span><span class="p">);</span>
+		<span class="kt">bool</span> <span class="n">weightOnRightSide</span> <span class="o">=</span> <span class="n">isMeasurable</span><span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">last</span><span class="p">,</span> <span class="n">weights</span><span class="p">);</span>
+		<span class="kt">bool</span> <span class="n">ignoreWeight</span> <span class="o">=</span> <span class="n">isMeasurable</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">weights</span><span class="p">);</span>
+		<span class="c1">// un-choose</span>
+		<span class="n">weights</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">last</span><span class="p">);</span>
+		<span class="c1">// One of these three options will work if we can measure</span>
+		<span class="c1">// the target weight.</span>
+		<span class="k">return</span> <span class="n">weightOnLeftSide</span> <span class="o">||</span> <span class="n">weightOnRightSide</span> <span class="o">||</span> <span class="n">ignoreWeight</span><span class="p">;</span>
+ 	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="4-shrink-words-shrinkcpp">4) Shrink Words (<code class="language-c++ highlighter-rouge"><span class="n">shrink</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p><em>Topics: recursive backtracking</em></p>
+
+<p>Write a recursive function named <code class="language-c++ highlighter-rouge"><span class="n">shrinkWord</span></code> that takes a <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> word and a <code class="language-c++ highlighter-rouge"><span class="n">Lexicon</span></code> of words, and shrinks the word to the smallest possible word that can be found in the Lexicon. You can think of a the lexicon as a set of all words in the English dictionary. Checkout the documentation for <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Lexicon">Lexicon</a> to learn more.</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="n">shrinkWord</span><span class="p">(</span><span class="n">string</span> <span class="n">input</span><span class="p">,</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">lex</span><span class="p">)</span> 
+</code></pre></div>  </div>
+</div>
+
+<p>The function is best described by this example below:</p>
+
+<p>Given a string <code class="language-c++ highlighter-rouge"><span class="s">"starter"</span></code>, we can shrink it to <code class="language-c++ highlighter-rouge"><span class="s">"a"</span></code> through these:
+<code class="language-c++ highlighter-rouge"><span class="n">starter</span></code> -&gt; <code class="language-c++ highlighter-rouge"><span class="n">starer</span></code> (by removing the second <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>) -&gt; <code class="language-c++ highlighter-rouge"><span class="n">stare</span></code> (by removing the second <code class="language-c++ highlighter-rouge"><span class="n">r</span></code>) -&gt; <code class="language-c++ highlighter-rouge"><span class="n">tare</span></code> (by removing <code class="language-c++ highlighter-rouge"><span class="n">s</span></code>) -&gt; <code class="language-c++ highlighter-rouge"><span class="n">are</span></code> (by removing <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>) -&gt; <code class="language-c++ highlighter-rouge"><span class="n">ae</span></code> (by removing <code class="language-c++ highlighter-rouge"><span class="n">r</span></code>) -&gt; <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> (by removing <code class="language-c++ highlighter-rouge"><span class="n">e</span></code>). Hence, we'll return <code class="language-c++ highlighter-rouge"><span class="s">"a"</span></code>. Note that all the intermediate words are english words.</p>
+
+<p>As another example, given string <code class="language-c++ highlighter-rouge"><span class="s">"baker"</span></code>, we can shrink it to <code class="language-c++ highlighter-rouge"><span class="s">"bake"</span></code> through these:
+<code class="language-c++ highlighter-rouge"><span class="n">baker</span></code> -&gt; <code class="language-c++ highlighter-rouge"><span class="n">bake</span></code> (remove <code class="language-c++ highlighter-rouge"><span class="n">r</span></code>). We can't shrink any further because if we remove a any another letter, we can't find the resulting word in the lexicon. Hence, we'll return <code class="language-c++ highlighter-rouge"><span class="s">"bake"</span></code>.</p>
+
+<p>Finally, for <code class="language-c++ highlighter-rouge"><span class="s">"fishpond"</span></code>, we can't make a single transformation. So we'll return <code class="language-c++ highlighter-rouge"><span class="s">"fishpond"</span></code>, unchanged.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>This is very similar(yes, again!) to the fewest coins problem above.
+To shrink a word, we'd to remove a letter from the word. The question
+is, which letter should we remove? This is what our backtracking 
+solution explores!</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">shrinkWord</span><span class="p">(</span><span class="n">string</span> <span class="n">input</span><span class="p">,</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">lex</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// We can't further shrink an empty word.</span>
+	<span class="c1">// Also, if current word we have now is not</span>
+	<span class="c1">// an English word(i.e. it isn't contained in </span>
+	<span class="c1">// the lexicon), that's also invalid(from the problem</span>
+	<span class="c1">// description. )</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">lex</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">input</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">string</span> <span class="n">shortestWord</span> <span class="o">=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="c1">// Remove the letter at index i and recurse!</span>
+        <span class="n">string</span> <span class="n">subword</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">string</span> <span class="n">result</span> <span class="o">=</span> <span class="n">shrinkWord</span><span class="p">(</span><span class="n">subword</span><span class="p">,</span> <span class="n">lex</span><span class="p">);</span>
+
+		<span class="c1">// Compare the words we've generated so far to </span>
+		<span class="c1">// our shortestWord. If our new word is smaller, </span>
+		<span class="c1">// we have to change our shortestWord!</span>
+		<span class="c1">// We need a special check for the empty string</span>
+		<span class="c1">// because our base case returns "" for invalid inputs.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">result</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">shortestWord</span><span class="p">.</span><span class="n">length</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">shortestWord</span> <span class="o">=</span> <span class="n">result</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">shortestWord</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-24
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

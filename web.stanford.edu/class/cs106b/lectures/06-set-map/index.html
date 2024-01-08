@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Sets and Maps</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 6. Sets and Maps</h1>
+ <p class="subtle-heading">Monday October 9</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Today we will discuss two more powerful containers, these ones that store data in an unordered format: sets and maps.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 5.4, 5.5, Class documentation for <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Set.html" title="Documentation for Set">Set</a> and <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Map.html" title="Documentation for Map">Map</a></li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/141557">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=14519440-ab3b-4e8d-95fd-b083014df240&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Set Overview</p>
+<p>2. The Stanford Set (Code)</p>
+<p>3. Key Set Operations and Operators</p>
+<p>4. Sortedness of Set Elements</p>
+<p>5. Set Iteration with For-Each Loop</p>
+<p>6. Set Application: Removing Duplicates</p>
+<p>7. Set Speediness</p>
+<p>8. Map Overview</p>
+<p>9. The Stanford Map (Code)</p>
+<p>10. Retrieving Values from Maps</p>
+<p>11. Pinging Keys That Aren't in a Map: Two Interesting Behaviors</p>
+<p>12. Aside: ISBNs and Book Mappings</p>
+<p>13. The Keys in Our Maps Are Distinct</p>
+<p>14. Associating First Names with Multiple Last Names</p>
+<p>15. Map Iteration (Keys and Values)</p>
+<p>16. Sortedness of Map Keys</p>
+<p>17. Map Application: Frequency Tracking</p>
+<p>18. Map Variable Naming Convention</p>
+<p>19. Aside: File Reading with <span class="code-title">cin</span></p>
+<p>20. Key Map Operations and Operators</p>
+<p>21. Set and Map vs. HashSet and HashMap</p>
+<p>22. What's next?</p>
+<p>23. Exercises</p>
+<p><strong><br />Set Overview</strong></p>
+<p>We continued our discussion of ADTs today, picking up straight away with sets. A set is a collection that does not allow duplicates or preserve the order in which elements are inserted. Let me unpack that statement a bit:</p>
+<ul>
+<li>Just like the sets we're familiar with from math classes, a set data structure does not allow duplicate elements. If we insert the same element into some set multiple times, the set still only contains one copy of that element. Thus, a set only ever contains either zero copies or one copy of some element.</li>
+</ul>
+<ul>
+<li>A set does not maintain the order in which elements are inserted; if we iterate over all the elements in a set, they are not guaranteed to be in the same order in which they were insert. There is no notion of each element having an index (as with vectors) and there is&nbsp; not necessarily a notion of an element's relative positioning within a set.</li>
+</ul>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) Thus, we can think of sets primarily as binary membership devices: an element is either a member of a set, or it isn't.</p>
+<p><br /><strong>The Stanford Set (Code)</strong></p>
+<p>To create a set using the Stanford C++ Libraries, we must include the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "set.h"</pre>
+<p>The syntax for creating a set is as follows. As with the other ADTs we've seen so far (vectors, grids, stacks, and queues), the Stanford set is a homogenous container. Whenever we create a set, we specify the element type for that set as a <strong>type parameter:</strong></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">Set&lt;<span style="background-color: #999999; color: #ffffff;"> <strong>DATA_TYPE</strong> </span>&gt; <span style="background-color: #999999; color: #ffffff;"> <strong>VARIABLE_NAME</strong> </span>;</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>New term!</em></span>) I mentioned today that we refer to the datatype in the above declaration as a "<strong>type parameter</strong>" or "<strong>template parameter</strong>" (mentioned around the 7:00 mark in today's lecture).</p>
+<p>(<em><span style="font-size: 10pt; background-color: #ffff99;">Important note!</span></em>) We must capitalize the 'S' in "Set" when declaring one in code. As with the other ADTs we have seen this quarter, C++ has its own built-in version of a set that uses a lowercase 's'.</p>
+<p>Here's the first example we saw of an actual set in class today:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "set.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Set</strong>&lt;<strong>string</strong>&gt; set = {"unicorn", "cupcake", "swamp", "cupcake", "unicorn", "unicorn"};<br /><br />   <strong>cout</strong> &lt;&lt; set &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "Set size: " &lt;&lt; set.size() &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"cupcake", "swamp", "unicorn"}</span><br /><span style="color: #ffffff;">Set size: 3</span></pre>
+<p>Notice that the set ignores our attempts to add multiple copies of "cupcake" and "unicorn". There is absolutely no indication in the set that we attempted to add those strings multiple times or that we only added "swamp" once.</p>
+<p>We then saw that we can use <span class="code-chonk">add()</span> and <span class="code-chonk">remove()</span> to add and remove items from a set:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "set.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Set</strong>&lt;<strong>string</strong>&gt; set = {"unicorn", "cupcake", "swamp", "cupcake", "unicorn", "unicorn"};<br /><br />   set.add("spindle");<br />   set.remove("swamp");<br /><br />   <strong>cout</strong> &lt;&lt; set &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "Set size: " &lt;&lt; set.size() &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"cupcake", "spindle", "unicorn"}</span><br /><span style="color: #ffffff;">Set size: 3</span></pre>
+<p>We also saw the <span class="code-chonk">contains()</span> function for checking whether a set contains a particular value. The function returns true or false (not a count, since sets are binary membership devices that do not allow multiple occurrences of any value).</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "set.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Set</strong>&lt;<strong>string</strong>&gt; set = {"unicorn", "cupcake", "swamp", "cupcake", "unicorn", "unicorn"};<br /><br />   set.add("spindle");<br />   set.add("spindle");<br />   set.add("spindle");<br />   set.remove("unicorn");<br /><br />   <strong>cout</strong> &lt;&lt; set.contains("unicorn") &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; set.contains("swamp") &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output (0 = false, 1 = true):</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">0<br />1</span></pre>
+<p><strong><br />Key Set Operations and Operators</strong></p>
+<p>Some of the key operations we can perform on sets include:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Member Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>add(value)</td>
+      <td>adds a value to a set, ignoring it if the set already contains the value</td>
+    </tr>
+    <tr>
+      <td>contains(value)</td>
+      <td>returns <span class="code-chonk">true</span> if the set contains the value, <span class="code-chonk">false</span> otherwise</td>
+    </tr>
+    <tr>
+      <td>remove(value)</td>
+      <td>removes the value from the set; does nothing if the value is not in the set</td>
+    </tr>
+    <tr>
+      <td>size()</td>
+      <td>returns the number of elements in the set</td>
+    </tr>
+    <tr>
+      <td>isEmpty()</td>
+      <td>returns <span class="code-chonk">true</span> if the set is empty, <span class="code-chonk">false</span> otherwise</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>The Stanford set is amenable to a variety of operators that act as aliases for the above functions. For example, <span class="code-chonk">set1 - set2</span> returns a set difference, <span class="code-chonk">set1 * set2</span> returns the intersection of two sets, and <span class="code-chonk">set += value</span> adds an element to a set. For an exhaustive list, see: <a class="inline_disabled" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Set" target="_blank" rel="noopener">Stanford Set class</a>.</p>
+<p><a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Set" target="_blank" rel="noopener"></a></p>
+<p><strong><br />Sortedness of Set Elements</strong></p>
+<p>You might have noticed in the examples above that the contents of our sets always appeared in alphabetical order when we printed them out. Behind the scenes, the Stanford set is using a data structure that keeps the elements in some kind of sorted order so that we can have really fast insertion and look-up operations.</p>
+<p>Check out what happens if we add Zoology, though:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "set.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Set</strong>&lt;<strong>string</strong>&gt; set = {"unicorn", "cupcake", "swamp", "cupcake", "unicorn", "unicorn"};<br /><br />   set.add("spindle");<br />   set.remove("swamp");<br />   set.add("Zoology");<br /><br />   <strong>cout</strong> &lt;&lt; set &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "Set size: " &lt;&lt; set.size() &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"Zoology", "cupcake", "spindle", "unicorn"}<br />Set size: 4</span></pre>
+<p>Our output is no longer in alphabetic order. It&nbsp;<em>is</em>, however, sorted using what some people call&nbsp;<strong>ASCIIbetical order</strong>. Recall from <a class="inline_disabled" href="../03-strings/index.html" target="_blank" rel="noopener">one of our earlier lectures this quarter</a> that characters in C++ are represented using ASCII values. The ASCII values for uppercase letters come before the ASCII values for lowercase letters. (For example: 'A' = 65, 'Z' = 90, 'a' = 97, and 'z' = 122.) The set uses those ASCII values to sort the strings, and so strings that start with uppercase letters end up coming before those that start with lowercase letters.</p>
+<p><strong><br />Set Iteration with For-Each Loop</strong></p>
+<p>We also saw that we can use a for-each loop to run through the elements of a set, and the elements are processed in the same order in which they appear when printing the set using <span class="code-chonk">cout &lt;&lt; set</span>:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "set.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Set</strong>&lt;<strong>string</strong>&gt; set = {"unicorn", "cupcake", "swamp", "cupcake", "unicorn", "unicorn"};<br /><br />   set.add("spindle");<br />   set.remove("swamp");<br />   set.add("Zoology");<br />   set.remove("unicorn");<br /><br />   <strong>for</strong> (<strong>string</strong> s : set)<br />   {<br />      <strong>cout</strong> &lt;&lt; "-&gt; " &lt;&lt; s &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">-&gt; Zoology<br />-&gt; cupcake<br />-&gt; spindle</span></pre>
+<p>Notice that we can't use a traditional for-loop with an index <em>i</em> to loop through the set, though, since there is no index associated with each element.</p>
+<p><br /><strong>Set Application: Removing Duplicates</strong></p>
+<p>We saw that we can use a set to detect all duplicate elements from a vector like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "set.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt; v = {"unicorn", "cupcake", "swamp", "cupcake", "unicorn", "unicorn"};<br />   <strong>Set</strong>&lt;<strong>string</strong>&gt; seen;<br /><br />   <strong>for</strong> (<strong>string</strong> s : v)<br />   {<br />      <strong>if</strong> (seen.contains(s))<br />      {<br />         <strong>cout</strong> &lt;&lt; "OoOOOh! Dupe! " &lt;&lt; s &lt;&lt; <strong>endl</strong>;<br />      }<br /><br /><span style="color: #236fa1;"><em>      // Note that if we see a duplicate in our vector, the following line doesn't</em></span><br /><span style="color: #236fa1;"><em>      // add a second copy to the set since sets don't allow duplicates.</em></span><br />      seen.add(s);<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">OoOOOh! Dupe! cupcake<br />OoOOOh! Dupe! unicorn<br />OoOOOh! Dupe! unicorn<br /></span></pre>
+<p>As a challenge problem in class, I asked how we could print all the duplicate elements in some vector, but only print each duplicate once, no matter how many times it's duplicated in the array. There are many ways to do that, but here's the solution that someone in the audience came up with today:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "set.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt; v = {"unicorn", "cupcake", "swamp", "cupcake", "unicorn", "unicorn"};<br />   <strong>Set</strong>&lt;<strong>string</strong>&gt; seen;<br />   <strong>Set</strong>&lt;<strong>string</strong>&gt; dupes;<br /><br />   <strong>for</strong> (<strong>string</strong> s : v)<br />   {<br />      <strong>if</strong> (seen.contains(s))<br />      {<br /><span style="color: #236fa1;"><em>         // Keep track of each element that we have seen more than once.</em></span><br />         dupes.add(s);<br />      }<br /><span style="color: #236fa1;"><em><br />      // Keep track of all the elements we have seen.</em></span><br />      seen.add(s);<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; dupes &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"cupcake", "unicorn"}</span></pre>
+<p>Alternatively, we could actually <em>remove</em> all duplicates from a vector by just throwing all the elements into a set, clearing the vector, and dumping the set elements back into the vector:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "set.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   Vector&lt;string&gt; v = {"unicorn", "cupcake", "swamp", "cupcake", "unicorn", "unicorn"};<br />   Set&lt;string&gt; seen;<br /><br />   <strong>for</strong> (<strong>string</strong> s : v)<br />   {<br />      seen.add(s);<br />   }<br /><br />   v.clear();<br /><br />   <strong>for</strong> (<strong>string</strong> s : seen)<br />   {<br />      v.add(s);<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; v &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"cupcake", "swamp", "unicorn"}<br /></span></pre>
+<p><strong><br />Set Speediness</strong></p>
+<p>Set operations are&nbsp;<em>really</em> fast. We will talk later this quarter about how exactly we measure the general runtime performance of algorithms, but for now, I want you to be aware that these operations are really fast -- much faster than, for example, repeatedly looping through a vector to see if some element occurs there more than once.</p>
+<p><strong><br />Map Overview</strong></p>
+<p>A&nbsp;map is an associative data structure. It maps<em> keys</em> to&nbsp;<em>values</em>&nbsp;(or, in other words, it <em>associates</em> a given key with a value). Each key in a map is distinct and maps to exactly one value. If we try to map a key to a new value, we do not get a second entry in our map; rather, we overwrite the previous association, and the key is now only associated with the new key. Here are some examples:</p>
+<ul>
+<li>We could map the social security numbers of everyone in class to their names. The social security numbers would be the <em>keys</em> in the map, and the&nbsp;<em>values</em> would be student names. After constructing such a map, we could feed it a social security number, and it would spit out the name of the person associated with that SSN.</li>
+</ul>
+<ul>
+<li>We could map the ISBNs of books to the titles of those books. ISBNs would form the <em>keys</em> in the map, and the&nbsp;<em>values</em> would be the book names. After constructing such a map, we could feed it an ISBN, and it would spit out the name of the corresponding book. We could create a similar map of ISBNs to author names.</li>
+</ul>
+<p><strong><br />The Stanford Map (Code)</strong></p>
+<p>To create a set using the Stanford C++ Libraries, we must include the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "map.h"</pre>
+<p>The syntax for creating a map is as follows. As with the other ADTs we've seen so far (vectors, grids, stacks, and queues), the Stanford map is a homogenous container, in that the keys must all be of the same type, and the value must all be of the same type (although the key type may be different from the value type). Whenever we create a map, we specify the key and value element types for that map as type parameters:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">Map&lt;<span style="background-color: #999999; color: #ffffff;"> <strong>KEY_DATA_TYPE</strong> </span>, <span style="background-color: #999999; color: #ffffff;"> <strong>VALUE_DATA_TYPE</strong> </span>&gt; <span style="background-color: #999999; color: #ffffff;"> <strong>VARIABLE_NAME</strong> </span>;</pre>
+<p>(<em><span style="font-size: 10pt; background-color: #ffff99;">Important note!</span></em>) We must capitalize the 'M' in "Map" when declaring one in code. As with the other ADTs we have seen this quarter, C++ has its own built-in version of a set that uses a lowercase 'm'.</p>
+<p>Here's the first example we saw of an actual map in class today, which maps the first names of our course staff to their last names:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>string</strong>&gt; map;<br /><br /><span style="color: #236fa1;"><em>   // Here, the keys are Julie, Clinton, and Sean. The values are Zelenski, Kwarteng,</em></span><br /><span style="color: #236fa1;"><em>   // and Szumlanski.</em></span><br />   map["Julie"] = "Zelenski";<br />   map["Clinton"] = "Kwarteng";<br />   map["Sean"] = "Szumlanski";<br /><br />   <strong>cout</strong> &lt;&lt; map &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"Clinton":"Kwarteng", "Julie":"Zelenski", "Sean":"Szumlanski"}</span></pre>
+<p>The above output uses colons to indicate what keys are mapped to which values. The value associated with "Clinton" is "Kwarteng". Another way of saying that is that the key "Clinton" maps to the value "Kwarteng".</p>
+<p><br /><strong>Retrieving Values from Maps</strong></p>
+<p>We saw that one way to look up the value associated with some key is the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// gets (and prints) the value associated with "Sean"</em></span><br /><strong>cout</strong> &lt;&lt; map["Sean"] &lt;&lt; <strong>endl</strong>;</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Szumlanski</span></pre>
+<p>Another way to achieve that is through the map's <span class="code-chonk">get()</span> function:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// gets (and prints) the value associated with "Sean"</em></span><br /><strong>cout</strong> &lt;&lt; map.get("Sean") &lt;&lt; <strong>endl</strong>;</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Szumlanski</span></pre>
+<p><br /><strong>Pinging Keys That Aren't in a Map: Two Interesting Behaviors</strong></p>
+<p>If we try to look up the value associated with some key that isn't in a map, we get two interesting behaviors:</p>
+<p>Firstly, the Stanford map will return some default value (0 for integers, the empty string for strings, and so on). (See example code below.)</p>
+<p>Secondly, if we use the <span class="code-chonk">map[key]</span> syntax for a key that is not present in our map, the Stanford map adds that key to the map and associates it with whatever default value it returns! This does <strong>not</strong> happen with the <span class="code-chonk">get(key)</span> syntax.</p>
+<p>For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>string</strong>&gt; map;<br /><br /><span style="color: #236fa1;"><em>   // Here, the keys are Julie, Clinton, and Sean. The values are Zelenski, Kwarteng,</em></span><br /><span style="color: #236fa1;"><em>   // and Szumlanski.</em></span><br />   map["Julie"] = "Zelenski";<br />   map["Clinton"] = "Kwarteng";<br />   map["Sean"] = "Szumlanski";<br /><br /><span style="color: #236fa1;"><em>   // Below, the stars (*) are printed just to show that there are no characters --</em></span><br /><span style="color: #236fa1;"><em>   // not even spaces -- in the empty string results we're getting.</em></span><br /><br /><span style="color: #236fa1;"><em>   // This prints an empty string. "Nathan" is <strong>not</strong> added to the map.</em></span><br />   <strong>cout</strong> &lt;&lt; "result: *" &lt;&lt; map.get("Nathan") &lt;&lt; "*" &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // This also prints an empty string, but "Sonia" <strong>does</strong> get added to the map.</em></span><br />   <strong>cout</strong> &lt;&lt; "result: *" &lt;&lt; map["Sonia"] &lt;&lt; "*" &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // Here, we verify the map has changed. "Sonia" has been added, but not "Nathan".</em></span><br />   <strong>cout</strong> &lt;&lt; map &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">result: **</span><br /><span style="color: #ffffff;">result: **</span><br /><span style="color: #ffffff;">{"Clinton":"Kwarteng", "Julie":"Zelenski", "Sean":"Szumlanski", "Sonia":""}</span></pre>
+<p>If desired, we can avoid the appearance that some non-existent key is associated with an empty string (or similar default value) by gating our lookups behind <span class="code-chonk">containsKey()</span> calls, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>string</strong>&gt; map;<br /><br /><span style="color: #236fa1;"><em>   // Here, the keys are Julie, Clinton, and Sean. The values are Zelenski, Kwarteng,</em></span><br /><span style="color: #236fa1;"><em>   // and Szumlanski.</em></span><br />   map["Julie"] = "Zelenski";<br />   map["Clinton"] = "Kwarteng";<br />   map["Sean"] = "Szumlanski";<br /><br />   <span style="background-color: #ffcc99;"><strong>if</strong> (map.containsKey("Sonia"))</span><br />   {<br /><span style="color: #236fa1;"><em>      // We only execute this line if "Sonia" is present in the map as a key. So,</em></span><br /><span style="color: #236fa1;"><em>      // there should be no change to the map this time.</em></span><br />      <strong>cout</strong> &lt;&lt; "result: *" &lt;&lt; map["Sonia"] &lt;&lt; "*" &lt;&lt; <strong>endl</strong>;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // The map should have only the three original associative mappings. "Sonia" was not<br /></em><em>   // added as a key this time.</em></span><br />   <strong>cout</strong> &lt;&lt; map &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"Clinton":"Kwarteng", "Julie":"Zelenski", "Sean":"Szumlanski"}</span></pre>
+<p><br /><strong>Aside: ISBNs and Book Mappings</strong></p>
+<p>We talked briefly about the possibility of mapping book titles to author names, but the problem with that is that there are many books in the world that have the same title as one another but that were written by different authors. So, we turned instead to the idea of mapping ISBNs to book names and author names. A problem there is that the latest ISBN standard uses 13 digits, which a normal int in C++ cannot handle. To get around that, we could actually just store 13-digit ISBNs as strings instead of ints.</p>
+<p>I also mentioned that it's unlikely that we would maintain multiple maps: one for mapping ISBNs to book titles, another form mapping ISBNs to the authors of those books, and so on. We would more likely create a new datatype that would allow us to bundle together a bunch of information about a book (its title, author(s), publisher, publication date, and so on). If we called that datatype BookInfo, for example, we would then map ISBNs to BookInfo values. We will actually talk later this quarter about how to bundle data together like that and create new datatypes.</p>
+<p><br /><strong>The Keys in Our Maps Are Distinct</strong></p>
+<p>We also saw that the keys in our maps form a set. So, each key in a map is associated with exactly one value. Consider, for example, the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>string</strong>&gt; map;<br /><br /><span style="color: #236fa1;"><em>   // Here, the keys are Julie, Clinton, and Sean. The values are Zelenski, Kwarteng,</em></span><br /><span style="color: #236fa1;"><em>   // and Szumlanski.</em></span><br />   map["Julie"] = "Zelenski";<br />   map["Clinton"] = "Kwarteng";<br />   map["Sean"] = "Szumlanski";<br /><br /><span style="background-color: #ffcc99;"><em>   // This overwrites the mapping of "Julie" to "Zelenski". The "Julie" key is</em></span><br /><span style="background-color: #ffcc99;"><em>   // instead mapped to "Stanford" now, and we lose the old mapping!</em></span><br />   map["Julie"] = "Stanford";<br /><br />   <strong>cout</strong> &lt;&lt; map &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "Map size: " &lt;&lt; map.size() &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"Clinton":"Kwarteng", "Julie":"Stanford", "Sean":"Szumlanski"}<br />Map size: 3</span></pre>
+<p><strong><br />Associating First Names with Multiple Last Names</strong></p>
+<p>I mentioned above that each key in a map is associated with a single value. If you want a key to be associated with multiple values, it simply cannot be done. However, the single value that a key maps to could be an <em>entire data structure</em> that holds multiple elements. For example, if we have a group of people where multiple people share some first name, we could do something like this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>Vector</strong>&lt;<strong>string</strong>&gt;&gt; map;<br /><br /><span style="color: #236fa1;">   <em>// <strong>Super Important:</strong><br />   // Notice the need for the &amp; to create references in the lines below!</em></span><br /><br /><em><span style="color: #236fa1;">   // We know that initially, "Julie" is not in the map. However, the brackets</span></em><br /><em><span style="color: #236fa1;">   // syntax will automatically associate that key with an empty vector of strings.</span></em><br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt;<strong>&amp;</strong> julieNames = map["Julie"];<br /> &nbsp; julieNames.add("Zelenski");<br /> &nbsp; julieNames.add("Stanford");<br /><br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt;<strong>&amp;</strong> chrisNames = map["Chris"];<br />   chrisNames.add("Gregg");<br /> &nbsp; chrisNames.add("Piech");<br /><br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt;<strong>&amp;</strong> nickNames = map["Nick"];<br /> &nbsp; nickNames.add("Troccoli");<br /> &nbsp; nickNames.add("Parlante");<br /><br />   <strong>cout</strong> &lt;&lt; map &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // Notice that there are only three values in the map, not size!</em></span><br /><span style="color: #236fa1;"><em>   // Each <strong>vector</strong> is a value, and there are only three vectors here.</em></span><br />   <strong>cout</strong> &lt;&lt; "Map size: " &lt;&lt; map.size() &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"Chris":{"Gregg", "Piech"}, "Julie":{"Zelenski", "Stanford"}, "Nick":{"Troccoli", "Parlante"}}<br />Map size: 3</span></pre>
+<p>Here is an alternative approach the eliminates the intermediary vector variables:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>Vector</strong>&lt;<strong>string</strong>&gt;&gt; map;<br /><br />   <span style="background-color: #ffcc99;">// We know map[key] returns a vector. We can just call .add() on it directly!</span><br />   map["Julie"].add("Zelenski");<br />   map["Julie"].add("Stanford");<br /> &nbsp; map["Chris"].add("Gregg");<br /> &nbsp; map["Chris"].add("Piech");<br /> &nbsp; map["Nick"].add("Troccoli");<br /> &nbsp; map["Nick"].add("Parlante");<br /><br />   <strong>cout</strong> &lt;&lt; map &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // Notice that there are only three values in the map, not size!</em></span><br /><span style="color: #236fa1;"><em>   // Each <strong>vector</strong> is a value, and there are only three vectors here.</em></span><br />   <strong>cout</strong> &lt;&lt; "Map size: " &lt;&lt; map.size() &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"Chris":{"Gregg", "Piech"}, "Julie":{"Zelenski", "Stanford"}, "Nick":{"Troccoli", "Parlante"}}<br />Map size: 3</span></pre>
+<p><strong><br />Map Iteration (Keys and Values)</strong></p>
+<p>As with sets, the keys in a map are not associated with a numeric index, so we can't iterate over a map using a traditional integer-based for-loop. We can, however, use for-each loops to iterate over the keys and values like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>Vector</strong>&lt;<strong>string</strong>&gt;&gt; map;<br /><br />   map["Julie"].add("Zelenski");<br />   map["Julie"].add("Stanford");<br /> &nbsp; map["Chris"].add("Gregg");<br /> &nbsp; map["Chris"].add("Piech");<br /> &nbsp; map["Nick"].add("Troccoli");<br /> &nbsp; map["Nick"].add("Parlante");<br /><br />   <strong>cout</strong> &lt;&lt; "Keys:" &lt;&lt; <strong>endl</strong>;<br />   <strong>for</strong> (<strong>string</strong> s : map.keys())<br />   {<br />      <strong>cout</strong> &lt;&lt; " - " &lt;&lt; s &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; <strong>endl</strong> &lt;&lt; "Values:" &lt;&lt; <strong>endl</strong>;<br /><strong>   for</strong> (<strong>Vector</strong>&lt;<strong>string</strong>&gt; s : map.values())<br />   {<br /><strong>      cout</strong> &lt;&lt; " - " &lt;&lt; s &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Keys:<br /> - Chris<br /> - Julie<br /> - Nick<br /><br />Values:<br /> - {"Gregg", "Piech"}<br /> - {"Zelenski", "Stanford"}<br /> - {"Troccoli", "Parlante"}<br /></span></pre>
+<p><strong><br />Sortedness of Map Keys</strong></p>
+<p>You might notice that the keys in our map are printed in ASCIIbetical order, just as the elements in our sets. Also much like our sets, the insertion and lookup operations for the Stanford map are much more efficient than, say, looping through an entire vector to see if some key is present. (More on just how fast those operations are in a few days, when we discuss runtime analysis using Big-O notation.)</p>
+<p><br /><strong>Map Application: Frequency Tracking</strong></p>
+<p>We saw that maps are great for tracking how many times a key occurs in some data set. The following program opens a file (poem.txt) and maps each word in the file to its frequency of occurrence -- a map of strings to integers.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "filelib.h"<br />#include "map.h"<br />#include "strlib.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>bool</strong> getFrequencies(<strong>string</strong> filename, <strong>Map</strong>&lt;<strong>string</strong>, <strong>int</strong>&gt;&amp; map)<br />{<br />   <strong>ifstream</strong> ifs;<br /><br />   <strong>if</strong> (!openFile(ifs, filename))<br />   {<br />      <strong>cout</strong> &lt;&lt; "Failed to open file in getFrequencies(): " &lt;&lt; filename &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong> false;<br />   }<br /><br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt; lines = readLines(ifs);<br />   <strong>for</strong> (<strong>string</strong> line : lines)<br />   {<br />      <strong>Vector</strong>&lt;<strong>string</strong>&gt; words = stringSplit(line, " ");<br /> &nbsp; &nbsp; &nbsp;<strong>for</strong> (<strong>string</strong> word : words)<br />      {<br /><span style="color: #236fa1;"><em>         // Note that map.get(word)++ would <strong>not</strong> work here.</em></span><br />         map[word]++;<br /><br /><em><span style="color: #236fa1;">         // We could have done the following, but since map[word] gives us a 0</span></em><br /><em><span style="color: #236fa1;">         // for any key not in the map, the line above accomplishes our goal</span></em><br /><em><span style="color: #236fa1;">         // more succinctly.</span></em><br /><em><span style="color: #236fa1;">         //</span></em><br /><em><span style="color: #236fa1;">         //    if (map.contains(word))</span></em><br /><em><span style="color: #236fa1;">         //    {</span></em><br /><em><span style="color: #236fa1;">         //       int freq = map.get(word);</span></em><br /><em><span style="color: #236fa1;">         //       map[word] = freq + 1;</span></em><br /><em><span style="color: #236fa1;">         //    }</span></em><br /><em><span style="color: #236fa1;">         //    else</span></em><br /><em><span style="color: #236fa1;">         //    {</span></em><br /><em><span style="color: #236fa1;">         //       map[word] = 1;</span></em><br /><em><span style="color: #236fa1;">         //    }</span></em><br />      }<br />   }<br /><br />   <strong>return</strong> true;<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>int</strong>&gt; wordToFrequencyMap;<br />   getFrequencies("poem.txt", wordToFrequencyMap);<br /><br /><em><span style="color: #236fa1;">   // Print occurrence frequencies.</span></em><br />   <strong>for</strong> (<strong>string</strong> s : wordToFrequencyMap.keys())<br />   {<br />      <strong>cout</strong> &lt;&lt; s &lt;&lt; ": " &lt;&lt; wordToFrequencyMap.get(s) &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>poem.txt</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee;">roses are red<br />butterflies are beautiful<br />covfefe</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">are<span style="color: #ffffff;">: 2</span><br />beautiful<span style="color: #ffffff;">: 1</span><br />butterflies: 1<br />covfefe<span style="color: #ffffff;">: 1</span><br />red<span style="color: #ffffff;">: 1</span><br />roses<span style="color: #ffffff;">: 1</span></span></pre>
+<p>Of course, we see the keys are printed in ASCIIbetical order again.</p>
+<p>We made a minor modification to print all the words that occur in <a class="inline_disabled" href="https://www.gutenberg.org/cache/epub/45839/pg45839.txt" target="_blank" rel="noopener">Bram Stoker's <em>Dracula</em></a><em> </em>more than 100 times:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// This constant declaration allows us to avoid a magic number in our code below.</em></span><strong><br /><span style="background-color: #ffcc99;">const int</span></strong><span style="background-color: #ffcc99;"> FREQUENCY_THRESHOLD = 100;</span><br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>int</strong>&gt; wordToFrequencyMap;<br />   getFrequencies("<span style="background-color: #ffcc99;">dracula.txt</span>", wordToFrequencyMap);<br /><br />   <strong>for</strong> (<strong>string</strong> s : wordToFrequencyMap.keys())<br />   {<br />      <span style="background-color: #ffcc99;"><strong>if</strong> (wordToFrequencyMap.get(s) &gt; FREQUENCY_THRESHOLD)</span><br />      {<br />         <strong>cout</strong> &lt;&lt; s &lt;&lt; ": " &lt;&lt; wordToFrequencyMap.get(s) &lt;&lt; <strong>endl</strong>;<br />      }<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p><br /><strong>Map Variable Naming Convention</strong></p>
+<p>A common naming convention for map variable names in industry is to frame them in terms of what the keys and values represent. For example, if we have a map where the keys are ISBNs and the values are the book titles associated with those ISBNs, we might name such a map <span class="code-chonk">isbnToTitleMap</span>.</p>
+<p><br /><strong>Aside: File Reading with <span class="code-title">cin</span></strong></p>
+<p>When coding up the above example in class, I actually used the <span class="code-chonk">&gt;&gt;</span> operator to read from the input file. Let's no worry about that for the purposes of this class. :) We'll stick to the Stanford libraries when reading from files this quarter.</p>
+<p><strong><br />Key Map Operations and Operators</strong></p>
+<p>Some of the key operations we can perform on maps include:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Member Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>clear()</td>
+      <td>removes all key/value pairs from the map</td>
+    </tr>
+    <tr>
+      <td>containsKey(key)</td>
+      <td>returns <span class="code-chonk">true</span> if the map contains a value for the given key, <span class="code-chonk">false</span> otherwise</td>
+    </tr>
+    <tr>
+      <td>map[key]</td>
+      <td>returns the value mapped to from the given key; if key is not in the map, <strong>adds it</strong> with the default value (e.g., <span class="code-chonk">0</span> or <span class="code-chonk">""</span>)</td>
+    </tr>
+    <tr>
+      <td>get(key)</td>
+      <td>returns the value mapped to from the given key; if key is not in the map, returns the default value for the value type, but does <strong>not</strong> add it to the map</td>
+    </tr>
+    <tr>
+      <td>isEmpty()</td>
+      <td>returns <span class="code-chonk">true</span> if the map contains no key/value pairs (size 0), <span class="code-chonk">false</span> otherwise</td>
+    </tr>
+    <tr>
+      <td>keys()</td>
+      <td>returns a vector copy of all keys in the map</td>
+    </tr>
+    <tr>
+      <td>map[key] = value</td>
+      <td>adds a mapping from the given key to the given value; if the key already exists, replaces its value with the given one</td>
+    </tr>
+    <tr>
+      <td>put(key, value)</td>
+      <td>identical to <span class="code-chonk">map[key] = value</span></td>
+    </tr>
+    <tr>
+      <td>remove(key)</td>
+      <td>removes any existing mapping for the given key (ignored if the key doesn't exist in the map)</td>
+    </tr>
+    <tr>
+      <td>size()</td>
+      <td>returns the number of key/value pairs in the map</td>
+    </tr>
+    <tr>
+      <td>toString()</td>
+      <td>returns a string representing the map; for example: <span class="code-chonk">{"are":2, "beautiful":1}</span></td>
+    </tr>
+    <tr>
+      <td>values()</td>
+      <td>returns a vector copy of all values in the map</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>For an exhaustive list, see: <a class="inline_disabled" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Map" target="_blank" rel="noopener">Stanford Map class</a>.</p>
+<p><br /><strong>Set and Map vs. HashSet and HashMap</strong></p>
+<p>In class today, someone mentioned they had seen that the Stanford C++ Libraries contain a HashSet and a HashMap, and they asked how those differ from today's Set and Map. The main difference (which you do not have to know at this time) is that the Set and Map keep their elements/keys in sorted order, whereas the HashSet and HashMap do not. There is a tiny performance hit involved with that, meaning that the Set and Map operations are slightly slower than those of the HashSet and HashMap, but all four of these ADTs offer incredibly fast insertion and lookup operations, and the runtime difference between the hash versions and the non-hash version is so tiny that it probably won't be apparent to us at all this quarter in the programs we write.</p>
+<p><br /><strong>What's next?</strong></p>
+<p>In our next class, we will shift gears a bit and talk about an intense new topic: recursion. We will stay with that topic for about two weeks, aside from a day we will spend discussing a formal technique for runtime analysis using Big-O notation.</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. When we run the program below, we see that the map[key] syntax adds an empty vector for each of the keys we ping: "Chris", "Julie", and "Nick". Why do those vectors not contain the last names we attempted to add to them?&nbsp;</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>Vector</strong>&lt;<strong>string</strong>&gt;&gt; map;<br /><br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt; julieNames = map["Julie"];<br /> &nbsp; julieNames.add("Zelenski");<br /> &nbsp; julieNames.add("Stanford");<br /><br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt; chrisNames = map["Chris"];<br />   chrisNames.add("Gregg");<br /> &nbsp; chrisNames.add("Piech");<br /><br />   <strong>Vector</strong>&lt;<strong>string</strong>&gt; nickNames = map["Nick"];<br /> &nbsp; nickNames.add("Troccoli");<br /> &nbsp; nickNames.add("Parlante");<br /><br />   <strong>cout</strong> &lt;&lt; map &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "Map size: " &lt;&lt; map.size() &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">{"Chris":{}, "Julie":{}, "Nick":{}}<br />Map size: 3</span></pre>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution to Exercise #1:</strong> <span style="color: #ced4d9; background-color: #ced4d9;">We are not using reference variables when retrieving the vectors, so we are actually just getting copies of those vectors in main() and operating on those. For the fix, see the working example from the section of lecture notes above titled, "Associating First Names with Multiple Last Names."</span></span></p>
+<p>2. Consider the following program (from today's lecture notes) and its corresponding output:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "map.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Map</strong>&lt;<strong>string</strong>, <strong>Vector</strong>&lt;<strong>string</strong>&gt;&gt; map;<br /><br />   map["Julie"].add("Zelenski");<br />   map["Julie"].add("Stanford");<br /> &nbsp; map["Chris"].add("Gregg");<br /> &nbsp; map["Chris"].add("Piech");<br /> &nbsp; map["Nick"].add("Troccoli");<br /> &nbsp; map["Nick"].add("Parlante");<br /><br />   <strong>cout</strong> &lt;&lt; "Keys:" &lt;&lt; <strong>endl</strong>;<br />   <strong>for</strong> (<strong>string</strong> s : map.keys())<br />   {<br />      <strong>cout</strong> &lt;&lt; " - " &lt;&lt; s &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; <strong>endl</strong> &lt;&lt; "Values:" &lt;&lt; <strong>endl</strong>;<br /><strong>   for</strong> (<strong>Vector</strong>&lt;<strong>string</strong>&gt; s : map.values())<br />   {<br /><strong>      cout</strong> &lt;&lt; " - " &lt;&lt; s &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Keys:<br /> - Chris<br /> - Julie<br /> - Nick<br /><br />Values:<br /> - {"Gregg", "Piech"}<br /> - {"Zelenski", "Stanford"}<br /> - {"Troccoli", "Parlante"}<br /></span></pre>
+<p>Modify the program's loops so that it outputs all names using the format <span class="code-chonk">firstName lastName</span>, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Chris Gregg<br />Chris Piech<br />Julie Zelenski<br />Julie Stanford<br />Nick Troccoli<br />Nick Parlante</span></pre>
+<p>3. Consider the <span class="code-chonk">getFrequencies()</span> function from today's lecture notes. Why would replacing <span class="code-chonk">map[word]++</span> with <span class="code-chonk">map.get(word)++</span> cause the code to break?</p>
+<p>4. Modify the <span class="code-chonk">getFrequencies()</span> function so that it inverts the map it produces (mapping frequencies to words rather than mapping words to frequencies) and therefore allows us to print words in ascending order by frequency of occurrence (since the map sorts its keys). In doing so, keep in mind that multiple strings might occur the same number of times in some text. Be sure not to lose any words from the map. (So, you might&nbsp; actually want to map frequencies to <em>vectors</em> of strings.)</p>
+<p>5. As always, after glancing through today's notes, take at least a 15- to 30-minute break, and then come back to your computer and try to replicate the functionality of those programs without referring back to the notes. (E.g., write a function that removes all duplicate elements from a vector. Write various functions that populate sets and maps, and print the results you get from performing various operations on those data structures.)</p>
+<p>6. As always, the textbook and this week's section handout are chock full of great exercises to reinforce this material.</p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-10
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

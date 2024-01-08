@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Voting Power</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Voting Power</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><blockquote class="alert-success alert text-center">
+  <h2 id="-november-7th-democracy-day-">🖐🏿🖐🏼 November 7th: <a href="https://democracyday.stanford.edu/">Democracy Day</a> 🖐🏻🖐🏽</h2>
+  <p>Register, research, volunteer ➟ <a href="https://www.stanfordvotes.org/">Stanford Votes</a>
+<br /><small><em>"It's not the voting that's democracy; it's the counting"</em> – Tom Stoppard, Jumpers</small></p>
+</blockquote>
+
+<h2 id="block-voting-systems">Block voting systems</h2>
+<p>It's said that "every vote counts," but does every vote count equally? A block voting system such as the U.S. Electoral College makes for an interesting case study in understanding the relative voting power of a system of variably-sized block votes.</p>
+
+<p>In a block voting system, each block has an assigned number of votes, and the votes for one block are cast in unison. In the U.S. electoral system, California has a block of 55 votes while New Mexico has 5. Does this mean that California wields 10 times the influence of New Mexico in affecting the election outcome? Let's explore further!</p>
+
+<p>Define a <em>coalition</em> to be a group of blocks that all vote for the same candidate.  A set of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> voting blocks can form <code>2<sup>n</sup></code> distinct coalitions. Some of those coalitions would win the election, others would lose. One measure of a block's importance or voting "power" is the percentage of coalitions in which that block's vote is critical to winning the election. A <strong>critical</strong> or <strong>swing</strong> vote is one that changes the election outcome, i.e. including this block in the coalition tips the scales, changing what was a losing coalition into a winner. The count of coalitions for which a block has a critical vote is used to compute its <strong>Banzhaf Power Index</strong>, a measure of the voting power wielded by the block.</p>
+
+<h2 id="banzhaf-power-index">Banzhaf Power Index</h2>
+<p>For a given voting block B, we count the coalitions in which B has a critical vote by identifying winning coalitions in which B can participate but in which that coalition would not win if B does not join. B joining the coalition supplies a critical vote that swings the election outcome.</p>
+
+<p>Consider this example system of three blocks:</p>
+
+<table class="table-condensed table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Block ID</th>
+      <th style="text-align: center">Block Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Lions</td>
+      <td style="text-align: center">50</td>
+    </tr>
+    <tr>
+      <td>Tigers</td>
+      <td style="text-align: center">49</td>
+    </tr>
+    <tr>
+      <td>Bears</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>First let's enumerate the eight possible coalitions that could form: <code class="language-c++ highlighter-rouge"><span class="n">Lions</span><span class="o">+</span><span class="n">Tigers</span><span class="o">+</span><span class="n">Bears</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Lions</span><span class="o">+</span><span class="n">Tigers</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Lions</span><span class="o">+</span><span class="n">Bears</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Tigers</span><span class="o">+</span><span class="n">Bears</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Lions</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Tigers</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Bears</span></code>, <code class="language-c++ highlighter-rouge"><span class="p">{}</span></code> (the empty coalition).</p>
+
+<p>Winning an election requires a strict majority (i.e. more than half of the total votes). In this example, there are 100 total votes, thus to win the election, a coalition must amass 51 or more votes.</p>
+
+<p>Of the eight possible coalitions, three are winning coalitions: <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">T</span><span class="o">+</span><span class="n">B</span></code> (100 votes), <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">T</span></code> (99 votes), and <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">B</span></code> (51 votes).</p>
+
+<p>For each winning coalition, consider which of its blocks contribute a critical vote:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Lions</span></code> has a critical vote in <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">T</span><span class="o">+</span><span class="n">B</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">T</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">B</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Tigers</span></code> has a critical vote in <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">T</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Bears</span></code> has a critical vote in <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">B</span></code></li>
+</ul>
+
+<p>A block supplies a critical vote if its support for the coalition changes the election outcome.  A winning coalition would no longer be winning if a critical voter left the coalition. Note that <code class="language-c++ highlighter-rouge"><span class="n">Lions</span></code> is a critical vote for the coalition <code class="language-c++ highlighter-rouge"><span class="n">L</span><span class="o">+</span><span class="n">T</span><span class="o">+</span><span class="n">B</span></code>, but neither <code class="language-c++ highlighter-rouge"><span class="n">Tigers</span></code> nor <code class="language-c++ highlighter-rouge"><span class="n">Bears</span></code> is.</p>
+
+<p>Counting the critical votes for each block gives us the following data:</p>
+
+<table class="table-condensed table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Block ID</th>
+      <th style="text-align: center">Critical Votes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Lions</td>
+      <td style="text-align: center">3</td>
+    </tr>
+    <tr>
+      <td>Tigers</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td>Bears</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <strong>Banzhaf Power Index</strong> expresses a block's voting power as the percentage of critical votes that this block has out of all total critical votes in the system. To convert from the count of critical votes to the Power Index, sum all critical votes in the system and compute the percentage per block.  For example, this system has 5 total critical votes of which <code class="language-c++ highlighter-rouge"><span class="n">Lions</span></code> have 3, so <code class="language-c++ highlighter-rouge"><span class="n">Lions</span></code> control 3/5 or 60% of the critical votes. The table below shows the power indexes for the example system:</p>
+
+<table class="table-condensed table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Block ID</th>
+      <th style="text-align: center">Banzhaf Power Index</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Lions</td>
+      <td style="text-align: center">60%  (= 3/5)</td>
+    </tr>
+    <tr>
+      <td>Tigers</td>
+      <td style="text-align: center">20%  (= 1/5)</td>
+    </tr>
+    <tr>
+      <td>Bears</td>
+      <td style="text-align: center">20%  (= 1/5)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Comparing relative percentages shows the difference in voting power among the blocks.</p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">Tigers</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Bears</span></code> have equivalent voting power, despite the <code class="language-c++ highlighter-rouge"><span class="n">Tigers</span></code>' much larger block count. The small uptick in block count for the <code class="language-c++ highlighter-rouge"><span class="n">Lions</span></code> gives it three times more voting power than the <code class="language-c++ highlighter-rouge"><span class="n">Tigers</span></code>. Apparently, the lion's share of the votes really does go the <code class="language-c++ highlighter-rouge"><span class="n">Lions</span></code>! (sorry… we could not resist)</p>
+
+<h2 id="your-task">Your task</h2>
+<p>You are to write the function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">computePowerIndexes</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">blockT</span><span class="o">&gt;&amp;</span> <span class="n">blocks</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>which receives a Vector of size N that contains all of the blocks in the system. A <code class="language-c++ highlighter-rouge"><span class="n">blockT</span></code> is a struct containing two fields, the block's id string and its block count.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">blockT</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">id</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The function returns a Map of size N which associates each block id with the Banzhaf power index for that block.  Calling <code class="language-c++ highlighter-rouge"><span class="n">computePowerIndexes</span></code> on the vector of blockTs <code class="language-c++ highlighter-rouge"><span class="p">{</span> <span class="p">{</span><span class="s">"Lions"</span><span class="p">,</span><span class="mi">50</span><span class="p">},</span> <span class="p">{</span><span class="s">"Tigers"</span><span class="p">,</span><span class="mi">49</span><span class="p">},</span> <span class="p">{</span><span class="s">"Bears"</span><span class="p">,</span><span class="mi">1</span><span class="p">}</span> <span class="p">}</span></code> returns a map with the entries shown in the table above (i.e. <code class="language-c++ highlighter-rouge"><span class="n">map</span><span class="p">[</span><span class="s">"Lions"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">60</span></code>, and so on for each block id).</p>
+
+<p>Although the explanation above has described the process in terms of enumerating the coalitions and then determining which participating blocks are critical to each, it is more straightforward to structure the code to count the critical votes specific to a target block and repeat that process for all blocks. Here is our suggestion:</p>
+<ul>
+  <li>Choose a target block for which you want to count its critical votes.
+    <ul>
+      <li>Set aside the target block and recursively explore the coalitions that can be formed from the remaining blocks, not including the target. As you form a coalition, do not store the collection of participating blocks, just track the amassed vote total.</li>
+      <li>Once a coalition is formed and you know its vote total, now consider the impact of the target block's participation. Without the target block, does the coalition lose, and with the target block, does the coalition win? If the answer to <strong>both</strong> of these questions is yes, then the target block is a critical vote for this coalition.</li>
+      <li>Repeat the above two steps to explore all possible coalitions and tally those for which target is a critical vote.</li>
+    </ul>
+  </li>
+  <li>Now choose a different block as the target and repeat the process. Continue until all blocks have had a turn as target.</li>
+  <li>After having tallied all critical votes, the conversion to percentage per block is simple looping and arithmetic.</li>
+</ul>
+
+<p>After testing and debugging your function, predict what you expect to be the Big O of the <code class="language-c++ highlighter-rouge"><span class="n">computePowerIndex</span></code> function. Then use the timing operation to measure the execution time over 5 or more different sizes chosen to confirm your prediction. Choose sizes to fit your hardware — big enough to be measurable/stable but not so long that you fall asleep waiting.  Try to set your largest operation so that it completes in under a minute or so.</p>
+
+<p>Answer these questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q7" class="question alert alert-warning">
+  <p><strong>Q7</strong>. What is the Big O of <code class="language-c++ highlighter-rouge"><span class="n">computePowerIndex</span></code>? Include your timing data and explain how it supports your reasoning.</p>
+</div>
+
+<div id="Q8" class="question alert alert-warning">
+  <p><strong>Q8</strong>. Use the Big O and timing data to estimate how long it would take to compute the power index for the 51 voting blocks in the U.S. Electoral College.</p>
+</div>
+
+<h2 id="notes">Notes</h2>
+<ul>
+  <li><strong>Ties</strong>. To win the election, a coalition must earn a strict majority of the votes. A tie is not considered a winning coalition.</li>
+  <li><strong>Rounding</strong>. We calculate the power index as an integer which is a rounded value (well, to be more correct about what happens, the decimal portion is <em>truncated</em>). The sum over all blocks may be less than the total 100% because of this truncation. For example, three blocks each holding a third of voting power (33.333 %) would truncate to power indexes of 33 each and sum to 99. This is expected behavior and nothing to worry about.</li>
+  <li>The recursive insight is the <strong>classic include/exclude pattern</strong> used for subset exploration. Starting with similar code you've seen in lecture/section/warmup will be a good start, but you'll need to modify some of the details to add the housekeeping and counting required for this problem.
+<a name="efficiency"></a></li>
+  <li><strong>Efficiency</strong>. The exhaustive recursion to try all subsets is computationally expensive. Here are a few things to tame its resource-hungry nature:
+    <ul>
+      <li>As soon as it is apparent that a coalition is going to win regardless of whether or not the target block participates, there is no need to further explore that path. The target block cannot be a critical vote in this coalition.</li>
+      <li>Be thoughtful about use of ADTs and take care to avoid unneeded copy operations (expensive!). A data structure is copied when passed by value (not reference) or returned from a function. A few copies here or there is no problem, but making a copy on every single recursive call of the entire exploration? No bueno!</li>
+      <li>Furthermore, do <strong>not</strong> attempt to first construct the full power set of all coalitions (subsets) and then process the coalitions. Given a voting system with even a modest number of blocks, this would consume a prohibitive amount of memory. Instead you must explore the coalitions one at a time: assemble a coalition, test it, and then un-choose and backtrack to consider other choices in forming another coalition. At any one time, there is only one coalition being formed/stored.</li>
+      <li>Counting critical votes will make a <strong>lot</strong> of recursive calls, which means it is extra important that within each recursive call that you do not do expensive operations such as make a copy of the input <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> or edit the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> contents by removing and inserting elements! Given a larger input <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>, these expensive operations will slow your function to an absolute crawl.  One technique shown in section/lecture examples was to preserve the one original <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> as-is and use an index to track your progress through the recursive calls. Review the code for subset sum from the <a href="warmup.html">warmup</a> as one example. This makes a huge difference in efficiency!</li>
+      <li>As a point of reference, our (straightforward, no-tricks) solution running on a vector of 24 blocks completes in about 5 seconds on a modestly-equipped Mac. If your code is taking much much longer, it could indicate you have something amiss. Post to Ed or bring it to the Lair and we can help.</li>
+    </ul>
+  </li>
+  <li><strong>Duplicates/re-calculating</strong>. Two or more blocks in a system can have the same number of votes; the number of critical votes for blocks with equal numbers of votes will be the same. You do not have to do something clever to avoid this repetition; you may compute the number of critical votes for each block anew.  If you are eager to be clever about it, consider tackling the <a href="voting.html#extension">extension</a>.</li>
+  <li><strong>Helper/wrapper functions</strong>. There is a firm requirement that the function <code class="language-c++ highlighter-rouge"><span class="n">computePowerIndexes</span></code> is implemented to exactly match the prototype above. You are free to decide the names and parameters of any additional helper/wrapper functions you use. You will almost certainly need at least one helper function.</li>
+</ul>
+
+<h2 id="references">References</h2>
+<ul>
+  <li>The Banzhaf Power Index originated in a lawsuit raised by John Banzhaf challenging the fairness of a block-voting system used in Nassau County, New York. He argued that the system with block counts of <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">}</span></code> disenfranchised the three smallest blocks, as they never cast a critical vote and had zero voting power! <a href="https://en.wikipedia.org/wiki/Banzhaf_power_index">Wikipedia: Banzhaf Power Index</a></li>
+  <li>Banzhaf making recent news as applied to analyzing <a href="https://blog.coinfund.io/are-blockchain-voters-dummies-4a89a376de69">blockchain voting systems</a>.</li>
+</ul>
+
+<h2 id="extension">Extension</h2>
+<p>Exponential problems can be a tough nut to efficiently crack. The approach we are using to solve the problem repeats many calculations, which further bogs it down. Research how you could apply techniques such as <a href="https://en.wikipedia.org/wiki/Memoization">memoization</a>, <a href="https://en.wikipedia.org/wiki/Dynamic_programming">dynamic programming</a>, or <a href="https://brukhman.substack.com/p/efficient-computation-of-the-banzhaf">generating functions</a> to achieve a more efficient implementation.</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-26
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

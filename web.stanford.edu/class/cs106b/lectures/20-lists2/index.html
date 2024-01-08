@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B More Linked Lists</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 20. More Linked Lists</h1>
+ <p class="subtle-heading">Friday November 10</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>In today's lecture we will continue to explore linked lists and will examine a number of useful "advanced" linked list operations that will round out our linked list toolkit.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 14.2 - 14.4</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/144535">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=90851998-226e-4f8b-b646-b083014df3d9&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><strong><br />Contents</strong></p>
+<p>1. Tail Pointers</p>
+<p>2. Maintaining a Tail Pointer: Runtime Implications</p>
+<p>3. Doubly-Linked Lists</p>
+<p>4. Implementing Stacks and Queues with Linked Lists</p>
+<p>5. Head Insertion and Deletion While Maintaining Tail Pointers</p>
+<p>6. LinkedQueue</p>
+<p>7. Member Functions with <span class="code-chonk">const</span></p>
+<p>8. What's next?</p>
+<p>9. Exercises</p>
+<p><strong><br />Tail Pointers</strong></p>
+<p>After a brief review of some basic linked list terminology, we talked about runtimes for inserting elements at the head and tail of a linked list.</p>
+<p>As we saw last time, head insertion is an O(1) operation. Regardless of how long our linked list is,<span> adding a new element to the beginning of our list is simply a matter of creating a new node, setting its <span class="code-chonk">next</span> pointer to the old head of our linked list, and setting the head to point to our newly created node. All of that can be done in O(1) time.</span></p>
+<p>The tail insertion function we saw last time had a linear runtime, but today we explored an idea for speeding that up: maintaining a pointer not just to the head of a linked list, but also to the tail! If we do that, we can achieve O(1) insertion at the tail of our list: we just set the tail's <span class="code-chonk">next</span> pointer to a new node, then move the tail pointer forward. Voila! This is a ✨dramatic✨ improvement in runtime, and it only costs us two things: (1) the memory associated with maintaining a tail pointer (typically just 8 bytes in C++) and (2) the complexity and effort associated with writing code that correctly keeps track of the tail pointer.</p>
+<p>Maintaining a tail pointer actually even makes our head insertion function more complex. That's because if we pass an empty list to our head insertion function, the new node we create will not only be the first node in the list, but also the last. If we have just one node in our list, it's both the head and the tail -- and so we need our head insertion function to be able to update both our head and tail pointers. (The code for this is included in the notes below, but before we got to coding those functions up in class, we continued with our conceptual exploration of these topics.)</p>
+<p><br /><strong>Maintaining a Tail Pointer: Runtime Implications</strong></p>
+<p>We then reviewed the runtimes associated with insertion and deletion at both the head and tail of a linked list.</p>
+<p>Note that if someone asked what the runtime is for insertion at the tail of a linked list, a precise answer would be to say, "It depends. If we maintain a tail pointer, we can do that in O(1) time. If not, it takes O(n) time."</p>
+<p>Note that deletion at the tail of a linked list is O(n), even if we maintain a pointer to the tail of the list. With a tail pointer, we could certainly <span class="code-chonk">delete</span> the dynamically allocated tail node in O(1) time, but we would then have to move the tail pointer back by one node in order to keep that pointer current -- and we can't do that in a traditional linked list. We have to start at the beginning of the list and loop forward until we find that next-to-last node, which will take O(n) time.</p>
+<p>A common proposal I hear to get around that is to simply maintain a pointer to the next-to-last node, as well. That way, if we delete the tail, we can just set the tail pointer equal to our next-to-last pointer. The problem with this proposal is that the next-to-last pointer needs to move back, as well -- and unless we have a whole series of pointers that give us direct access to each node as we move backward through the list, this just isn't going to work out for us.</p>
+<p>To summarize:</p>
+<table class="table table-sm" style="margin-left: 30px; width:520px;">
+  <thead>
+    <tr style="background-color: #eeeeee;">
+      <th width="100px"></th>
+      <th>insertion</th>
+      <th>deletion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center" style="padding-right: 30px;"><span class="code-chonk">head</span></td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td align="center" style="vertical-align: middle; padding-right: 30px;"><span class="code-chonk">tail</span></td>
+      <td>O(1) if tail pointer<br />O(n) otherwise</td>
+      <td>O(1) if tail pointer <em>and</em> doubly-linked<br />O(n) otherwise</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<p><br /><strong>Doubly-Linked Lists</strong></p>
+<p>One way to implement an efficient tail deletion (which requires not only maintaining a tail pointer, but also being able to efficiently move that tail pointer back by one node in the list) is to maintain what we call a "doubly-linked list:" that is, a list in which every node has not only a <span class="code-chonk">next</span> pointer, but a <span class="code-chonk">previous</span> pointer, as well. That looks something like this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;"><span style="color: #00ccff;"><span style="color: #00ff00;">seansz</span> ~/Desktop $</span> ./a.out 87 93 12 --doubly-linked<br /><br />&nbsp;addr: &nbsp; &nbsp;0xf9800 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0xf4d33 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0xc625e<br />&nbsp; &nbsp; &nbsp; &nbsp; +---------+ &nbsp; &nbsp; &nbsp;+---------+ &nbsp; &nbsp; &nbsp;+---------+<br />&nbsp;data: &nbsp;| &nbsp; 87 &nbsp; &nbsp;| &nbsp; &nbsp; &nbsp;| &nbsp; 93 &nbsp; &nbsp;| &nbsp; &nbsp; &nbsp;| &nbsp; 12 &nbsp; &nbsp;|<br />&nbsp; &nbsp; &nbsp; &nbsp; +---------+ ---&gt; +---------+ ---&gt; +---------+<br />&nbsp;next: &nbsp;| 0xf4d33 | &nbsp; &nbsp; &nbsp;| 0xc625e | &nbsp; &nbsp; &nbsp;| nullptr |<br />&nbsp; &nbsp; &nbsp; &nbsp; +---------+ &lt;--- +---------+ &lt;--- +---------+<br />&nbsp;prev: &nbsp;| nullptr | &nbsp; &nbsp; &nbsp;| 0xf9800 | &nbsp; &nbsp; &nbsp;| 0xf4d33 |<br />&nbsp; &nbsp; &nbsp; &nbsp; +---------+ &nbsp; &nbsp; &nbsp;+---------+ &nbsp; &nbsp; &nbsp;+---------+<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;^<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;head = 0xf9800<br /><br /><span style="color: #00ccff;"><span style="color: #00ff00;">seansz</span> ~/Desktop $</span> _</span></pre>
+<p>The upside to doubly linked lists is that we can now achieve O(1) insertion&nbsp;<em>and</em> deletion at the tail of a linked list (provided we have a tail pointer). The downsides are that (1) every node now has an extra pointer (typically 8 bytes in C++), which means each node is up to 20 bytes of memory instead of just 12 (assuming each node also holds a 4-byte integer) -- a 67% increase in space complexity; and (2) all of our functions for inserting, moving, and deleting nodes in our linked lists become appreciably more complex if we have to maintain <span class="code-chonk">previous</span> pointers.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) This is part of a classical trade-off we see frequently in computer science: by using more memory, we can sometimes dramatically improve the runtimes of certain operations.</p>
+<p><br /><strong>Implementing Stacks and Queues with Linked Lists</strong></p>
+<p>We then talked about how we would use linked lists to implement stacks and queues, with a focus on where we would perform our push and pop operations for the stack and our enqueue and dequeue operations for the queue. See timestamps 23:00 through 28:10 in today's lecture for details.</p>
+<p>We saw that to implement a stack using a linked list, we would need to push and pop at the same end of our linked list. We can implement those operations efficiently if we always push and pop at the head of our list. As we discussed above, those are O(1) operations. (Popping at the tail would be an O(n) operation even with a tail pointer -- unless we grappled with the added complexity and memory usage of doubly-linked lists.)</p>
+<p>To implement a queue using a linked list, we would need to enqueue and dequeue at opposite ends of our linked list. We want to avoid tail deletion for the reasons given above, so we would dequeue at the head (an O(1) operation) and enqueue at the tail (also an O(1) operation, provided that we maintain a tail pointer).</p>
+<p><br /><strong>Head Insertion and Deletion While Maintaining Tail Pointers</strong></p>
+<p>Our updated head insertion function is as follows (and we also switched to using a constructor function without our struct, rather than a separate <span class="code-chonk">createNode()</span> function). As we worked on these functions in class, I also took some additional time to talk about passing our pointers by reference. (See timestamps 28:55 through 30:05 in today's lecture. For a more detailed explanation, see the section of notes titled "Preliminary Note: Passing Pointers by Reference" from <a class="inline_disabled" href="../19-lists1.html" target="_blank" rel="noopener">our first lecture on linked lists this past Wednesday</a>.)</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "error.h"<br />using namespace std;<br /><br /><strong>struct</strong> Node<br />{<br />   <strong>int</strong> data;<br />   <strong>Node</strong> *next;  <span style="color: #236fa1;"><em>// a pointer to a Node -- the next node in our list</em></span><br /><br />   Node(<strong>int</strong> d)<br />   {<br />      data = d;<br />      next = nullptr;<br />   }<br />};<br /><br /><em><span style="color: #236fa1;">// Insert a new node at the head of the list.</span></em><br /><strong>void</strong> headInsert(<strong>Node</strong> *&amp;head, <strong>Node</strong> *&amp;tail, <strong>int</strong> data)<br />{<br />   <strong>Node</strong> *newNode = <strong>new</strong> Node(data);<br />   newNode-&gt;next = head;<br />   head = newNode;<br /><br /><span style="color: #236fa1;"><em>   // If tail is null and we have been keeping both our head and tail pointers up<br /></em></span><span style="color: #236fa1;"><em>   // to date, that means the node we just inserted is the only node currently in<br />   // the list -- making it both the head and the tail. We update the tail pointer<br />   // accordingly.</em></span><br />   <strong>if</strong> (tail == <strong>nullptr</strong>)<br />   {<br />      tail = head;<br />   }<br />}<br /><br />// Removes head of linked list and returns the value it contained.<br /><strong>int</strong> offWithItsHead(Node *&amp;head, Node *&amp;tail)<br />{<br />   <strong>if</strong> (head == <strong>nullptr</strong>)<br />   {<br />      error("Empty list in offWithItsHead().");<br />   }<br /><br /><span style="color: #236fa1;"><em>   // Let's hold onto our return value before deleting the head.<br />   // "retval" stands for "return value."</em></span><br />   <strong>int</strong> retval = head-&gt;data;<br /><br /><span style="color: #236fa1;"><em>   // Let's hold onto the head node we'll be deleting.</em></span><br />   <strong>Node</strong> *temp = head;<br /><br /><span style="color: #236fa1;"><em>   // Move our head pointer forward.</em></span><br />   head = head-&gt;next;<br /><br /><span style="color: #236fa1;"><em>   // If moving our head pointer forward caused it to fall off the end of the list,</em></span><br /><span style="color: #236fa1;"><em>   // that means the list is now empty. We need to update the tail pointer in this</em></span><br /><span style="color: #236fa1;"><em>   // case to reflect that.</em></span><br />   <strong>if</strong> (head == <strong>nullptr</strong>)<br />   {<br />      tail = <strong>nullptr</strong>;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // BYE.</em></span><br />   <strong>delete</strong> temp;<br /><br />   <strong>return</strong> retval;<br />}<br /><br /><strong>int</strong> main()<br />{<br /><span style="color: #236fa1;"><em>   // I cannot stress enough how important it is to initialize these both to nullptr.</em></span><br />   <strong>Node</strong> *head = <strong>nullptr</strong>;<br />   <strong>Node</strong> *tail = <strong>nullptr</strong>;<br /><br />   headInsert(head, tail, 10);<br />   headInsert(head, tail, 12);<br />   headInsert(head, tail, 15);<br /><br />   <strong>while</strong> (head != <strong>nullptr</strong>)<br />   {<br />      <strong>cout</strong> &lt;&lt; offWithItsHead(head, tail) &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; <strong>endl</strong> &lt;&lt; "Pointers (should be 0 for nullptr):" &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; head &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; tail &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">15<br />12<br />10<br /><br />Pointers (should be 0 for nullptr):<br />0<br />0</span></pre>
+<p><br /><strong>LinkedQueue</strong></p>
+<p>At the end of class, we implemented a queue using linked lists. As discussed above, the efficient implementation is to enqueue at the tail of the list (with a tail pointer) and to dequeue at the head. Our code was as follows:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>node.h:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef NODE_H<br />#define NODE_H<br /><br /><strong>struct</strong> Node<br />{<br />   <strong>int</strong> data;<br />   <strong>Node</strong> *next;<br /><br />   <strong>Node</strong>(<strong>int</strong> d)<br />   {<br />      data = d;<br />      next = <strong>nullptr</strong>;<br />   }<br />};<br /><br />#endif // NODE_H</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>linkedqueue.h:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef LINKEDQUEUE_H<br />#define LINKEDQUEUE_H<br /><br />#include "node.h"  <span style="color: #236fa1;"><em>// for Node struct used in private fields</em></span><br /><br /><strong>class</strong> LinkedQueue<br />{<br /><strong>public</strong>:<br />   LinkedQueue();<br />   ~LinkedQueue();<br />   <strong>void</strong> enqueue(<strong>int</strong> data);<br />   <strong>int</strong> dequeue();<br />   <strong>int</strong> peek() <strong>const</strong>;<br />   <strong>int</strong> size() <strong>const</strong>;<br />   <strong>bool</strong> isEmpty() <strong>const</strong>;<br /><br /><strong>private:</strong><br />   <strong>Node</strong> *_head;<br />   <strong>Node</strong> *_tail;<br />   <strong>int</strong> _size;<br />};<br /><br />#endif // LINKEDQUEUE_H</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>linkedqueue.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "linkedqueue.h"<br />#include "node.h"<br />#include "error.h"<br />using namespace std;<br /><br />LinkedQueue::LinkedQueue()<br />{<br />   _head = <strong>nullptr</strong>;<br />   _tail = <strong>nullptr</strong>;<br />   _size = 0;<br />}<br /><br />LinkedQueue::~LinkedQueue()<br />{<br /><span style="color: #236fa1;"><em>   // <strong>WARNING!</strong></em></span><br /><span style="color: #236fa1;"><em>   // This has a memory leak! We aren't freeing the list in our destructor function.</em></span><br />}<br /><br /><strong>void</strong> LinkedQueue::enqueue(<strong>int</strong> data)<br />{<br />   _size++;<br /><br />   <strong>if</strong> (_tail == <strong>nullptr</strong>)<br />   {<br />      _tail = _head = <strong>new</strong> Node(data);<br />      <strong>return</strong>;<br />   }<br /><br />   _tail-&gt;next = <strong>new</strong> Node(data);<br />   _tail = _tail-&gt;next;<br />}<br /><br /><strong>int</strong> LinkedQueue::dequeue()<br />{<br />   <strong>if</strong> (_head == <strong>nullptr</strong>)<br />   {<br />      error("Empty list in dequeue()!");<br />   }<br /><br />   <strong>int</strong> retval = _head-&gt;data;<br />   <strong>Node</strong> *temp = _head;<br />   _head = _head-&gt;next;<br />   <strong>if</strong> (_head == <strong>nullptr</strong>)<br />   {<br />      _tail = <strong>nullptr</strong>;<br />   }<br />   <strong>delete</strong> temp;<br />   --_size;<br /><strong>   return</strong> retval;<br />}<br /><br /><strong>int</strong> LinkedQueue::peek() <strong>const</strong><br />{<br />   <strong>if</strong> (_head == nullptr)<br />   {<br />      error("Empty list in peek()!");<br />   }<br /><br />   <strong>return</strong> _head-&gt;data;<br />}<br /><br /><strong>int</strong> LinkedQueue::size() <strong>const<br /></strong>{<br />   <strong>return</strong> _size;<br />}<br /><br /><strong>bool</strong> LinkedQueue::isEmpty() <strong>const<br /></strong>{<br />   return _head == nullptr;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "linkedqueue.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   LinkedQueue q;<br /><br />   q.enqueue(10);<br />   q.enqueue(15);<br />   q.enqueue(20);<br />   q.enqueue(12);<br /><br />   <strong>while</strong> (!q.isEmpty())<br />   {<br />      <strong>cout</strong> &lt;&lt; q.dequeue() &lt;&lt; <strong>endl</strong>;<br />      <strong>cout</strong> &lt;&lt; "New size: " &lt;&lt; q.size() &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">10<br />New size: 3<br />15<br />New size: 2<br />20<br />New size: 1<br />12<br />New size: 0<br /></span></pre>
+<p><br /><strong>Member Functions with <span class="code-chonk">const</span></strong></p>
+<p>This has come up in section already, but I also mentioned it in class today: If we have a member function in some class that we don't want to be able to modify any of our member variables, we can put <span class="code-chonk">const</span> at the end of its declaration in our <span class="code-chonk">.h</span> file, as with the <span class="code-chonk">peek()</span>, <span class="code-chonk">size()</span>, and <span class="code-chonk">isEmpty()</span> functions above. If we try to modify one of our member variables inside one of those functions, our compiler will actually give us an error now. This is are really neat way to protect ourselves from accidentally modifying a member variable in a function where we're not supposed to do that.</p>
+<p><br /><strong>What's next?</strong></p>
+<p>On Monday, we'll dive into a new linked data structure: binary trees!</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. As always, after reviewing today's lecture materials, challenge yourself to reproduce all of today's code from scratch without referring back to the notes for assistance. The key to getting good at linked lists (and working with pointers in general) is to engage in lots of coding practice.</p>
+<p>2. Write an <span class="code-chonk">tailDelete()</span> function that maintains both a <span class="code-chonk">head</span> and <span class="code-chonk">tail</span> pointer. The function signature is:</p>
+<p style="margin-left: 30px;"><span class="code-chonk"><strong>int</strong> tailInsert(<strong>Node</strong> *&amp;head, <strong>Node</strong> *&amp;tail)</span></p>
+<p>3. Write head and tail insertion and deletion functions that operate on doubly linked lists. Maintain both head and tail pointers.</p>
+<p>4. Write an O(n) destructor function for our <span class="code-chonk">LinkedQueue</span> class that clears up all the dynamically allocated nodes remaining in the queue.</p>
+<p>5. Continue working on your current linked lists assignment.</p>
+<p>6. Friendly reminder: Your final exam will involve writing some fairly complex code on paper. Don't forget to detach from the Qt Creator every now and then and do a bit of coding and debugging practice on paper so that you're ultra-prepared for that when you get into the exam. It's not too early to start preparing.</p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-13
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

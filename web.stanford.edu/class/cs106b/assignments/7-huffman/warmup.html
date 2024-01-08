@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Huffman tree warmup</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Huffman tree warmup</h1>
+
+<hr>
+
+<p class="attribution">
+Warmup from Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p class="w-50 mx-auto border p-1"><img src="https://wizardzines.com/comics/take-breaks/take-breaks.png" alt="" />
+<small><em><a href="https://wizardzines.com/comics/take-breaks">"Debugging is hard, take breaks!" by Julia Evans</a></em></small></p>
+
+<p>In these exercises, you will practice with Huffman trees to establish a solid understanding of the Huffman algorithm before you start implementing the program.</p>
+
+<blockquote class="alert alert-warning">
+  <p>Huffman coding was introduced in <a href="../../lectures/24-huffman/index.html" title="Huffman Coding">Lecture 24</a>. We also posted a <a href="../../lectures/24-huffman/huffman_background.html" title="Background on Huffman Coding">handout</a> that repeats that info if reading works better for you than lecture. <strong>Be sure you have watched/read this content first!</strong> The assignment writeup assumes familiarity with this content and does not repeat it.</p>
+</blockquote>
+
+<h2 id="encoding-and-decoding-using-an-encoding-tree">Encoding and decoding using an encoding tree</h2>
+<p>First, practice decoding a bit sequence using an encoding tree The diagram below is an encoding tree for the characters <code class="language-c++ highlighter-rouge"><span class="n">O</span></code> <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> <code class="language-c++ highlighter-rouge"><span class="n">M</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">S</span></code>.  Each leaf node corresponds to a character. The path from root to a leaf node traces the sequence of bits that encode the node's character. In the diagram, we marked interior nodes with  <code class="language-c++ highlighter-rouge"><span class="o">*</span></code> for visualization purposes; an interior node does not store a character and the path from root to an interior node is only a partial encoding path.</p>
+
+<pre><code class="language-output">             *
+            / \
+           *   O
+          / \
+         N   *  
+            / \
+           M   S
+</code></pre>
+<p>We label the leftward branch <code class="language-c++ highlighter-rouge"><span class="n">zero</span></code> and rightward <code class="language-c++ highlighter-rouge"><span class="n">one</span></code>.  The path from the root node to the leaf node <code class="language-c++ highlighter-rouge"><span class="n">S</span></code> traces <code class="language-c++ highlighter-rouge"><span class="n">left</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">right</span></code>,<code class="language-c++ highlighter-rouge"><span class="n">right</span></code> which corresponds to the bit sequence <code class="language-c++ highlighter-rouge"><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span></code>.</p>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q1" class="question alert alert-warning">
+  <p><strong>Q1</strong>. Use the above encoding tree to decode the bit sequence <code class="language-c++ highlighter-rouge"><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span></code>.</p>
+</div>
+
+<div id="Q2" class="question alert alert-warning">
+  <p><strong>Q2</strong>. Prepare a table for the above encoding tree that lists each character with its assigned bit sequence. Use your table to encode the input text <code class="language-c++ highlighter-rouge"><span class="s">"SONS"</span></code>.</p>
+</div>
+
+<p>As you work these operations manually, take a moment to consider what will be required to do these same operations in code.</p>
+
+<div id="Q3" class="question alert alert-warning">
+  <p><strong>Q3</strong>. Huffman codes obey the <em>prefix</em> property: no character's encoded bit sequence is a prefix of any other. What feature of an encoding tree demonstrates that it obeys the prefix property?</p>
+</div>
+
+<h2 id="flattening-and-unflattening-an-encoding-tree">Flattening and unflattening an encoding tree</h2>
+<p>One of the practical concerns of Huffman coding is that the compressed data must include information about the encoding tree, since that encoding is unique to the input data. It is not possible to decode the bit sequences without the original encoding tree.</p>
+
+<p>We want to write the Huffman tree into the compressed file, but it isn't possible to write a tree directly. Therefore we must come up with a way to "flatten" the tree's data and structure in a form that we can later use to reconstruct the same tree.</p>
+
+<p>There are a variety of ways to flatten the tree, but one tidy and compact approach is to summarize the tree as two sequences: a sequence of bits that give the shape of the tree and a sequence of characters that correspond to the tree leaves.</p>
+
+<ol>
+  <li>
+    <p>The <strong>tree shape</strong> is flattened into a <strong>sequence of bits</strong> as follows:</p>
+
+    <ul>
+      <li>If the root of the tree is a leaf node, it’s represented by the bit 0.</li>
+      <li>If the root of the tree is not a leaf node, it’s represented by a 1 bit, followed by the flattened version of its <code class="language-c++ highlighter-rouge"><span class="n">zero</span></code> (left) subtree, followed by the flattened <code class="language-c++ highlighter-rouge"><span class="n">one</span></code> (right) subtree.</li>
+    </ul>
+
+    <p>The sequence of bits describes the tree structure in the order that the tree nodes are visited in a <strong>pre-order traversal</strong>.</p>
+  </li>
+  <li>
+    <p>The <strong>tree leaves</strong> are flattened into a <strong>sequence of characters</strong> by listing the characters of the leaf nodes as visited during an <strong>in-order traversal</strong>.</p>
+  </li>
+</ol>
+
+<p>Together the two flattened sequences describe the tree shape and data in a way that allows us to later recreate the original tree.</p>
+
+<p>For example, the two encoding trees below left and middle are labeled with the flattened sequence of bits (tree shape) and sequence of characters (tree leaves):</p>
+
+<pre><code class="language-output">     *                          *                          *
+   /   \                      /   \                       / \
+  E     *                    A     *                     *   O
+       / \                        /  \                  / \
+      W   K                      *    N                N   * 
+                                / \                       / \
+                               D   B                     M   S
+ 
+shape:  1,0,1,0,0       shape:  1,0,1,1,0,0,0
+leaves: E,W,K           leaves: A,D,B,N
+</code></pre>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q4" class="question alert alert-warning">
+  <p><strong>Q4</strong>. Flatten the encoding tree above on the right into its sequence of bits (tree shape) and sequence of characters (tree leaves).</p>
+</div>
+
+<div id="Q5" class="question alert alert-warning">
+  <p><strong>Q5</strong>. Unflatten the sequences tree shape <code class="language-c++ highlighter-rouge"><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span></code> and tree leaves <code class="language-c++ highlighter-rouge"><span class="n">F</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">E</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">A</span></code> to reconstruct the encoding tree.</p>
+</div>
+
+<p>As you do these operations by hand, work out how you will translate these same steps to code. Each sequence is stored into a Queue. The flatten operation writes the tree shape into a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">bit</span><span class="o">&gt;</span></code> and the leaves into a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span></code> . The unflatten operation takes in two queues and uses them to reconstruct the encoding tree.</p>
+
+<h2 id="generating-an-optimal-huffman-tree">Generating an optimal Huffman tree</h2>
+<p>The last task of the warmup is to construct a Huffman tree for a given input by manually following the Huffman algorithm.</p>
+
+<p>Answer the following questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q6" class="question alert alert-warning">
+  <p><strong>Q6</strong>. Construct a Huffman coding tree for the input <code class="language-c++ highlighter-rouge"><span class="s">"BOOKKEEPER"</span></code>.</p>
+</div>
+
+<p>While constructing a Huffman tree, there are some arbitrary choices to make that do not affect the correctness or optimality of the resulting tree. For example, if the priority queue contains several nodes/subtrees of the same weight, these are all tied. The algorithm can break ties arbitrarily. Each choice produces a slightly different tree, but still equally optimal. Similarly, exchanging the zero and one subtrees of any interior node results in a mirrored tree that is an equally valid alternative.</p>
+
+<p>One means to confirm optimality of a Huffman tree despite these perturbations is by computing the entropy. The <em>entropy</em> is the weighted average of the encoding length for all characters in the tree. Consider an input of the 10 characters: <code class="language-c++ highlighter-rouge"><span class="n">AAAAAABBBC</span></code>. One Huffman tree for this input could look like this:</p>
+
+<pre><code class="language-output">     *                  
+   /   \                
+  A     *               
+       / \        
+      B   C   
+</code></pre>
+
+<p>To compute the entropy, first sum the encoding lengths per character weighted by the number of occurrences: <code class="language-c++ highlighter-rouge"><span class="mi">6</span><span class="o">*</span><span class="mi">1</span></code> (6 A's, encoding length for A is 1 bit) + <code class="language-c++ highlighter-rouge"><span class="mi">3</span><span class="o">*</span><span class="mi">2</span></code> (3 B's, encoding length 2) + <code class="language-c++ highlighter-rouge"><span class="mi">1</span><span class="o">*</span><span class="mi">2</span></code> (1 C, encoding length 2). Take that sum <code class="language-c++ highlighter-rouge"><span class="mi">14</span></code> and divide by <code class="language-c++ highlighter-rouge"><span class="mi">10</span></code> (number of characters in input) to compute the average encoding length of <code class="language-c++ highlighter-rouge"><span class="mf">1.4</span></code> bits per character.  This is the entropy.</p>
+
+<div id="Q7" class="question alert alert-warning">
+  <p><strong>Q7</strong>. Calculate the entropy of your Huffman tree for <code class="language-c++ highlighter-rouge"><span class="s">"BOOKKEEPER"</span></code>. Confirm that if you had chosen to break ties in a different manner when constructing the tree, this alternate tree has the same entropy as the optimal result.</p>
+</div>
+
+<p><strong>Good versus bad Huffman trees</strong>. In lecture, we discussed how the performance of a BST depends on the tree height, which in turn is dictated by how balanced the tree is. A fully balanced tree (equal node counts in each child subtree and leaf nodes at equal depth) has a height <code class="language-c++ highlighter-rouge"><span class="n">log</span> <span class="n">N</span></code> and exhibits optimal performance. A little imbalance in a BST is no big deal, but as a BST becomes more and more lopsided, the height grows and performance degrades toward the fully degenerate case of a linear linked list.  Does the height/balance of a Huffman tree matter in the same way as it does for BSTs?</p>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q8" class="question alert alert-warning">
+  <p><strong>Q8</strong>. Consider the space of inputs of length 1000 that consists of varied occurrences of 100 distinct characters. Of those various inputs, contrast which inputs result in a balanced Huffman tree versus those that produce a very lopsided Huffman tree. As an example, what if each of the 100 characters were represented 10 times (for a total of 1000 characters)? What would the Huffman tree look like? What if, instead, 99 of the characters was represented only once, but the remaining character was represented 901 times (again, for a total of 1000 characters)? What would the Huffman tree look like? Which of the two Huffman trees achieves more significant compression?  What does this tell you about what makes for a "good" versus "bad" Huffman tree?</p>
+</div>
+
+<h2 id="test-utility-functions">Test utility functions</h2>
+<p>As you learned on the previous assignment, the test cases to validate operations on linked structures don't come easily. By first investing in writing utility functions (like functions to create linked lists, compare linked lists, deallocate linked lists, etc), it is more manageable to write test cases later. Testing on trees will be similar. Our provided tests give you some idea of what writing tests for trees should look like, but they depend on you writing some tree utility functions in <code class="language-c++ highlighter-rouge"><span class="n">huffman</span><span class="p">.</span><span class="n">cpp</span></code> as a foundation.</p>
+
+<h3 id="encodingtreenode">EncodingTreeNode</h3>
+<p>First review the definition of <code class="language-c++ highlighter-rouge"><span class="k">struct</span> <span class="nc">EncodingTreeNode</span></code> in the file <code class="language-c++ highlighter-rouge"><span class="n">treenode</span><span class="p">.</span><span class="n">h</span></code>. The struct declares two convenience constructors, one to initialize a new leaf node, the other for a new interior node.  Every <code class="language-c++ highlighter-rouge"><span class="n">EncodingTreeNode</span></code> has a character field <code class="language-c++ highlighter-rouge"><span class="n">ch</span></code> and two child pointers, <code class="language-c++ highlighter-rouge"><span class="n">zero</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">one</span></code>. For a leaf node, both child pointers are <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code> and the <code class="language-c++ highlighter-rouge"><span class="n">ch</span></code> field is set to a character value. For an interior node, the child pointers are non-null and the character field is unused.</p>
+
+<p>The struct fields (<code class="language-c++ highlighter-rouge"><span class="n">zero</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">one</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">ch</span></code>) are public, which allows your code to directly access them. However the struct also provides member functions <code class="language-c++ highlighter-rouge"><span class="n">isLeaf</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">getChar</span></code> which access the fields on your behalf.  We recommend that you use these functions. It will make your code a bit tidier and in the case of <code class="language-c++ highlighter-rouge"><span class="n">getChar</span></code>, you gain the safety feature to alert if you mistakenly access the character field of an interior node.  The code below demonstrates some sample use:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">EncodingTreeNode</span><span class="p">(</span><span class="sc">'A'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">isLeaf</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">t</span><span class="o">-&gt;</span><span class="n">getChar</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="createexampletree">createExampleTree</h3>
+<p>Some of the provided test cases use this sample encoding tree:</p>
+
+<pre><code class="language-output">               *
+             /   \
+            T     *
+                 / \
+                *   E
+               / \
+              R   S
+</code></pre>
+<p>The tree has 4 leaf nodes, each corresponding to one of the characters <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">E</span><span class="p">}</span></code> in the encoding. The 3 interior nodes are marked with <code class="language-c++ highlighter-rouge"><span class="o">*</span></code> just for the purpose of visualization. An interior node does not store any character value.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">createExampleTree</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The utility function <code class="language-c++ highlighter-rouge"><span class="n">createExampleTree</span></code> is intended to construct an encoding tree that matches the one shown above. This is not a general-purpose tree creation function; it manually constructs exactly and only this tree.
+Implement the function to allocate the necessary nodes and wire them together in the exact form shown above.</p>
+
+<p>To confirm that your function is doing what you intend, run it under the debugger and set a breakpoint after constructing the tree. Use the Variables pane of the debugger to explore the tree structure that you have created, starting from the root. Your process will be reminiscent of how you explored your personal labyrinth in the previous assignment. Confirm that the tree has the correct shape and correct character in each leaf node. Remember that the character field for an interior node is unused, so its value is not relevant.</p>
+
+<h3 id="deallocatetree">deallocateTree</h3>
+<p>Any memory allocated using <code class="language-c++ highlighter-rouge"><span class="k">new</span></code> during a test case should be deallocated with <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code> before finishing with the test case.  Our provided test cases call  <code class="language-c++ highlighter-rouge"><span class="n">deallocateTree</span></code> to deallocate all of the memory for the nodes of a tree.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">deallocateTree</span><span class="p">(</span><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>After implementing <code class="language-c++ highlighter-rouge"><span class="n">deallocateTree</span></code>, confirm it works correctly by writing  a student test case that calls your <code class="language-c++ highlighter-rouge"><span class="n">createExampleTree</span></code> to allocate a tree and uses <code class="language-c++ highlighter-rouge"><span class="n">deallocateTree</span></code> to clean it up.  Run the test case and confirm no memory leaks are reported.</p>
+
+<h3 id="areequal">areEqual</h3>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">areEqual</span></code>  utility function is given pointers to the root nodes of two encoding trees and returns <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> if the two trees are equal; that is, they have the same shape and same characters in each leaf node. If the two trees have mismatching shapes or differing leaf characters the function should return <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code>.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">areEqual</span><span class="p">(</span><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>To confirm your <code class="language-c++ highlighter-rouge"><span class="n">areEqual</span></code> function is working as intended, you should add a variety of your own student tests. Here are some test cases to be sure to cover:</p>
+<ul>
+  <li>An empty tree is <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code>. Two empty trees should compare as <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> according to <code class="language-c++ highlighter-rouge"><span class="n">areEqual</span></code>.</li>
+  <li>The simplest non-empty encoding tree consists of a root node and two leaf children.  Create this simple tree and compare to an empty tree and confirm <code class="language-c++ highlighter-rouge"><span class="n">areEqual</span></code> returns <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code>.</li>
+  <li>Create another copy of the simple encoding tree from above and confirm it is equal to the first. Rearrange the second tree to swap the left and right children or assign different characters to the leaf nodes. Confirm the altered tree is not equal to the original.</li>
+  <li>Call <code class="language-c++ highlighter-rouge"><span class="n">createExampleTree</span></code> to build the <code class="language-c++ highlighter-rouge"><span class="n">T</span><span class="o">-</span><span class="n">R</span><span class="o">-</span><span class="n">S</span><span class="o">-</span><span class="n">E</span> </code>example tree and confirm it is not equal to the simple tree.</li>
+  <li>Call <code class="language-c++ highlighter-rouge"><span class="n">createExampleTree</span></code> a second time and confirm the two copies of the example tree are equal.</li>
+  <li>Compare the example tree with one of its subtrees and confirm they are not equal.</li>
+</ul>
+
+<p>Be sure that <code class="language-c++ highlighter-rouge"><span class="n">areEqual</span></code> is only comparing the valid fields of each tree node. In particular, interior nodes do not use the character field. The only characters you should compare are the ones stored in the leaf nodes.</p>
+
+<p>After you have implemented and thoroughly tested your utility functions, you're ready to move on to the <a href="huffman.html">main event</a>!</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-26
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

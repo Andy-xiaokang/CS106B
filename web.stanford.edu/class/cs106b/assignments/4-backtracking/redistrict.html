@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Computational redistricting</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Computational redistricting</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="one-person-one-vote">One person, one vote</h2>
+<p>Every ten years, the US Census undertakes a count of the population of each state. Using those updated counts, states perform the once-a-decade redrawing of electoral districts. The outcome of redistricting is crucial because it can influence who gets elected, how various communities are represented, and the ways public resources are distributed.</p>
+
+<p>Redistricting divides a state into geographical districts of equal population size. If California is apportioned 52 districts for 39 million residents, each district contains 750,000 people. The <a href="https://en.wikipedia.org/wiki/One_man,_one_vote">"One person, One vote"</a> principle affirmed by the Supreme Court requires that all districts must be equally-sized, but outside of that basic constraint each state determines for itself how to prioritize other characteristics such as shape, alignment with geographical features, compactness, community cohesiveness, or party affiliation.  There is considerable debate on what makes a redistricting "fair", how to balance across different metrics, and what mechanisms can confirm that the process is conducted without shenanigans.</p>
+
+<p>For as long as America has been a country, political forces have sought to manipulate district lines to advance one political party or another. This process, known as <a href="https://en.wikipedia.org/wiki/Gerrymandering">gerrymandering</a>, has worsened in recent years, in no small part because the growth in computer capabilities and rise of sophisticated algorithms has empowered mining of voting data and optimizing outcomes for nefarious goals. Not a good look for us as computer scientists! Let's instead put our formidable skills to work for good by implementing a transparent and sound redistricting algorithm that does not permit bad actors to manipulate the outcome.</p>
+
+<h2 id="horizontal-vertical-splitline-hvs">Horizontal-Vertical Splitline (HVS)</h2>
+<p>Mathematician Warren Smith of the Center for Election Science proposed an elegant geometric approach for redistricting, the <em>Shortest-Splitline Algorithm</em>. It operates by splitting the state into two equal halves using the shortest straight line, then recursively splitting the sub-partitions until no further partitions are needed. Smith's algorithm generates tidy, compact districts with straight-line internal boundaries.</p>
+
+<p>Brian Langstraat proposed a refinement into the <em>Shortest Latitude-Longitude Splitline Algorithm</em> that only considers those splitlines that are horizontal or vertical. Langstraat's version results in every district being rectangular in shape and all boundaries lie on the latitude and longitude lines.</p>
+
+<p>The approach you will employ for the assignment is a further simplification that we call Horizontal-Vertical Splitline (HVS).  We use a Grid to represent the population of the state; each cell in the grid is a count of residents in that location. The HVS algorithm attempts to divide the grid into N rectangular districts (subgrids) of equal population by making only horizontal and vertical cuts. Read on to hear more about how it works!</p>
+
+<h2 id="your-task">Your task</h2>
+<p>The function <code class="language-c++ highlighter-rouge"><span class="n">canRedistrict</span></code> is given two arguments, a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span></code> (population density grid) and <code class="language-c++ highlighter-rouge"><span class="n">nDistricts</span></code> (number of districts), and returns a true/false result which indicates whether the HVS strategy finds a valid redistricting of the state's population into <code class="language-c++ highlighter-rouge"><span class="n">nDistricts</span></code> of equal size.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">canRedistrict</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">state</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nDistricts</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Each grid cell is the number of residents that live in that location of the state. The code below declares a 3x3 population grid for <code class="language-c++ highlighter-rouge"><span class="n">nevada</span></code>. The total population is <code class="language-c++ highlighter-rouge"><span class="mi">20</span> <span class="o">+</span> <span class="mi">31</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">19</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">+</span> <span class="mi">25</span> <span class="o">=</span> <span class="mi">200</span></code>. If <code class="language-c++ highlighter-rouge"><span class="n">nevada</span></code> is apportioned 4 districts, the target size for each district is 50 people (<code class="language-c++ highlighter-rouge"><span class="mi">200</span><span class="o">/</span><span class="mi">4</span></code>).</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nevada</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span><span class="mi">20</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">20</span><span class="p">},</span>
+                     <span class="p">{</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">30</span><span class="p">},</span>
+                     <span class="p">{</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">}</span> <span class="p">};</span>
+
+<span class="n">canRedistrict</span><span class="p">(</span><span class="n">nevada</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>  <span class="o">=&gt;</span>  <span class="n">returns</span> <span class="nb">true</span>
+</code></pre></div></div>
+<p>This image shows a valid HVS redistricting that divides the grid into 4 rectangular districts of size 50:</p>
+
+<p class="w-25 mx-auto border"><img src="img/redistrict.png" alt="Successful HVS redistricting" /></p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">wyoming</span></code> grid below is an example for which the HVS algorithm cannot find a valid redistricting. The total population is 40 and <code class="language-c++ highlighter-rouge"><span class="n">nDistricts</span></code> of 2 means the target size is 20.  On a 2x2 grid, there are only two possible splits to consider (one horizontal, one vertical). Neither split produces subranges that can be divided into districts of the target size 20, so the algorithm fails to find a solution and returns false.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">wyoming</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">},</span>
+                      <span class="p">{</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">}</span> <span class="p">};</span>
+
+<span class="n">canRedistrict</span><span class="p">(</span><span class="n">wyoming</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="o">=&gt;</span>  <span class="n">returns</span> <span class="nb">false</span>
+</code></pre></div></div>
+
+<p>At each recursive step, the HVS algorithm chooses a single horizontal or vertical cut. This divides the grid into two subranges. The subranges are processed recursively to determine if they can be further divided into districts of the target size. The recursion continues until no further subdivisions are needed (success!😎) or no further divisions are possible (failure😢). On failure, the previous division is undone and the algorithm moves on to try other alternatives. HVS is an ideal fit to the classic recursive backtracking template, just the thing for a young padawan to practice on!</p>
+
+<h3 id="suggestions-on-recursive-strategy">Suggestions on recursive strategy</h3>
+
+<ul>
+  <li><strong>Base cases</strong>: stopping conditions for success and failure
+    <ul>
+      <li>Success: sum of the population in current range equals the target district size. Woohoo, this is a valid district!</li>
+      <li>Failure: sum of the population in current range is not a multiple of the target district size. There is no successful solution down this path.</li>
+    </ul>
+  </li>
+  <li><strong>Recursive case</strong>: make one split and recurse
+    <ul>
+      <li>Choose a horizontal or vertical splitline to apply to the current range</li>
+      <li>Apply the splitline to divide into two subranges</li>
+      <li>Redistricting a subrange is just a simpler instance of the original problem. (We see you,👀 self-similarity!)</li>
+      <li>Recurse on the two subranges, if success on both, great!</li>
+      <li>If not, backtrack, unchoose and try a different splitline</li>
+      <li>If all splitlines explored and all ended in failure, return false to trigger backtracking out of earlier decisions</li>
+    </ul>
+  </li>
+  <li><strong>Helper/wrapper functions</strong>
+    <ul>
+      <li>You will almost certainly need at least one recursive helper function.</li>
+      <li>Consider what additional information will be needed on each recursive call, such as which subrange is being explored and the target district size. What else? Any additional state you need can be passed to the recursive calls by adding parameters to your recursive helper.</li>
+      <li>You can choose the names, parameters, and return type of any helper/wrapper functions you add. However, do not change the prototype of function <code class="language-c++ highlighter-rouge"><span class="n">canRedistrict</span></code>; it must exactly match as we declared it.</li>
+    </ul>
+  </li>
+  <li><strong>Additional data structures</strong>
+    <ul>
+      <li>The only result of the function is a <code class="language-c++ highlighter-rouge"><span class="kt">bool</span></code> that indicates whether a valid redistricting was found.</li>
+      <li>You do not need to print or store the collection of districts/divisions. We intentionally made this simplification to avoid introducing a complex nested structure that might distract you from the recursive algorithm we want you to focus on.</li>
+      <li>Additional <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code>s, <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>s, <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code>s, and the like are not needed and should not be used. Eschew <a href="https://www.wordnik.com/words/supererogatory">supererogatory</a> complexity!</li>
+    </ul>
+  </li>
+  <li><strong>Assumptions</strong>
+    <ul>
+      <li>Each grid cell represents the count of residents for that location. You may assume that each cell count is &gt;= 0 and that the sum of all counts in grid is &gt; 0.</li>
+      <li>You can assume that the arguments to the original call <code class="language-c++ highlighter-rouge"><span class="n">canRedistrict</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">nDistricts</span><span class="p">)</span></code> are such that the sum of all values in entire <code class="language-c++ highlighter-rouge"><span class="n">grid</span></code> is evenly divisible by <code class="language-c++ highlighter-rouge"><span class="n">nDistricts</span></code>, i.e. there is a valid target size for the redistricting to be attempted. (In many cases, your function might already return false if not divisible, but we don't want you to go out of your way to make a special case for it). You can further assume that <code class="language-c++ highlighter-rouge"><span class="n">nDistricts</span></code> is &gt; 0.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="gridlocationrange">GridLocationRange</h3>
+<p>In the Maze assignment, you made heavy use of <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code>. An additional companion type that you will use for this assignment is <code class="language-c++ highlighter-rouge"><span class="n">GridLocationRange</span></code>. A <code class="language-c++ highlighter-rouge"><span class="n">GridLocationRange</span></code> delimits a rectangular block of grid locations. It is a compact reference to a rectangular subgrid within a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code>. A range is defined by its start location in the upper left corner and its end location in the lower right. All grid locations between the start and end locations (inclusive) are included in the range.</p>
+
+<p>The code below demonstrates some sample use of the <code class="language-c++ highlighter-rouge"><span class="n">GridLocationRange</span></code>:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// Declare a GridLocationRange</span>
+    <span class="c1">// Can init by assigning start location r0c0 and end location r3c2 (inclusive)</span>
+<span class="n">GridLocationRange</span> <span class="n">range</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">}</span> <span class="p">};</span>
+    <span class="c1">// Alternative syntax to init using GridLocationRange constructor</span>
+<span class="n">GridLocationRange</span> <span class="n">other</span> <span class="o">=</span> <span class="n">GridLocationRange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="c1">// Examples of some GridLocationRange operations (see docs for more info)</span>
+<span class="kt">int</span> <span class="n">numRows</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">numRows</span><span class="p">();</span> <span class="c1">// there are 4 rows in this range</span>
+<span class="kt">int</span> <span class="n">numLocations</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="c1">// there are 12 locations in this range</span>
+<span class="n">GridLocation</span> <span class="n">upperLeft</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">startLocation</span><span class="p">();</span> <span class="c1">// upper left is r0c0</span>
+<span class="kt">int</span> <span class="n">endCol</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">endCol</span><span class="p">();</span> <span class="c1">// end column is 2</span>
+
+    <span class="c1">// Iterate over all locations in the range</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">GridLocation</span> <span class="n">loc</span><span class="o">:</span> <span class="n">range</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">grid</span><span class="p">[</span><span class="n">loc</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>   <span class="c1">// print grid value at loc</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here is the Stanford Library documentation for <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/GridLocationRange.html" title="Documentation for GridLocationRange">GridLocationRange</a>.</p>
+
+<h3 id="the-importance-of-decomposition-and-independent-testing">The importance of decomposition and independent testing</h3>
+<p>Decomposition is one of your best tools for managing complexity. Our key recommendation is that you decompose side tasks out of the recursive algorithm and into helper functions. For example, a helper function that sums the values within a subgrid would be useful. We also recommend helper functions that apply a vertical or horizontal split line to a range to compute the two subranges.</p>
+
+<p>Designing and writing helpers for these tasks is a good place to start on the assignment.
+You can work on each helper as an independent unit, write comprehensive test cases for it, debug any
+issues in isolation, and confirm all is well before moving on.</p>
+
+<p>Write many student test cases that subject your helpers to rigorous testing to confirm they work correctly in all cases.  When you are in the middle of writing the recursive algorithm, you need to be able to call your helpers with confidence. Having abstracted away the mechanics also makes it easier for you to focus on the recursive algorithm without getting mired in those details or distracted by side issues. There is nothing more sad than seeing a student deep on a wild goose chase to diagnose what appears to be a problem in their recursion that is actually just a bug in a helper function that was not uncovered in testing beforehand.</p>
+
+<p>We are so confident that these helpers will be valuable that our starter includes suggested prototypes and one sample test case.  Modify and extend on these suggestions as you see fit. While not strictly required, we think our advice is solid and we hope you follow it!</p>
+
+<h3 id="graphics-optional">Graphics (optional)</h3>
+<p>As the HVS algorithm is chugging away and trying various splits to find a valid redistricting, you may be wishing you could follow along to ensure your algorithm is working as you intend. One good option is running under the debugger as you did in the warmup and using <code class="language-c++ highlighter-rouge"><span class="n">Step</span> <span class="n">Into</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Step</span> <span class="n">Over</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">Step</span> <span class="n">Out</span></code> and observe how the variables change. As the recursion gets deeper and more complex, single stepping can become tedious; being able to zoom out and see things at a high level would be handy.  We thought an animation that shows the progress of the algorithm visually could be neat, so we wrote some graphic support routines that you can try out. This is entirely optional, but using them may help with your debugging and testing and just generally make the program more fun.</p>
+
+<p>The provided <code class="language-c++ highlighter-rouge"><span class="n">gridgraphics</span></code> module has function to display the grid and split lines. Read the <code class="language-c++ highlighter-rouge"><span class="n">gridgraphics</span><span class="p">.</span><span class="n">h</span></code> header file for more details about:</p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">initForPopulationGrid</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">g</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">pauseForClick</span><span class="p">)</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">drawVertSplit</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">g</span><span class="p">,</span> <span class="n">GridLocationRange</span> <span class="n">range</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nLeftCols</span><span class="p">)</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">drawHorizSplit</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">g</span><span class="p">,</span> <span class="n">GridLocationRange</span> <span class="n">range</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nTopRows</span><span class="p">)</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">waitForCloseWindow</span><span class="p">()</span></code></li>
+</ul>
+
+<p>The general idea is to call <code class="language-c++ highlighter-rouge"><span class="n">initForPopulationGrid</span></code> once before starting the recursion. During the recursion, each time you choose a horizontal/vertical split to apply, call <code class="language-c++ highlighter-rouge"><span class="n">drawVertSplit</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">drawHorizSplit</span></code> to highlight the current range and display the split line in the graphics window.</p>
+
+<p>Note that the animation can makes things pokier, especially for large grids, and the graphical subsystem on Windows is extra-slow relative to macOS/linux. It may be best to use animation only when solving smaller-size grids.</p>
+
+<p>There is no expectation or requirement that <code class="language-c++ highlighter-rouge"><span class="n">canRedistrict</span></code> animate its process, our testing is solely confirming it correctly reports whether an HVS split was found or not. Using the graphics is entirely optional – if you don't think it will be valuable or you find it that it introduces more problems than it solves, just skip it.</p>
+
+<p class="w-50 mx-auto border"><img src="img/redistrictmovie.gif" alt="Animation of HVS redistricting" /></p>
+
+<h2 id="ethical-considerations">Ethical considerations</h2>
+<p>The HVS redistricting algorithm was proposed by mathematicians applying computational techniques to the end of producing auditable, unbiased outcomes. But these same techniques could instead be directed to less noble ends. In recent years, computational tools that leverage concepts like those you are learning in CS106B have been used to gerrymander district maps to an extent that has never been seen before. The negative consequences of gerrymandering are immense. Heavily gerrymandered districts often result in disenfranchisement (loss of voting impact) of large swaths of a state's population and often disproportionately disenfranchise people of color, economically disadvantaged people, and others whose voting voices have historically been suppressed.</p>
+
+<p>In CS106B, you are learning techniques that will allow you to solve a wider range of problems and do so correctly and efficiently – cool! But along with developing that problem-solving prowess, we want you to be thinking critically about how you will apply these powers to developing solutions that also are socially aware and ethically responsible.</p>
+
+<div id="Q9" class="question alert alert-warning">
+  <p><strong>Q9</strong>. A leader of a political party in your hometown learns you just took CS106B. They offer you a job working on cutting-edge software that applies algorithms to optimize gerrymandering during the process of redistricting.</p>
+
+  <p>What questions might you ask about this job before making a decision? What might be the drawbacks? Which communities would be affected by the work you're doing?</p>
+
+  <p>Please write your list of 3-5 questions and be sure to include ethical considerations.</p>
+</div>
+
+<h2 id="references">References</h2>
+<ul>
+  <li>Comparison of districts from Shortest Splitline division to gerrymandered districts drawn by politicians <a href="https://rangevoting.org/GerryExamples.html">https://rangevoting.org/GerryExamples.html</a></li>
+  <li><em>"Can You Gerrymander Your Party to Power?"</em> Neat interactive visualization of gerrymandering techniques from the New York Times <a href="https://www.nytimes.com/interactive/2022/01/27/us/politics/congressional-gerrymandering-redistricting-game-2022.html">https://www.nytimes.com/interactive/2022/01/27/us/politics/congressional-gerrymandering-redistricting-game-2022.html</a></li>
+  <li><em>"Gerrymandering Is Illegal, but Only Mathematicians Can Prove It"</em> <a href="https://www.wired.com/2017/04/gerrymandering-illegal-mathematicians-can-prove/">https://www.wired.com/2017/04/gerrymandering-illegal-mathematicians-can-prove/</a></li>
+  <li>The Center for Election Science is a nonpartisan nonprofit for research and advocacy of rigorous, science-informed approaches to voting reform <a href="https://electionscience.org/">https://electionscience.org/</a></li>
+  <li>Make your vote heard in the upcoming November election: Register, research, volunteer with <a href="https://www.stanfordvotes.org/">Stanford Votes</a>!</li>
+</ul>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-30
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

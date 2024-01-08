@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B ADT warmup</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">ADT warmup</h1>
+
+<hr>
+
+<p class="attribution">
+Warmup from Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><style>
+    .callout {
+        background-color: #FFBF68;
+        font-size: 90%;
+    }
+</style>
+
+<p class="w-50 mx-auto"><img src="https://wizardzines.com/comics/better-at-debugging/better-at-debugging.png" alt="" />
+<small><a href="https://wizardzines.com/comics/better-at-debugging">"How I got better at debugging" by Julia Evans</a></small></p>
+
+<p>For this course, you will write many C++ programs. But writing the code is only the first step; you also need strong skills in testing and debugging to bring a program to successful completion. Knowing your way around the debugger is key. Our assignments will feature warmup exercises that are designed to give you guided practice with the skills and tools for effective testing and debugging.</p>
+
+<p>This warmup exercise demonstrates use of the debugger and testing on the ADT types. You are to answer the questions posed below by writing your answers in the file <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>. This file is submitted with your assignment.</p>
+
+<h2 id="1-view-adts-in-debugger-manually-configure-if-needed">1) View ADTs in debugger (manually configure if needed)</h2>
+
+<p>Look over the provided code in <code class="language-c++ highlighter-rouge"><span class="n">adtwarmup</span><span class="p">.</span><span class="n">cpp</span></code> that operates on Stacks and Queues. Some of this code is buggy and provided for the purpose of practicing your testing and debugging skills.</p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">reverse</span></code> function is implemented correctly and does not have bugs. It uses a <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code> to reverse the contents of a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>.  Build and run the program.  When prompted, enter the choice to run tests from <code class="language-c++ highlighter-rouge"><span class="n">adtwarmup</span><span class="p">.</span><span class="n">cpp</span></code>. The <code class="language-c++ highlighter-rouge"><span class="n">reverse</span></code> function should pass its single test case. (Ignore the test failures reported for the other functions, we'll get to those in a bit).</p>
+
+<p>Use the <code class="language-c++ highlighter-rouge"><span class="n">reverse</span></code> function to practice debugging an ADT. In the file <code class="language-c++ highlighter-rouge"><span class="n">adtwarmup</span><span class="p">.</span><span class="n">cpp</span></code> file, set a breakpoint on the first <code class="language-c++ highlighter-rouge"><span class="k">while</span></code> loop in <code class="language-c++ highlighter-rouge"><span class="n">reverse</span></code>. Now run the program in Debug mode.  When prompted, select the tests for <code class="language-c++ highlighter-rouge"><span class="n">adtwarmup</span><span class="p">.</span><span class="n">cpp</span></code>.  When the debugger stops at your breakpoint, look at the <code class="language-c++ highlighter-rouge"><span class="n">Variables</span></code> pane in the upper-right of the Qt Creator window.</p>
+
+<p>You should see the variables <code class="language-c++ highlighter-rouge"><span class="n">num</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">q</span></code> , and <code class="language-c++ highlighter-rouge"><span class="n">s</span></code>. Expand the variable <code class="language-c++ highlighter-rouge"><span class="n">q</span></code> by clicking the triangle to the left of its name.  The expanded contents of the Queue should look like this:</p>
+
+<p class="w-50 border mx-auto mb-2"><img src="img/debugger-adts.png" alt="screenshot of upper right pane of debugger which shows values of variables" /></p>
+
+<blockquote class="alert alert-danger">
+  <p><strong>IMPORTANT:</strong> If the Queue contents in your debugger look very different than the screenshot above, this likely means that your debugger is not configured to properly display variables of Stanford collection type. Stop here and follow the <a href="http://web.stanford.edu/dept/cs_edu/resources/qt/debugging-helper">instructions to configure your Qt debugger</a>.</p>
+</blockquote>
+
+<p>The Queue <code class="language-c++ highlighter-rouge"><span class="n">q</span></code> was passed as an argument to <code class="language-c++ highlighter-rouge"><span class="n">reverse</span></code>; its contents were initialized to <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span></code>.  The Stack <code class="language-c++ highlighter-rouge"><span class="n">s</span></code> and integer <code class="language-c++ highlighter-rouge"><span class="n">num</span></code> are declared as local variables in <code class="language-c++ highlighter-rouge"><span class="n">reverse</span></code>. Neither of these variables is assigned an initial value.</p>
+
+<p>In the debugger variables pane, <code class="language-c++ highlighter-rouge"><span class="n">s</span></code> is displayed as a Stack containing <code class="language-c++ highlighter-rouge"><span class="o">&lt;</span><span class="mi">0</span> <span class="n">items</span><span class="o">&gt;</span></code>.  A Stack has a "default" initializer that configures a new stack that is not otherwise initialized. The default initializer for Stack makes an empty stack. In fact, <strong>all</strong> of the Stanford collection classes have a default initializer that creates an empty collection.</p>
+
+<p>Compare that behavior to what you see for the integer variable <code class="language-c++ highlighter-rouge"><span class="n">num</span></code>. Like <code class="language-c++ highlighter-rouge"><span class="n">s</span></code>, the variable <code class="language-c++ highlighter-rouge"><span class="n">num</span></code> was declared without being initialized.  Unlike the collection types, the int type <strong>does not</strong> have a default initializer. This means an int variable is left uninitialized. The debugger shows the "value" for <code class="language-c++ highlighter-rouge"><span class="n">num</span></code> but that value is only the leftover contents in the memory location where <code class="language-c++ highlighter-rouge"><span class="n">num</span></code> is being stored. In the screenshot above, the leftover value happened to be <code class="language-c++ highlighter-rouge"><span class="mi">28672</span></code>, but you may see something different on your system. If your code erroneously tries to use the value of an uninitialized variable, you get an unpredictable result. For now, just file this fact away. If at some later point in debugging, you observe a variable holding a nonsensical value, check to see if the bug is a missing initialization.</p>
+
+<p>Use the <strong>Step Over</strong> button to single-step through the first iteration of the while loop. After executing the assignment to <code class="language-c++ highlighter-rouge"><span class="n">num</span></code>, its value now becomes sensible. Stepping the next line pushes that value onto the stack. Expand the Stack <code class="language-c++ highlighter-rouge"><span class="n">s</span></code> by clicking the triangle to the left of its name. You should now have both the stack and queue expanded. Continue single-stepping through the loop. As you step, keep your eye on the Variables pane and watch how the contents of the stack and queue are changing.</p>
+
+<div id="Q1" class="question alert alert-warning">
+  <p><strong>Q1</strong>. The display of the Queue in the debugger uses the labels <code class="language-c++ highlighter-rouge"><span class="n">front</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">back</span></code> to mark the two ends of the queue. How are the contents labeled when the Queue contains only one element?</p>
+</div>
+
+<p>You now know how to inspect and interpret ADTs in the debugger. We hope that you will find this a useful skill when working on the rest of the assignment.</p>
+
+<h2 id="2-test-duplicatenegatives">2) Test duplicateNegatives</h2>
+
+<p>Testing and debugging are closely related. After writing a piece of code, you
+will want to test it to verify its behavior. If you encounter a problem, you run
+your test case under the debugger to further diagnose the bug.</p>
+
+<p>The intention of the function <code class="language-c++ highlighter-rouge"><span class="n">duplicateNegatives</span></code> is to modify a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span></code> to duplicate each negative number, i.e. turning the queue <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">}</span></code> into <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">}</span></code>. The given code is buggy and does not behave correctly on all inputs.</p>
+
+<p>The provided test cases try inputs containing negative and positive numbers. Run those tests and take note of which tests pass and which do not.</p>
+
+<p>The test results show the function produces an incorrect result for a queue containing a negative value. Your hypothesis is that it is the presence of any negative number that triggers the bug. Before you start on debugging, you want to winnow down to the most minimal case. Thus you decide to try a queue of length one containing a single negative number. Write your own <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> for this case.</p>
+
+<p>Run the tests again. This new case seems to be taking a really, really long time to run. In fact what is happening is that the program is stuck in an <em>infinite loop</em>. A infinite loop is one that never reaches its stopping condition and thus never completes. When a program is stuck an infinite loop, your only recourse is to manually intervene.</p>
+
+<p><a name="interrupt"></a></p>
+<div class="alert callout mx-5">
+  <p><strong>Pro tip: how to stop a stuck program</strong></p>
+
+  <ul>
+    <li>If not running in Debug mode, you can stop the program by closing the console window or choosing "Quit" from the menu bar.  This action forcibly exits the program.</li>
+    <li>If running in Debug mode, you can <em>interrupt</em> the program. On debugger tool bar, find button with this icon <img src="img/interrupt.png" alt="interrupt button" /> (hover over to confirm tool tip action is "Interrupt"). Clicking this button will pause program execution and return control to the debugger. (This is same action as choosing "Debug"- &gt; Interrupt" from application main menu). The program state is preserved and can be examined. This will allow you to gather more information to diagnose what's gone wrong.</li>
+  </ul>
+</div>
+
+<p>Our new test case deepens our understanding of the behavior of <code class="language-c++ highlighter-rouge"><span class="n">duplicateNegatives</span></code>? We believe the function works correctly for non-negative inputs. For inputs containing mixed positive and negative values, the function completes but produces the wrong result. Your new test shows there is also a third category, where some inputs go into an infinite loop.</p>
+
+<p>Precisely identifying what kind of inputs trigger a problem is very helpful, as this will focus the debugging process. You have observed that an input of a single negative number results in an infinite loop.  Is there more to the pattern?  Could it be specific to where the negative number occurs in the input, such as being the first or last ? Add more student test cases and re-run until you narrow in on the precise trigger for the infinite loop.</p>
+
+<p>Gather the results of your observations and answer the following questions in
+<code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q2" class="question alert alert-warning">
+  <p><strong>Q2</strong>. For which type of inputs does the function go into an infinite loop?</p>
+</div>
+
+<p>Rather than identify one specific input, describe the general characteristics of all such inputs.</p>
+
+<h2 id="3-debug-duplicatenegatives">3) Debug duplicateNegatives</h2>
+
+<p>Now that you've observed the buggy behavior and know what kind of input triggers
+it, let's use the debugger to diagnose the flaw. (You may have
+already seen the bug when reading over the code; if so, great! But the purpose
+of this exercise is to show you a methodology for using the debugger that will
+help you in later times when you cannot spot the bug just from reading the code.)</p>
+
+<p>Start with your test case that goes into an infinite loop. Set a breakpoint on the call to <code class="language-c++ highlighter-rouge"><span class="n">duplicateNegatives</span></code> within the test case and run the program in Debug mode.</p>
+
+<p>When the breakpoint is hit, <strong>Step Into</strong> the call to <code class="language-c++ highlighter-rouge"><span class="n">duplicateNegatives</span></code>  and then use <strong>Step Over</strong> to single step through a few iterations of the <code class="language-c++ highlighter-rouge"><span class="k">for</span></code> loop. Expand the variable <code class="language-c++ highlighter-rouge"><span class="n">q</span></code> to see its contents and pay attention to the changing values for <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">q</span></code>. Trace out what is happening and work through why the loop never reaches its intended termination condition.</p>
+
+<p>Given the above detective work, <strong>come up with a fix for the
+<code class="language-c++ highlighter-rouge"><span class="n">duplicateNegatives</span></code> code</strong>.  Try out your fix and see that it resolves the problem with
+the infinite loop inputs. As a followup, re-test the inputs that
+terminated but produced incorrect results. You should find they are also working correctly now. In this case, the same underlying flaw was producing two
+seemingly unrelated symptoms. Debugger use for the win!</p>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q3" class="question alert alert-warning">
+  <p><strong>Q3</strong>. Show your edited code for <code class="language-c++ highlighter-rouge"><span class="n">duplicateNegatives</span></code> that fixes the problem with the infinite loop.</p>
+</div>
+
+<h2 id="4-diagnose-a-test-that-raises-an-error">4) Diagnose a test that raises an error</h2>
+
+<p>The last part of the warmup is learning how to recognize when a test case fails due to raising an error.</p>
+
+<p>The function <code class="language-c++ highlighter-rouge"><span class="n">sumStack</span></code> is intended to return the sum of the values in a <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code> of integers.</p>
+
+<p>Run the provided test cases. The first test is successful, but the subsequent test goes down in flames due to an error.  When an error is raised in the middle of a test, SimpleTest reports it like this:</p>
+
+<pre><code class="language-output">    Test failed due to the program triggering an ErrorException.
+
+    This means that the test did not fail because of a call
+    to EXPECT() or EXPECT_ERROR() failing, but rather because
+    some code explicitly called the error() function.
+</code></pre>
+
+<p>When you see this message, it means a fatal error was raised during test which prevented the test from completing. The error was not expected and due to a bug in the code. Sometimes there is additional commentary which further explains the specifics of the error, e.g. index out of bounds, attempt to pop from an empty stack, or modification of a collection while iterating over it.</p>
+
+<p>Use the same debugging process for an error as a failing test case: add a breakpoint inside the test case and step through to see where it goes wrong. If you put a breakpoint inside the test case code before the call to <code class="language-c++ highlighter-rouge"><span class="n">sumStack</span></code>, your stepping will go through the behind-the-scenes code that sets up for the function call, including make a copy of the stack (the parameter is pass-by-value). This code is a bit goopy, so if instead set breakpoint on the first line of <code class="language-c++ highlighter-rouge"><span class="n">sumStack</span></code>, this will stop after those function call shenanigans and you can get on to stepping through the operation of <code class="language-c++ highlighter-rouge"><span class="n">sumStack</span></code>.</p>
+
+<p>There is one added twist to be aware of when stepping through code that has an error — you can step up to, but cannot step through the actual operation that raises an error. When executing the statement in error, a clever bit of C++ "hyperjumps" control to an error-handling routine (or your program may terminate if the error is more catastrophic). You must restart the program and step over until the crash again to get back to the context right before the crash.</p>
+
+<p>Looking at the code and stepping in the debugger, you will see that the bug in <code class="language-c++ highlighter-rouge"><span class="n">sumStack</span></code> is due to mishandling an empty stack. One possible fix to <code class="language-c++ highlighter-rouge"><span class="n">sumStack</span></code> would be to add a special case, i.e. inserting this code at the top of the function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kt">int</span> <span class="nf">sumStack</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="p">...</span>
+</code></pre></div></div>
+<p>However, there is a better fix to the existing code that would make it work correctly for both empty and non-empty stacks, without adding a special case.</p>
+
+<div id="Q4" class="question alert alert-warning">
+  <p><strong>Q4</strong>. What is the better fix to <code class="language-c++ highlighter-rouge"><span class="n">sumStack</span></code> that corrects the bug?</p>
+</div>
+
+<p>That's it for the warmup! Be sure to keep these debugging techniques in mind when you find yourself in a future jam– the debugger is a friend you don't want to be without!</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-09
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

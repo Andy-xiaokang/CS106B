@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Memory Debugging Warmup</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Memory Debugging Warmup</h1>
+
+<hr>
+
+<p class="attribution">
+Warmup from Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p class="w-50 mx-auto border p-1"><img src="https://wizardzines.com/comics/attitude-matters/attitude-matters.png" alt="" />
+<small><a href="https://wizardzines.com/comics/attitude-matters">"When debugging, attitude matters!"" by Julia Evans</a></small></p>
+
+<p>Use these debugging warmup exercises to practice with the tools and skills that will arm you to successfully manage the tricky aspects of linked lists. Unsurprisingly, the common pitfalls for linked lists come down to mistakes with memory and pointers. These are difficult concepts in C++, and you can never get too much practice.</p>
+
+<h2 id="using-simpletest-to-find-memory-leaks">Using SimpleTest to find memory leaks</h2>
+<p>A <em>memory leak</em> is created when a program allocates memory using <code class="language-c++ highlighter-rouge"><span class="k">new</span></code> but  does not call <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code> to deallocate the memory when finished with it. A leak is analogous to forgetting to check out of your hotel room, causing the hotel staff to believe your room is still occupied and to not reassign it to a new customer.</p>
+
+<p>Unlike a <strong>memory error</strong>, which can cause a program to crash or behave erratically, a <strong>memory leak</strong> has fairly benign consequences. The only side effect of a memory leak is that the leaked memory is not available for recycling. If a program had many leaks and each was a large amount of memory, it could eventually exhaust all of the system memory and be unable to proceed further, but this happens only in extreme cases.</p>
+
+<p>If you use a tool such as <code class="language-c++ highlighter-rouge"><span class="n">Activity</span> <span class="n">Viewer</span></code> to watch a long-running application, you'll likely see its memory usage creep upwards over time, in some part due to unresolved memory leaks. Even professionals slip up sometimes! Memory leaks are endemic to any program written in a language where the programmer is responsible for explicit deallocation (as opposed to a language such as python, which has automatic garbage collection. Oh those halcyon days of CS106A…)</p>
+
+<p>Tracking down memory leaks by hand is painstaking and difficult; most developers rely on industrial-strength memory debugging tools such as <code class="language-c++ highlighter-rouge"><span class="n">Valgrind</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">memcheck</span></code>. Our SimpleTest framework has a basic facility to identify leaks by counting the <code class="language-c++ highlighter-rouge"><span class="k">new</span></code> and <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code> calls and reporting when the two counts don't match up.</p>
+
+<p>We have enabled allocation counting for the <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span></code> type by adding the SimpleTest macro <code class="language-c++ highlighter-rouge"><span class="n">TRACK_ALLOCATIONS_OF</span></code> to its type declaration, like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">ListNode</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+
+    <span class="n">TRACK_ALLOCATIONS_OF</span><span class="p">(</span><span class="n">ListNode</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Once <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span></code> is configured in this way, its allocation and deallocations are tracked by SimpleTest. Each test case counts the <code class="language-c++ highlighter-rouge"><span class="k">new</span></code> and <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code> operations and any mismatch in the counts is flagged as part of the test result.</p>
+
+<h3 id="observing-memory-errors-and-memory-leaks">Observing memory errors and memory leaks</h3>
+<p>The first three provided test cases in <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> demonstrate mismatched allocation counts on <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span></code>s. The title of each test states the expected count of <code class="language-c++ highlighter-rouge"><span class="k">new</span></code> and <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code> operator. For each case, trace the code to confirm the counts and identify whether the mismatch will result in a memory error (dangerous) or a memory leak (more benign).  Run the cases and observe the test results as reported by SimpleTest to confirm your understanding is correct.</p>
+
+<p>Answer the following questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q1" class="question alert alert-warning">
+  <p><strong>Q1</strong>. What does the yellow background for a test case indicate in the SimpleTest result window?</p>
+</div>
+
+<div id="Q2" class="question alert alert-warning">
+  <p><strong>Q2</strong>. What is the observed consequence of a test that uses <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code> on a memory address that has already been deallocated?</p>
+</div>
+
+<p>When working with test cases that are designed with intentional mistakes, it is best to comment them out after you have finished examining them. In this way you can proceed onto other tests without that corruption/interference of those planted errors. Comment out the allocation count tests now before moving on.</p>
+
+<h2 id="accessing-deallocated-memory">Accessing deallocated memory</h2>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> file has a provided function <code class="language-c++ highlighter-rouge"><span class="n">badDeallocate</span></code> that attempts to deallocate the nodes of a linked list, but has a nasty bug lurking within.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">badDeallocate</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">cur</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>  <span class="c1">// BAD: accesses deallocated memory</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The statement <code class="language-c++ highlighter-rouge"><span class="k">delete</span> <span class="n">cur</span></code> deletes the memory for the ListNode pointed to by <code class="language-c++ highlighter-rouge"><span class="n">cur</span></code>. The very next statement accesses that deallocated memory to read the <code class="language-c++ highlighter-rouge"><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span></code> field.  This is clearly a wrong thing to do, but even this blatant mistake may manage to pass unnoticed and unpunished. Why is that?  It may help to consider exactly what is the effect of the <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code> operation. A call to <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code> tells the system that we are done using the memory at this address. That location in memory is marked as available for recycling, but the system may not immediately wipe the contents or make the memory inaccessible.  Thus a mistaken access to memory after it has been deleted can sometimes "succeed", even though such code is in the wrong.</p>
+
+<p>Deleting memory is akin to checking out of your hotel room. You're telling the system you're done with this resource, but it's not clear when the system will take action to recycle it. If you were to use your room key (pointer) to rush back into the room to grab your forgotten toothbrush, well… you just might get away with it. But what if you go into your former room after if housekeeping has come and swept it clean, or even worse, the room has been re-assigned to a new customer who now occupies it? Although you might sometimes get away with the error, your code is not correct; merely "lucky." The next time you run that same code, your transgression might result in a crash. The unpredictable, intermittent symptoms that can result from a memory error make these bugs particularly difficult to track down.</p>
+
+<h3 id="observing-a-memory-error">Observing a memory error</h3>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> file has one test case for <code class="language-c++ highlighter-rouge"><span class="n">badDeallocate</span></code>. Uncomment that test case and trace through the code.</p>
+
+<p>The test case creates a small list and then calls the buggy function <code class="language-c++ highlighter-rouge"><span class="n">badDeallocate</span></code> on it. The loop within <code class="language-c++ highlighter-rouge"><span class="n">badDeallocate</span></code> made one bad access for each node in the list.  Despite these memory errors, this test case may "pass" on some systems. Run the test as-is a few times and note if you see any consequences of the bug or whether the code gets lucky.</p>
+
+<p>If the test case doesn't crash, try increasing the length of the list to a much larger value. By repeating the same mistake so many more times, it becomes more likely for one to be fatal. On your system, you may find it easy to trigger a crash, or you might find it completely impossible. The takeaway from this experiment is that memory errors are shape-shifters –now you see it, now you don't. You may not even get same result from run to run despite not changing the code at all! The next time you are puzzling over how some code exhibits erratic behavior, remember these results and recall how slippery memory errors can be.</p>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q3" class="question alert alert-warning">
+  <p><strong>Q3</strong>. On your system, what is the observed consequence of <code class="language-c++ highlighter-rouge"><span class="n">badDeallocate</span></code>? Under what circumstances (if any) did the buggy code trigger an error or crash?</p>
+</div>
+
+<p>After you finish exploring <code class="language-c++ highlighter-rouge"><span class="n">badDeallocate</span></code>, comment out this test case to not interfere with further tests.</p>
+
+<h2 id="debugging-a-segmentation-fault">Debugging a segmentation fault</h2>
+<p>A common experience when debugging code that uses pointers is the dreaded <strong>Segmentation Fault</strong>. This is a fatal error or crash that will stop your program immediately. A segmentation fault indicates that the program attempted to access an invalid address, i.e. tried to read from or write to a memory location that cannot be accessed. A segmentation fault is a <em>symptom</em> of the bug, but it is not the bug itself. The bug is that your program uses an invalid address, and that bug causes a crash. You must work backwards from the symptom to figure how and why you ended up with that invalid address so you can correct the bug.</p>
+
+<p>One frustrating thing about a segmentation fault is that the way it presents itself may vary because the memory error confuses the system/debugger. In the best of situations, the program halts and provides a clear and descriptive error message, perhaps via an alert dialog or a text message in the console. In other situations, a program might suddenly stop but be silent on the error message. In another, the program may exit, and its windows disappear, leaving no trace of what happened. In yet another, the program might lock up, as though stuck in an infinite loop.</p>
+
+<p>To complicate matters even further, running the program under the debugger may produce a different result than running outside the debugger. Even running the same program twice in a row in the exact same context can produce different results. Working with memory errors can cause you to doubt your own eyes and sanity.  We want you to be aware that any and all of the above may be part of the landscape when it comes to memory woes.</p>
+
+<p>One possible root cause for an address to be invalid is when a pointer was not properly initialized. We will have you debug such an example so you can observe a segmentation fault in action.</p>
+
+<p>Uncomment the "Segmentation fault" test case at the end of <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> and rebuild. Set a breakpoint in this test case and run the program in Debug mode.</p>
+
+<p>The test code allocates memory for a new <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span></code> and stores that address in the pointer variable <code class="language-c++ highlighter-rouge"><span class="n">p</span></code>. <code class="language-c++ highlighter-rouge"><span class="n">p</span></code> now holds the address of the memory where the ListNode is stored.  In the Variables panel, the value of <code class="language-c++ highlighter-rouge"><span class="n">p</span></code> is shown as a large hexadecimal number prefixed with <code class="language-c++ highlighter-rouge"><span class="err">@</span><span class="mi">0</span><span class="n">x</span></code>.  Look for it now.</p>
+
+<p>Turn down the triangle of <code class="language-c++ highlighter-rouge"><span class="n">p</span></code> to expand it and see the two fields in the ListNode: <code class="language-c++ highlighter-rouge"><span class="n">data</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">next</span></code>.  Neither of these fields were initialized so their contents are unpredictable/garbage.</p>
+
+<p>Let's observe the consequence of using a garbage integer value.
+Step through the statement that increments <code class="language-c++ highlighter-rouge"><span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span></code> and watch the value of
+<code class="language-c++ highlighter-rouge"><span class="n">data</span></code> update. What is the value before and after? Adding to a garbage value doesn't make much sense, but it doesn't appear to cause the program to halt or fail. And on some systems, the uninitialized value may not even look like "garbage"!</p>
+
+<p>Not all garbage is created equal. The pointer variable <code class="language-c++ highlighter-rouge"><span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span></code> is also not initialized. Accessing a garbage address <em>can</em> cause a runtime error. An uninitialized/garbage address could happen to be a valid location, but more often that not, it won't be. It is somewhat analogous to picking up your phone and dialing digits at random – does the call go through and you talk to a stranger, or do you get an error because the number is out of service? Either way, the random dialing was a bad idea, but the observed consequence can differ depending on your "luck." This variation adds a layer of challenge to debugging memory errors.</p>
+
+<p>Use the Variables pane to see the garbage address stored in the <code class="language-c++ highlighter-rouge"><span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span></code> field. Does it look like a valid address (compare its value to the valid address stored in <code class="language-c++ highlighter-rouge"><span class="n">p</span></code>)?</p>
+
+<p>Step though the statement that attempts to dereference <code class="language-c++ highlighter-rouge"><span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span></code>. This dereference will likely cause a segmentation fault.  The debugger should halt the program. It may produce an alert or error message, or it might stay silent.  After a segmentation fault, the debugger will refuse to step further. The yellow arrow in the editor pane will indicate the offending line that caused
+the crash, and you can read the values in the Variables pane to see the invalid address. These are the clues that help you diagnose the symptom.</p>
+
+<p>Run the program again under the debugger and stop at the same breakpoint. Are the garbage values for <code class="language-c++ highlighter-rouge"><span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span></code> the same from run to run?</p>
+
+<h3 id="observing-a-segmentation-fault">Observing a segmentation fault</h3>
+<p>A segmentation fault might present itself differently depending on the
+context:</p>
+
+<ul>
+  <li>If the program is executing in <strong>Debug</strong> mode,
+the debugger will generally stop the program at the point of the
+segmentation fault. There may or may not be an alert or error
+message. The yellow arrow will point to the offending line, and the
+call stack will show the function calls leading up to the crash.
+This display looks similar to stopping at a breakpoint, so it may
+not be immediately apparent that this situation is due to a crash. If you
+try to continue/step from a crash, though, the debugger will refuse.
+Try this now with the buggy program – remove all breakpoints and
+run under the debugger to see how the crash is reported/presented.</li>
+  <li>In some situations, the program may go unresponsive when it tries to
+access an invalid memory address. If this happens, use "Interrupt" from the
+"Debug" menu to stop the program and return control to the debugger
+so you can examine the current program state.</li>
+  <li>If the program is executing not in Debug mode, it will crash and
+exit on a segmentation fault. An error message is written in red
+text to the the console window, but the window closes too quickly to
+read. In Qt Creator, you can click on the <strong>Application Output</strong> tab
+in the bottom pane to see the error message. Try this now with the
+buggy program. This error message is a summary of the situation at
+the point of the crash, but it's a little thin on details. Your
+follow-up will typically be to run the same program again in Debug
+mode so you can get more complete information to help diagnose the
+symptom.</li>
+</ul>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q4" class="question alert alert-warning">
+  <p><strong>Q4</strong>. How is a segmentation fault presented on your system?</p>
+</div>
+
+<p>Recognizing a segmentation fault can itself be tricky, but this is only the first step. From there, you must work backwards from the symptom to figure how and why you ended up with that invalid address so you can correct the bug. There is no simple one-size-fits-all fix for segmentation faults; resolving one is an adventure that will draw upon your finest debugging skills. Drawing pictures of the memory and its connections is often a good start. Tracing the execution by using the debugger to step through and observe the state may help confirm whether or not your code is doing what you intend.</p>
+
+<p><img src="https://imgs.xkcd.com/comics/compiler_complaint.png" alt="comic" /></p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-10
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

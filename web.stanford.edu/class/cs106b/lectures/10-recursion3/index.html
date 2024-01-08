@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursive Problem Solving</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 10. Recursive Problem Solving</h1>
+ <p class="subtle-heading">Wednesday October 18</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>We'll take a look at why we use recursion as a problem-solving technique and will start to see problems that would be very difficult to accomplish without using recursion.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 8.4</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/142360">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e80ab06b-a027-493b-bbb0-b083014df2a3&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Prezis</strong></p>
+<p>Here are the Prezis from today's lecture:</p>
+<iframe src="https://prezi.com/p/embed/h27EAaeVx8WAEeqeeQDc/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<iframe src="https://prezi.com/p/embed/NXKcYvnFknPgrLu5iGaj/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p><br /><strong>Contents</strong></p>
+<p>1. Fractals</p>
+<p>2. Regarding the Ordering of Recursive Calls</p>
+<p>3. Examples of Fractals in Nature</p>
+<p>4. Snowflake Fractal Code</p>
+<p>5. Integer Division and Datatype Chemistry</p>
+<p>6. Recursive Dice Sequences</p>
+<p>7. Faster Dice Rolling with Vector Accumulation and Combinatorial Verification</p>
+<p>8. Alternative Approach to Recursive Permutations</p>
+<p>9. What's next?</p>
+<p>10. Practice Exercises</p>
+<p><br /><strong>Fractals</strong></p>
+<p>We started today with an introduction to fractals: recurring graphical patterns where smaller instances of the same shape or pattern occur within the pattern itself. These are often referred to as "self-similar patterns." We explored this idea via the <a class="inline_disabled" href="https://en.wikipedia.org/wiki/Koch_snowflake" target="_blank" rel="noopener">Koch snowflake</a>. In your current assignment, you're also exploring the idea of fractals through the Sierpinski triangle.</p>
+<p>With respect to snowflake fractals, we started by observing the infinitely recursive pattern in the following image:</p>
+<p style="padding-left: 40px;"><img src="resources/fractal-infinite-zoom.gif" width="350" /></p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;">Image credit: <a class="inline_disabled" href="https://en.wikipedia.org/wiki/Koch_snowflake#/media/File:Zooming_in_a_point_of_Koch_curve_that_is_not_a_vertex.gif" target="_blank" rel="noopener">Juarez Bochi, via Wikipedia.</a> License terms: <a class="inline_disabled" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.</span></p>
+<p>We then saw how this snowflake pattern emerges if we do the following:</p>
+<ul>
+<li>start with a straight line</li>
+<li>punch up the segment that runs in the middle 1/3 of that line to form an equilateral triangle</li>
+<li>recursively apply the steps above to the four lines we just created until some desired level is achieved</li>
+</ul>
+<p>Here's an image of that in action:</p>
+<p style="margin-left: 30px;"><img src="resources/fractal-recursion.gif" /></p>
+<p>The following animation shows slightly more detail. We see (in parallel) how each recursive call identifies the points 1/3 and 2/3 of the way through each line segment, the calculation of a third point to form an equilateral triangle with those two points, and the resulting split into four new line segments that correspond to the four recursive calls we make for each line (provided we haven't hit a base case):</p>
+<p style="margin-left: 30px;"><img src="resources/fractal-points.gif" /></p>
+<p><br /><strong>Regarding the Ordering of Recursive Calls</strong></p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important note!</em></span>) The animation above shows each <strong>level</strong> of recursive calls in <strong>parallel</strong>, which gives a high-level overview of the algorithm, but this parallelism does not mirror how the recursive calls would be made in code. In that animation, we initially see the first call to <span class="code-chonk">drawSnowflake()</span> dividing a line into four segment. We then see the results of <strong>all four</strong> recursive calls at once, followed by the recursion into <strong>all 16</strong> of the recursive calls that take place at the next level.</p>
+<p>In practice, our recursive function will have to resolve the first of our four recursive calls (and all of <em>that</em> call's recursive calls) before returning to our initial call and moving on to the second of the four large line segments we see in the following image:</p>
+<p style="margin-left: 30px;"><img src="resources/four-lines.png" /></p>
+<!--<p style="margin-left: 30px; width: 677px;"><span style="font-size: 10pt;">Each of the four lines in the following diagram represents a recursive call. These calls are <span style="text-decoration: underline;">not</span> made in parallel in the code we wrote today.</span></p>-->
+<p>The actual order by which they unfold is depicted in the following animation. Notice that after the initial call is divided into four lines, we recurse upon the leftmost of those and go as deeply as possible before moving onto the next:</p>
+<p style="margin-left: 30px;"><img src="resources/fractal-in-order.gif" /></p>
+<p><br /><strong>Examples of Fractals in Nature</strong></p>
+<p>(<span style="font-size: 10pt; background-color: #eccafa;"><em>Not mentioned in class.</em></span>) I totally had some images to show in class of fractals occurring nature, and I totally forgot to bring them up. Fractals appear in mountain ranges, lightning, snowflakes, rivers and their tributaries, succulents, and more. See, for example: <a href="https://www.treehugger.com/amazing-fractals-found-in-nature-4868776" target="_blank" rel="noopener">Nine Amazing Fractals Found in Nature</a>.</p>
+<p>One of the most famous examples of fractals in nature is the Romanesco broccoli:</p>
+<p style="padding-left: 40px;"><img src="resources/Romanesco-broccoli.jpg" width="600" /></p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;">Image credit: <a class="inline_disabled" href="https://en.wikipedia.org/wiki/Romanesco_broccoli#/media/File:Romanesco_broccoli_(3).jpg" target="_blank" rel="noopener">Aurelien Guichard, via Wikipedia.</a> License terms: <a class="inline_disabled" href="https://creativecommons.org/licenses/by-sa/2.0" target="_blank" rel="noopener">CC BY-SA 2.0</a>.</span></p>
+<p>These are obviously majestic and awesome. Notice that the buds form a spiral, but if you zoom in on them, each has mini buds that form a similar spiral, and those all have ultra-mini buds that follow the same pattern. The buds form a <strong>logarithmic spiral</strong> (how cool is that?!), which you can read about on the Wikipedia page for <a class="inline_disabled" href="https://en.wikipedia.org/wiki/Romanesco_broccoli" target="_blank" rel="noopener">Romanesco broccoli</a> if you're interested.</p>
+<p><br /><strong>Snowflake Fractal Code</strong></p>
+<p>Following is the code we built to generate the snowflake segments shown above. We also rotated three such segments and united them to create a fully-fledged snowflake.</p>
+<p>This code relies on elements of the Stanford graphics libraries in code that I brought pre-written into class. My hope is that you would be able to reproduce the core recursive function here, given the support functions to handle the graphics and trigonometry. You're not responsible for memorizing the graphics library functions, although you're certainly encouraged to tweak the graphics components of the code and explore their behaviors.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include &lt;math.h&gt;<br />#include "console.h"<br />#include "gtypes.h"<br />#include "gwindow.h"<br />using namespace std;<br /><br /><strong>static const int</strong> SCREEN_WIDTH = 800;<br /><strong>static const int</strong> SCREEN_HEIGHT = 800;<br /><strong>static const int</strong> BASE_Y = SCREEN_HEIGHT - SCREEN_HEIGHT * .35;<br /><strong>static const int</strong> BASE_LEFT_X = 170;<br /><strong>static const int</strong> BASE_RIGHT_X = SCREEN_WIDTH - 170;<br /><strong>static const double</strong> COS_60 = 0.5;<br /><strong>static const double</strong> SIN_60 = sqrt(3) * 0.5;<br /><br /><span style="color: #236fa1;"><em>// Returns a GPoint that forms an equilateral triangle with the points passed as</em></span><br /><span style="color: #236fa1;"><em>// parameters.</em></span><br /><strong>GPoint</strong> thirdEquilateralPoint(<strong>GPoint</strong> bottomLeft, <strong>GPoint</strong> otherPoint)<br />{<br />  &nbsp;<strong>double</strong> deltaX = otherPoint.x - bottomLeft.x;<br />  &nbsp;<strong>double</strong> deltaY = otherPoint.y - bottomLeft.y;<br />  &nbsp;<strong>double</strong> x = bottomLeft.x + (deltaX * COS_60 + deltaY * SIN_60);<br />  &nbsp;<strong>double</strong> y = bottomLeft.y + (deltaY * COS_60 - deltaX * SIN_60);<br />  &nbsp;<strong>GPoint</strong> tip(x, y);<br />  &nbsp;<strong>return</strong> tip;<br />}<br /><br /><span style="color: #236fa1;"><em>// Returns a GPoint that is a fraction of the way from p1 to p2.</em></span><br /><strong>GPoint</strong> pointBetween(<strong>GPoint</strong> p1, <strong>GPoint</strong> p2, <strong>double</strong> fraction)<br />{<br />  &nbsp;<strong>double</strong> x = p1.x + (p2.x - p1.x) * fraction;<br />  &nbsp;<strong>double</strong> y = p1.y + (p2.y - p1.y) * fraction;<br />   <strong>return</strong> GPoint(x, y);<br />}<br /><br /><strong>void</strong> drawSnowflake(<strong>GWindow&amp;</strong> w, <strong>int</strong> level, <strong>GPoint</strong> start, <strong>GPoint</strong> end)<br />{<br />  &nbsp;<strong>if</strong> (level == 1)<br />  &nbsp;{<br />      <em><span style="color: #236fa1;">// We used the following at one point to slow down the animation.<br /></span></em>      <span style="color: #236fa1;"><em>// The argument is number of milliseconds to pause the program<br /></em><em>      // before executing the next instruction.</em></span><br />  &nbsp;   <em><span style="color: #236fa1;">//pause(2000);</span></em><br />  &nbsp; &nbsp; w.drawLine(start, end);<br />  &nbsp; &nbsp; <strong>return</strong>;<br />  &nbsp;}<br /><br />   <strong>GPoint</strong> a = pointBetween(start, end, 1.0/3);<br />  &nbsp;<strong>GPoint</strong> b = pointBetween(start, end, 2.0/3);<br />  &nbsp;<strong>GPoint</strong> t = thirdEquilateralPoint(a, b);<br /><br />   drawSnowflake(w, level - 1, start, a);<br />  &nbsp;drawSnowflake(w, level - 1, a, t);<br />  &nbsp;drawSnowflake(w, level - 1, t, b);<br />  &nbsp;drawSnowflake(w, level - 1, b, end);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <span style="color: #236fa1;"><em>// This creates the graphics window.</em></span><br />  &nbsp;<strong>GWindow</strong> w(SCREEN_WIDTH, SCREEN_HEIGHT);<br /><br /><span style="color: #236fa1;"><em>   // Determine the bottom-left and bottom-right points for the</em></span><br /><span style="color: #236fa1;"><em>   // snowflake based on constants defined at the top of the code.</em></span><br />  &nbsp;<strong>GPoint</strong> bottomLeft(BASE_LEFT_X, BASE_Y);<br />  &nbsp;<strong>GPoint</strong> bottomRight(BASE_RIGHT_X, BASE_Y);<br /><br />   w.setColor("black");<br />  &nbsp;w.setFillColor("black");<br /><br />   drawSnowflake(w, 5, bottomLeft, bottomRight);<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p>To generate the entire snowflake rather than just a single segment, we relied on our <span class="code-chonk">thirdEquilateralPoint()</span> function. Here's the alternative <span class="code-chonk">main()</span> to accomplish that:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> main()<br />{<br />   <span style="color: #236fa1;"><em>// This creates the graphics window.</em></span><br />  &nbsp;<strong>GWindow</strong> w(SCREEN_WIDTH, SCREEN_HEIGHT);<br /><br /><span style="color: #236fa1;"><em>   // Determine the bottom-left and bottom-right points for the</em></span><br /><span style="color: #236fa1;"><em>   // snowflake based on constants defined at the top of the code.</em></span><br />  &nbsp;<strong>GPoint</strong> bottomLeft(BASE_LEFT_X, BASE_Y);<br />  &nbsp;<strong>GPoint</strong> bottomRight(BASE_RIGHT_X, BASE_Y);<br /><br />   w.setColor("black");<br />  &nbsp;w.setFillColor("black");<br /><br />   <span style="background-color: #ffcc99;">GPoint top = thirdEquilateralPoint(bottomLeft, bottomRight);</span><br />   <span style="background-color: #ffcc99;">drawSnowflake(w, 7, bottomRight, bottomLeft);</span><br />   <span style="background-color: #ffcc99;">drawSnowflake(w, 7, bottomLeft, top);</span><br />   <span style="background-color: #ffcc99;">drawSnowflake(w, 7, top, bottomRight);</span><br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Integer Division and Datatype Chemistry</strong></p>
+<p>When writing the <span class="code-chonk">drawSnowflake()</span> function above, I initially did the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">   <strong>GPoint</strong> a = pointBetween(start, end, <span style="background-color: #ffcc99;">1/3</span>);<br />  &nbsp;<strong>GPoint</strong> b = pointBetween(start, end, <span style="background-color: #ffcc99;">2/3</span>);</pre>
+<p>Note that <span class="code-chonk">1/3</span> would have given us <span class="code-chonk">0</span> (zero) as a result, and we would have ended up with an uneventful straight line as our output. If you want to get around that, the thing to do is to turn either the numerator or denominator (or both) into a double by adding a <span class="code-chonk">.0</span>, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">   <strong>GPoint</strong> a = pointBetween(start, end, 1<span style="background-color: #ffcc99;">.0</span>/3);<br />  &nbsp;<strong>GPoint</strong> b = pointBetween(start, end, 2<span style="background-color: #ffcc99;">.0</span>/3);</pre>
+<p>We examined what happens when we mix integers and doubles in arithmetic expressions, and I likened doubles and integers to dominant and recessive genes, respectively:</p>
+<table class="table table-sm" style="text-align:center; margin-left: 30px; width: 400px;">
+  <thead>
+    <tr>
+      <th>Operand A</th>
+      <th>Operand B</th>
+      <th>Resulting Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="code-chonk">int</span></td>
+      <td><span class="code-chonk">int</span></td>
+      <td><span class="code-chonk">int</span></td>
+    </tr>
+    <tr>
+      <td><span class="code-chonk">int</span></td>
+      <td><span class="code-chonk">double</span></td>
+      <td><span class="code-chonk">double</span></td>
+    </tr>
+    <tr>
+      <td><span class="code-chonk">double</span></td>
+      <td><span class="code-chonk">int</span></td>
+      <td><span class="code-chonk">double</span></td>
+    </tr>
+    <tr>
+      <td><span class="code-chonk">double</span></td>
+      <td><span class="code-chonk">double</span></td>
+      <td><span class="code-chonk">double</span></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>In an unrelated analogy, I sometimes refer to this question of what datatype we get when mixing together two specific datatypes as "datatype chemistry."</p>
+<p><br /><strong>Recursive Dice Sequences</strong></p>
+<p><em>For this section, see related Prezi at the top of today's notes.</em></p>
+<p>We then returned to the <span class="code-chonk">coinFlip()</span> function from last week and saw how we could tweak it to produce sequences of six-sided dice rolls. The key here was to transform the two recursive calls from the <span class="code-chonk">coinFlip()</span> function into a series of six recursive calls for our dice.</p>
+<p>For your reference, the original <span class="code-chonk">coinFlip()</span> code was as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> coinFlip(<strong>string</strong> soFar, <strong>int</strong> n)<br />{<br />   <strong>if</strong> (n == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; soFar &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong>;<br />   }<br /><br />   coinFlip(soFar + "H", n - 1);<br />   coinFlip(soFar + "T", n - 1);<br />}<br /><br /><strong>void</strong> coinFlip(<strong>int</strong> n)<br />{<br /> &nbsp; coinFlip("", n);<br />}</pre>
+<p>From that, I produced the following initial draft of a <span class="code-chonk">rollD6()</span> function:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> rollD6(<strong>string</strong> soFar, <strong>int</strong> n)<br />{<br />   <strong>if</strong> (n == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; soFar &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong>;<br />   }<br /><br />   <span style="background-color: #ba372a; color: #ffffff;"><strong>// NOT GREAT</strong></span><br /> &nbsp; rollD6(soFar + "1", n - 1);<br /> &nbsp; rollD6(soFar + "2", n - 1);<br /> &nbsp; rollD6(soFar + "3", n - 1);<br /> &nbsp; rollD6(soFar + "4", n - 1);<br /> &nbsp; rollD6(soFar + "5", n - 1);<br /> &nbsp; rollD6(soFar + "6", n - 1);<br />}<br /><br /><strong>void</strong> rollD6(<strong>int</strong> n)<br />{<br /> &nbsp; rollD6("", n);<br />}</pre>
+<p>We cleaned up the code by rolling the recursive calls into a for-loop, which required us to convert the looping integer to a string, resulting in the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "strlib.h"<br />using namespace std;<br /><br /><strong>void</strong> rollD6(<strong>string</strong> soFar, <strong>int</strong> n)<br />{<br />   <strong>if</strong> (n == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; soFar &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong>;<br />   }<br /><br />   <strong>for</strong> (<strong>int</strong> i = 1; i &lt;= 6; i++)<br />   {<br />      <span style="background-color: #ffcc99;">rollD6(soFar + integerToString(i) + " ", n - 1);</span><br />   }<br />}<br /><br /><strong>void</strong> rollD6(<strong>int</strong> n)<br />{<br />   rollD6("", n);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   rollD6(4);<br />   <strong>return</strong> 0;<br />}</pre>
+<p><br /><strong>Faster Dice Rolling with Vector Accumulation and Combinatorial Verification</strong></p>
+<p>One of the things we observed about the dice roll code above was that printing the results to the screen one-by-one resulted in a slow program where it took a while to watch all the output scroll by.</p>
+<p>To improve the runtime, I modified the function to store all results in a vector and then printed that vector just once, after all those results had been computed. With this modification, the results printed practically instantaneously, with no visible delay.</p>
+<p>We also printed the vector size to ensure we had the correct number of results, which we determined ahead of time should be 6<sup>4</sup> = 1296 for <span class="code-chonk">rollD6(4)</span>.</p>
+<p>The resulting code was as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "strlib.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><span style="color: #236fa1;"><em>// Be careful to pass the vector by reference!</em></span><br /><strong>void</strong> rollD6(<strong>string</strong> soFar, <strong>int</strong> n, <strong>Vector</strong>&lt;<strong>string</strong>&gt;<strong>&amp;</strong> results)<br />{<br />   <strong>if</strong> (n == 0)<br />   {<br />      <span style="background-color: #ffcc99;">results.add(soFar);</span><br />      <strong>return</strong>;<br />   }<br /><br />   <strong>for</strong> (<strong>int</strong> i = 1; i &lt;= 6; i++)<br />   {<br />      rollD6(soFar + integerToString(i) + " ", n - 1<span style="background-color: #ffcc99;">, results</span>);<br />   }<br />}<br /><br /><strong>void</strong> rollD6(<strong>int</strong> n)<br />{<br />   <span style="background-color: #ffcc99;">Vector&lt;string&gt; results;</span><br />   rollD6("", n<span style="background-color: #ffcc99;">, results</span>);<br />   <span style="background-color: #ffcc99;">cout &lt;&lt; results &lt;&lt; endl;</span><br /><br />   <span style="color: #236fa1;"><em>// Expected output if n == 4: 1296.</em></span><br />   <span style="background-color: #ffcc99;">cout &lt;&lt; results.size() &lt;&lt; endl;</span><br />}<br /><br /><strong>int</strong> main()<br />{<br />   rollD6(4);<br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Alternative Approach to Recursive Permutations</strong></p>
+<p><em>For this section, see related Prezi at the top of today's notes.</em></p>
+<p>On Monday, we saw a recursive function for printing all permutations of the characters in an arbitrary string.</p>
+<p>At the end of class today, we saw an alternative solution to this problem that some people might find easier to follow. Both Monday's approach and today's approach generate a <span class="code-chonk">soFar</span> string that keeps track of the permutation we have built so far on our recursive journey through the function.</p>
+<p>However, Monday's approach used an integer parameter to keep track of how far into the permutation we had gotten, whereas today's approach used a second string that kept track of all the characters still remaining to be assigned to the permutation being constructed. The latter approach gives rise to a nice base case (we simply check if that second string is empty) and also frees us from the need to un-swap characters as we return from each function call.</p>
+<p>We traced through this approach in the Prezi included above, and our resulting code was as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>void</strong> permute(<strong>string</strong> soFar, <strong>string</strong> rest)<br />{<br />   <strong>if</strong> (rest == "")<br />   {<br />      <strong>cout</strong> &lt;&lt; soFar &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong>;<br />   }<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; rest.length(); i++)<br />   {<br /><span style="color: #236fa1;"><em>      // Generate a new copy of the "rest" string with the character</em></span><br /><span style="color: #236fa1;"><em>      // at index i removed.</em></span><br />      <strong>string</strong> newRest = rest.substr(0, i) + rest.substr(i + 1);<br />      permute(soFar + rest[i], newRest);<br />   }<br />}<br /><br /><strong>void</strong> permute(<strong>string</strong> s)<br />{<br />   permute("", s);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   permute("act");<br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">act<br />atc<br />cat<br />cta<br />tac<br />tca</pre>
+<p><strong><br />What's next?</strong></p>
+<p>On Friday, we'll talk about recursive backtracking, which is a topic that we'll stick with for two lectures -- and which will form the foundation for next week's assignment.</p>
+<p><br /><strong>Practice Exercises</strong></p>
+<p>1. See if you can reproduce today's <span class="code-chonk">printSnowflake()</span> function from scratch using the outline provided below. Then copy and paste it into the complete program provided above in today's notes to see if your solution works as intended.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// Returns a GPoint that forms an equilateral triangle with the points passed as</em></span><br /><span style="color: #236fa1;"><em>// parameters.</em></span><br /><strong>GPoint</strong> thirdEquilateralPoint(<strong>GPoint</strong> bottomLeft, <strong>GPoint</strong> otherPoint);<br /><br /><span style="color: #236fa1;"><em>// Returns a GPoint that is a fraction of the way from p1 to p2.</em></span><br /><strong>GPoint</strong> pointBetween(<strong>GPoint</strong> p1, <strong>GPoint</strong> p2, <strong>double</strong> fraction);<br /><br /><strong>void</strong> drawSnowflake(<strong>GWindow&amp;</strong> w, <strong>int</strong> level, <strong>GPoint</strong> start, <strong>GPoint</strong> end)<br />{<br /><span style="color: #236fa1;"><em>   // To draw a line from p1 to p2, the syntax is:</em></span><br /><span style="color: #236fa1;"><em>   //</em></span><br /><span style="color: #236fa1;"><em>   //    w.drawLine(p1, p2);</em></span><br /><br />   <strong><span style="color: #ffffff; background-color: #ba372a;">// CODE ME</span></strong><br />}</pre>
+<p>2. (<span style="font-size: 10pt;"><em>Low-priority exercise.</em></span>) If time permits, poke around at the <span class="code-chonk">const</span> values defined in the snowflake code and see if you can make sense of their impact on the program.</p>
+<p>3. Solidify your understanding of recursion by recreating today's <span class="code-chonk">rollD6()</span> and <span class="code-chonk">permute()</span> functions from scratch.</p>
+<p>4. One of the big advantages of today's <span class="code-chonk">permute()</span> function compared to the version we wrote on Monday is that the logic is easier to trace through. However, what big downside does this version have compared to Monday's version?</p>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution to #4:</strong> <span style="background-color: #ced4d9; color: #ced4d9;">Today's approach is much slower than Monday's approach because we're creating so many new strings! Concatenating two strings in C++ is generally an O(k) operation (where&nbsp;<em>k</em> is the length of the new string). The cost of concatenation typically is not a huge cause for concern, but we have an</span></span><span style="background-color: #ced4d9; color: #ced4d9;"> <strong>E<span style="font-size: 120%; background-color: #ced4d9;">X</span>P<em>L</em><span style="font-size: 130%; background-color: #ced4d9;">OS</span>i<em>V</em>E</strong> <span style="font-size: 10pt; background-color: #ced4d9;">number of calls in this function -- O(n!) of them! When we have that many calls bogging every single one of them down with unnecessary O(k) (or worse) operations can have a noticeable impact on our runtime.</span></span></p>
+<p>5. One of the annoyances of today's dice rolling function is that there is an invisible space at the end of each line of output that it produces. Without removing the spaces <em>between</em> integers in the program's output (which enhance the output's clarity), how could you prune away all of the invisible end-of-line spaces that are hiding in our output?</p>
+<p>6. As always, the textbook and this week's section handout are chock full of great exercises to reinforce this material.</p>
+<p><br /></p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-19
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

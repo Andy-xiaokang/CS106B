@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Coding without an IDE</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Coding without an IDE</h1>
+
+<hr>
+
+<p class="attribution">
+ Written by Keith Schwarz
+</p>
+
+
+
+<div id="content"><p>There will come a time (paper exams, job interview, whiteboard talk) where you will be asked to write code without an IDE. Writing code without having the ability to run it is a somewhat different experience than writing code in Qt Creator. Specifically:</p>
+
+<ul>
+  <li>You will not have a compiler that can point out syntax errors.</li>
+  <li>You can’t run the code, tweak it, and revise it until it works.</li>
+  <li>You cannot run test cases against your code.</li>
+  <li>You can’t step through your code in a debugger.</li>
+</ul>
+
+<p>This means that the process by which you’ll need to problem-solve is different. You’ll need to sketch out where you’re going a bit more than what you’re used to doing in Qt Creator, and you’ll need to be comfortable switching from a high-level idea to something more concrete. Additionally, you’ll need to be pay a bit more attention to details, since there isn’t going to be a compiler to catch your errors for you.</p>
+
+<p>But there is upside in this format we won’t be evaluating your code using the standard of “does it compile, run, and work flawlessly?” If we did that, chances are most people would get zero points because a single misplaced brace or stray semicolon would derail everything. Instead, we’ll be asking questions like these:</p>
+
+<ul>
+  <li>Do you demonstrate a solid command of the C++ syntax we’ve covered so far?</li>
+  <li>Does the approach you’ve taken demonstrate a good understanding of how to choose and apply an appropriate problem-solving strategy?</li>
+  <li>Is your code well-structured in a way that shows a facility with breaking larger problems down into smaller pieces?</li>
+</ul>
+
+<p>In the IDE, even the smallest typo or syntax error stops the entire program in its tracks. On paper, we don't even deduct for these kind of errors if we are otherwise confident of what you intended.  A conceptual problem using the wrong recursive strategy in a recursion problem or the wrong container type in a question on collections would be a more serious concern.</p>
+
+<p>In this context, we won’t be grading for style at the same level as what we’d be looking for on the assignments – we understand that we’re essentially grading a first draft. However, you should still aim to make your code easy to read. For example:</p>
+
+<ul>
+  <li>Please use descriptive variable and function names. Single-letter variable names (or worse, single-letter function names) make it significantly harder to understand your code.</li>
+  <li>Please properly indent your code. This is especially important in the event that you forget curly braces somewhere and we need to make an educated guess as to what you intended to do.</li>
+  <li>If possible, give comments demarcating the different parts of your code. This isn’t required, but if you have anything you think is really gnarly, it never hurts to add a comment explaining what you were trying to do!</li>
+</ul>
+
+<p>There are a few details we <em>don’t</em> care about, so let’s save you some time:</p>
+<ul>
+  <li>You don’t need to add <code class="language-c++ highlighter-rouge"><span class="cp">#include</span></code> statements at the top of your code. Assume they’re all there.</li>
+  <li>You don’t need to write function prototypes.</li>
+</ul>
+
+<h2 id="why-not-an-ide">Why not an IDE?</h2>
+<p>Students often ask why exams are not done like assignments: using a compiler, having code completion and searchable documentation, being able to run, test, and debug, etc. We have tried this in the past and it didn't work they way we'd hoped. What we learned was that the immediate feedback from the IDE more of an impediment than an advantage in these situations.</p>
+
+<p>Imagine this scenario: you read the first problem and have a good idea how to solve it. It takes you 20 minutes to draft a solution. You trace its operation and feel good about it.  Let's say your answer is most correct, has minor syntax issue and a small bug that causes a few inputs to be improperly handled. Overall it would earn 8/10.</p>
+
+<p>But if you <em>can</em> compile it, you certainly will. You have to fiddle with resolving syntax issues (that were likely not even scored). Next you spend time testing it. Although testing confirms it works correctly for most inputs, you now see that it has a bug. So you hunker down and rework and retest until perfect. Having spent an additional 20 minutes fixing these issues earns you a perfect 10/10, but the extra effort for the final 2 points was a tiny payoff and you have less time for the remaining problems</p>
+
+<p>The even more devastating outcome were students who just plain got stuck on a bug and never advanced past the first or second problem. No matter how much we advised students to draft a good answer and keep moving, if confronted with direct evidence that the answer was not fully correct it was near impossible to move on.</p>
+
+<p>We know there are limitations to working without the benefit of a compiler and debugger, and we account for that in how we design and grade the exam.  We are assessing your ability to think logically and use appropriate problem-solving techniques. We expect you to express yourself in reasonably correct C++, but we will be quite lenient with errors that are syntactic rather than conceptual.</p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-14
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

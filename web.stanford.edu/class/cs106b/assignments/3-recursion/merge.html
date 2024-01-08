@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Merge</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Merge</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="binary-merge">Binary merge</h2>
+<p>The <strong>binary merge</strong> operation takes as input two sorted sequences which are to be merged into one combined sorted sequence. Merging is the backbone of many different sorting tasks (some of which we will explore later in the course), making this operation useful in a broad array of applications.</p>
+
+<h3 id="implementing-merge">Implementing merge</h3>
+<p>Your first task is to write the function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">binaryMerge</span><span class="p">(</span><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">one</span><span class="p">,</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">two</span><span class="p">)</span>
+</code></pre></div></div>
+<p>which performs an <strong>iterative binary merge</strong>. Here are the specifications:</p>
+
+<ul>
+  <li>The elements of Queues <code class="language-c++ highlighter-rouge"><span class="n">one</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">two</span></code> are expected to be in increasing order from front to back. The returned result is a Queue containing the combined elements from <code class="language-c++ highlighter-rouge"><span class="n">one</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">two</span></code> in increasing order from front to back.</li>
+  <li>The Queues <code class="language-c++ highlighter-rouge"><span class="n">one</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">two</span></code> are passed by value, so <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> receives copies of the input queues and can freely modify them. There is no requirement on the ending state of those queue copies.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> takes in two Queues and returns a Queue. You are not to use any additional data structures (e.g. no Vectors, no arrays, and so on)</li>
+  <li>The two Queues are not required to be the same length. One could be enormous; the other could be a single element.  It is also possible that one or both of the input queues is empty. Be sure your function handles all possibilities – write as many test cases you need to confirm!</li>
+  <li>The queues possibly contain duplicate values. There is no special-case handling of duplicates. Merging <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">}</span></code> with <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span></code> results in <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span></code>.</li>
+  <li>A slapdash copy/paste approach to writing merge can result in messy and repetitive code. Instead, work to structure your code to unify the common parts rather than repeat yourself. There is a tidy and compact solution that is quite lovely, and we know you can achieve it! Hint: think about breaking the task down into two subtasks - choosing which element to handle next and then processing it.</li>
+  <li><strong>Important:</strong> you must implement binaryMerge <strong>using iteration, not recursion</strong>.
+    <ul>
+      <li>Although it is possible and even quite elegant to solve recursively, the cost of one stack frame per element being merged is much too high to bear and would cause the function to be unable to merge larger sequences. The limit on the maximum length sequence will depend on your callstack. Review the information you gathered in the <a href="warmup.html">warmup</a> and answer the following questions in  <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</li>
+    </ul>
+  </li>
+</ul>
+
+<div id="Q8" class="question alert alert-warning">
+  <p><strong>Q8</strong>. Give a rough estimate of the maximum length sequence that could be successfully merged on your system assuming a recursive implementation of <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code>.</p>
+</div>
+
+<div id="Q9" class="question alert alert-warning">
+  <p><strong>Q9</strong>. What would be the observed behavior if attempting to recursively merge a sequence larger than that maximum?</p>
+</div>
+
+<h3 id="enforcing-merge-preconditions">Enforcing merge preconditions</h3>
+<p>The specification for <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> states that the two input queues are in sorted order. However we've seen that blithely assuming all inputs confirm to the precondition can lead to trouble (such as the <a href="warmup.html">warmup</a> when assuming the <code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code> of would be non-negative). Rather than make assumptions, a better practice is to verify the precondition and raise an error if violated.</p>
+
+<p>Add validation to your <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> function to confirm that the input queues are sorted. If an out-of-order element is detected, call the <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> function with a descriptive message to report the problem.</p>
+
+<p>We propose two possible approaches for validation. You may implement either (or a variant of your own choosing):</p>
+<ol>
+  <li>A straightforward approach is to confirm the order of the input queues in a separate pass before merging. Write a helper function that inspects the contents of a single queue and raises an error if an element is found out of order. Call the helper twice, one on each of the two input queues.</li>
+  <li>This alternative is a little trickier, but does not require an extra pass, making it more efficient. In this approach, you confirm the sorted order while retrieving values from the input queues during the merge operation. If you encounter an element that is out of order, raise an error. If you choose this approach, you do not need a helper function, as the error checking will be built into the logic of the merge operation itself.</li>
+</ol>
+
+<p>Add a sufficient number of <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> cases to thoroughly vet <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code>. You will make heavy use of <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> and you want to put in the time to test your code now so that you can use it later with confidence. In addition to comprehensive testing on many varying valid input queues, we strongly recommend that you confirm that your error handling correctly rejects any invalid queue (i.e. not properly sorted). Your future self will thank you!</p>
+
+<h3 id="analyzing-binarymerge">Analyzing binaryMerge</h3>
+<p>The SimpleTest <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> macro is sued to measure the amount of time it takes to execute a function call. To refresh your memory, an example code snippet is shown below.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PROVIDED_TEST</span><span class="p">(</span><span class="s">"Time operation vector sort"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">12</span><span class="p">};</span>
+    <span class="n">TIME_OPERATION</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">sort</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The test results display the execution time measured in seconds:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Time</span> <span class="n">operation</span> <span class="n">vector</span> <span class="n">sort</span>
+    <span class="n">Line</span> <span class="mi">174</span> <span class="n">Time</span> <span class="n">v</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span> <span class="p">(</span><span class="n">size</span> <span class="o">=</span>       <span class="mi">9</span><span class="p">)</span> <span class="n">completed</span> <span class="n">in</span>        <span class="mi">0</span> <span class="n">secs</span>
+</code></pre></div></div>
+
+<p>In Assignment 1, you timed the same operation over a range of different input sizes and then quantitatively reasoned about the growth of the amount of work that is done relative to the input size. Now, equipped with your knowledge of formal algorithmic analysis tools like Big-O, you will be able to use these time trials to identify and prove the Big O of the real algorithms that you just implemented.</p>
+
+<p>First, predict what you expect to be the Big O of your <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> function. Formally you should express your Big O in terms of <code class="language-c++ highlighter-rouge"><span class="n">N</span></code>, where <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> is the size of the final merged queue. Alternatively, you can think of <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> as the sum of the sizes of the input queues <code class="language-c++ highlighter-rouge"><span class="n">one</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">two</span></code>.</p>
+
+<p>Add a <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> to run time trials on <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> on four or more different sizes, each size being twice as large as previous.  If you choose a range of sizes that are too small, the trials complete in subsecond time and measurements will be very noisy; sizes that are too large can take a long time to complete. Experiment to find a range of sizes that hit the "sweet spot" for your system – large enough to be fairly stable but small enough that the largest completes in around a minute.</p>
+
+<p><em>Pro tip</em>: Use a loop! The <a href="warmup.html">warmup</a> showed using a loop within a test case to do a sequence of tests. A loop over a range of sizes can be similarly convenient way to do a sequence of <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> time trials.</p>
+
+<p>In <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q10" class="question alert alert-warning">
+  <p><strong>Q10</strong>. Include the data from your execution timing and explain how it supports your Big O prediction for <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code>.</p>
+</div>
+
+<h2 id="multiway-merge">Multiway merge</h2>
+<p>Binary merge always receives exactly two sorted sequences to merge. A <strong>multiway merge</strong> or <strong>k-way merge</strong> is an extension of binary merge. Instead of two input sequences, a multiway merge receives <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> sorted sequences to merge into one sorted output.</p>
+
+<p>In the starter code, we provide a <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code> that is built on top of your <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code>. The code is shown below. It iterates over all input queues, repeatedly calling <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> to do a pairwise merge of each queue into the result.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">naiveMultiMerge</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">all</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">q</span> <span class="o">:</span> <span class="n">all</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">binaryMerge</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="testing-and-analyzing-naivemultimerge">Testing and analyzing naiveMultiMerge</h3>
+<ul>
+  <li>Assuming a correct implementation of <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code>, our provided <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code> works correctly. Run the provided tests to confirm this.</li>
+  <li>The function may be asked to merge 0 queues (represented by an empty <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>) or many empty queues (represented by a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> of empty queues). <strong>Trace through the provided implementation and predict how it would handle such input.  Add at least 2-3 test cases to confirm that the function behaves as expected in these scenarios.</strong></li>
+  <li>Now, predict what you expect to be the Big O of the <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code> function. Formally, you should express your Big O in terms of two quantities that can vary in size. The first is <code class="language-c++ highlighter-rouge"><span class="n">N</span></code>, where <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> represents the total number of elements in the final merged queue (alternatively, you can think of this as the total number of elements across all provided sequences that you've been asked to merge). The second is <code class="language-c++ highlighter-rouge"><span class="n">K</span></code>, where <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> represents the total number of distinct individual sequences that you are being asked to merge. Then, use the timing operation to measure the execution time over 5 or more different sizes of <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> (keeping <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> fixed) and over 5 or more different sizes of <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> (keeping <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> fixed).
+    <ul>
+      <li>When choosing sizes, keep in mind that <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> is the number of queues and <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> the total number of elements. Sensible values for <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> should always be &lt;= <code class="language-c++ highlighter-rouge"><span class="n">N</span></code>.</li>
+      <li>Using a loop over a range of sizes can be handy here!</li>
+    </ul>
+  </li>
+</ul>
+
+<p>In <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q11" class="question alert alert-warning">
+  <p><strong>Q11</strong>. Include the data from your execution timing and explain how it supports your Big O prediction for <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code>.</p>
+</div>
+
+<h2 id="divide-and-conquer-to-the-rescue">Divide and conquer to the rescue</h2>
+<p>The above implementation of <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code> really bogs down for a large input, since the merge operation is repeatedly applied to longer and longer sequences.</p>
+
+<h3 id="implementing-recmultimerge">Implementing recMultiMerge</h3>
+<p>Your final task is to write the function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">recMultiMerge</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">all</span><span class="p">)</span>
+</code></pre></div></div>
+<p>that applies the power of recursive divide-and-conquer to implement a much more efficient variant of multiway merge.</p>
+
+<p>The recursive strategy for <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> follows these steps:</p>
+
+<ol>
+  <li>Divide the vector of <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> sequences (queues) into two halves. The "left" half is the first <code class="language-c++ highlighter-rouge"><span class="n">k</span><span class="o">/</span><span class="mi">2</span></code> sequences (queues) in the vector, and the "right" half is the rest of the sequences (queues).
+    <ul>
+      <li>The <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Vector.html" title="Documentation for Vector">Vector</a> class has a helpful <code class="language-c++ highlighter-rouge"><span class="n">subList</span></code> operation to subdivide a Vector.</li>
+    </ul>
+  </li>
+  <li>Make a recursive call to <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> on the "left" half of the sequences to generate one combined, sorted sequence. Then, do the same for the "right" half of the sequences to generate a second combined, sorted sequence.</li>
+  <li>Use your <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> function to join the two combined sequences into the final result sequence, which is then returned.</li>
+</ol>
+
+<p>In addition to this recursive strategy, we encourage you to think about what the base case(s) for this function will be.</p>
+
+<p>In the diagram below, we drew the contents of each queue in a vertical yellow box. The initial collection has seven sequences. The dotted line shows the division into left and right halves of 3 and 4 sequences, respectively. Each half is recursively multiway merged. The combine step calls <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> to produce the final result.</p>
+
+<p><img src="img/merge.png" alt="Example merge from bottom up" class="center-block" /></p>
+
+<h3 id="analyzing-recmultimerge">Analyzing recMultiMerge</h3>
+<p>The runtime for <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> is <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span> <span class="n">log</span> <span class="n">K</span><span class="p">)</span></code> where <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> is the total number of elements over all sequences and <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> is the count of sorted sequences at the start of the multiway merge.</p>
+
+<p>What, exactly, does <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span> <span class="n">log</span> <span class="n">K</span><span class="p">)</span></code> mean? Start by thinking through what happens if <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> is allow to vary while <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> stays constant. If you were to plot runtime vs. value of <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> (assuming <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> is kept constant), you’ll get a straight line with a slope that depends on <code class="language-c++ highlighter-rouge"><span class="n">K</span></code>. If you have a small value of <code class="language-c++ highlighter-rouge"><span class="n">K</span></code>, then <code class="language-c++ highlighter-rouge"><span class="n">log</span> <span class="n">K</span></code> is also small, and your line would have a small slope.</p>
+
+<p>Now, let's think about how this plot would change if we started varying values of <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> as well. If you were to increase the value of <code class="language-c++ highlighter-rouge"><span class="n">K</span></code>, the slope of the line from our original plot would increase a little bit, but not by much because <code class="language-c++ highlighter-rouge"><span class="n">log</span> <span class="n">K</span></code> grows <em>extremely</em> slowly. In particular, if you look at the line for values of
+<code class="language-c++ highlighter-rouge"><span class="n">K</span></code> that grow by a factor of 4 every time (say, <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> = 1, then 4, then 16, then 64, then 256), the slope of the lines would increase by a small fixed rate (greater than 1 but much smaller than 4). This is the amazing benefit of logarithmic growth!</p>
+
+<p>Given an input of <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> elements that is entirely unsorted, we could first place each element in its own sequence (a singleton sequence is trivially sorted). We then call <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> on that collection of <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> sequences. This would make <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> equal to <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> (the maximal possible value for <code class="language-c++ highlighter-rouge"><span class="n">K</span></code>) and the entire operation would run in time <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span> <span class="n">log</span> <span class="n">N</span><span class="p">)</span></code>.  The classic <strong>mergesort</strong> algorithm uses an approach similar to this since it assumes the input data is completely unsorted (more on that coming up when we discuss sorting and Big O). In our <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> algorithm, the elements that are already arranged into sorted sequences just give us a jump start on the process. In other words, the smaller the value of <code class="language-c++ highlighter-rouge"><span class="n">K</span></code>, the more sorted our input data already is – work has already been done for us, and the whole process can complete more quickly!</p>
+
+<p>To finish off this task:</p>
+
+<ul>
+  <li>Write test cases that confirm the correctness of <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code>. A good strategy is to verify the result from <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> matches the result from <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code>.</li>
+  <li>Confirm that <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> operates in <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span> <span class="n">log</span> <span class="n">K</span><span class="p">)</span></code> time. Gather timing data over 5 or more different sizes of <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> (keeping <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> fixed) and over 5 or more different sizes of <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> (keeping <code class="language-c++ highlighter-rouge"><span class="n">N</span></code> fixed).
+    <ul>
+      <li>Sensible values for <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> should always be &lt;= <code class="language-c++ highlighter-rouge"><span class="n">N</span></code>.</li>
+      <li>Small changes in <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> can be hard to observe (because logarithmic growth is so slow). Rather than increase <code class="language-c++ highlighter-rouge"><span class="n">K</span></code> by small increment consider scaling by a factor of 5 or 10 to get a measurable effect.</li>
+      <li>Use a loop over a range of sizes!</li>
+    </ul>
+  </li>
+</ul>
+
+<p>In <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q12" class="question alert alert-warning">
+  <p><strong>Q12</strong>. Include the data from your execution timing and explain how it demonstrates <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span> <span class="n">log</span> <span class="n">K</span><span class="p">)</span></code> runtime for <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code>.</p>
+</div>
+
+<p>In the <a href="warmup.html">warmup</a> you learned the capacity of the call stack on your system. That constraint drove the decision to not use recursion for <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> because it limited the sequence length that could be merged. The <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> function is implemented recursively, and it also is subject to the capacity limits of the call stack. Even so, <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> is capable of merging sequences of lengths into the millions and billions; far beyond what <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> could accommodate.</p>
+
+<div id="Q13" class="question alert alert-warning">
+  <p><strong>Q13</strong>. You run <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> on a sequence of size 1 million and see that it completes just fine. Explain why this is not running afoul of the call stack capacity limitation.  <em>Hint</em>: How many stack frames (levels) are expected to be on the call stack at the deepest point in the recursion in <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code>?</p>
+</div>
+
+<h2 id="notes">Notes</h2>
+<ul>
+  <li>Your <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> function should operate iteratively (not recursion). Your <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> should operate recursively (not iteration).</li>
+  <li>Do not edit the provided code for <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code>. The <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code> function is used solely for testing and timing as a comparison to your <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code>. Your <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> <strong>should not</strong> call <code class="language-c++ highlighter-rouge"><span class="n">naiveMultiMerge</span></code>; your <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> <strong>should</strong> call your <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> function. (Gosh, that's a lot of merges! Be sure you know the role for each.)</li>
+  <li>The assignment requires you to write <strong>your own implementation</strong> of <code class="language-c++ highlighter-rouge"><span class="n">binaryMerge</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">recMultiMerge</span></code> to do a sorted merge operation. Your code should not call the Vector <code class="language-c++ highlighter-rouge"><span class="n">sort</span></code> method nor any other sort or merge operation provided by a library (whether C++ standard, Stanford, or otherwise).</li>
+</ul>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-15
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

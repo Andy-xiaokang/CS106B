@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B PQ client</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">PQ client</h1>
+
+<hr>
+
+<p class="attribution">
+Streaming top-k and data science demos from Keith Schwarz.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="put-your-client-hat-on">Put your client hat on!</h2>
+<p>Having finished <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> and before starting on <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code>, we take a brief diversion to appreciate the utility of the Priority Queue class as an abstraction for solving interesting and challenging problems.</p>
+
+<p>While acting in the role of class implementer, the programmer is head down, focusing on the nitty-gritty of the functionality, navigating the challenges and tricky details to ensure the class works correctly in all situations. You just experienced this for yourself for <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code>. However, once the class is tested and debugged, it is a delight to switch hats to become a client of your own data structure and take advantage of what the class has to offer! Remember in previous assignments when you made use of <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> to solve problems without worrying about how those data structures were actually implemented? Let's revisit this powerful land of problem-solving and see what you can do with a working implementation of a handy data structure like the <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> now in your repertoire.</p>
+
+<h2 id="sorting-via-priority-queue">Sorting via priority queue</h2>
+<p>One handy use for a priority queue is as a tool for sorting. Capitalizing on the priority queue's management of elements in sorted order, you can devise a devilishly simple approach to sorting. The algorithm takes as input a sequence of unordered elements, enqueues those elements into a priority queue, and then repeatedly dequeues to get the elements back out, now in order of priority. Voila!</p>
+
+<p>The provided implementation of <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> in <code class="language-c++ highlighter-rouge"><span class="n">pqclient</span><span class="p">.</span><span class="n">cpp</span></code> does exactly this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">pqSort</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">DataPoint</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">PQArray</span> <span class="n">pq</span><span class="p">;</span>
+
+    <span class="cm">/* Add all the elements to the priority queue. */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Extract all the elements from the priority queue. Due
+     * to the priority queue property, we know that we will get
+     * these elements in sorted order, in order of increasing priority
+     * value. Store elements back into vector, now in sorted order.
+     */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pq</span><span class="p">.</span><span class="n">dequeue</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Answer the following questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q9" class="question alert alert-warning">
+  <p><strong>Q9</strong>. Based on the Big O of <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>/<code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code>, what do you expect for the Big O of <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> if using a <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code>? Run some timing trials to confirm your prediction, and include that data in your answer.</p>
+</div>
+
+<p>There is nothing more you need to do for <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code>, just admire how easy it is to be a client of your priority queue and how handy its functionality can be. You are starting to see the payoff for all your hard work!</p>
+
+<h2 id="taming-massive-data-streams-top-k">Taming massive data streams (Top-K)</h2>
+<p>The second client application of your priority queue is a neat algorithm that solves an interesting "challenge" problem often asked in coding interviews. The <em>streaming top-k</em> problem is the task of returning the <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> elements with the largest values from a stream of values. The stream is expected to contain a enormous number of values, and <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> is small; the goal is to complete the task efficiently in both use of space and time. A <em>stream</em> of data is simply an abstraction that accesses data one by one and avoids storing all of the data in memory at the same time (which makes it a good fit for this problem).</p>
+
+<p>Using a priority queue as a building block is a great approach to solving this problem, as this data structure is well-suited to managing elements in ranked order.</p>
+
+<p>You are to write the function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="n">DataPoint</span><span class="o">&gt;</span> <span class="n">topK</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">stream</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<p>which takes as input a data stream of <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> objects and a number <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> and returns a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> of the top k elements drawn from the stream. More precisely, the returned vector must meet these requirements:</p>
+<ul>
+  <li>If the stream contains at least <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> elements, the vector contains the <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> elements with the largest values.</li>
+  <li>If the stream contains fewer than <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> elements, the vector contains all the elements from the stream.</li>
+  <li>You may assume that <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> &gt; 0.</li>
+  <li>In all cases, the elements in the vector are arranged in <em>descending</em> order by priority value. The element with the largest priority value is at index 0, the next largest at index 1, and so on.</li>
+</ul>
+
+<p>You might have noticed that the input to this function is not given as  <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">DataPoint</span><span class="o">&gt;</span></code>, but rather by an <code class="language-c++ highlighter-rouge"><span class="n">istream</span></code>, which is usually something you’d use when working with files or the console. What is an <code class="language-c++ highlighter-rouge"><span class="n">istream</span></code> and why is it useful here?</p>
+
+<p>Imagine you’re working at Google and you have access to a file that contains information about how many times each individual search query was made in a given day. You want to find the 1,000 most popular searches made that day. Google gets <em>billions</em> of search queries in a day and, most computers simply don’t have the memory to hold all these data points at once. That would mean that you couldn’t create a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">DataPoint</span><span class="o">&gt;</span></code> to hold all the values from the file; it would take up more memory than your computer has available!</p>
+
+<p>When you read data from a stream in C++, on the other hand, the entire contents of that stream don’t have to be held in memory at the same time. While reading from a stream, the stream calls out to your computer to get a bit more of the underlying information (from a corresponding file or other location). This means that you can process the elements from a data file one at a time without filling up your computer’s memory; the space to hold each element from the file gets recycled each time you pull in a new element.</p>
+
+<p>In the case of this problem, your goal is to implement your function such that you can find the top <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> elements using only O(<code class="language-c++ highlighter-rouge"><span class="n">k</span></code>) space; that is, space proportional to the number of elements you’ll need to return. <strong>This means that any data structure you use should never hold more than about <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> elements at any given moment.</strong> In other words, if you wanted the top 1,000 Google queries, it wouldn’t matter that there are billions or tens of billions of queries per day. You’d only need to use enough memory to hold about a thousand of them. Wow!</p>
+
+<h3 id="example">Example</h3>
+<p>Let's do a quick example. Imagine each DataPoint in the stream is an item with its price and you want to find the 3 most expensive items. Your plan to keep a leaderboard of the top 3 items you have seen thus far. The first three items in the stream go straight onto the board but any subsequent item has to knock off one of the existing items to make it on the board. When taking an item off the board, it is the cheapest one you remove.  If you trace that process on the stream below, and you end with milk, butter, and eggs on the board.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">banana</span>  <span class="mf">2.50</span>
+<span class="n">apple</span>   <span class="mf">1.50</span>
+<span class="n">milk</span>    <span class="mf">6.25</span>
+<span class="n">bread</span>   <span class="mf">3.50</span>
+<span class="n">salt</span>    <span class="mf">2.99</span>
+<span class="n">butter</span>  <span class="mf">5.40</span>
+<span class="n">eggs</span>    <span class="mf">4.95</span>
+<span class="n">cheese</span>  <span class="mf">2.00</span>
+</code></pre></div></div>
+<p>The data structure for the leaderboard will store at most 3-4 elements at any one time. When you need to thin the board, you always remove the element with the smallest priority value.  Do you see how your priority queue can be useful here?</p>
+
+<h3 id="notes-on-top-k">Notes on Top K</h3>
+<ul>
+  <li>
+    <p><strong>To read from a stream, use</strong> <code class="language-c++ highlighter-rouge"><span class="k">operator</span><span class="o">&gt;&gt;</span></code>.
+ You can think of <code class="language-c++ highlighter-rouge"><span class="k">operator</span><span class="o">&gt;&gt;</span></code> as the inverse of <code class="language-c++ highlighter-rouge"><span class="k">operator</span><span class="o">&lt;&lt;</span></code>. The expression <code class="language-c++ highlighter-rouge"><span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">var</span></code> takes the value of <code class="language-c++ highlighter-rouge"><span class="n">var</span></code> and writes it to the output stream. The inverse expression <code class="language-c++ highlighter-rouge"><span class="n">in</span> <span class="o">&gt;&gt;</span> <span class="n">var</span></code> reads a value from input stream and stores the value into <code class="language-c++ highlighter-rouge"><span class="n">var</span></code>. The boolean result of <code class="language-c++ highlighter-rouge"><span class="k">operator</span><span class="o">&lt;&lt;</span></code> is true if the read was successful and false otherwise (because of read error or end of input).</p>
+
+    <p>The loop below reads <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code>s from a stream until the stream is exhausted:</p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">DataPoint</span> <span class="n">cur</span><span class="p">;</span>
+ <span class="k">while</span> <span class="p">(</span><span class="n">stream</span> <span class="o">&gt;&gt;</span> <span class="n">cur</span><span class="p">)</span> <span class="p">{</span>
+     <span class="cm">/* do something with cur */</span>  
+ <span class="p">}</span>
+</code></pre></div>    </div>
+    <p>You may assume the input stream contains only valid <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code>s. You do not need to handle the case where the stream contains malformed data.</p>
+  </li>
+  <li>After reading the elements from an <code class="language-c++ highlighter-rouge"><span class="n">istream</span></code>, the data is consumed and the stream is empty. You cannot re-read an already-spent stream, so your test cases will have to create/replenish the stream contents before another call to <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code>.</li>
+  <li>To be sure you didn’t miss it: <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> returns the <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> elements 
+with the <strong>largest</strong> priority values from the input stream, sorted in <strong>descending order of priority value</strong>. This is reversed from what you've been doing in the rest of the assignment, so think carefully about what this means when it comes to using your data structures and building the final result output.</li>
+  <li>It may help to think about the algorithm in terms of what you can
+<strong>discard</strong> from the stream. If looking for the elements with the top 5 priority values, by the time you've seen your 6th entry, you already can identify one element that has a priority that definitely won't be in the top 5. Consider how you can use a priority queue to identify and discard those elements that are out of the running for the top slots.</li>
+  <li>To be sure your performance is optimal, take care with how you build up the
+the Vector of results. Adding to the end of Vector is <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> but using <code class="language-c++ highlighter-rouge"><span class="n">insert</span></code> at index 0 requires <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span></code>. One option is to construct the Vector with a fixed size and access locations by index. This runs in <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> time:
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">DataPoint</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// construct vector of size 5</span>
+    <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"Julie"</span><span class="p">,</span> <span class="mi">106</span><span class="p">};</span>
+    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"Keith"</span><span class="p">,</span> <span class="mi">137</span><span class="p">};</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Although <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> are two client tasks that each make use of a 
+  priority queue, the <strong>two algorithms are not otherwise related</strong>. In particular, the solution to <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> does not use <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code>. You only need to pick out the elements with the <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> largest priority values; fully sorting the entire contents of the stream is doing way more work than needed.</li>
+  <li>Be sure to <strong>firmly keep on your client hat</strong>.
+  When previously in role of the class implementer, you were deep inside the class and hyper-aware of how and where the data was stored and what was happening with the internal array. After completing the implementation and thoroughly testing it, you button up the the class and move to the role of client. In this role, you make calls to enqueue/dequeue, depending on these functions to behave as specified in the interface. You should be blissfully unaware of what is happening under the hood.</li>
+</ul>
+
+<h2 id="testing-and-timing">Testing and timing</h2>
+<p>Most of the heavy lifting for <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> is handled inside <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code> and those operations will be tested as part of the class. The <code class="language-c++ highlighter-rouge"><span class="n">pqclient</span><span class="p">.</span><span class="n">cpp</span></code> file contains some provided tests that you can use to confirm the correctness of <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> as a specific application of using the priority queue. These tests are fairly comprehensive and should meet your the testing needs as-is. You are welcome to add your own tests, but is it not required.</p>
+
+<p>The final step for <code class="language-c++ highlighter-rouge"><span class="n">pqclient</span><span class="p">.</span><span class="n">cpp</span></code> is for you to predict the Big-O runtime of the <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> operation when using a <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> and run time trials to confirm your prediction. The runtime should be expressed in terms of two distinct variables: <code class="language-c++ highlighter-rouge"><span class="n">n</span></code>, which represents the total number of elements in the data stream, and <code class="language-c++ highlighter-rouge"><span class="n">k</span></code>, which represents the number of "top" elements that you are searching for. You can approach this task by first fixing the value of <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> and then choosing 4 distinct magnitudes for <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> to see the relationship between the growth of <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> and the growth of the runtime. We have provided a timing test in the starter code that provides a framework on how to do this, so make sure to use that as a starting point. Then, switch it up and run some time trials that vary <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> while keeping <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> constant to figure out the relationship with <code class="language-c++ highlighter-rouge"><span class="n">k</span></code>. Do the timing results match up with your prediction of the runtime?</p>
+
+<p>Answer the following questions in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q10" class="question alert alert-warning">
+  <p><strong>Q10</strong>. Based on the Big O of <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>/<code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code>, what do you expect for the Big O of <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> in terms of <code class="language-c++ highlighter-rouge"><span class="n">k</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">n</span></code> if using a <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code>? Run some timing trials to confirm your prediction, and include that data in your answer.</p>
+</div>
+
+<h2 id="data-science-demos">Data science demos</h2>
+
+<p>The starter project also includes three pre-written data science demo programs that use the <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> as tools to explore large data sets and display neat data visualizations. Once you have a working <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code>, try these demos to see your code in action! To run the demos, select the option to run tests from the <code class="language-c++ highlighter-rouge"><span class="n">demos</span><span class="p">.</span><span class="n">cpp</span></code> file and then follow the instructions on the GUI window.</p>
+
+<ul>
+  <li><strong>Child Mortality</strong> (requires working <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> implementation): The United Nations Millennium Development Goals were a set of ambitious targets for improving health and welfare across the globe. Over twenty-five years, the UN kept records of child mortality data worldwide. How did those numbers change since when they started keeping track in 1990 to when the most recent public numbers were released in 2013?</li>
+  <li><strong>Women’s 800m Freestyle</strong> (requires working <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">pqSort</span></code> implementation): The women’s 800m freestyle swim race was introduced as a competitive event in the 1960s. How have the fastest times in that event improved since then? A certain Stanford-affiliated athlete might make an appearance here.</li>
+  <li><strong>Earthquakes</strong> (requires working <code class="language-c++ highlighter-rouge"><span class="n">topK</span></code> implementation): The U.S. Geological Survey operates a global network of seismometers and publishes lists of earthquakes updated every hour. Where are these earthquakes? How big are they?<br />
+<small><em>Note: The Earthquakes demo reads a live data feed from USGS. The source is occasionally offline or may be entirely inaccessible given your system's networking capabilities. Give this one a whirl, but move on if it's being fussy.</em></small></li>
+</ul>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-03
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

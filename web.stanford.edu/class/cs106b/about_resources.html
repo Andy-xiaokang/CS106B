@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Resources</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Resources</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><h3 id="course-tools">Course tools</h3>
+
+<div class="button-grid">
+
+    <a href="https://cs198.stanford.edu/lair" class="btn boxed-link grid-item" role="button" target="_blank">
+        <img class="icon" src="_assets/img/karel.png" style="width: 40px !important;height: 40px !important" />
+        <div style="">
+            <div style="font-weight:bold;">LaIR queue</div>
+            <div style="font-weight:lighter; font-size:75%">(helper hours)</div>
+        </div>
+    </a>
+
+    <a href="https://edstem.org/us/courses/45672" class="btn boxed-link grid-item" role="button" target="_blank">
+        <img class="icon" src="_assets/img/ed.png" style="width: 40px !important;height: 40px !important" />
+        <div style="">
+            <div style="font-weight:bold;">EdStem</div>
+            <div style="font-weight:lighter; font-size:75%">(discussion forum)</div>
+        </div>
+    </a>
+
+    <a href="https://cs198.stanford.edu/paperless" class="btn boxed-link grid-item" role="button" target="_blank">
+        <img class="icon" src="_assets/img/submit.png" style="width: 40px !important;height: 40px !important" />
+        <div style="">
+            <div style="font-weight:bold;">Paperless</div>
+            <div style="font-weight:lighter; font-size:75%">(submit assignments)</div>
+        </div>
+    </a>
+
+    <a href="https://canvas.stanford.edu/courses/178622" class="btn boxed-link grid-item" role="button" target="_blank">
+        <img class="icon" src="_assets/img/canvas.png" style="width: 40px !important;height: 40px !important" />
+        <div style="">
+            <div style="font-weight:bold;">Canvas</div>
+            <div style="font-weight:lighter; font-size:75%">(lecture videos)</div>
+        </div>
+    </a>
+
+    <a href="https://www.gradescope.com/courses/595460" class="btn boxed-link grid-item" role="button" target="_blank">
+        <img class="icon" src="_assets/img/gradescope.png" style="width: 40px !important;height: 40px !important" />
+        <div style="">
+            <div style="font-weight:bold;">Gradescope</div>
+            <div style="font-weight:lighter; font-size:75%">(graded exams)</div>
+        </div>
+    </a>
+
+</div>
+
+<style>
+
+.boxed-link {
+    border: 1px silver solid;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px #EEEEEE;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.boxed-link:hover {
+    background-color: #337ab7; /* link color */
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 130px);
+    grid-gap: 4px;
+}
+
+</style>
+
+<hr />
+
+<h3 id="course-documents">Course documents</h3>
+<ul>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Programming Abstractions</a> (PDF version of course textbook)</li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/" title="Documentation for Stanford-specific C++ libraries">Stanford Library documentation</a></li>
+  <li><a href="resources/style_guide.html">Code style guide</a></li>
+  <li><a href="resources/testing_guide.html">SimpleTest guide</a></li>
+  <li><a href="resources/bigo_guide.html" title="Guide to Big-O Notation">Guide to Big-O notation</a></li>
+  <li><a href="resources/submit_checklist.html">Submission checklist</a></li>
+</ul>
+
+<h3 id="c-language-and-library-refereence">C++ language and library refereence</h3>
+<ul>
+  <li><a href="resources/python_to_cpp.html" title="Python to C++ Guide">Python to C++ guide</a> (transitioning from python to C++)</li>
+  <li><a href="http://en.cppreference.com/" title="Documentation for C++ language and library">C++ library reference</a></li>
+  <li><a href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">Guide to C++ strings</a></li>
+</ul>
+
+<h3 id="qt-creator">Qt Creator</h3>
+<ul>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/qt/">How to install Qt Creator</a></li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/qt/#using-qt-creator">Using Qt Creator</a></li>
+  <li>📦 <a href="https://web.stanford.edu/dept/cs_edu/resources/qt/BlankProject.zip">Blank Qt project</a> (template for creating a new CS106 project)</li>
+</ul>
+
+<h3 id="for-prospective-students">For prospective students</h3>
+<ul>
+  <li><a href="course_placement.html" title="Course placement">Course placement</a> (choosing which Stanford course to start your CS journey)</li>
+  <li><a href="faq.html" title="Common questions from prospective students">Common questions from prospective students</a></li>
+</ul>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Sep-24
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

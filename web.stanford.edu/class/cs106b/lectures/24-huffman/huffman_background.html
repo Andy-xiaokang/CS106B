@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Background on Huffman Coding</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Background on Huffman Coding</h1>
+
+<hr>
+
+<p class="attribution">
+Written by Julie Zelenski with additions from Kenneth Huffman and Keith Schwarz.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>When I was an undergrad, my Mac had a whopping 10MB disk which had me
+feeling like the big cheese on campus. Today, the dinkiest of storage
+devices is measured in gigabytes, and my status as a superhero is very
+much in doubt. But even though capacity has enlarged at an astounding
+rate, the files we store (images, music, and the all-important funny cat
+videos) keep pace with that growth, so even our gargantuan disks are overflowing.</p>
+
+<p>One technique to use our storage more optimally is to compress our data.
+By taking advantage of redundancy or patterns, we “abbreviate” the
+contents to fit in less space while being able to reconstruct the full
+original when needed. Such compression is useful to cram more things on
+a disk or to shorten the time needed to transfer a file across a network.
+An ongoing task for computer scientists is devising ever more compression strategies to keep pace with the growing demands on our storage devices and network bandwidth.</p>
+
+<p>One strategy for compression that has stood the test of time is <strong>Huffman
+encoding</strong>, an elegant algorithm invented by David Huffman in 1952. At the time, he was a graduate student at MIT, and his professor assigned his class a project to develop an optimal compression scheme (without mentioning this was <a href="https://www.huffmancoding.com/my-uncle/scientific-american">a difficult and unsolved problem</a>). David's solution, published in his paper <a href="https://ieeexplore.ieee.org/document/4051119"><em>A Method
+for the Construction of Minimum-Redundancy Codes</em></a> is one of the most-cited papers in all of information theory.</p>
+
+<h2 id="an-overview-of-encoding">An overview of encoding</h2>
+<p>Computers store information in zeros and ones. We call these binary
+digits <em>bits</em>. The <a href="https://en.wikipedia.org/wiki/ASCII">ASCII encoding</a> defines the standard mapping for characters to bit sequences. An 8-bit sequence allows for 256 possible characters (2^8 = 256). As an example,
+the letter <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> is encoded as the 8-bit sequence <code class="language-c++ highlighter-rouge"><span class="mo">01000001</span></code>. ASCII dates back to 1960 and is centric to the Roman alphabet used in Western languages. The newer <a href="https://en.wikipedia.org/wiki/Unicode">Unicode system</a> was designed to handle a much broader swath of world languages and employs larger encodings of 16 and 32 bits per character. The more bits you use per character, the wider a
+variety of characters you can support in your alphabet.</p>
+
+<p>It simplifies processing if all characters use the same number of bits, but that rigidity can waste space, as all characters are not created equal. The letter <code class="language-c++ highlighter-rouge"><span class="n">e</span></code> is quite common in English text, but rarely does one see a capital <code class="language-c++ highlighter-rouge"><span class="n">Z</span></code>. Encoding <code class="language-c++ highlighter-rouge"><span class="n">e</span></code> as a 6-bit sequence and <code class="language-c++ highlighter-rouge"><span class="n">Z</span></code> a 9-bit one could result in an overall win, because there would be more occurrences of short sequences and fewer of longer ones.</p>
+
+<p>Even before computers, Samuel Morse took this into account when
+designing the code that bears his name.  The encoding table below shows the sequences of dots and dashes assigned to each letter in Morse code.</p>
+
+<p><img src="img/morse.png" alt="morse code table" /></p>
+
+<p>The very common letter <code class="language-c++ highlighter-rouge"><span class="n">e</span></code> is assigned a length-1 sequence and the uncommon letter <code class="language-c++ highlighter-rouge"><span class="n">q</span></code> a length-4 sequence. Morse code isn’t perfect because some letters are assigned longer codes than optimal. For example, the letter <code class="language-c++ highlighter-rouge"><span class="n">o</span></code> is more common than the letter <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>, yet <code class="language-c++ highlighter-rouge"><span class="n">o</span></code> has a longer sequence than <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>. If these two assignments were swapped, it could lead to savings in the overall length of an encoded sequence.</p>
+
+<p>Huffman coding is a methodical way for assigning code lengths to produce the shortest total encoding. It was one of the first algorithms for the computer age.</p>
+
+<p>Huffman coding is not specific to characters; it can also be used for compressing images, music, video, and more. All that's needed is to identify the common items in the input (whether it be letters, colors, sounds, etc.) and assign those items a short sequence of bits in the encoding, using longer sequences for items encountered less often.</p>
+
+<h2 id="standard-ascii-encoding">Standard ASCII encoding</h2>
+<p>The example input used throughout this document is the famous<sup id="fnref:1" role="doc-noteref"><a href="huffman_background.html#fn:1" class="footnote" rel="footnote">1</a></sup> string <code class="language-c++ highlighter-rouge"><span class="n">happy</span> <span class="n">hip</span> <span class="n">hop</span></code>. Using ASCII encoding, this 13-character string requires 13 × 8 = 104 bits total. The table below shows the relevant subset of the ASCII encoding table.</p>
+
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Character</th>
+      <th>Bit sequence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'h'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01101000</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'a'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01100001</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'p'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01110000</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'y'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01111001</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'i'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01101001</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'o'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01101111</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">' '</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">00100000</span></code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">happy</span> <span class="n">hip</span> <span class="n">hop</span></code> would be encoded in binary as:</p>
+
+<table class="table-bordered">
+  <tbody>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01101000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01100001</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01110000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01110000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01111001</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">00100000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01101000</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01101001</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01110000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">00100000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01101000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01101111</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01110000</span></code></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To decode, we read in groups of 8 bits (one byte) and convert each to its ASCII equivalent. The first 8 bits are <code class="language-c++ highlighter-rouge"><span class="mo">01101000</span></code>, which correspond to <code class="language-c++ highlighter-rouge"><span class="n">h</span></code>.</p>
+
+<p>Data encoded in ASCII does not require any additional information to be decoded since the mapping from binary sequence to characters is the same for all files and computers.</p>
+
+<h2 id="custom-compact-fixed-length-encoding">Custom compact fixed-length encoding</h2>
+<p>Standard ASCII uses an 8-bit sequence to encode every character because it was designed for the full range of 256 different characters. Eight bits per character does add up, and given we have only 7 distinct characters in our phrase, we could get by using shorter bit sequences. We can create a custom encoding by listing the unique characters and assigning each a distinct code.  For example, here is one possible such encoding that uses only 3 bits per character:</p>
+
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Character</th>
+      <th>Bit sequence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'h'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">000</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'a'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">001</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'p'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">010</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'y'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">011</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'i'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">100</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'o'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">101</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">' '</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">110</span></code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Using this table, <code class="language-c++ highlighter-rouge"><span class="n">happy</span> <span class="n">hip</span> <span class="n">hop</span></code> is encoded in binary as:</p>
+
+<table class="table-bordered">
+  <tbody>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">001</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">010</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">010</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">011</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">110</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">100</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">010</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">110</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">101</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">010</span></code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The encoded version uses 39 bits instead of the original 104 bits,
+compressing to 38% of the original size.</p>
+
+<p>To decode this bit sequence, one would need to know the custom encoding, since using <code class="language-c++ highlighter-rouge"><span class="mo">000</span></code> for <code class="language-c++ highlighter-rouge"><span class="n">h</span></code> is not standard practice. Some sort of additional information would have to be included with the encoded bits that provide the encoding.</p>
+
+<h2 id="variable-length-encoding">Variable-length encoding</h2>
+<p>What if we drop the requirement that all characters take up the same
+number of bits? If we use fewer bits to encode characters like <code class="language-c++ highlighter-rouge"><span class="n">p</span></code>
+and <code class="language-c++ highlighter-rouge"><span class="n">h</span></code> that occur frequently and a longer bit sequence to encode rarer characters <code class="language-c++ highlighter-rouge"><span class="n">y</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">o</span></code>, we come out even further ahead. The table below shows an encoding for <code class="language-c++ highlighter-rouge"><span class="s">"happy hip hop"</span></code> where the code assigned to each character varies in length.</p>
+
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Character</th>
+      <th>Bit sequence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'h'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'a'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">000</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'p'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">10</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'y'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">1111</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'i'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">001</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">'o'</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">1110</span></code></td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="sc">' '</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">110</span></code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">happy</span> <span class="n">hip</span> <span class="n">hop</span></code> encoded using the above variable-length coding is:</p>
+
+<table class="table-bordered">
+  <tbody>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">000</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">10</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">10</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">1111</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">110</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">001</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">10</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">110</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mo">01</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">1110</span></code></td>
+      <td><code class="language-c++ highlighter-rouge"><span class="mi">10</span></code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The encoded phrase requires a total of 34 bits, shaving a few more bits
+from the fixed-length version.</p>
+
+<p>The diagram has a box around each character’s bit sequence to help you visualize where the sequence for each character starts and stops, but
+without this aid, you might wonder how you could know where those boundaries are.</p>
+
+<p>Given the starting sequence <code class="language-c++ highlighter-rouge"><span class="mf">01000101.</span><span class="p">..</span></code>, do the two bits <code class="language-c++ highlighter-rouge"><span class="mo">01</span></code> go together or the three bits <code class="language-c++ highlighter-rouge"><span class="mo">010</span></code> or perhaps just the first bit <code class="language-c++ highlighter-rouge"><span class="mi">0</span></code>? If you look at the
+encoding table above, you will see that only one of these options is possible. There is no character that encodes to the single bit <code class="language-c++ highlighter-rouge"><span class="mi">0</span></code> and no character that encodes to the sequence <code class="language-c++ highlighter-rouge"><span class="mo">010</span></code> or <code class="language-c++ highlighter-rouge"><span class="mo">0100</span></code> or <code class="language-c++ highlighter-rouge"><span class="mo">01000</span></code> for that matter. There is, however, a character that encodes to <code class="language-c++ highlighter-rouge"><span class="mo">01</span></code> and that is <code class="language-c++ highlighter-rouge"><span class="n">h</span></code>.</p>
+
+<p>An important feature of Huffman coding is the <em>prefix property</em>: no
+character’s encoding is a prefix of any other (i.e. if <code class="language-c++ highlighter-rouge"><span class="n">h</span></code> is encoded as <code class="language-c++ highlighter-rouge"><span class="mo">01</span></code>, then no other character’s encoding will start with <code class="language-c++ highlighter-rouge"><span class="mo">01</span></code>, and no character is encoded to just <code class="language-c++ highlighter-rouge"><span class="mi">0</span></code>). With this guarantee, there is no ambiguity in determining the boundaries during decoding. We start reading from the beginning, gathering a sequence of bits until we find a match in the encoding table. That indicates the end of a character, and we move on to decoding the next character.</p>
+
+<p>Like the custom fixed-length encoding, a Huffman-encoded file will need to provide the information about the encoding used so we will be able to decode the file. Each file’s encoding will be unique since it is explicitly constructed to be optimal for that file's contents.</p>
+
+<h2 id="an-encoding-tree">An encoding tree</h2>
+<p>You can diagram a binary encoding as a binary tree. The leaf nodes each represent a particular character, and that character's encoding is obtained by tracing the path from the root to its node. Each left-going edge represents a <code class="language-c++ highlighter-rouge"><span class="mi">0</span></code>, each right-going edge a <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code>. For example, this tree diagrams the compact fixed-length encoding from above:</p>
+
+<p><img src="img/fixed.png" alt="fixed length encoding tree" /></p>
+
+<p>Tracing the path from the root to the <code class="language-c++ highlighter-rouge"><span class="n">y</span></code> node goes left-right-right, which corresponds to a code of <code class="language-c++ highlighter-rouge"><span class="mo">011</span></code>.</p>
+
+<p>The full ASCII set would be a much larger tree. It would have 8 levels, and the bottom level would contain 256 leaf nodes. The bit sequence for <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> is <code class="language-c++ highlighter-rouge"><span class="mo">01100001</span></code>, so following the path left-right-right-left-left-left-left-right
+from the root would reach the <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> node.</p>
+
+<p>Here is a tree for the variable-length Huffman encoding we used earlier:</p>
+
+<p><img src="img/variable.png" alt="variable length encoding tree" /></p>
+
+<p>The path to <code class="language-c++ highlighter-rouge"><span class="n">h</span></code> is left-right or <code class="language-c++ highlighter-rouge"><span class="mo">01</span></code>; the path to <code class="language-c++ highlighter-rouge"><span class="n">y</span></code> is right-right-right-right or <code class="language-c++ highlighter-rouge"><span class="mi">1111</span></code>. Notice that the prefix property is evidenced in the tree by the fact that characters only occupy leaf nodes (i.e. leaf nodes have no children and are not a prefix of any further nodes).</p>
+
+<p>The above tree for is an <em>optimal</em> tree for <code class="language-c++ highlighter-rouge"><span class="n">happy</span> <span class="n">hip</span> <span class="n">hop</span></code> —there
+is no encoding tree that uses fewer than 34 bits to encode this input. There are other <em>equally optimal</em> trees that also use 34 bits; for example, you can simply swap any sibling nodes in the above tree and get a different but equally optimal encoding.</p>
+
+<p>The Huffman tree doesn’t seem as balanced as the fixed-length encoding tree. When we discussed BSTs, you heard that an unbalanced binary search tree is to be avoided. However, for an encoding tree, that lopsidedness is a good thing. The shorter paths represent frequently occurring characters that are being encoded with fewer bits, and the longer paths are more rare characters. We reduce the total number of bits by shortening the encoding for some characters at the expense of lengthening others. If all characters occurred with equal frequency, we would have a balanced tree where all paths were roughly equal. In such a situation, we can't achieve much compression as there are no patterns that can be leveraged.</p>
+
+<h2 id="decoding-using-an-encoding-tree">Decoding using an encoding tree</h2>
+<p>A particularly compelling reason to represent an encoding as a tree is the ease with which it supports decoding. Let's use the Huffman tree to decode the stream of bits <code class="language-c++ highlighter-rouge"><span class="mi">111100110101111</span></code>. Start at the beginning of the bit sequence and at the root of the tree. The first bit is <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code>, so trace one step to the right. The next bit is <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code>, so follow right from there. The next two <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code> bits make two more right turns, and we have now landed at a leaf, which indicates that we have just completed reading the bit sequence for a single character. Looking at the leaf's label, we learn we just read a <code class="language-c++ highlighter-rouge"><span class="n">y</span></code>.</p>
+
+<p>Now we pick up where we left off in the bits and start tracing again from the root. Tracing <code class="language-c++ highlighter-rouge"><span class="mo">001</span></code> left-left-right leads us to <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>. Continuing through the remaining bits, we decode the string <code class="language-c++ highlighter-rouge"><span class="s">"yippy"</span></code>. Even though codes don't start and end at fixed boundaries, we have no trouble determining where each character ends because we can detect when the path hits a leaf node in the encoding tree.</p>
+
+<h2 id="constructing-an-optimal-encoding-tree">Constructing an optimal encoding tree</h2>
+<p>Now we will learn a process for constructing an optimal encoding tree. Start by tallying the occurrences of each character in the input to get the starting weights for each character. In the <code class="language-c++ highlighter-rouge"><span class="n">happy</span> <span class="n">hip</span> <span class="n">hop</span></code> example, the character <code class="language-c++ highlighter-rouge"><span class="n">p</span></code> has weight 4, <code class="language-c++ highlighter-rouge"><span class="n">h</span></code> has weight 3, the space has weight 2, and the other
+characters have weight 1.</p>
+
+<p>Create a leaf node for each character and its weight. Each node is a singleton tree, and a collection of trees is called a <em>forest</em> (we computer scientist are clever, no?). Merge the forest of trees into one combined tree from the bottom upwards, using this process:</p>
+
+<ol>
+  <li>Find the two trees with the smallest weights in the forest and
+remove them from the forest.</li>
+  <li>Create a new tree with these two trees as its subtrees. This tree's
+weight is equal to the sum of the weights of its subtrees.</li>
+  <li>Add the new combined tree back into the forest.</li>
+  <li>Repeat steps 1-3 until there is only one tree left in the forest.
+This is the final encoding tree.</li>
+</ol>
+
+<p>Let's walk through building the optimal tree for <code class="language-c++ highlighter-rouge"><span class="s">"happy hip hop"</span></code>. We start with this forest. The weight of each node is labeled underneath:</p>
+
+<p><img src="img/forest1.png" alt="forest" /></p>
+
+<p>Find the two minimum entries. There are four trees with the minimal weight 1, it doesn't matter which two we pick. We choose <code class="language-c++ highlighter-rouge"><span class="n">o</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">y</span></code> and combine them into a tree of weight 2. This combined tree goes back into the forest. The light gray box in these diagrams shows the current contents of the forest.</p>
+
+<p><img src="img/forest2.png" alt="forest" /></p>
+
+<p>On the next iteration, the two minimum trees in the forest are the weight-1 trees <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>. We remove these and combine into a tree of weight 2. Each iteration decreases the size of the forest decrements by one (we remove two trees and add one combined tree).</p>
+
+<p>Two of the weight 2 trees are joined into a tree of weight 4:
+<img src="img/forest3.png" alt="forest" /></p>
+
+<p>Note that the root of a combined tree doesn’t represent a character like the leaf nodes. An interior node appears along paths that eventually lead to codes, but the prefix itself does not encode a character. One more iteration combines the weight 3 and 2 trees into a tree of weight 5:</p>
+
+<p><img src="img/forest4.png" alt="forest" /></p>
+
+<p>Combining the two weight 4 trees builds a tree of weight 8:</p>
+
+<p><img src="img/forest5.png" alt="forest" /></p>
+
+<p>Lastly, we combine these two into the final tree whose root has a weight equal to the number of characters in the input.</p>
+
+<p><img src="img/forest6.png" alt="forest" /></p>
+
+<p>Note that this tree is different from the tree seen earlier in this document and has slightly different bit sequences. Both trees are equally optimal, and the total number of bits required to encode <code class="language-c++ highlighter-rouge"><span class="n">happy</span> <span class="n">hip</span> <span class="n">hop</span></code> is the same for either tree. When we have choices among equally weighted nodes, picking a different pair will result in a different, but still optimal, encoding. Similarly, when combining two subtrees, it is equally valid to put one of the trees on the left and the other on the right as it is to reverse them.</p>
+
+<p>Although all such trees are optimal, in order to faithfully restore the  original contents, we must be sure to use the exact same tree to decode as was used to encode. Read on to learn how to accomplish this.</p>
+
+<h2 id="flattening-the-encoding-tree">Flattening the encoding tree</h2>
+<p>If I use Huffman coding to optimally compress a message into a sequence of bits and send it to you, the encoded data by itself is not enough. To decode the data, you will also need the encoding tree I used.</p>
+
+<p>The typical strategy is to package the encoded data with additional information about the encoding used. The information is a "flattened" version of the tree, created by traversing the encoding tree and writing down the tree structure and noting which character is located where. To decode the file, the flattened representation is re-inflated to produce a copy of the original encoding tree which is then used to decode bit sequences.</p>
+
+<p>You have to have the secret decoder ring before you can pass notes in class!</p>
+
+<h2 id="references">References</h2>
+<ul>
+  <li>Huffman, David. <a href="https://ieeexplore.ieee.org/document/4051119"><em>A Method
+for the Construction of Minimum-Redundancy Codes</em></a></li>
+  <li>Profile of David Huffman, <a href="https://www.jstor.org/stable/24938714?seq=1">Encoding the Neatness of Ones and Zeroes</a>, Scientific American, September 1991.</li>
+  <li><a href="https://www.huffmancoding.com/my-uncle/david-bio">David Huffman bio</a>, Huffman family website</li>
+</ul>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p><small>No joke: There is a software patent that uses my silly phrase "happy hip hop" as an example compression input. The patent was filed long after I published this handout, so I'm thinking my earworm infected a former student. Who realized we teachers have such influence…</small></p>
+    </li>
+  </ol>
+</div>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-04
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

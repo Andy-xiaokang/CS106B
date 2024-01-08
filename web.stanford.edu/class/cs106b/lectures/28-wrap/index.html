@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Wrap</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 28. Wrap</h1>
+ <p class="subtle-heading">Wednesday December 6</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=dde1e3d4-f609-4a2a-9555-b083014df501&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><strong><br />Contents</strong></p>
+<p>1. Crystal Etching Problem</p>
+<p>2. [<strong>Prezi</strong>] A Chaotic Assortment of Notes and Reminders</p>
+<p>3. What's next?</p>
+<p>4. Exercises</p>
+<p><strong><br />Crystal Etching Problem</strong></p>
+<p>We started class today with the crystal etching problem and a challenge: Now that you've reached the end of 106B, how could you solve this problem efficiently? What tool(s) do we have at our disposal that we wouldn't have had in CS106A? Can we do better than brute force? See attachment:</p>
+<ul>
+<li><a class="inline_disabled" href="resources/etch.pdf" target="_blank" rel="noopener">etch.pdf</a> - A write-up of the crystal etching problem from one of my former colleagues, Arup Guha.</li>
+</ul>
+<p>We solved this problem by performing a binary search over a function parameter. The algorithm we used had an interesting twist compared to previous implementations of binary search that we've seen this semester: instead of integer values of <span class="code-chonk">hi</span> and <span class="code-chonk">lo</span>, which can be decremented or incremented (respectively) until they cross over, we used floating point values for <span class="code-chonk">hi</span>, <span class="code-chonk">lo</span>, and their midpoint. So, <span class="code-chonk">hi</span> and <span class="code-chonk">lo</span> kept getting closer and closer to one another over the course of execution of the program. For our terminating condition, we stopped when <span class="code-chonk">hi - lo</span> was less than some tiny value, <span class="code-chonk">EPSILON</span>.</p>
+<p>We then briefly discussed the runtime for this solution, which was O(log(r/<span class="code-chonk">EPSILON</span>)), where <em>r</em> is the full range of possible values for <span class="code-chonk">t</span> -- in this case, 0 through 1,000,000.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Important take-away!</em></span>) Note that binary search only works for this because the right-hand side of the equation is increasing as <span class="code-chonk">t</span> increases. If the function were not strictly increasing (i.e., if it oscillated up and down as <span class="code-chonk">t</span> increased), then binary search would be useless to us. (Can you see why?)</p>
+<p>Here is our final solution to the problem (although I went back and peppered it with some incantations that ensure we only print our results with two decimal places of precision):</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;cmath&gt; &nbsp; &nbsp;<span style="color: #236fa1;"><em>// for exp()</em></span><br />#include &lt;iomanip&gt; &nbsp;<em><span style="color: #236fa1;">// for decimal precision</span></em><br />#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>#define</strong> EPSILON 0.000001<br /><br /><strong>double</strong> solveForT(<strong>double</strong> f1, <strong>double</strong> f2, <strong>double</strong> a, <strong>double</strong> b, <strong>double</strong> c)<br />{<br /><span style="color: #236fa1;"><em>  &nbsp;// Possible range for t values is defined in problem statement.</em></span><br />  &nbsp;<strong>double</strong> lo = 0.0;<br />  &nbsp;<strong>double</strong> hi = 1000000.0;<br /><br /><span style="color: #236fa1;"><em>   // We are attempting to solve for t. This will be our "mid."</em></span><br />  &nbsp;<strong>double</strong> t;<br /><br /><em><span style="color: #236fa1;">   // The left-hand side of the equation never changes, the RHS does.</span></em><br /> &nbsp; <strong>double</strong> lhs = (f2 - f1) / (f2 * f1);<br /> &nbsp; <strong>double</strong> rhs;<br /><br /><span style="color: #236fa1;"><em>   // With the way we adjust lhs and rhs, they'll never actually cross</em></span><br /><span style="color: #236fa1;"><em> &nbsp; // over, so our traditional looping condition (lo &lt;= hi) is insufficient.</em></span><br /><span style="color: #236fa1;"><em> &nbsp; // Instead, we stop when they get sufficiently close to one another.</em></span><br /> &nbsp; <strong>while</strong> (hi - lo &gt; EPSILON)<br /> &nbsp; {<br /><span style="color: #236fa1;"><em>  &nbsp; &nbsp; // Find midpoint and new value for right-hand side of equation.</em></span><br /><span style="color: #236fa1;"><em>  &nbsp; &nbsp; // Note that exp(k) raises e (Euler's number) to the power of k.</em></span><br />  &nbsp; &nbsp; t = lo + (hi - lo) / 2.0;<br />  &nbsp; &nbsp; rhs = a * t + b * (1.0 - exp(-1.0 * c * t));<br /><br /><span style="color: #236fa1;"><em>  &nbsp; &nbsp; // Since we're not dealing strictly with integers, we must use</em></span><br /><span style="color: #236fa1;"><em>  &nbsp; &nbsp; // hi = t and lo = t below instead of hi = t - 1.0 and lo = 1 - 1.0</em></span><br /><span style="color: #236fa1;"><em>  &nbsp; &nbsp; // to avoid potentially skipping over the solution.</em></span><br />  &nbsp; &nbsp; <strong>if</strong> (lhs &lt; rhs)<br />  &nbsp; &nbsp; {<br />  &nbsp; &nbsp;  &nbsp; hi = t;<br />  &nbsp; &nbsp; }<br />  &nbsp; &nbsp; <strong>else if</strong> (lhs &gt; rhs)<br />  &nbsp; &nbsp; {<br />  &nbsp; &nbsp;  &nbsp; lo = t;<br />  &nbsp; &nbsp; }<br />  &nbsp; &nbsp; <strong>else</strong><br />  &nbsp; &nbsp; {<br />  &nbsp; &nbsp;    <strong>return</strong> t;<br />  &nbsp; &nbsp; }<br />  &nbsp;}<br /><br /><span style="color: #236fa1;"><em>  &nbsp;// We will have modified either lo or hi in our final iteration of the</em></span><br /><span style="color: #236fa1;"><em>  &nbsp;// loop above, so we recalculate our mid before returning. By the way,<br /><span style="color: #236fa1;">   // Having this</span></em><em> formula repeated in two different places in this function</em></span><br /><span style="color: #236fa1;"><em>   // is a questionable life choice.</em></span><br />  &nbsp;<strong>return</strong> lo + (hi - lo) / 2.0;<br />}<br /><br /><strong>int</strong> main()<br />{<br /><em><span style="color: #236fa1;">  &nbsp;// Incantations to print only to the nearest hundredth.</span></em><br />  &nbsp;<strong>cout</strong> &lt;&lt; fixed;<br />  &nbsp;<strong>cout</strong> &lt;&lt; setprecision(2);<br /><br /><span style="color: #236fa1;"><em>   // Expected result (from PDF): 0.57</em></span><br />  &nbsp;<strong>cout</strong> &lt;&lt; solveForT(500.0, 1000.0, 0.001, 0.001, 1.0) &lt;&lt; <strong>endl</strong>;<br /><br /><span style="color: #236fa1;"><em>   // Expected result (from PDF): 1.00</em></span><br />  &nbsp;<strong>cout</strong> &lt;&lt; solveForT(1000.0, 2000.0, 0.00025, 0.0005, 0.6931472) &lt;&lt; <strong>endl</strong>;<br /><br />  &nbsp;<strong>return</strong> 0;<br />}</pre>
+<p><br /><strong>[Prezi] A Chaotic Assortment of Notes and Reminders</strong></p>
+<p>Here's the Prezi I went through at the end of class with various announcements, reminders, and notes about some of the topics we've covered this quarter:</p>
+<p><iframe id="iframe_container" src="https://prezi.com/p/embed/QViBd2hWs7hoDZK3lkQ4/" width="560" height="315" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allow="autoplay; fullscreen"></iframe></p>
+<p><br /><strong>What's next?</strong></p>
+<p><span>On Friday, Julie, Clinton, and I will host an&nbsp;</span><a class="inline_disabled" href="https://www.google.com/search?q=abbreviation+ama" target="_blank" rel="noopener">AMA</a><span>&nbsp;where we'll field any questions you might have for us.</span></p>
+<p>Your final exam is next Monday from 8:30 - 11:30 AM. For details, see: <a href="../../exams/2-endquarter/index.html" target="_blank" rel="noopener">https://web.stanford.edu/class/cs106b/exams/2-endquarter/</a></p>
+<p>Good luck with your final preparations, and thank you for working so hard and being so positive, supportive, and curious throughout the quarter!</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. As an exercise, you could try coding a solution to the crystal etching problem from scratch. However, that problem won't make an appearance on the final exam. :) We covered that mostly for funsies, but also to tackle a problem we can solve now that we wouldn't have been able to solve efficiently at the end of CS106A.</p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Dec-06
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

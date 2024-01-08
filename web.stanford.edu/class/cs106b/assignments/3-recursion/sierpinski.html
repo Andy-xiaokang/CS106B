@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Sierpinski</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Sierpinski</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Recursion can produce incredible and beautiful images from self-similar subparts. These designs are known as <em>fractals</em>. One of the most famous fractals is the <strong>Sierpinski triangle</strong>, named after the Polish mathematician Waclaw Sierpinski (whom we adopt as an honorary member of the Fall Quarter "Ski Team").</p>
+
+<p>As with many self-similar patterns, it is defined recursively:</p>
+
+<ul>
+  <li>An order-0 Sierpinski fractal is a single filled triangle.</li>
+  <li>An order<em>-n</em> Sierpinski fractal, where <em>n &gt; 0</em>, consists of three
+Sierpinski fractals of order <em>n – 1</em>, whose side lengths are half the size of the original side lengths, arranged so that they meet corner-to-corner.</li>
+</ul>
+
+<p>For example, here are Sierpinski fractals of the first few orders:
+<img src="img/sierpinski.png" alt="sierpinski fractals of orders 0-4" /></p>
+
+<p>Take a moment to confirm that the order-1 Sierpinski fractal consists of three smaller copies of the order-0 fractal,
+that the order-2 fractal is formed from three smaller copies of the order-1 fractal, and so on.</p>
+
+<p>Although the higher-order fractals might look like we’ve drawn one large black triangle with various upside-down white triangles on top, that is not the case. Each triangle drawn is black; the white triangles are simply empty spaces between the black triangles. Your code should draw only the filled black triangles. The white parts are “negative space,” or regions where nothing is drawn.</p>
+
+<p>Implement the function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">drawSierpinskiFractal</span><span class="p">(</span><span class="n">GWindow</span><span class="o">&amp;</span> <span class="n">gw</span><span class="p">,</span> <span class="n">GPoint</span> <span class="n">one</span><span class="p">,</span> <span class="n">GPoint</span> <span class="n">two</span><span class="p">,</span> <span class="n">GPoint</span> <span class="n">three</span><span class="p">,</span> <span class="kt">int</span> <span class="n">order</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>which takes as input the three corner points of the fractal and the order. The function draws a Sierpinski fractal defined by those three corner points and of the specified order. The value returned by the function is the total count of black triangles drawn.  Although it is possible to directly calculate the number of triangles using a simple formula, we want you to instead apply a recursive approach of summing the counts from the recursive calls.</p>
+
+<p>We provide the <code class="language-c++ highlighter-rouge"><span class="n">drawOrderZero</span></code> utility function to draw the order 0 fractal, a filled black triangle defined by its three corner points:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">drawOrderZero</span><span class="p">(</span><span class="n">GWindow</span><span class="o">&amp;</span> <span class="n">gw</span><span class="p">,</span> <span class="n">GPoint</span> <span class="n">one</span><span class="p">,</span> <span class="n">GPoint</span> <span class="n">two</span><span class="p">,</span> <span class="n">GPoint</span> <span class="n">three</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="notes">Notes</h2>
+<ul>
+  <li><strong>Draw pictures!</strong> One key part is figuring out the location for each of the corners, and that’s easier to do with a diagram in front of you.</li>
+  <li>The midpoint of each side of the large outer triangle becomes a corner of one of the smaller inner triangles. Given a line segment whose endpoints are <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">}</span></code> and <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">}</span></code>, its midpoint is at <code class="language-c++ highlighter-rouge"><span class="p">{</span> <span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">y1</span><span class="o">+</span><span class="n">y2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">}</span></code>.</li>
+  <li>The corner points of the fractal can be arbitrarily chosen to start. They don’t necessarily form an equilateral triangle nor must the base be parallel to the window bottom. The choice of which corner is identified as <code class="language-c++ highlighter-rouge"><span class="n">one</span></code> versus <code class="language-c++ highlighter-rouge"><span class="n">two</span></code> versus <code class="language-c++ highlighter-rouge"><span class="n">three</span></code> is completely arbitrary.</li>
+  <li>A <code class="language-c++ highlighter-rouge"><span class="n">GPoint</span></code> struct is used to specify an x,y coordinate within the graphics window.  Here is the documentation for <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/GPoint.html" title="Documentation for GPoint">GPoint</a>.</li>
+  <li>The only drawing function you need is our provided <code class="language-c++ highlighter-rouge"><span class="n">drawOrderZero</span></code>. You do not need to dig into any other drawing functionality in the Stanford libraries.</li>
+</ul>
+
+<h2 id="testing-graphics">Testing graphics</h2>
+<p>A function that produces graphical output, such as Sierpinski, doesn't lend itself to being unit-tested, so we've provided a simple GUI demo you can use to interactively test. The starter code for <code class="language-c++ highlighter-rouge"><span class="n">sierpinski</span><span class="p">.</span><span class="n">cpp</span></code> contains a provided test that runs our GUI demo. Do not modify this provided test.  Running this test will bring up a graphical window for interactively testing your fractal drawing. Watch this screencast movie to see a demonstration of the GUI operation:</p>
+
+<p><img src="img/sierpinski-gui.gif" alt="Animating sierpinski" /></p>
+
+<p>In the GUI, use the slider to change the order and drag the corners to change the fractal dimensions. It will be up to you to visually inspect the drawing for correctness and confirm that the count of triangles returned is as expected. When you are you done testing, close the graphics window to exit the GUI.</p>
+
+<h2 id="extensions">Extensions</h2>
+<p>The Sierpinski fractal is only one of many self-similar images; consider coding up another! We’d love to see what you create.</p>
+
+<p>Some resources:</p>
+<ul>
+  <li><a href="https://fractalfoundation.org/resources/">Fractal Foundation</a></li>
+  <li><a href="https://mathworld.wolfram.com/Fractal.html">Wolfram MathWorld on Fractals</a></li>
+  <li><a href="http://www.kevs3d.co.uk/dev/lsystems/">Interactive Lindenmeyer System</a></li>
+</ul>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-15
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Huffman coding</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Huffman coding</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski. Thanks to Keith Schwarz for structure of tree flatten/unflatten.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>Huffman coding is an algorithm devised by David Huffman in 1952 for compressing data. This simple and elegant approach is powerful enough that variants of it are still used today in computer networks, fax machines, modems, HDTV, and other areas. You will be impressed with its clever use of trees and your ability to implement such a nifty tool!</p>
+
+<h2 id="huffman-warmup">Huffman warmup</h2>
+<p>Be sure to have completed the preparatory <a href="warmup.html">warmup exercises</a>.</p>
+
+<h2 id="review-starter-code">Review starter code</h2>
+<p>Before you get started in earnest, take stock of the files in the starter project and what's provided to you. Here are some details to become acquainted with:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">treenode</span><span class="p">.</span><span class="n">h</span></code> defines the <code class="language-c++ highlighter-rouge"><span class="n">EncodedTreeNode</span></code> struct you will use for as node type for an encoding tree. You were introduced to this type in the warmup.</li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">bits</span><span class="p">.</span><span class="n">h</span></code> defines the <code class="language-c++ highlighter-rouge"><span class="n">Bit</span></code> type that is used to represent a single value of <code class="language-c++ highlighter-rouge"><span class="mi">0</span></code> or <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code>.  A <code class="language-c++ highlighter-rouge"><span class="n">Bit</span></code> can be used somewhat interchangeably with the integers 0 and 1:</p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">;</span>
+  <span class="n">Bit</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   
+  <span class="n">q</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>   
+  <span class="k">if</span> <span class="p">(</span><span class="n">q</span><span class="p">.</span><span class="n">dequeue</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre></div>    </div>
+
+    <p>The special feature of <code class="language-c++ highlighter-rouge"><span class="n">Bit</span></code> is that it is restricted to only allow values 0 or 1. Any other values will raise an error (Accidental use of values other than 0 or 1 has been a common error and source of much grief in the past; thus we have introduced this constrained type to help you avoid these issues).</p>
+  </li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">bits</span><span class="p">.</span><span class="n">h</span></code> also defines the <code class="language-c++ highlighter-rouge"><span class="n">EncodedData</span></code> struct for the data stored in a Huffman compressed file.</li>
+  <li>In <code class="language-c++ highlighter-rouge"><span class="n">bits</span><span class="p">.</span><span class="n">cpp</span></code>, we provide code to read and write bits to and from a stream. The code uses the C++ features for bit-manipulation, a topic outside the scope of CS106B. CS107 will be your chance to explore bit operations but if you are curious in advance, you’re welcome to poke around in <code class="language-c++ highlighter-rouge"><span class="n">bits</span><span class="p">.</span><span class="n">cpp</span></code> to check it out.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">.</span><span class="n">cpp</span></code> contains an interactive console main program to do end-to-end file compression and decompression by calling your functions.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">huffman</span><span class="p">.</span><span class="n">cpp</span></code> is where you will implement the required functions for Huffman compression and decompression and add your student test cases.</li>
+  <li>When constructing a Huffman coding tree, you will need a priority queue. The <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> you previously implemented is close to what you need, but it only stored elements of type <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code>. The <code class="language-c++ highlighter-rouge"><span class="n">priorityqueue</span><span class="p">.</span><span class="n">h</span></code> interface in the Stanford library provides a general-purpose <code class="language-c++ highlighter-rouge"><span class="n">PriorityQueue</span></code> implemented as an efficient binary min-heap. Its design is similar to your PQHeap with two notable differences: 1) it is defined as a template and thus capable of storing the client's choice of element type 2) the element priority is passed and returned separately from the element value. Consult the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/PriorityQueue.html" title="Documentation for PriorityQueue">PriorityQueue</a> documentation for more details. The elements you store in the priority queue will be trees; that is to say, the element type is <code class="language-c++ highlighter-rouge"><span class="n">EncodingTreeNode</span><span class="o">*</span></code>, a pointer to the root node.</li>
+</ul>
+
+<h2 id="strategy">Strategy</h2>
+<p><small><em>"I think that little by little I’ll be able to solve my problems"</em> – wise words from Frida Kahlo</small></p>
+
+<p>Ultimately, the goal is develop a full <code class="language-c++ highlighter-rouge"><span class="n">compress</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">decompress</span></code> pipeline, but your job will be more manageable if you break it down into steps and develop in stages. We have decomposed the project into a number of helper functions and propose a order of implementation that works from the bottom-up, writing and testing individual functions and then moving on to combine them into the final program.</p>
+
+<p>We recommend you first tackle the decode/unflatten/decompress tasks. This may seem a little backwards, but it turns out to be a great strategy. The code to decode/decompress is a bit simpler than encode/compress, and it is more straightforward to verify the correctness of its output because it restores the original text.</p>
+
+<p>Then when you move on to implement encode/flatten/compress, you will already have a working decode/unflatten/decompress, which means you can feed the output from your encode operation back into your decode for testing.</p>
+
+<p>With both decompress and compress working, you can use our provided main program to do end-to-end file compression and decompression and then bask in awe of the impressive tool you have created!</p>
+
+<p><strong>A note on recursion versus iteration</strong>. As you write each function, you will need to first consider your approach.  Many tasks could be implemented using either recursion or iteration and it will be up to choose an appropriate strategy.</p>
+
+<p>Some tasks must be implemented iteratively to allow for successfully handling larger inputs.  For example, if <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code> function made a recursive call for every bit/character in the input, this could easily exhaust the limits of the stack and lead to stack overflow. Such tasks must be implemented iteratively.</p>
+
+<p>Some tasks more naturally lend themselves to a recursive approach, such as the tree traversals for flatten/unflatten and deallocate. Since the depth of the recursive calls here is bounded by the height of the tree, there is no concern about stack overflow. Recursion is a great choice!</p>
+
+<p>Absent a compelling reason to prefer one over the other, it is your call to choose for yourself.</p>
+
+<h3 id="decodedecompress">Decode/decompress</h3>
+<p>We recommend that you implement the functions in the order listed below. You are also welcome to write additional helper functions if that aids your decomposition.</p>
+
+<ul>
+  <li>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="n">decodeText</span><span class="p">(</span><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">,</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;&amp;</span> <span class="n">messageBits</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> function is a good introduction to writing code that operates on trees. To review decoding using a tree, look back to <a href="warmup.html#Q1">Q1 of the warmup</a>.</p>
+
+    <p>Be sure to test! The starter code has one provided test for <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code>; add student tests of your own to achieve full coverage.</p>
+  </li>
+  <li>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">unflattenTree</span><span class="p">(</span><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;&amp;</span> <span class="n">treeShape</span><span class="p">,</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span> <span class="n">treeLeaves</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>If needed, revisit <a href="warmup.html#Q5">Q5 of the warmup</a> to practice on paper with the unflatten operation before trying to code <code class="language-c++ highlighter-rouge"><span class="n">unflattenTree</span></code>. This task is all about tree traversal and tree construction.</p>
+
+    <p>Checking the unflattened tree by expanding/tracing its contents in the debugger tends to be an easier way to confirm the function is correct than by hand-constructing test cases.</p>
+  </li>
+  <li>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="n">decompress</span><span class="p">(</span><span class="n">EncodedData</span><span class="o">&amp;</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>The final <code class="language-c++ highlighter-rouge"><span class="n">decompress</span></code> sounds like it would be the difficult task, but you're already done all the hard work, so all that's left to do is call the functions you already wrote and tested, woo hoo! Re-using the same inputs/trees that you manually traced in the <a href="warmup.html">warmup</a> would make good candidates for simple test cases.</p>
+  </li>
+</ul>
+
+<h3 id="decode-a-mystery">Decode a mystery</h3>
+<p>Now that you have a working <code class="language-c++ highlighter-rouge"><span class="n">decompress</span></code>, use it to unpack the compressed mystery file we included in the starter project.</p>
+
+<p>Run your program and when the main menu prompts you for which tests to run, respond <code class="language-c++ highlighter-rouge"><span class="mi">0</span> <span class="p">(</span><span class="n">None</span><span class="p">)</span></code>. The <code class="language-c++ highlighter-rouge"><span class="n">main</span></code> rest of the provided <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code> is a simple console program that allows the user to select files to compress and decompress.</p>
+
+<p>The starter project contains a compressed file you can use to test your decompress function. When prompted by the console program, enter 'D' to decompress and from the file chooser dialog, choose the file <code class="language-c++ highlighter-rouge"><span class="n">mystery</span><span class="p">.</span><span class="n">jpg</span><span class="p">.</span><span class="n">huf</span></code> in the <code class="language-c++ highlighter-rouge"><span class="n">res</span></code> subfolder. The uncompressed version will be written to a file named <code class="language-c++ highlighter-rouge"><span class="n">unhuf</span><span class="p">.</span><span class="n">mystery</span><span class="p">.</span><span class="n">jpg</span></code> in the same folder. Locate that uncompressed file in the Finder/File Explorer and open it to confirm your success at restoring the original. Neat!</p>
+
+<p>At this point, you should have working versions of <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">unflattenTree</span></code> and a complete decompress pipeline. Awesome! These will serve you well when writing and testing the encode/compress side coming up next.</p>
+
+<h3 id="encodecompress">Encode/compress</h3>
+<p>We recommend that you implement the functions in the order listed below. You are also welcome to write additional helper functions as a decomposition aid.</p>
+
+<ul>
+  <li>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span> <span class="n">encodeText</span><span class="p">(</span><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">,</span> <span class="n">string</span> <span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>Review <a href="warmup.html#Q2">Q2 of the warmup</a> for practice with encoding. We recommend that you start by writing your own helper function that traverses the tree once and builds a map that associates each character with its encoded bit sequence. You will later use this map to look up the bit sequence for a character, rather than having to repeatedly traverse the tree to find it. The helper function operates recursively. The depth of the recursive calls is bounded by the height of the tree so there is no concern about stack overflow.</p>
+
+    <p>When moving on to the encoding task, you must use iteration to process each character of the text, not recursion.  A recursive approach that added a stack frame per character of input would overflow the stack on longer inputs.</p>
+
+    <p>When writing test cases, be sure to consider how a call <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code> followed by <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> is a round-trip that should restore the original.  And consider how handy it is that you already have a working <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code>!</p>
+  </li>
+  <li>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">flattenTree</span><span class="p">(</span><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">,</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;&amp;</span> <span class="n">treeShape</span><span class="p">,</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span> <span class="n">treeLeaves</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>Review <a href="warmup.html#Q4">Q4 of the warmup</a> for practice with the flatten operation.  This function involves more tree traversals —once you are done writing <code class="language-c++ highlighter-rouge"><span class="n">flattenTree</span></code>, you will be a tree traversal expert!</p>
+
+    <p>A good approach for test cases would be to flatten a tree, then unflatten it, and confirm the original and reconstructed trees are equal. Your helper function to compare two trees is just what you'll need for these test cases.</p>
+  </li>
+  <li>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">buildHuffmanTree</span><span class="p">(</span><span class="n">string</span> <span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">buildHuffmanTree</span></code> function is the workhorse of your compression algorithm. It takes the input text and follows the Huffman algorithm to construct an optimal Huffman coding tree for the input. You practiced this task in <a href="warmup.html#Q6">Q6 of the warmup</a>.</p>
+
+    <p>The input text must contain at least two distinct characters in order to build a Huffman encoding. If the given input does not meet this requirement, <code class="language-c++ highlighter-rouge"><span class="n">buildHuffmanTree</span></code> should raise an error.</p>
+
+    <p>When ready to test this function, keep in mind that there can be many valid Huffman trees for a given input, differing only in how the algorithm breaks ties. Be sure to consider how tie-breaking affects the tree outcome when constructing your test cases. It would be a bummer to get mired in trying to resolve why your tree is not equal to an expected output, only to realize that your tree is perfectly valid and equally optimal but just different than you thought it would be.</p>
+  </li>
+  <li>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EncodedData</span> <span class="n">compress</span><span class="p">(</span><span class="n">string</span> <span class="n">messageText</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>This final <code class="language-c++ highlighter-rouge"><span class="n">compress</span></code> function pulls together the above operations into a complete whole. A student test case that runs an input through compress -&gt; decompress should reconstruct the original and allow you to confirm the functionality of the entire pipeline. You can also use the console main program as a manual test of compressing and decompressing files.</p>
+  </li>
+</ul>
+
+<p>You have already tested each function in isolation and you might reasonably expect that they will all happily work together, but sometimes there can be latent issues that only surface in the complete program. This can be an indication that the earlier test coverage was lacking, there are unexpected interactions between the components that were not previously triggered, or a nefarious memory bug has been lying in wait. If this happens to you, bust our your superior testing and debugging skills to hunt down those gremlins and eradicate them.</p>
+
+<p>We included a variety of files in the <code class="language-c++ highlighter-rouge"><span class="n">res</span></code> folder of the starter project to use as inputs to compress. You can also add files of your own for testing.</p>
+
+<h3 id="encode-a-message-for-your-sl">Encode a message for your SL</h3>
+<p>Compress a secret message to send your section leader as part of your submission. In the <code class="language-c++ highlighter-rouge"><span class="n">res</span></code> subfolder of starter project, you'll find a file named <code class="language-c++ highlighter-rouge"><span class="n">secretmessage</span><span class="p">.</span><span class="n">txt</span></code>. Edit that file to contain your message. Share about your journey in CS106B, thank your SL, tell us of your future plans, or send a funny meme. The message can be anything (non-offensive ☺) that you like.</p>
+
+<p>Use your program to compress the file and save the result to <code class="language-c++ highlighter-rouge"><span class="n">secretmessage</span><span class="p">.</span><span class="n">txt</span><span class="p">.</span><span class="n">huf</span></code>. Submit the compressed huf file to Paperless along with your code. Your section leader will uncompress your message with your program and read it while grading.</p>
+
+<h2 id="specifications">Specifications</h2>
+<ul>
+  <li>Do not change prototypes for any of the required functions. This applies to both the utility functions described in the warmup and the functions described in this document.</li>
+  <li>The documentation for the individual functions (<code class="language-c++ highlighter-rouge"><span class="n">decode</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">unflatten</span></code>, etc.) state what assumptions you can make about the inputs being valid and well-formed. Even so, writing those functions to detect/error on bad inputs can be a good defense.  We won't test on invalid inputs, but while you are in development, you might accidentally slip up and feed your function a bad input. Your efforts to defend against such missteps could save you some time debugging an incorrect test case.</li>
+  <li>An input must contain at least two distinct characters to be Huffman-encodable, but beyond that, it can contain be of any length and may include any/all possible characters. Mon-text files, such as sounds and images, make use of the full range of character values from 0 to 255, so these inputs make good test cases to confirm.</li>
+  <li>Your code should have <strong>no memory leaks</strong>, including no memory leaks in test cases.
+    <ul>
+      <li>Working out where and where to deallocate your trees will require careful thinking! Each tree that is allocated needs to be deallocated once and only once, and only after you are done using that memory.</li>
+    </ul>
+  </li>
+  <li>Consider this assignment an opportunity to show your section leader that you've been absorbing all that great feedback on style from your IGs. Let's see your best work on writing the beautiful code we know you are capable of!</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+<ul>
+  <li>The starter code includes provided tests that test basic operation of 
+  each function on a simple known input. These cases are good for early testing. You should supplement with student test cases that apply to small, fixed inputs for targeted coverage.</li>
+  <li>Constructing large-scale tests by hand is quite tedious and not something we 
+  recommend. When ready for more comprehensive tests, instead move on to using an end-to-end test strategy across the full compress -&gt; decompress cycle. Our provided main console program compresses entire files, which gives you easy access to larger and more varied test inputs than would be reasonable to construct by hand.</li>
+  <li>Your implementation should be robust enough to compress all  types of files: text, binary, image, or even one that has previously compressed. Your program probably won’t be able to further squish an already compressed file (and in fact, it can get larger because of the additional overhead of the flattened tree), but it should be possible to compress multiple iterations, decompress the same number of iterations, and return to the original file.</li>
+  <li>What sorts of files do you expect Huffman to achieve particularly good
+good compression? On what sorts of files will it be less effective? Are there files that grow instead of shrink when they are Huffman encoded? Create sample files to test out your theories.</li>
+</ul>
+
+<h2 id="extensions">Extensions</h2>
+<p>There are many, many other techniques based on Huffman encoding that you can use to get even better data compression. Here are a few concepts to look up if you’d like to learn more about this.</p>
+<ul>
+  <li><strong>Adaptive Huffman coding</strong>.
+  Huffman encoding works by looking at the entire piece of text to compress, finding the global frequencies of each character, and then building a single encoding tree. However, in some files – especially image data – different regions of the file will likely have wildly different frequencies of each letter. For example, in a picture of a yellow sunflower against a bright blue sky, the parts of the file that store the sky data will have most of their bits dedicated to storing different shades of blue, and the parts of the file storing the sunflower will primarily store bits used to hold shades of yellow. For such patterns, it can be worth the effort to adjust the encoding while running through the file. An adaptive Huffman coding slices the file into smaller sections and uses different encoding trees per section.</li>
+  <li><strong>LZW compression</strong>.
+  The LZW algorithm was developed by Lempel, Ziv, and Welch. This extension on Huffman coding achieves higher compression by additionally assigning short codes to common letter sequences, instead of just common letters. For example, the letter 'r' is often followed by the letter 'e', so we could treat the sequence "re" as just another letter when assigning codes.</li>
+  <li><strong>Shannon entropy</strong>.
+  Huffman encoding is based on the assumption that, when reading characters from the file, each character is chosen randomly, with the likelihood of any character coming up being directly proportional to the number of times that letter appears in the overall file. Under this assumption, you can show that the theoretical limit of any compression algorithm for a file is related to a quantity called the Shannon entropy of the distribution. The Shannon entropy is actually relatively easy to compute, and if you’re looking for a nifty “how does theory meet practice” exercise, take a look at the file sizes generated by Huffman encoding and see how they compare against the theoretical lower bound.</li>
+</ul>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-26
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

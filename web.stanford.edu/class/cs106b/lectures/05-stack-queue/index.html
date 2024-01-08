@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Stacks and Queues</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 5. Stacks and Queues</h1>
+ <p class="subtle-heading">Friday October 6</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Today we will discuss use of <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code> and  <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>. These containers store data in an ordered format and are used to solve many problems.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 5.1 - 5.3, Class documentation for <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Stack.html" title="Documentation for Stack">Stack</a> and <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Queue.html" title="Documentation for Queue">Queue</a></li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/141556">Lecture quiz on Canvas</a></li>
+  <li><a href="QueueViz.zip">QueueViz.zip</a></li>
+  <li><a href="StackViz.zip">StackViz.zip</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=4de387ca-bb5d-493b-b95e-b083014df229&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Announcements</p>
+<p>2. Preliminaries: Client-Side Approach to ADTs</p>
+<p>3. Stack Overview</p>
+<p>4. Stack Examples in Code</p>
+<p>5. Stack Applications</p>
+<p>6. Vectors as Stacks</p>
+<p>7. Queue Overview</p>
+<p>8. Queue Examples in Code</p>
+<p>9. Mod Operator (%)</p>
+<p>10. Queue Applications</p>
+<p>11. Stack Application: Postfix Notation</p>
+<p>12. Grid Redux</p>
+<p>13. What's next?</p>
+<p>14. Practice Problems</p>
+<p><br /><strong>Announcements</strong></p>
+<ul style="list-style-type: disc;">
+<li>Assignment 1 is due Monday at 5 PM. Please be sure to head to LaIR early for help with these assignments (and to ensure that you don't get stuck in a really long queue). We appreciate your patience in LaIR. Please keep in mind we're doing our best to help a large number of students.</li>
+</ul>
+<ul>
+<li>Solutions to this week's section problems are now posted to the course website. Be sure to work through any problems you found tricky or that your SL didn't have time to cover this week.</li>
+</ul>
+<ul>
+<li>Your next batch of quizzes will be due Wednesday at 2 PM.</li>
+</ul>
+<p><br /><strong>Preliminaries: Client-Side Approach to ADTs</strong></p>
+<p>I mentioned at the top of class today that we're currently taking a <strong>client-side</strong> approach to the ADTs we're exploring. That means we're exploring how to use them, but not their nitty-gritty, behind-the-scenes implementation details. However, we will discuss those implementation details later this quarter, after we've built up some additional requisite knowledge for doing so.</p>
+<p>In the meantime, exploring ADTs from the client side empowers us to solve all kinds of interesting problems.</p>
+<p><br /><strong>Stack Overview</strong></p>
+<p><em>Attachment: <a href="StackViz.zip">StackViz.zip</a></em></p>
+<p>The first ADT we saw today was the stack. A stack is a <strong>LIFO</strong> (last-in, first-out) data structure. It generally supports a limited set of operations:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Member Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>clear()</td>
+      <td>removes all elements from the stack</td>
+    </tr>
+    <tr>
+      <td>equals(stack)</td>
+      <td>returns <span class="code-chonk">true</span> if the two stacks contain the same elements in the same order, <span class="code-chonk">false</span> otherwise</td>
+    </tr>
+    <tr>
+      <td>isEmpty()</td>
+      <td>returns <span class="code-chonk">true</span> if the stack contains no elements, <span class="code-chonk">false</span> otherwise</td>
+    </tr>
+    <tr>
+      <td>peek()</td>
+      <td>returns the element on the top of the stack without removing it</td>
+    </tr>
+    <tr>
+      <td>pop()</td>
+      <td>removes the element from the top of the stack and returns it</td>
+    </tr>
+    <tr>
+      <td>push(value)</td>
+      <td>pushes <span class="code-chonk">value</span> onto the stack</td>
+    </tr>
+    <tr>
+      <td>size()</td>
+      <td>returns the number of values in the stack</td>
+    </tr>
+    <tr>
+        <td>. . .</td>
+        <td>For an exhaustive list, see: <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Stack.html">Stanford <span class="code-link">Stack</span> class</a></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>Notably, a stack does <em>not</em> support a search operation or an operation to find and remove an element with a specific value.</p>
+<p>Before delving into actual code, we explored the behaviors of stacks through the <span class="code-chonk">StackViz</span> program attached above.</p>
+<p><br /><strong>Stack Examples in Code</strong></p>
+<p>To create a stack using the Stanford C++ Libraries, we must include the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "stack.h"</pre>
+<p>The syntax for creating a stack is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">Stack&lt;<span style="background-color: #999999; color: #ffffff;"> <strong>DATA_TYPE</strong> </span>&gt; <span style="background-color: #999999; color: #ffffff;"> <strong>VARIABLE_NAME</strong> </span>;</pre>
+<p>(<em><span style="font-size: 10pt; background-color: #ffff99;">Important note!</span></em>) We must capitalize the 'S' in "Stack" when declaring one in code. As with the other ADTs we have seen this quarter, C++ has its own built-in version of a stack that uses a lowercase 's'.</p>
+<p>Here's the first example we saw of an actual stack in class today:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "stack.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Stack&lt;int&gt; s;<br /><br />   s.push(10);<br />   s.push(20);<br />   s.push(15);<br />   s.push(12);<br /><br />   while (!s.isEmpty())<br />   {<br />      cout &lt;&lt; s.pop() &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">12<br />15<br />20<br />10</span></pre>
+<p>We also saw the following, which uses a stack to print the characters of a string in reverse order:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "stack.h"<br />using namespace std;<br /><br />int main()<br />{<br />   string str = "hello";<br />   Stack&lt;char&gt; myStack;<br /><br />   for (char ch : str)<br />   {<br /> &nbsp; &nbsp; &nbsp;myStack.push(ch);<br />   }<br /><br />   while (!myStack.isEmpty())<br />   {<br />      cout &lt;&lt; myStack.pop();<br />   }<br />   cout &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">olleh</span></pre>
+<p>We also saw that we can print a stack using the &lt;&lt; operator. This is super helpful for debugging, and we saw that C++'s built-in stack does not support that behavior:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "stack.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Stack&lt;int&gt; s;<br /><br />   s.push(10);<br />   s.push(20);<br />   s.push(15);<br />   s.push(12);<br /><br />   cout &lt;&lt; "Stack contents: " &lt;&lt; s &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Stack contents: {10, 20, 15, 12}</span></pre>
+<p>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not mentioned in class.</em></span>) We can also use the <span class="code-chonk">==</span> and <span class="code-chonk">!=</span> operators to check whether two stacks are the same (i.e., they contain the same elements in the same order). For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "stack.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Stack&lt;int&gt; s1;<br />   Stack&lt;int&gt; s2;<br />   Stack&lt;int&gt; s3;<br /><br />   s1.push(12);<br />   s1.push(10);<br /><br />   s2.push(12);<br />   s2.push(10);<br /><br />   s3.push(12);<br />   s3.push(10);<br />   s3.push(10);<br /><br />   if (s1 == s2)<br />   {<br />      cout &lt;&lt; "s1 == s2" &lt;&lt; endl;<br />   }<br />   else<br />   {<br />      cout &lt;&lt; "s1 != s2" &lt;&lt; endl;<br />   }<br /><br />   if (s1 == s3)<br />   {<br />      cout &lt;&lt; "s1 == s3" &lt;&lt; endl;<br />   }<br />   else<br />   {<br />      cout &lt;&lt; "s1 != s3" &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">s1 == s2<br />s1 != s3</span></pre>
+<p><br /><strong>Stack Applications</strong></p>
+<p>Stacks come up all over the place in computer science. Here are a few of the applications we discussed today:</p>
+<ul>
+<li>Stacks are useful for reversing things! See the example above in which we print the characters of a string in reverse order.</li>
+<li>We talked about the <strong>call stack</strong>, which your programs use to keep track of which functions have been called in which order and where we need to return to when we hit the end of some function's execution.</li>
+<li>Toward the end of class, I returned to stacks to talk about how they can be used to process arithmetic postfix expressions. (A write-up about that is included toward the bottom of today's notes.)</li>
+</ul>
+<p><br /><strong>Vectors as Stacks</strong></p>
+<p>We saw that we could actually implement a stack using a vector. The following two programs effectively have the same functionality:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Stack approach:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "stack.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Stack&lt;int&gt; s;<br /><br />   s.push(10);<br />   s.push(20);<br />   s.push(15);<br /><br />   cout &lt;&lt; s.pop() &lt;&lt; endl;<br />   cout &lt;&lt; "Stack contents: " &lt;&lt; s &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">15<br />Stack contents: {10, 20}</span></pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Vector approach:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Vector&lt;int&gt; v;<br />   v.add(10);<br />   v.add(20);<br />   v.add(15);<br /><br />   cout &lt;&lt; v.remove(v.size() - 1) &lt;&lt; endl;<br />   cout &lt;&lt; "Vector contents: " &lt;&lt; v &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">15<br />Vector contents: {10, 20}</span></pre>
+<p>Notice, however, that the stack version is not only easier to read, but also less error prone. There is less code to parse (we can infer its semantics with a quick glance at the operations being performed), and we don't have to stop to consider whether we're pushing and popping at the correct index.</p>
+<p>With the vector approach, we might have to stop to consider the relationship between <span class="code-chonk">v.add()</span> and <span class="code-chonk">v.remove(v.size() - 1)</span> to ensure we understand what the code is doing. Someone coding this up with vectors could also easily remove elements from the wrong end of the vector or have an off-by-one error that causes us to go out of bounds. Those problems simply don't exist with the stack approach, where the details of the <span class="code-chonk">s.push()</span> and <span class="code-chonk">s.pop()</span> operations are abstracted away from us and we can assume they work as intended.</p>
+<p><strong><br />Queue Overview</strong></p>
+<p><em>Attachment: <a href="QueueViz.zip">QueueViz.zip</a></em></p>
+<p>We then discussed the queue ADT. A queue is a <strong>FIFO</strong> (first-in, first-out) data structure. Like the stack, it generally supports a limited set of operations:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th width="200">Member Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>clear()</td>
+      <td>removes all elements from the queue</td>
+    </tr>
+    <tr>
+      <td>dequeue()</td>
+      <td>removes and returns the frontmost element in the queue</td>
+    </tr>
+    <tr>
+      <td>enqueue(value)</td>
+      <td>adds <span class="code-chonk">value</span> to the back of the queue</td>
+    </tr>
+    <tr>
+      <td>equals()</td>
+      <td>returns <span class="code-chonk">true</span> if the two queues contain the same elements in the same order, <span class="code-chonk">false</span> otherwise</td>
+    </tr>
+    <tr>
+      <td>isEmpty()</td>
+      <td>returns <em>true</em> if the queue contains no elements, <span class="code-chonk">false</span> otherwise</td>
+    </tr>
+    <tr>
+      <td>peek()</td>
+      <td>returns the frontmost element in the queue without removing it</td>
+    </tr>
+    <tr>
+      <td>size()</td>
+      <td>returns the number of values in the queue</td>
+    </tr>
+    <tr>
+        <td>. . .</td>
+        <td>For an exhaustive list, see: <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Queue.html">Stanford <span class="code-link">Queue</span> class</a></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>Before delving into actual code, we explored the behaviors of queues through the <span class="code-chonk">QueueViz</span> program attached above.</p>
+<p><br /><strong>Queue Examples in Code</strong></p>
+<p>To create a queue using the Stanford C++ Libraries, we must include the following:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "queue.h"</pre>
+<p>The syntax for creating a queue is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">Queue&lt;<span style="background-color: #999999; color: #ffffff;"> <strong>DATA_TYPE</strong> </span>&gt; <span style="background-color: #999999; color: #ffffff;"> <strong>VARIABLE_NAME</strong> </span>;</pre>
+<p>(<em><span style="font-size: 10pt; background-color: #ffff99;">Important note!</span></em>) We must capitalize the 'Q' in "Queue" when declaring one in code. This distinguishes it from C++'s built-in queue, which has a lowercase 'q'. (You're seeing the trend here, yes?)</p>
+<p>Here are the first examples we saw of actual queue code in class today:</p>
+<p style="padding-left: 30px;">⚠️<span style="font-size: 10pt;"><strong> Warning! This doesn't work as intended!</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "queue.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Queue&lt;int&gt; q;<br /><br />   for (int i = 1; i &lt;= 6; i++)<br />   {<br />      q.enqueue(i);<br />   }<br /><br />   <span style="background-color: #ffcc99;">// This does not actually remove and print all elements from the queue!</span><br />   for (int i = 0; i &lt; q.size(); i++)<br />   {<br />      cout &lt;&lt; q.dequeue() &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">1<br />2<br />3</span></pre>
+<p>The following is a more conventional way to loop through a queue while emptying it out. Recall that a coding <strong>idiom</strong> is a good, solid, widely-used approach to accomplishing a particular task.</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Idiom #1</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "queue.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Queue&lt;int&gt; q;<br /><br />   for (int i = 1; i &lt;= 6; i++)<br />   {<br />      q.enqueue(i);<br />   }<br /><br />   <span style="background-color: #ffcc99;">// Much better. :)</span><br />   while (!q.isEmpty())<br />   {<br />      cout &lt;&lt; q.dequeue() &lt;&lt; endl;<br />   }<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">1<br />2<br />3<br />4<br />5<br />6</span></pre>
+<p>The following idiom can be used to loop through a queue while emptying it out (as we did above), but it can also be used to process all the original elements of a queue while adding others to the back:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Idiom #2</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "queue.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Queue&lt;int&gt; q;<br /><br />   for (int i = 1; i &lt;= 6; i++)<br />   {<br />      q.enqueue(i);<br />   }<br /><br />   <span style="background-color: #ffcc99;">// Keep track of original queue size. This loop will only do 6 iterations now,<br /></span>   <span style="background-color: #ffcc99;">// even though we're adding some elements back into the queue as we go.</span><br />   int ogSize = q.size();<br />   for (int i = 0; i &lt; ogSize; i++)<br />   {<br />      int val = q.dequeue();<br />      cout &lt;&lt; val &lt;&lt; endl;<br /><br />      <span style="background-color: #ffcc99;">// Even values get added back to the queue.</span><br />      if (val % 2 == 0)<br />      {<br />         q.enqueue(val);<br />      }<br />   }<br /><br />   cout &lt;&lt; "Final queue contents: " &lt;&lt; q &lt;&lt; endl;<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">1<br />2<br />3<br />4<br />5<br />6<br />Final queue contents: {2, 4, 6}</span></pre>
+<p><strong><br />Mod Operator (%)</strong></p>
+<p>We briefly saw the mod operator (%) in the above example. Recall that the mod operator returns the remainder after division. So, 5 % 2 = 1, since 5 / 2 = 2 R 1. Similarly, 17 % 3 = 2 since 17 / 3 = 5 R 2.</p>
+<p><strong><br />Queue Applications</strong></p>
+<p>Queues come up all over the place in real-world applications. A few examples from today:</p>
+<ul>
+<li>Purchase queues for online ticket sales.</li>
+<li>Login queues for online games.</li>
+<li>Printer queues for processing multiple print jobs.</li>
+</ul>
+<p>We will see additional applications of queues later this quarter. There's at least one very common application of queues that we'll see when we get to our section on graph theory; they can be used to implement an algorithm called breadth-first search. A related algorithm, called depth-first search, can actually be implemented with a stack.</p>
+<p><strong><br />Stack Application: Postfix Notation</strong></p>
+<p>I then talked briefly about the complexity of processing an arithmetic expression such as "3 + 5 * 2 - 12 / (2 * 3)" and introduced the idea of postfix notation (also sometimes called <a style="text-decoration: none;" href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation</a>). We can actually process a postfix expression token-by-token quite easily using a stack. The algorithm for that is as follows:</p>
+<p style="margin: 10px; background-color: #eeeeee; border: 1px solid #000000; padding: 10px;">⚠️<span style="font-size: 10pt;"><strong> Warning!</strong> The following algorithm assumes a valid, well-formed postfix expression as its input. There are some gotchas to consider if the postfix expression is not well-formed. (See Exercise #2 in today's practice problems.)</span></p>
+<ul style="list-style-type: disc;">
+<li>Let <span class="code-chonk">s</span> be an initially empty stack.</li>
+<li>For each token (<span class="code-chonk">tok</span>) in your postfix expression:
+<ul style="list-style-type: disc;">
+<li>If&nbsp;<span class="code-chonk">tok</span> is a numeric value:
+<ul style="list-style-type: disc;">
+<li>Push <span class="code-chonk">tok</span> onto <span class="code-chonk">s</span>.</li>
+</ul>
+</li>
+<li>If&nbsp;<span class="code-chonk">tok</span> is an operator (<span class="code-chonk">+</span>, <span class="code-chonk">-</span>, <span class="code-chonk">*</span>, <span class="code-chonk">/</span>):
+<ul style="list-style-type: disc;">
+<li>Let <span class="code-chonk">rightHandOperand = s.pop()</span>.</li>
+<li>Let <span class="code-chonk">leftHandOperand = s.pop()</span>.</li>
+<li>Apply the given operator (<span class="code-chonk">tok</span>) to the&nbsp;<span class="code-chonk">leftHandOperand</span> and <span class="code-chonk">rightHandOperand</span>&nbsp;and push the resulting value onto&nbsp;<span class="code-chonk">s</span>.</li>
+<li>Note that the first value we pop above must be the right-hand operand, and the second must be the left-hand operand. This makes no difference with addition and multiplication, but it matters when performing subtraction and division.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Return <span class="code-chonk">s.pop()</span>.</li>
+</ul>
+<p>For an <strong>example of this algorithm in action</strong>, skip to 47:05 in today's lecture video.</p>
+<p>There is an algorithm for converting infix expressions to postfix expressions that also uses stacks. If you're interested, you can read more about that on GeeksforGeeks:<a style="text-decoration: none;" href="https://www.geeksforgeeks.org/convert-infix-expression-to-postfix-expression/"> https://www.geeksforgeeks.org/convert-infix-expression-to-postfix-expression/</a></p>
+<p><strong><br />Grid Redux</strong></p>
+<p>Finally, at the end of class, I rounded back to grids show the following:</p>
+<ol style="list-style-type: decimal;">
+<li>We can send a grid directly to <span class="code-chonk">cout</span> and get a nicely formatted string that conveys the grid contents.</li>
+<li>We can use a for-each loop to loop through and display the contents of a grid. These are processed in a row-major fashion.</li>
+<li>We can loop through all the valid coordinates in a grid as <span class="code-chonk">GridLocation</span> objects, and those can be used to access specific grid elements.</li>
+</ol>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "grid.h"<br />using namespace std;<br /><br />int main()<br />{<br />   Grid&lt;int&gt; g(2, 3);<br /><br /> &nbsp; g[1][0] = 50;<br /> &nbsp; g[1][1] = 33;<br /><br /> &nbsp; cout &lt;&lt; "Grid contents:" &lt;&lt; endl;<br /> &nbsp; cout &lt;&lt; g &lt;&lt; endl;<br /><br /> &nbsp; cout &lt;&lt; endl &lt;&lt; "Grid for-each loop:" &lt;&lt; endl;<br /> &nbsp; for (int i : g)<br /> &nbsp; {<br />    &nbsp; cout &lt;&lt; i &lt;&lt; endl;<br />  &nbsp;}<br /><br />  &nbsp;cout &lt;&lt; endl &lt;&lt; "Grid locations:" &lt;&lt; endl;<br />  &nbsp;for (GridLocation loc : g.locations())<br />  &nbsp;{<br />  &nbsp;   cout &lt;&lt; loc &lt;&lt; " (" &lt;&lt; g[loc] &lt;&lt; ")" &lt;&lt; endl;<br /> &nbsp; }<br /><br />   return 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000;"><span style="color: #ffffff;">Grid contents:</span><br /><span style="color: #ffffff;">&#123;&#123;0, 0, 0}, {50, 33, 0}}</span><br /><span style="color: #ffffff;"><br />Grid for-each loop:</span><br /><span style="color: #ffffff;">0</span><br /><span style="color: #ffffff;">0</span><br /><span style="color: #ffffff;">0</span><br /><span style="color: #ffffff;">50</span><br /><span style="color: #ffffff;">33</span><br /><span style="color: #ffffff;">0</span><br /><span style="color: #ffffff;"><br />Grid locations:</span><br /><span style="color: #ffffff;">r0c0 (0)</span><br /><span style="color: #ffffff;">r0c1 (0)</span><br /><span style="color: #ffffff;">r0c2 (0)</span><br /><span style="color: #ffffff;">r1c0 (50)</span><br /><span style="color: #ffffff;">r1c1 (33)</span><br /><span style="color: #ffffff;">r1c2 (0)</span></pre>
+<p><br /><strong>What's next?</strong></p>
+<p>On Monday, we'll examine two more ADTs: <a style="text-decoration: none;" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Set">sets</a> and <a style="text-decoration: none;" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Map">maps</a>.</p>
+<p>Following that, we'll delve into two major topics that will stick with us for the rest of the quarter: recursion and Big-O runtime analysis.</p>
+<p><strong><br />Practice Problems</strong></p>
+<p>1. Write a function that processes a postfix expression using the stack-based algorithm discussed in class. The function should take two parameters: a string representing the postfix expression to be processed, and a reference to an integer where the final result should be stored. The function should return <span class="code-chonk">true</span> if it successfully processes the given expression,&nbsp;<span class="code-chonk">false</span> otherwise. If the function returns <span class="code-chonk">false</span>, the reference parameter should remain unchanged. The function signature is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">bool processPostfix(string expr, int&amp; result);</pre>
+<p>For example function calls, see the test cases provided below.</p>
+<p>For this problem, you may make the following assumptions:</p>
+<ul>
+<li>If our postfix string is valid, all tokens will be separated with a single space. For example: <span class="code-chonk">"25 12 * 3 + 84 -"</span></li>
+<li>If our postfix string is valid, all values will be integers, and the only operators will be <span class="code-chonk">+</span>, <span class="code-chonk">-</span>, <span class="code-chonk">*</span>, and <span class="code-chonk">/</span></li>
+</ul>
+<p>In completing this exercise, you might find the following functions from <span class="code-chonk">strlib.h</span> useful:</p>
+<ul>
+<li><span class="code-chonk">stringSplit()</span></li>
+<li><span class="code-chonk">stringIsInteger()</span></li>
+<li><span class="code-chonk">stringToInteger()</span></li>
+</ul>
+<p>Here are some test cases to get you started:</p>
+<p style="padding-left: 30px; width: 600px;"><span style="font-size: 10pt;"><strong><span style="color: #e03e2d;"><br />⚠️ <em>Spoiler Alert!</em></span> These test cases for invalid postfix expressions contain spoilers for Exercise #2.</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "SimpleTest.h"<br />#include "stack.h"<br />#include "strlib.h"<br />using namespace std;<br /><br />PROVIDED_TEST("valid postfix expressions")<br />{<br />&nbsp; &nbsp; int result = 0;<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("5 10 +", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 15);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("3 8 *", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 24);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("5 10 12 + -", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -17);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("10 12 + 5 -", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 17);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("5 2 * 3 + 4 -", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 9);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("2 3 + 4 5 + *", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 45);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("2 3 4 * + 5 +", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 19);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("2 3 + 4 +", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 9);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("2 3 4 + +", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 9);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("2 3 1 * + 9 -", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -4);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("10", result), true);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, 10);<br />}<br /><br />PROVIDED_TEST("invalid postfix expressions")<br />{<br />&nbsp; &nbsp; int result = 0;<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("5 10 + +", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -1);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("3 8 * 0 / 5 +", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -2);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -3);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("10 12 + 13", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -4);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("10 12 13 +", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -5);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("10 + 20", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -6);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("- 10 8", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -7);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("- 10", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -8);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("-", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -9);<br /><br />&nbsp; &nbsp; EXPECT_EQUAL(processPostfix("10 15 + sandwhich", --result), false);<br />&nbsp; &nbsp; EXPECT_EQUAL(result, -10);<br />}<br /><br />int main()<br />{<br /> &nbsp; runSimpleTests(ALL_TESTS);<br />   return 0;<br />}</pre>
+<p><br />2. What errors might we encounter while processing a postfix expression that would indicate that the expression was invalid or malformed? Modify your solution to the previous problem to account for each of these scenarios.</p>
+<p><span style="font-size: 10pt;"><strong>Highlight for solutions:</strong></span></p>
+<ul>
+<li><span style="background-color: #ced4d9; color: #ced4d9;">Encountering a token in our input string that is neither an integer nor a valid operator.</span></li>
+<li><span style="background-color: #ced4d9; color: #ced4d9;">Encountering an operator in our expression when <span style="font-size: 12px; font-family: monospace; padding-left: 3px; padding-right: 3px; background-color: #ced4d9;"><strong>stack.size() &lt; 2</strong></span>. In this case, we don't have enough operands to perform the desired operation.</span></li>
+<li><span style="background-color: #ced4d9; color: #ced4d9;">Encountering division by zero.</span></li>
+<li><span style="background-color: #ced4d9; color: #ced4d9;">Encountering a final stack with <span style="font-size: 12px; font-family: monospace; padding-left: 3px; padding-right: 3px; background-color: #ced4d9;"><strong>stack.size() != 1</strong></span>. If there is nothing in the stack when we finish processing our expression, or if the final stack contains multiple values, the original expression must have been malformed.</span></li>
+</ul>
+<p><br />3. In the test cases for invalid postfix expressions given above (in Exercise #1), <span class="code-chonk">result</span> is being decremented with each new test case. What benefit does this have compared to simply setting&nbsp;<span class="code-chonk">result = -1</span> and always checking that&nbsp;<span class="code-chonk">result</span> is still -1 when returning from each of those individual test cases?</p>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution:</strong> <span style="background-color: #ced4d9; color: #ced4d9;">If we always check that result is -1 in those test cases, someone might think the goal of <strong><span style="font-family: monospace; padding-left: 3px; padding-right: 3px; font-size: 10px; background-color: #ced4d9;">processPostfix()</span></strong> is to set <em>result</em> equal to -1 in the event that a postfix expression is malformed, and if they did so, they would get a false sense of security from passing all those test cases. In actuality, the function is supposed to leave that parameter completely unchanged when it encounters a malformed postfix expression. Changing <em>result</em> before we make a new call to <span style="font-family: monospace; padding-left: 3px; padding-right: 3px; font-size: 10px; background-color: #ced4d9;"><strong>processPostfix()</strong></span> with a malformed expression -- and checking that its value is unchanged when we return from that function -- more clearly conveys (and tests!) that desired behavior.</span></span></p>
+<p><br />4. As always, be sure to trace through all the code presented in class today to ensure that you understand how it works. Ideally, you should take a break after reviewing today's notes and then try to replicate many of those examples from scratch.</p>
+<p><br />5. Be sure to review the section in today's notes labeled "(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not mentioned in class.</em></span>)"</p>
+<p><br /></p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-08
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

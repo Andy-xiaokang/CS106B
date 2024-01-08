@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Syntax reference for C++ classes and objects</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Syntax reference for C++ classes and objects</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><style>
+	td, th {
+	    border: 1px solid grey
+	}
+	table { width:100% }
+</style>
+
+<h2 id="glossary-of-terms">Glossary of terms</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Term</strong></th>
+      <th style="text-align: left"><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>member variables</strong></td>
+      <td style="text-align: left">keep track of the state inside each object; also called "instance variables" or "fields"; each object has a copy of each member variable</td>
+    </tr>
+    <tr>
+      <td><strong>member functions</strong></td>
+      <td style="text-align: left">define the behavior inside each object; also called "methods"; each object has a copy of each method; method can interact with data inside the object (i.e., fields)</td>
+    </tr>
+    <tr>
+      <td><strong>constructor</strong></td>
+      <td style="text-align: left">initializes new objects as they are created; sets the initial state of each new object; often accepts parameters for the initial state of the fields</td>
+    </tr>
+    <tr>
+      <td><strong>destructor</strong></td>
+      <td style="text-align: left">called when object is deleted by program (i.e., when object falls out of scope); useful if your object needs to free memory as it dies (delete arrays and pointers)</td>
+    </tr>
+    <tr>
+      <td><strong>.h file</strong></td>
+      <td style="text-align: left">header file containing the interface (declarations)</td>
+    </tr>
+    <tr>
+      <td><strong>.cpp file</strong></td>
+      <td style="text-align: left">source file containing definitions (method bodies); content of .h files is #included inside .cpp files</td>
+    </tr>
+    <tr>
+      <td><strong>const</strong></td>
+      <td style="text-align: left">a const reference parameter can't be modified by the function; a const member function can't change the object's state (i.e., can't modify any fields)</td>
+    </tr>
+    <tr>
+      <td><strong>#pragma once</strong></td>
+      <td style="text-align: left">protection in case multiple .cpp files include the same .h, so that its contents aren't declared twice</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Below is an example of a header and cpp file defining a class meant to model a bank account.</p>
+
+<h2 id="bankaccounth"><code class="language-c++ highlighter-rouge"><span class="n">BankAccount</span><span class="p">.</span><span class="n">h</span></code></h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma once
+</span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">BankAccount</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">BankAccount</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">double</span> <span class="n">amount</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">deposit</span><span class="p">(</span><span class="kt">double</span> <span class="n">depositAmount</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">withdraw</span><span class="p">(</span><span class="kt">double</span> <span class="n">withdrawlAmount</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">transfer</span><span class="p">(</span><span class="kt">double</span> <span class="n">transferAmount</span><span class="p">,</span> <span class="n">BankAccount</span><span class="o">&amp;</span> <span class="n">recipient</span><span class="p">);</span>
+    
+    <span class="cm">/* These functions are marked const because they don't change the
+     * account.
+     */</span>
+    <span class="kt">double</span> <span class="n">getAmount</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">string</span> <span class="n">getName</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+<span class="nl">private:</span>
+    <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">amount</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="bankaccountcpp"><code class="language-c++ highlighter-rouge"><span class="n">BankAccount</span><span class="p">.</span><span class="n">cpp</span></code></h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"BankAccount.h"</span><span class="cp">
+#include</span> <span class="cpf">"error.h"</span><span class="cp">
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="n">BankAccount</span><span class="o">::</span><span class="n">BankAccount</span><span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="kt">double</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"That is an invalid amount of money!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">amount</span> <span class="o">=</span> <span class="n">amount</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BankAccount</span><span class="o">::</span><span class="n">deposit</span><span class="p">(</span><span class="kt">double</span> <span class="n">depositAmount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">depositAmount</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"You can't deposit negative money!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">amount</span> <span class="o">+=</span> <span class="n">depositAmount</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BankAccount</span><span class="o">::</span><span class="n">withdraw</span><span class="p">(</span><span class="kt">double</span> <span class="n">withdrawlAmount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">withdrawlAmount</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"You can't withdraw negative money!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">withdrawlAmount</span> <span class="o">&gt;</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"Sorry, you don't have enough money in your account to do that!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">amount</span> <span class="o">-=</span> <span class="n">withdrawlAmount</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">BankAccount</span><span class="o">::</span><span class="n">transfer</span><span class="p">(</span><span class="kt">double</span> <span class="n">transferAmount</span><span class="p">,</span> <span class="n">BankAccount</span><span class="o">&amp;</span> <span class="n">recipient</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">withdraw</span><span class="p">(</span><span class="n">transferAmount</span><span class="p">);</span> <span class="c1">// if we don't have enough money, this will error</span>
+    <span class="n">recipient</span><span class="p">.</span><span class="n">deposit</span><span class="p">(</span><span class="n">transferAmount</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="cm">/* These methods can be marked const because they don't modify the
+ * contents of the bank account.
+ */</span>
+
+<span class="kt">double</span> <span class="n">BankAccount</span><span class="o">::</span><span class="n">getAmount</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">amount</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="n">BankAccount</span><span class="o">::</span><span class="n">getName</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">name</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2021-Nov-01
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

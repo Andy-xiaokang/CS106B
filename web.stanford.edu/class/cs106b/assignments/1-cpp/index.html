@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Getting Your C++ Legs</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 1. Getting Your C++ Legs</h1>
+ <p class="subtle-heading">Monday October 9</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><!-- This boilerplate inserts formatted due date -->
+
+<!--  Boilerplate content for assignment index page -->
+
+<h2 id="due-monday-october-9-at--500-pm">Due Monday, October 9 at  5:00 pm</h2>
+<ul>
+  <li><small>Submit to <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Paperless</a>. On-time submissions (before on or due date) earn a small bonus to reward your good time management! </small></li>
+  <li><small>Late work (after the due date) is accepted if within the grace period (48 hours for this assignment). We do not accept further late work.</small></li>
+  <li><small>The grace period gives you the ability to self-grant an extension; we trust you will make reasonable and sparing use of this power.</small></li>
+</ul>
+
+<hr />
+
+<p>Here it is – the first programming assignment of the quarter! This assignment is a mix of coding, testing, and debugging tasks that get you practicing with the C++ language and development tools.</p>
+
+<p>The code you are to write uses expressions, control structures, functions, and string processing. Your prerequisite work means you should be familiar with these concepts; the novelty comes in figuring how to take what you already know and translate into the curious new world of C++. You also will build familiarity with the development tools we use and be introduced to strategies for testing and debugging your code. By the time you've completed the assignment, you'll be more comfortable working in C++ and ready to start building larger projects, or as we like to say, you'll have gotten your C++ legs under you! (apologies for the bad pun…)</p>
+
+<p><em>This assignment is to be completed <strong>individually</strong>. Working in pairs/groups is not permitted.</em></p>
+
+<h2 id="learning-goals">Learning goals</h2>
+<ul>
+  <li>To become comfortable using Qt Creator to edit, build, run, and debug simple C++ programs.</li>
+  <li>To practice writing C++ functions that manipulate numbers and strings.</li>
+  <li>To learn basic use of the SimpleTest framework for unit tests and time trials.</li>
+</ul>
+
+<h2 id="assignment-parts">Assignment parts</h2>
+<p>This assignment consists of two parts.  Click on the links below for the full instructions.</p>
+
+<ul>
+  <li>
+    <h3 id="perfect-numbers"><a href="perfect.html">Perfect Numbers</a></h3>
+    <p>is a warmup exercise involving number theory, algorithms, and optimization. It gives you a guided transition into C++ and the testing and debugging tools we use.  You can start on this task right away — and we recommend doing so! Completing the warmup in the first few days reserves the better part of the week for the bigger second part.</p>
+  </li>
+  <li>
+    <h3 id="soundex-search"><a href="soundex.html">Soundex Search</a></h3>
+    <p>is a complete program that demonstrates a nifty algorithm for matching and grouping names based on their pronunciation. This program uses C++ strings, console I/O, and the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> class. There is a substantial chunk of code for you to write, so get an early start to give yourself sufficient time to work through issues and reach out for help if you hit any snags.</p>
+  </li>
+</ul>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>📦 <a href="starter-assign1.zip">Starter project</a></p>
+
+<p>The starter project is provided as a zip archive. Download the zip, extract the files, and move the project folder to your CS106B folder. Open the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> file in Qt Creator to get started.</p>
+
+<h2 id="resources">Resources</h2>
+<ul>
+  <li>The CS106B <a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">guide to SimpleTest</a> on testing your code using the <code class="language-c++ highlighter-rouge"><span class="n">SimpleTest</span></code> framework.</li>
+  <li>A <a href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">guide to C++ strings</a> written by our awesome colleague Keith Schwarz.</li>
+  <li>This <a href="../../resources/python_to_cpp.html" title="Python to C++ Guide">Python to C++ transition guide</a> points out syntactical and functional differences between the two languages. Thank you to section leaders Jillian Tang and Ethan Chi for this wonderful resource.</li>
+  <li>Resolving <a href="https://web.stanford.edu/dept/cs_edu/resources/qt/commonissues.html">Common Build/Run Errors</a>, compiled by section leader Jillian Tang.</li>
+  <li>The CS106B <a href="../../resources/style_guide.html" title="Style Guide">Style Guide</a> explains the rubric and standards we use when evaluating the style of your code.</li>
+</ul>
+
+<h2 id="getting-help">Getting Help</h2>
+<p>Keep an eye on the <a href="https://edstem.org/us/courses/45672" title="Ed Discussion Forum">Ed forum</a> for an announcement of the Assignment 1 <strong>YEAH</strong> (YEAH = Your Early Assignment Help) group session where our veteran section leaders will answer your questions and share pro tips. We know it can be daunting to sit down and break the barrier of starting on a substantial programming assignment – come to YEAH for advice and confidence to get you on your way!</p>
+
+<p>We also here to help if you get run into issues along the way! The <a href="https://edstem.org/us/courses/45672" title="Ed Discussion Forum">Ed forum</a> is open 24/7 for general discussion about the assignment, lecture topics, the C++ language, using Qt, and more. Always start by searching first to see if your question has already been asked and answered before making a new post.
+To troubleshoot a problem with your specific code, your best bet is to bring it to the <a href="../../lair.html" title="LaIR helper hours">LaIR</a> helper hours or <a href="../../about_staff.html">office hours</a>.</p>
+
+<h2 id="submit">Submit</h2>
+<p>Before you call it done, run through our <a href="../../resources/submit_checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>s are crossed and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>s are dotted. Then upload your completed files to Paperless for grading.</p>
+
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">perfect</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">soundex</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code></li>
+</ul>
+
+<p>You don't need to submit any of the other files in the project folder.</p>
+
+<p>🏁 <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Submit to Paperless</a></p>
+
+<p>That's it; you're done! Congratulations on finishing your first CS106B assignment!</p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

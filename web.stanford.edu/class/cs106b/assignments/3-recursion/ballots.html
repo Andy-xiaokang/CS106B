@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B At the ballot box</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">At the ballot box</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+
+<div id="content"><blockquote class="alert-success alert text-center">
+  <h2 id="-november-7th-democracy-day-">🖐🏿🖐🏼 November 7th: <a href="https://democracyday.stanford.edu/">Democracy Day</a> 🖐🏻🖐🏽</h2>
+  <p>Register, research, volunteer ➟ <a href="https://www.stanfordvotes.org/">Stanford Votes</a>
+<br /><small><em>"It's not the voting that's democracy; it's the counting"</em> – Tom Stoppard, Jumpers</small></p>
+</blockquote>
+
+<p>In 1887, French mathematician Joseph Bertrand pondered an idealized election conducted between two candidates, <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">B</span></code>. Each voter casts a ballot for a single candidate and adds it to a sealed box. When the polls close, the box is shaken to mix up the order and ballots are removed one by one and tallied.  At the end of the tally, candidate <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> has more votes than <code class="language-c++ highlighter-rouge"><span class="n">B</span></code> and wins the election.  Bertrand's question was: What is the likelihood that the winning candidate <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> is strictly ahead of candidate <code class="language-c++ highlighter-rouge"><span class="n">B</span></code> throughout the entire tally?</p>
+
+<p>Although Bertrand posed the question in terms of probability, his answer uses an argument based on counting. <strong>An ordering of the ballots where the eventual winner is always in the lead is considered a <em>favorable</em> ordering</strong>. If you count the number of favorable orderings and divide by the count of all possible orderings, this ratio is the likelihood of a random ordering being a favorable one.</p>
+
+<p>Consider an election with only three ballots: two cast for <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> and one for <code class="language-c++ highlighter-rouge"><span class="n">B</span></code>. The ballots can be tallied in three possible orders:
+<code class="language-c++ highlighter-rouge"><span class="n">AAB</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">ABA</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">BAA</span></code>:</p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">AAB</span></code>: <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> takes the lead as the first ballot is tallied and never loses it (<strong>favorable</strong>)</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">ABA</span></code>: <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> has an early lead, briefly loses lead before regaining it (<strong>not favorable</strong>)</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">BAA</span></code>: <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> gains the lead only when tallying the last ballot (<strong>not favoriable</strong>)</li>
+</ul>
+
+<p>Given that all three orderings are equally likely and only one is favorable, the likelihood of a favorable ordering is 1/3.</p>
+
+<p>Recursion can be a useful technique for counting tasks such as this one!</p>
+
+<h2 id="count-all-orderings">Count all orderings</h2>
+<p>Write the recursive function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">countAllOrderings</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>that returns the number of possible orderings for tallying an election with ballot counts <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code>.</p>
+
+<p>Here are some hints on recursively breaking down the task:</p>
+<ul>
+  <li>The simplest case is when all remaining ballots are for a single candidate. There is only one possible ordering of the remaining ballots, you will be tallying all for <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> (or <code class="language-c++ highlighter-rouge"><span class="n">B</span></code>). This sounds like a base case!</li>
+  <li>Otherwise both candidates have ballots remaining, meaning there are two possibilities for the next ballot to be tallied: either it will be a ballot for <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> or one for <code class="language-c++ highlighter-rouge"><span class="n">B</span></code>. Your counting will consider both.</li>
+  <li>Tallying a single ballot leaves you with a slightly simpler form of the same problem to solve. Self-similarity is the hallmark of a recursive case. You will make recursive call(s) to count the orderings for the smaller set of remaining ballots and use those results to solve the original problem.</li>
+  <li>In lecture, we considered the use of recursion to generate/print all possible sequences from flipping a coin or rolling a die. Such examples have a similar structure to what is needed here, but a notable difference is that for the problem you do not construct the actual sequences, only count them, which simplifies the task.</li>
+  <li>The point of this exercise is to solve the problem recursively. So even if you know another way to derive the result, put that aside, and focus on <strong>recursive counting</strong>.  There should be no loops, no multiplication, no factorial, no combinatorics, no binomials, no generating functions, … No fancy math whatsoever, just addition. Also do not use additional data structures (no <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code>s, <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>s, <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>s, strings, etc.). Remember that you do not need to generate, print, or store the orderings, just count them.</li>
+</ul>
+
+<h3 id="testing">Testing</h3>
+<ul>
+  <li>Choose a few small values of <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code> and list out the orderings by hand. Add <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> cases to confirm the results from <code class="language-c++ highlighter-rouge"><span class="n">countAllOrderings</span></code> matches your hand counts. Manually constructing these test cases can be tedious, we recommend setting one of <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">b</span></code> to be a very small number to simplify.
+-The count of orderings climbs very quickly – a recursive exploration of orderings/permutations exhibits factorial growth <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="o">!</span><span class="p">)</span></code>, ouch! Even for small-ish values of <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code>, the function will begin to slow down and the count will quickly exceed what can be stored in an <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code>. Manually listing the orderings to count also becomes entirely impractical. In the next section, we offer a clever alternative for broad test coverage without having to hand-verify.</li>
+  <li>Your function can assume that <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code> are both non-negative. It is valid for either or both of <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code> to be zero.
+In light of system limitations, you may also assume that the sum <code class="language-c++ highlighter-rouge"><span class="n">a</span> <span class="o">+</span> <span class="n">b</span></code> is &lt;= 30.  We will not test your function on arguments that violate these assumptions.</li>
+</ul>
+
+<h2 id="count-favorable-orderings">Count favorable orderings</h2>
+
+<p>Write a second recursive function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">countFavorableOrderings</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+<p>that returns the number of favorable orderings for tallying an election with ballot counts <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code>. A favorable ordering is one in which candidate <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> was in the lead throughout.</p>
+
+<p>Some hints on how to approach:</p>
+<ul>
+  <li>The general idea is to copy/paste your <code class="language-c++ highlighter-rouge"><span class="n">countAllOrderings</span></code> function and modify it to restrict exploration to only those orderings that meet the criteria for being <em>favorable</em>.</li>
+  <li>Add an additional argument to the recursive calls to keep track of the current value of <code class="language-c++ highlighter-rouge"><span class="n">A</span></code>'s' lead. As long as the value of lead is positive, the current ordering is favorable and you keep counting. Conversely, as soon the lead becomes zero or negative, you'll know there are no orderings to be counted on this path.</li>
+  <li>Because of the additional argument needed by the recursive call, you will need to use a wrapper function to set up the first call to the inner recursive function.</li>
+  <li>The stopping conditions and handling of base case(s) requires some careful thought. We recommend tracing some simple cases on paper or in the debugger to confirm your understanding of the proper handling.</li>
+</ul>
+
+<h3 id="testing-1">Testing</h3>
+<p>Review the orderings you manually listed when constructing test cases for <code class="language-c++ highlighter-rouge"><span class="n">countAllOrderings</span></code>. Identify which of those orderings meet the criteria to be favorable. Construct student test cases that confirm the results from <code class="language-c++ highlighter-rouge"><span class="n">countFavorableOrderings</span></code> matches your hand counts. As before, you will want to restrict yourself to relatively small values of <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code>.</p>
+
+<h2 id="bertrands-ballot-theorem">Bertrand's Ballot Theorem</h2>
+<p>The wondrous <em>pièce de résistance</em> of this story is that Bertrand was able to derive a closed form for the likelihood of a favorable ordering for all values of <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code> where <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> &gt; <code class="language-c++ highlighter-rouge"><span class="n">b</span></code>:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                       <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">Likelihood</span> <span class="n">of</span> <span class="n">favorable</span> <span class="n">ordering</span>   <span class="o">=</span>  <span class="o">--------</span>
+                                       <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Such a neat and surprising 🤯 result! You do not need to derive his proof, you may take the formula on faith. (But those of you in CS103 and/or CS109 or just curious should check out the <a href="ballots.html#References">references</a> to learn more!)</p>
+
+<p>Bertrand's nifty theorem gives a new way to confirm the correctness of your functions. Above you had to hand-compute the result to know what value to expect for a test case, which is tedious, error-prone, and doesn't scale. Now that you know another way to compute the likelihood of a favorable ordering, you can write test cases that compare the two results to confirm. Neat!</p>
+
+<p>Write a final <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> that uses a for loop over a range of values for <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code>, confirming that the ratio of your counts (<code class="language-c++ highlighter-rouge"><span class="n">likelyFavorable</span></code>) is equal to the result of Bertrand (<code class="language-c++ highlighter-rouge"><span class="n">bertrandTheorem</span></code>). Because of system limitations, you will still need to <strong>restrict your testing to values of <code class="language-c++ highlighter-rouge"><span class="n">a</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">b</span></code> that sum to less than 30</strong>. These smaller values will permit the counting to complete in a reasonable amount of time and will not exceed the range of the <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code> type. Having confirmed correctness on all of these small values, the power of induction (which is just recursion in disguise) allows you to conclude they also would work correctly on ever larger values, if only our system had the necessary time/memory to permit it.</p>
+
+<p><a name="References"></a></p>
+<h2 id="references">References</h2>
+<p>This exercise was inspired by an intriguing Stanford news article about the need for more honest and robust predictive models when reporting election returns.</p>
+<ul>
+  <li><a href="https://news.stanford.edu/2021/03/19/honesty-statistical-models/">https://news.stanford.edu/2021/03/19/honesty-statistical-models/</a>
+  <small>"A problem with raw tallies of the presidential election is that they create a false narrative that the final results are still developing in drastic ways. In reality, on election night there is no “catching up from behind” or “losing the lead” because the votes are already cast; the winner has already won – we just don’t know it yet. More than being merely imprecise, these riveting descriptions of the voting process can make the outcomes seem excessively suspicious or surprising."</small></li>
+</ul>
+
+<p>You don't need to delve into the mathematics behind Bertrand's theorem, but it is quite fascinating if you are curious to learn more:</p>
+<ul>
+  <li>Wikipedia page on <a href="https://en.wikipedia.org/wiki/Bertrand%27s_ballot_theorem">Bertrand's Ballot Theorem</a></li>
+  <li>Mark Renault, <a href="http://webspace.ship.edu/msrenault/ballotproblem/Four%20Proofs%20of%20the%20Ballot%20Theorem.pdf"><em>Four Proofs of the Ballot Theorem</em></a></li>
+</ul>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-15
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

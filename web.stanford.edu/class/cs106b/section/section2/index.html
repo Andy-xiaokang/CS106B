@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B ADTs</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 2. ADTs</h1>
+ <p class="subtle-heading">Thursday October 12</p>
+<hr>
+
+<p class="attribution">
+Section materials curated by Clinton Kwarteng, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>This week’s section exercises explore ADTs!. By the end of this week, you'll be well-versed in all kinds of ADTs we've learned about in class, and know the best use cases for each of them.</p>
+
+<p>Remember that every week we will also be releasing a Qt Creator project containing starter code and testing infrastructure for that week's section problems. When a problem name is followed by the name of a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the Qt Creator project. Here is the zip of the section starter code:</p>
+
+<p>📦 <a href="section2-starter.zip">Starter project</a></p>
+
+<h2 id="1-grid-basics-gridcpp">1) Grid Basics (<code class="language-c++ highlighter-rouge"><span class="n">grid</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p><em>Topic: Grids</em></p>
+
+<h3 id="a-maximum-of-a-row-in-a-grid">a) Maximum of a Row in a Grid</h3>
+
+<p>Write  a function names <code class="language-c++ highlighter-rouge"><span class="n">maxRow</span></code> that takes a grid of non-negative integers(numbers from 0 to infinity) and an in-bounds grid location and returns the maximum value in the row of that grid location.</p>
+
+<div class="showtime" when="2023-10-13T18:00:00-07:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#martinelli")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// solution1 (manally loop through the row in the grid)</span>
+<span class="kt">int</span> <span class="nf">maxRow</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">grid</span><span class="p">,</span> <span class="n">GridLocation</span> <span class="n">loc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">numCols</span><span class="p">();</span> <span class="n">col</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">max</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">max</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// solution2(use GridLocationRange)</span>
+<span class="kt">int</span> <span class="nf">maxRow</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">grid</span><span class="p">,</span> <span class="n">GridLocation</span> <span class="n">loc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">endCol</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">numCols</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">GridLocation</span> <span class="n">cell</span> <span class="o">:</span> <span class="n">GridLocationRange</span><span class="p">(</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">row</span><span class="p">,</span> <span class="n">endCol</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">max</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">cell</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">max</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h3 id="b-average-value">b) Average value</h3>
+<p>Write a function named <code class="language-c++ highlighter-rouge"><span class="n">avgNeighborhood</span></code> that takes a grid and a grid location and returns the average of all the values in the neighborhood of the grid location. A neighborhood is defined as all cells in a grid that border the grid location in all four directions(N, S, E, W). If the average
+is not an integer, return a truncated average.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// solution1 (we put the 4 locations in a Vector and loop over them)</span>
+<span class="kt">int</span> <span class="nf">avgNeighborhood</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">grid</span><span class="p">,</span> <span class="n">GridLocation</span> <span class="n">loc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;</span> <span class="n">possibleLocations</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">col</span><span class="p">},</span> <span class="c1">// north</span>
+        <span class="p">{</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">col</span><span class="p">},</span> <span class="c1">// south</span>
+        <span class="p">{</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">},</span> <span class="c1">// east</span>
+        <span class="p">{</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}</span>  <span class="c1">// west</span>
+    <span class="p">};</span>
+
+    <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">numValidLocations</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">GridLocation</span> <span class="n">dir</span> <span class="o">:</span> <span class="n">possibleLocations</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">sum</span> <span class="o">+=</span> <span class="n">grid</span><span class="p">[</span><span class="n">dir</span><span class="p">];</span>
+            <span class="n">numValidLocations</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">sum</span> <span class="o">/</span> <span class="n">numValidLocations</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// solution2 (Don't do this please!! We manually get all 4 locations and sum them up)</span>
+<span class="kt">int</span> <span class="nf">avgNeighborhood</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">grid</span><span class="p">,</span> <span class="n">GridLocation</span> <span class="n">loc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">numValidLocations</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">GridLocation</span> <span class="n">north</span> <span class="p">{</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">col</span><span class="p">};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">north</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">grid</span><span class="p">[</span><span class="n">north</span><span class="p">];</span>
+        <span class="n">numValidLocations</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">GridLocation</span> <span class="n">south</span> <span class="p">{</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">col</span><span class="p">};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">south</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">grid</span><span class="p">[</span><span class="n">south</span><span class="p">];</span>
+        <span class="n">numValidLocations</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">GridLocation</span> <span class="n">east</span> <span class="p">{</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">east</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">grid</span><span class="p">[</span><span class="n">east</span><span class="p">];</span>
+        <span class="n">numValidLocations</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">GridLocation</span> <span class="n">west</span> <span class="p">{</span><span class="n">loc</span><span class="p">.</span><span class="n">row</span><span class="p">,</span> <span class="n">loc</span><span class="p">.</span><span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">west</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">grid</span><span class="p">[</span><span class="n">west</span><span class="p">];</span>
+        <span class="n">numValidLocations</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">sum</span> <span class="o">/</span> <span class="n">numValidLocations</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-check-balance-balancecpp">2) Check Balance (<code class="language-c++ highlighter-rouge"><span class="n">balance</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p><em>Topic: Stacks</em></p>
+
+<p>Write a function named <code class="language-c++ highlighter-rouge"><span class="n">checkBalance</span></code> that accepts a string of source code and uses a <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code> to check whether the braces/parentheses are balanced. Every <code class="language-c++ highlighter-rouge"><span class="p">(</span></code> or <code class="language-c++ highlighter-rouge"><span class="p">{</span></code> must be closed by a <code class="language-c++ highlighter-rouge"><span class="p">}</span></code> or <code class="language-c++ highlighter-rouge"><span class="p">)</span></code> in the opposite order. Return the index at which an imbalance occurs, or -1 if the string is balanced. If any <code class="language-c++ highlighter-rouge"><span class="p">(</span></code> or <code class="language-c++ highlighter-rouge"><span class="p">{</span></code> are never closed, return the string's length.</p>
+
+<p>Here are some example calls:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//   index    0123456789012345678901234567</span>
+<span class="n">checkBalance</span><span class="p">(</span><span class="s">"if (a(4) &gt; 9) { foo(a(2)); }"</span><span class="p">)</span> 
+<span class="c1">// returns -1 (balanced)</span>
+
+<span class="c1">//   index    01234567890123456789012345678901</span>
+<span class="n">checkBalance</span><span class="p">(</span><span class="s">"for (i=0;i&lt;a;(3};i++) { foo{); )"</span><span class="p">)</span>
+<span class="c1">// returns 15 because } is out of order</span>
+
+<span class="c1">//   index    0123456789012345678901234</span>
+<span class="n">checkBalance</span><span class="p">(</span><span class="s">"while (true) foo(); }{ ()"</span><span class="p">)</span>
+<span class="c1">// returns 20 because } doesn't match any {</span>
+
+<span class="c1">//   index    01234567</span>
+<span class="n">checkBalance</span><span class="p">(</span><span class="s">"if (x) {"</span><span class="p">)</span>
+<span class="c1">// returns 8 because { is never closed</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">checkBalance</span><span class="p">(</span><span class="n">string</span> <span class="n">code</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Stack</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">parens</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">code</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">'('</span> <span class="o">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'{'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">parens</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">')'</span> <span class="o">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'}'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">parens</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="kt">char</span> <span class="n">top</span> <span class="o">=</span> <span class="n">parens</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">top</span> <span class="o">==</span> <span class="sc">'('</span> <span class="o">&amp;&amp;</span> <span class="n">c</span> <span class="o">!=</span> <span class="sc">')'</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">top</span> <span class="o">==</span> <span class="sc">'{'</span> <span class="o">&amp;&amp;</span> <span class="n">c</span> <span class="o">!=</span> <span class="sc">'}'</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">parens</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// balanced</span>
+    <span class="p">}</span> 
+    <span class="k">return</span> <span class="n">code</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-stack-vs-vector-showdown">3) Stack vs Vector showdown</h2>
+<p><em>Topic: Stacks, Vectors</em></p>
+
+<p>We will analyze a simple program that emulates a text editor. The program accepts input from a user which can be of two forms:</p>
+
+<ul>
+  <li>
+    <p><strong>ADD string</strong>: This adds a <em>one word string</em> into the text editor</p>
+  </li>
+  <li>
+    <p><strong>UNDO</strong>: This removes the most recently added string from the editor.</p>
+  </li>
+</ul>
+
+<p>When the user finishes providing input (by hitting ENTER), we print a string which represents the words in the text editor, in the order they were added.</p>
+
+<p>Example: If we receive user input like "ADD I", "ADD Love", "ADD 106A", "UNDO", "ADD 106B", the program prints out "I love 106B".</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Stack</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">words</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">command</span> <span class="o">=</span> <span class="n">getLine</span><span class="p">(</span><span class="s">"Enter a command (press enter to quit): "</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">command</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">splitCommands</span> <span class="o">=</span> <span class="n">stringSplit</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="s">" "</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">splitCommands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">"ADD"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">words</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">splitCommands</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">splitCommands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">"UNDO"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">words</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">string</span> <span class="n">result</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">words</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">words</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span> <span class="o">+</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="4-maps">4) Maps</h2>
+<p><em>Topic: Maps</em></p>
+
+<p>Here, we analyze a simple program that uses maps to count elements in a vector</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">countElements</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">names</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">frequency</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="o">:</span> <span class="n">names</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// When using the square bracket syntax([]), we don't need to initialize</span>
+        <span class="c1">// names in the map before adding unto it. If name doesn't already exist</span>
+        <span class="c1">// in the map, [] in the Stanford Map will initialize it for us.</span>
+        <span class="n">frequency</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">frequency</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="5-friends-friendlistcpp">5) Friends (<code class="language-c++ highlighter-rouge"><span class="n">friendlist</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p><em>Topic: Maps, Sets</em></p>
+
+<h3 id="a-building-the-friendlist">a) Building the friendList</h3>
+
+<p>Write a function named <code class="language-c++ highlighter-rouge"><span class="n">friendList</span></code> that takes in a file name, reads friend relationships from the file, and writes them to a <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>. <code class="language-c++ highlighter-rouge"><span class="n">friendList</span></code> should return the populated <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>. Friendships are bi-directional, so if Abby is friends with Barney, Barney is friends with Abby. The file contains one friend relationship per line, with names separated by a single space. You do not have to worry about malformed entries.</p>
+
+<p>If an input file named <code class="language-c++ highlighter-rouge"><span class="n">buddies</span><span class="p">.</span><span class="n">txt</span></code> looked like this:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Barney</span> <span class="n">Abby</span>
+<span class="n">Abby</span> <span class="n">Clyde</span>
+</code></pre></div></div>
+<p>Then the call of <code class="language-c++ highlighter-rouge"><span class="n">friendList</span><span class="p">(</span><span class="s">"buddies.txt"</span><span class="p">)</span></code> should return a resulting <code class="language-c++ highlighter-rouge"><span class="n">map</span></code> that looks like this:</p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="s">"Abby"</span><span class="o">:</span><span class="p">{</span><span class="s">"Barney"</span><span class="p">,</span> <span class="s">"Clyde"</span><span class="p">},</span> <span class="s">"Barney"</span><span class="o">:</span><span class="p">{</span><span class="s">"Abby"</span><span class="p">},</span> <span class="s">"Clyde"</span><span class="o">:</span><span class="p">{</span><span class="s">"Abby"</span><span class="p">}}</span></code></p>
+
+<p>Here is the function prototype you should implement:</p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">friendList</span><span class="p">(</span><span class="n">String</span> <span class="n">filename</span><span class="p">)</span></code></p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">friendList</span><span class="p">(</span><span class="n">string</span> <span class="n">filename</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ifstream</span> <span class="n">in</span><span class="p">;</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">lines</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">openFile</span><span class="p">(</span><span class="n">in</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">readLines</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">friends</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">line</span><span class="o">:</span> <span class="n">lines</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">people</span> <span class="o">=</span> <span class="n">stringSplit</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">" "</span><span class="p">);</span>
+        <span class="n">string</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">people</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">string</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">people</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">friends</span><span class="p">[</span><span class="n">s1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">s2</span><span class="p">;</span>
+        <span class="n">friends</span><span class="p">[</span><span class="n">s2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">s1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">friends</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h3 id="b-finding-common-friends">b) Finding common friends</h3>
+
+<p>Write a function named <code class="language-c++ highlighter-rouge"><span class="n">mutualFriends</span></code> that takes in the friendList you just built, and strings representing two friends, and returns the names of the mutual friends they have in common.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">mutualFriends</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&gt;&amp;</span> <span class="n">friendList</span><span class="p">,</span> <span class="n">string</span> <span class="n">friend1</span><span class="p">,</span> <span class="n">string</span> <span class="n">friend2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">friendList</span><span class="p">[</span><span class="n">friend1</span><span class="p">]</span> <span class="o">*</span> <span class="n">friendList</span><span class="p">[</span><span class="n">friend2</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-26
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

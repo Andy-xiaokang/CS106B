@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B C++ fundamentals</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 1. C++ fundamentals</h1>
+ <p class="subtle-heading">Thursday October 5</p>
+<hr>
+
+<p class="attribution">
+Section materials curated by Clinton Kwarteng, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>This week’s section exercises focuses on three things: getting you setup on Qt Creator with the correct settings, exploring some C++ quirks and learning about some basic data structures. Have fun!</p>
+
+<p>Each week, we will also be releasing a Qt Creator project containing starter code and testing infrastructure for that week's section problems. When a problem name is followed by the name of a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the Qt Creator project. Here is the zip of the section starter code:</p>
+
+<p>📦 <a href="section1_starter.zip">Starter project</a></p>
+
+<h2 id="1-setting-up-your-environment-correctly">1) Setting up your environment correctly</h2>
+<p><em>Topics: QT Creator</em></p>
+
+<ul>
+  <li>Navigate to <a href="https://web.stanford.edu/dept/cs_edu/resources/qt/recommended-settings"><code class="language-c++ highlighter-rouge"><span class="n">Recommended</span> <span class="n">Qt</span> <span class="n">settings</span></code></a> and set all recommended settings suggested. You'll use Qt Creator for all assignments this quarter, so it's important that you use the best settings to make you more efficient.</li>
+  <li>Make a CS106B folder in your home directory. You can do so by:
+    <ul>
+      <li>Opening your finder(if you use a Mac) or Windows Explorer (if you use Windows)</li>
+      <li>Click on MacintoshHD for Mac or Primary Drive (C:) for windows</li>
+      <li>Click on Users</li>
+      <li>Click your name</li>
+      <li>Right click and make new folder.</li>
+      <li>Name the folder with ordinary characters, no spaces, special characters or emojis
+When you download new assignments and section materials, be sure to store them here. This will make it so that Qt has all the permissions it needs to run your programs</li>
+    </ul>
+  </li>
+  <li>If you use a Mac
+    <ul>
+      <li>Right click on this section's .pro file</li>
+      <li>Select Get info</li>
+      <li>Check that Qt Creator has been set as the default program to open .pro files. If not, choose Qt Creator from the drop down, and click on Change All</li>
+    </ul>
+  </li>
+  <li>If you use Windows
+    <ul>
+      <li>Open File Explorer (open any folder).</li>
+      <li>Click the View tab.</li>
+      <li>Select "File name extension"
+This will make it so you can see which files end with .pro</li>
+    </ul>
+  </li>
+  <li>Helpful Qt Creator hot keys (if you use windows, replace Command with Ctrl):
+    <ul>
+      <li>Command + B to build your program</li>
+      <li>Command + R to run your program</li>
+      <li>Command + Y to run in debug mode</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="2-program-analysis-cisms-you-should-know">2) Program analysis: C++isms you should know</h2>
+
+<p><em>Topics: Types, References, range based loops, strings, stanford C++ library</em></p>
+
+<p>In the following, we will analyze a simple program that filters last names whose end match a specific substring. Given an input string of format:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name1</span><span class="p">,</span><span class="n">name2</span><span class="p">,</span> <span class="p">...</span> 
+</code></pre></div></div>
+<p>and a string suffix, the program returns all the names in the input string that ends with the suffix.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"SimpleTest.h"</span><span class="cp">
+#include</span> <span class="cpf">"vector.h"</span><span class="cp">
+#include</span> <span class="cpf">"strlib.h"</span><span class="cp">
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="cm">/*
+   @param input: input string whose last names will be filtered
+   @param suffix: the substring which we will filter last names by
+   Functionality: this function filters the input string and returns last names
+        that end with 'suffix'
+*/</span>
+<span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">filter</span><span class="p">(</span><span class="n">string</span> <span class="n">input</span><span class="p">,</span> <span class="n">string</span> <span class="n">suffix</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">filteredNames</span><span class="p">;</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">stringSplit</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="sc">','</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">name</span><span class="o">:</span> <span class="n">names</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// convert to lowercase so we can easily compare the strings</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">endsWith</span><span class="p">(</span><span class="n">toLowerCase</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">toLowerCase</span><span class="p">(</span><span class="n">suffix</span><span class="p">)))</span> <span class="p">{</span>
+            <span class="n">filteredNames</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">filteredNames</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Filter names"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">filter</span><span class="p">(</span><span class="s">"Zelenski,Szumlanski,Kwarteng"</span><span class="p">,</span> <span class="s">"Ski"</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="p">{</span><span class="s">"Zelenski"</span><span class="p">,</span><span class="s">"Szumlanski"</span><span class="p">});</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">filter</span><span class="p">(</span><span class="s">"AmbaTi,Szumlanski,Tadimeti"</span><span class="p">,</span> <span class="s">"TI"</span><span class="p">);</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">expected</span> <span class="o">=</span> <span class="p">{</span><span class="s">"AmbaTi"</span><span class="p">,</span> <span class="s">"Tadimeti"</span><span class="p">};</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">results</span> <span class="o">==</span> <span class="n">expected</span><span class="p">);</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">filter</span><span class="p">(</span><span class="s">"Zelenski,Szumlanski,Kwarteng"</span><span class="p">,</span> <span class="s">"NnG"</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="p">{});</span>
+
+    <span class="c1">// what other tests could you add?</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="3-countnumbers-sumcpp">3) countNumbers (sum.cpp)</h2>
+
+<p><em>Topics: Vectors, strings, file reading, while true, conditional statements, Stanford C+++ library</em></p>
+
+<p>The function <code class="language-c++ highlighter-rouge"><span class="n">countNumbers</span></code> reads a text file and returns the number of times a user entered number appears in that text file. Here are some library functions that will be useful for this task:</p>
+
+<ul>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/filelib.html#Function:readLines"><code class="language-c++ highlighter-rouge"><span class="n">readLines</span></code></a>, to read all lines from a file stream into a Vector</li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/strlib.html#Function:stringSplit"><code class="language-c++ highlighter-rouge"><span class="n">stringSplit</span></code></a>, to divide a string into tokens</li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/simpio.html#Function:getLine"><code class="language-c++ highlighter-rouge"><span class="n">getLine</span></code></a>, to read a line of text entered by the user</li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/strlib.html#Function:stringIsInteger"><code class="language-c++ highlighter-rouge"><span class="n">stringIsInteger</span></code></a>, to confirm a string of digits is valid integer</li>
+</ul>
+
+<p>In particular you will be asked to write the following function</p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="kt">int</span> <span class="n">countNumbers</span><span class="p">(</span><span class="n">string</span> <span class="n">filename</span><span class="p">)</span></code></p>
+
+<p>When given the following file, named <code class="language-c++ highlighter-rouge"><span class="n">numbers</span><span class="p">.</span><span class="n">txt</span></code>, as input, your function should print 1 when a user enters 42. Similarly, when the user enters 9, your function should return 2.</p>
+<pre><code class="language-output">42 is the Answer to the Ultimate Question of Life, the Universe, and Everything
+This is a negative number: -9
+Welcome to CS106B!
+I want to own 9 cats and 9 dogs.
+</code></pre>
+
+<div class="showtime" when="2023-10-06T18:00:00-07:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#environment")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+ * Function: countNumbers
+ * ----------------------
+ * Write a program to read through a given file and count the
+ * the number of times a user inputed number appears in that file. You  
+ * can assume that numbers will be composed entirely of numerical digits, 
+ * optionally preceded by a single negative sign.
+ */</span>
+<span class="kt">void</span> <span class="nf">countNumbers</span><span class="p">(</span><span class="n">string</span> <span class="n">filepath</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ifstream</span> <span class="n">in</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">openFile</span><span class="p">(</span><span class="n">in</span><span class="p">,</span> <span class="n">filepath</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">lines</span> <span class="o">=</span> <span class="n">readLines</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">number</span> <span class="o">=</span> <span class="n">getLine</span><span class="p">(</span><span class="s">"Enter a number to check (enter to quit): "</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">stringIsInteger</span><span class="p">(</span><span class="n">number</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Please enter a number"</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">line</span> <span class="o">:</span> <span class="n">lines</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">stringSplit</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">" "</span><span class="p">);</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">t</span> <span class="o">:</span> <span class="n">tokens</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">==</span> <span class="n">number</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">count</span> <span class="o">++</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Number "</span> <span class="o">&lt;&lt;</span> <span class="n">number</span> <span class="o">&lt;&lt;</span> <span class="s">" appeared "</span> <span class="o">&lt;&lt;</span> <span class="n">count</span> <span class="o">&lt;&lt;</span> <span class="s">" times in the file."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="4-debugging-deduplicating-deduplicatecpp">4) Debugging Deduplicating (<code class="language-c++ highlighter-rouge"><span class="n">deduplicate</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p><em>Topics: Vector, strings, debugging</em></p>
+
+<p>Consider the following <strong><em>incorrect</em></strong> C++ function, which accepts as input a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> and tries to <strong>modify it</strong> by removing adjacent duplicate elements:</p>
+
+<p>⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">deduplicate</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">vec</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span> 
+            <span class="n">vec</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️</p>
+
+<p>The intent behind this function is that we could do something like this:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">hiddenFigures</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"Katherine Johnson"</span><span class="p">,</span>
+    <span class="s">"Katherine Johnson"</span><span class="p">,</span>
+    <span class="s">"Katherine Johnson"</span><span class="p">,</span>
+    <span class="s">"Mary Jackson"</span><span class="p">,</span>
+    <span class="s">"Dorothy Vaughan"</span><span class="p">,</span>
+    <span class="s">"Dorothy Vaughan"</span>
+<span class="p">};</span>
+
+<span class="n">deduplicate</span><span class="p">(</span><span class="n">hiddenFigures</span><span class="p">);</span>
+<span class="c1">// hiddenFigures = ["Katherine Johnson", "Mary Jackson", "Dorothy Vaughan”]</span>
+</code></pre></div></div>
+<p>The problem is that the above implementation of <code class="language-c++ highlighter-rouge"><span class="n">deduplicate</span></code> does not work correctly. In particular, it contains three bugs. First, find these bugs by writing test cases that pinpoint potentially erroneous situations in which the provided code might fail, then explain what the problems are, and finally fix those errors in code.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>There are three errors here:</p>
+<ol>
+  <li>Calling <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">remove</span><span class="p">()</span></code> on the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> while iterating over it doesn’t work particularly nicely. Specifically, if you remove the element at index <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> and then increment <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> in the for loop, you’ll skip over the element that shifted into the position you were previously in.</li>
+  <li>There’s an off-by-one error here: when <code class="language-c++ highlighter-rouge"><span class="n">i</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span></code>, the indexing <code class="language-c++ highlighter-rouge"><span class="n">vec</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span></code> reads off the end of the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>.</li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> is passed in by value, not by reference, so none of the changes made to it will persist to the caller.</li>
+</ol>
+
+<p>Here are corrected versions of the code:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// solution 1</span>
+<span class="kt">void</span> <span class="nf">deduplicate</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">vec</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">vec</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// solution 2</span>
+<span class="kt">void</span> <span class="nf">deduplicate</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">vec</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">vec</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="5-pig-latin-piglatincpp">5) Pig-Latin (<code class="language-c++ highlighter-rouge"><span class="n">piglatin</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p><em>Topics: Strings, reference parameters, return types</em></p>
+
+<p>Write two functions, <code class="language-c++ highlighter-rouge"><span class="n">pigLatinReturn</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">pigLatinReference</span></code>, that accept a string and convert said string
+into its pig-Latin form. To convert a string into pig-Latin, you must follow these steps:</p>
+
+<ul>
+  <li>Split the input string into 2 strings: a string of characters BEFORE the first vowel, and a string of characters
+AFTER (and including) the first vowel.</li>
+  <li>Append the first string (letters before the first vowel) to the second string.</li>
+  <li>Append the string "ay" to the resulting string.</li>
+</ul>
+
+<p>Here are a few examples…</p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">nick</span> <span class="o">-&gt;</span> <span class="n">icknay</span></code></p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">chase</span> <span class="o">-&gt;</span> <span class="n">asechay</span></code></p>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">chris</span> <span class="o">-&gt;</span> <span class="n">ischray</span></code></p>
+
+<p>You will need to write this routine in two ways: once as a function that returns the pig-Latin string to the 
+caller, and once as a function that modifies the supplied parameter string and uses it to store the resulting pig-Latin string. These will be done in <code class="language-c++ highlighter-rouge"><span class="n">pigLatinReturn</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">pigLatinReference</span></code>, respectively. You may assume that your input is always a one-word, all lowercase string with at least one vowel.</p>
+
+<p>Here's a code example of how these functions differ…</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"julie"</span><span class="p">;</span>
+<span class="n">string</span> <span class="n">str1</span> <span class="o">=</span> <span class="n">pigLatinReturn</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">str1</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// prints "uliejay"</span>
+
+<span class="n">pigLatinReference</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">name</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// prints "uliejay"</span>
+</code></pre></div></div>
+
+<p>Once you've written these functions, <strong>discuss with your section the benefits and drawbacks of these two approaches</strong>. Which do you feel is easier to write? Which do you think is more convenient for the caller? Do you think one is better style than the other?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Use const because VOWELS won't change -- no need to declare repeatedly</span>
+<span class="c1">// in isVowel.</span>
+<span class="k">const</span> <span class="n">string</span> <span class="n">VOWELS</span> <span class="o">=</span> <span class="s">"aeiouy"</span><span class="p">;</span>
+
+<span class="c1">// Helper function, which I'd highly recommend writing!</span>
+<span class="kt">bool</span> <span class="nf">isVowel</span><span class="p">(</span><span class="kt">char</span> <span class="n">ch</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// A little kludgy, but the handout guarantees that</span>
+    <span class="c1">// ch will ALWAYS be lower case :)</span>
+    <span class="c1">// NOTE: For an assignment, you probably want a more robust isVowel.</span>
+    <span class="k">return</span> <span class="n">VOWELS</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">!=</span> <span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="nf">pigLatinReturn</span><span class="p">(</span><span class="n">string</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">strOneIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">isVowel</span><span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="n">strOneIndex</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">string</span> <span class="n">strOne</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">strOneIndex</span><span class="p">);</span>
+    <span class="n">string</span> <span class="n">strTwo</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">strOneIndex</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">strTwo</span> <span class="o">+</span> <span class="n">strOne</span> <span class="o">+</span> <span class="s">"ay"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">pigLatinReference</span><span class="p">(</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">strOneIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">isVowel</span><span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="n">strOneIndex</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">string</span> <span class="n">strOne</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">strOneIndex</span><span class="p">);</span>
+    <span class="n">string</span> <span class="n">strTwo</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">strOneIndex</span><span class="p">);</span>
+    <span class="n">input</span> <span class="o">=</span> <span class="n">strTwo</span> <span class="o">+</span> <span class="n">strOne</span> <span class="o">+</span> <span class="s">"ay"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Notice how similar these two approaches are – the only difference is how the result is handled at the very end. To address the discussion questions, although the <code class="language-c++ highlighter-rouge"><span class="n">pigLatinReference</span></code> function is marginally more efficient because it doesn't need to make a copy of the input string, <code class="language-c++ highlighter-rouge"><span class="n">pigLatinReturn</span></code> is probably more intuitive for both the caller and the writer: if the function's job is to somehow output some product, returning is the most explicit way to do so. In that way, a function that returns is also better style – it's makes the purpose of the function clearer to the reader.</p>
+
+<p>If you wanted to combine the efficiency of <code class="language-c++ highlighter-rouge"><span class="n">pigLatinReference</span></code> with the clarity of <code class="language-c++ highlighter-rouge"><span class="n">pigLatinReturn</span></code>, I would recommend writing a function that takes in the input string by <code class="language-c++ highlighter-rouge"><span class="k">const</span> <span class="n">reference</span></code>, basically</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">pigLatin</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">input</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Although the const isn't explicitly necessary, it's nice to have because you never need to modify input. Moreover, you still get the efficiency gains from pass-by-reference while also writing very-understandable code.</p>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-08
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

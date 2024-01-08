@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Object-Oriented Programming</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 14. Object-Oriented Programming</h1>
+ <p class="subtle-heading">Friday October 27</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Today we'll look at how we define the abstraction boundary with our first introduction to object-oriented programming and C++ classes.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 6.1-6.5</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/144294">Lecture quiz on Canvas</a></li>
+  <li><a href="oop-geocities-quokkas.zip">oop-geocities-quokkas.zip</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=06aa6e05-dde9-4501-81fc-b083014df31b&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents</strong></p>
+<p>1. Overview: Object-Oriented Programming</p>
+<p>2. Introduction to Classes</p>
+<p>3. The OOP Paradigm Shift</p>
+<p>4. Classes as Datatypes or Blueprints (and Other Object-Oriented Terminology)</p>
+<p>5. Why build new classes?</p>
+<p>6. Interface (.h) and Implementation (.cpp)</p>
+<p>7. Our Goal: The Quokka Class</p>
+<p>8. Creating a Quokka Class in the Qt Creator</p>
+<p>9. Structure of a Class's Header File (.h)</p>
+<p>10. Constructor Functions</p>
+<p>11. Structure of a Class's Implementation Source File (.cpp)</p>
+<p>12. A First Draft of the Quokka Class</p>
+<p>13. Overloading Constructor Functions</p>
+<p>14. Private Class Members</p>
+<p>15. Getters and Setters</p>
+<p>16. Calling Constructors without Variable Names</p>
+<p>17. Destructor Functions (Local Variables Die When We Leave a Function)</p>
+<p>18. Geocities Rendering</p>
+<p>19. What's next?</p>
+<p>20. Exercises</p>
+<p><strong><br />Overview: Object-Oriented Programming</strong></p>
+<p>Today, we delved into object-oriented programming (OOP), with a focus on classes and objects. This marks a significant transition in the course from taking a mostly client-side view of ADTs to digging into the implementation details behind the scenes and examining how we can create those ADTs in C++.</p>
+<p>Through the rest of the quarter, we will use classes and objects as a vehicle for exploring and implementing abstractions. I want to be clear that OOP is a much broader topic than what we covered in lecture today; we dipped our toes in the waters of OOP in order to acquire a few tools we need for this quarter's journey. There is much more to OOP to be discovered on your own or through other courses.</p>
+<p><br /><strong>Introduction to Classes</strong></p>
+<p>We started our discussion of OOP with classes, which form part of the foundation of object-oriented programming. Fundamentally, a class allows us to package together related pieces of data with functions that operate on that data.</p>
+<p>We have already seen several classes so far this quarter, although we haven't referred to them as such. All the ADTs implemented in the Stanford C++ Libraries are classes: <span class="code-chonk">Vector</span>, <span class="code-chonk">Grid</span>, <span class="code-chonk">Stack</span>, <span class="code-chonk">Queue</span>, <span class="code-chonk">Set</span>, and <span class="code-chonk">Map</span>.</p>
+<p>A <span class="code-chonk">Vector</span>, for example, has underlying data (a collection of elements, as well as some sort of size variable that is maintained behind the scenes) as well as functions we can use to manipulate that data (<span class="code-chonk">add()</span>, <span class="code-chonk">remove()</span>, <span class="code-chonk">insert()</span>, and so on).</p>
+<p><br /><strong>The OOP Paradigm Shift</strong></p>
+<p>When OOP started taking our field by storm, it was a fundamental paradigm shift. In non-object-oriented languages, such as C, if we wanted to create a data structure, we had a data representation (typically a <span class="code-chonk">struct</span>) that was wholly separate from the functions that operated on it. For example, if we had a vector variable, we would pass it to an <span class="code-chonk">add()</span> function as a parameter. The add function typically was not bound to, or part of, the vector variable in any way.</p>
+<p>Object-oriented programming breaks down a bit of the wall between data and functionality and unifies those concepts into classes in a way that jives with our notion of how we interact with many objects in the real world. For example, when I go into an elevator and press a button to take me to the fifth floor, I don't think of myself as picking up the elevator and passing it through a <span class="code-chonk">goToFloor(elevator, whichFloor)</span> function that is wholly separate from the elevator. Rather, I think of that functionality as being built into the elevator. The button and its related functionality are fully integrated with the elevator; they are part of the fundamental identity of that elevator.</p>
+<p>The object-oriented paradigm allows us to reflect that sort of integration in code and build programs that manipulate the state of our data in ways that really reflect our understanding of how we interact with objects in the real world.</p>
+<p><br /><strong>Classes as Datatypes or Blueprints (and Other Object-Oriented Terminology)</strong></p>
+<p><span>In this section, we define the following terms:</span></p>
+<ul>
+<li><span>class</span></li>
+<li><span>object</span></li>
+<li><span>instance</span></li>
+</ul>
+<p><span>When we create a new class, we are typically also creating a new <strong>datatype</strong>. I mentioned above that all of the ADTs we have talked about this semester are implemented as classes in the Stanford C++ Libraries. Throughout the quarter, we have already seen them used as datatypes for variable declarations. For example:</span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br /><em><span style="color: #236fa1;">    // Below, the Vector <span style="background-color: #eccafa;"><strong>class</strong></span> is being used as the datatype for variables v1 and v2.</span></em><br /><em><span style="color: #236fa1;">    // v1 and v2 are both Vector <span style="background-color: #eccafa;"><strong>objects</strong></span>. They are <span style="background-color: #eccafa;"><strong>instances</strong></span> of the Vector class.</span></em><br />    <strong>Vector</strong>&lt;<strong>int</strong>&gt; v1;<br />    <strong>Vector</strong>&lt;<strong>string</strong>&gt; v2;<br /><br />&nbsp; &nbsp; <strong>return</strong> 0;<br />}</pre>
+<p>Insofar as a class gives us a new datatype, we can think of a class as being a sort of blueprint that tells us how to build a variable of this new type. So, in the same way that we can take the blueprints for a house and build multiple instances of that particular plan, we can take a class and build multiple variables or that type. In the example above, we have built two vectors from our blueprint. They each have their own "interiors," so to speak, which are distinct from one another; adding elements to one vector does <strong>not</strong> add elements to the other (in the same way that placing objects in one house does not automatically add those objects to every other house built from the same blueprint). The two vectors' interiors are even "decorated" with completely different types of: one contains ints, and the other has strings.</p>
+<p>In the code above, we say <span class="code-chonk">v1</span> and <span class="code-chonk">v2</span> are <strong>objects</strong>. An object is an <strong>instance</strong> of a class. Specifically, <span class="code-chonk">v1</span> and <span class="code-chonk">v2</span> are instances of the <span class="code-chonk">Vector</span> class. (Similarly, if we had the blueprints for some house called the "Monroe" model, if we built two houses from those blueprints, we would say that we had two <strong>instances</strong> of the Monroe model. Those houses would also be considered <strong>objects</strong> in the physical world.)</p>
+<p><br /><strong>Why build new classes?</strong></p>
+<p>I mentioned today that building new classes will allow us to expand and enrich our vocabulary of abstractions, which will in turn allow us to solve more problems. For more on that, see the 10:00 mark in today's lecture video.</p>
+<p>Ultimately, by understanding how classes work, we will gain the ability to add new tools to our problem-solving toolkit that we'll be able to use to solve problems that our existing ADTs might not be ideally suited for.</p>
+<p>Earlier this quarter, I gave an example of the importance of using abstractions and how they can enhance the clarity of our code and our ability to communicate efficiently and effectively with people who are working on projects with us. In that example, I presented the following programs, both of which accomplish the same task. We saw that understanding the stack approach requires almost no effort at all for someone who knows what stacks are. With the vector approach, one has to pay attention to small, obnoxious details, like where the insertion and deletion operations are taking place, and one might then want to double-check that the code is really doing what they thought it was doing at first glance. ("This <span class="code-chonk">v.remove(v.size() - 1);</span> operation is always removing the last element of the vector, right?") The stack abstraction saves us all that hassle.</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Stack approach:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "stack.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Stack</strong>&lt;<strong>int</strong>&gt; s;<br /><br />   s.push(10);<br />   s.push(20);<br />   s.push(15);<br /><br />   <strong>cout</strong> &lt;&lt; s.pop() &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "Stack contents: " &lt;&lt; s &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Vector approach:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br />   v.add(10);<br />   v.add(20);<br />   v.add(15);<br /><br />   <strong>cout</strong> &lt;&lt; v.remove(v.size() - 1) &lt;&lt; <strong>endl</strong>;<br />   <strong>cout</strong> &lt;&lt; "Vector contents: " &lt;&lt; v &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p><br /><strong>Interface (.h) and Implementation (.cpp)</strong></p>
+<p>Our foray into classes marks our own paradigm shift in terms of our approach to ADTs in this class. We have so far taken a client-side approach to ADTs, where we have examined only their interfaces and had most of the implementation details for those ADTs abstracted away from us. We'll now start peeling back the curtain and looking a how we can build these data structures ourselves.</p>
+<p style="padding-left: 40px;"><img src="resources/class-design.png" /></p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><em>Image credit: My awesome colleague, Keith Schwarz.</em></span></p>
+<p>When we create a class, there are two primary components we have to code up: the <strong>interface</strong> and the <strong>implementation</strong>.</p>
+<ul>
+<li>The <strong>interface</strong> is what a class looks like from the outside: what data is in the class and what functions we can call. On the interface side, functions are typically presented in the form of functional prototypes, not full-fledged function definitions. When you go to the Stanford C++ Library docs, you're effectively seeing the interface to each of the ADTs we've implemented there. When we create a new class, its interface will be articulated in a <span class="code-chonk">.h</span> file (a "header file").</li>
+<li>The <strong>implementation</strong> is where we find the actual definitions of the functions that drive the behaviors of our class -- not just the functional prototypes. When we create a new class, its implementation will be articulated in a <span class="code-chonk">.cpp</span> file (an "implementation file").</li>
+</ul>
+<p>You can think of the interface as telling us "<strong>what</strong>" the class can do for us and the implementation as telling us "<strong>how</strong>" those things get done.</p>
+<p><br /><strong>Our Goal: The Quokka Class</strong></p>
+<p>Throughout lecture, I referred frequently to the <span class="code-chonk">Vector</span> class to provide grounding for my explanations of classes and objects in a class that I knew everyone was already familiar with. However, the class we implemented along the way -- which provided a more accessible example of some of these concepts -- was a <span class="code-chonk">Quokka</span> class.<span style="color: var(--ic-brand-font-color-dark); font-family: inherit; font-size: 1rem;">&nbsp;Before diving into that, I introduced everyone to the following adorable creature(s):</span></p>
+<p style="padding-left: 40px;"><img src="resources/hemmy.jpg" /></p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><em>Image credit: <a class="inline_disabled" href="https://www.instagram.com/p/BvA_KX2Ht3X/?hl=en&amp;img_index=1" target="_blank" rel="noopener">Chris Hemsworth via Instagram</a>.</em></span></p>
+<p><br /><strong>Creating a Quokka Class in the Qt Creator</strong></p>
+<p>Okay, here we go. To add a <span class="code-chonk">Quokka</span> class to my existing project, I right-clicked the root folder for my project and selected "Add new..."</p>
+<p style="padding-left: 40px;"><img src="resources/create-class01.png" /></p>
+<p>In the menu that popped up, I selected "C++ Class." We can see from the icon in that option that we're going to get both a <span class="code-chonk">.h</span> file and a <span class="code-chonk">.cpp</span> file. Neat! That's what we want. We'll have a place for our class's interface and a place for its implementation.</p>
+<p style="padding-left: 40px;"><img src="resources/create-class02.png" /></p>
+<p>From there, we gave our class a name:</p>
+<p style="padding-left: 40px;"><img src="resources/create-class03.png" /></p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important note!</em></span>) A common convention in a lot of languages is to capitalize the first letter of a class name to distinguish it from variable names, function names, or primitive datatypes that are built into a language.</p>
+<p>When we finished, Qt Creator added two files to our project: <span class="code-chonk">quokka.h</span> and <span class="code-chonk">quokka.cpp</span>:</p>
+<p style="padding-left: 40px;"><img src="resources/create-class04.png" /></p>
+<p><br /><strong>Structure of a Class's Header File (.h)</strong></p>
+<p>Here is the header file that was generated for us automatically:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.h</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef QUOKKA_H<br />#define QUOKKA_H<br /><br /><strong>class</strong> Quokka<br />{<br /><strong>public</strong>:<br />   Quokka();<br />};<br /><br />#endif</pre>
+<p>There's a lot going on there. Let's start to break it down.</p>
+<p>First of all, Qt Creator has come in clutch and created "include guards" for us. See the 15:58 mark in today's lecture for more detail about include guards if you're interested. The concept of include guards is not particularly central to our class, and so I won't elaborate beyond my comments about them in lecture, other than to point out that the format of the include guards is generally as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef <span style="color: #ffffff; background-color: #7e8c8d;"><strong>CLASS_NAME</strong></span>_H<br />#define <span style="color: #ffffff; background-color: #7e8c8d;"><strong>CLASS_NAME</strong></span>_H<br /><br />// ... more code goes here ...<br /><br />#endif</pre>
+<p>The more interesting thing is the class definition, which follows the following basic syntax:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>class</strong> <span style="color: #ffffff; background-color: #7e8c8d;"><strong>CLASS_NAME</strong></span><br />{<br /><strong>public:</strong><br /> &nbsp; <span style="color: #ffffff; background-color: #7e8c8d;"><strong>CLASS_NAME</strong></span>();<br />   // ... other variable declarations and functional prototypes go here ...<br /><strong>private:</strong><br />   // ... other variable declarations and functional prototypes go here ...<br />};</pre>
+<p>In this class definition, we list variable declarations and the functional prototypes that will constitute our class. Under the <span class="code-chonk">public:</span> heading, we place all the variables and functions we want any client who uses our class to have access to. Those items constitute our public-facing interface. Under the <span class="code-chonk">private:</span> heading, we place variables and functions that we don't want our client to have access to. We mostly mark as private anything that a user could abuse to leave our class in a broken state.</p>
+<p>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not mentioned in class.</em></span>) Notice that we tend not to indent <span class="code-chonk">public:</span> and <span class="code-chonk">private:</span> within a class definition, even though our style guide tells us to indent one level deeper any time with open a new code block. This is an exception to that rule. If we indented <span class="code-chonk">public:</span> and <span class="code-chonk">private:</span>, they would be the&nbsp;<em>only</em> lines indented just one level in that code block. All the other lines within that block would be indented&nbsp;<em>at least</em> two levels. We pull back <span class="code-chonk">public:</span> and <span class="code-chonk">private:</span> in order to cut back a bit on some unnecessary horizontal bloat in our code.</p>
+<p>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not mentioned in class.</em></span>) <span class="code-chonk">public</span> and <span class="code-chonk">private</span> are called <strong>access modifiers</strong>.</p>
+<p>(<em><span style="font-size: 10pt; background-color: #ffff99;">Important note!</span></em>) Just as with structs, we need a semicolon at the end of our class definition (after the closing curly brace). If you leave off that curly brace, you might get a series of inscrutable errors at compile time.</p>
+<p><br /><strong>Constructor Functions</strong></p>
+<p>Above, you likely noticed there's a function called <span class="code-chonk">Quokka()</span> within our <span class="code-chonk">Quokka</span> class definition. A function whose name matches our class name is&nbsp;called a <strong>constructor function</strong>. It is called automatically anytime we create an instance of our class, which is often useful for doing any important initialization tasks when a class is instantiated.</p>
+<p><br /><strong>Structure of a Class's Implementation Source File (.cpp)</strong></p>
+<p>Here is the .cpp file that was generated for us automatically:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include "quokka.h"<br /><br /><strong>Quokka</strong>::Quokka()<br />{<br /><br />}</pre>
+<p>There are a few key things to notice here:</p>
+<ul>
+<li>We <span class="code-chonk">#include</span> our class's header file from out .cpp file. That way, this source file is aware of our class definition, including all variables and functional prototypes, and so we can freely refer to all those variables and function from any functions that we add to this file.</li>
+<li>The <span class="code-chonk">Quokka()</span> constructor functino that we saw in our header file is listed here, as well.</li>
+<li>Before each function we define that is part of our class, we must give the class name, followed by two colons, like so: <span class="code-chonk">ClassName::functionName</span>. This tells C++ that the function we're creating is actually part of the class in question and not some free-floating auxiliary function that exists outside of the class.</li>
+</ul>
+<p><br /><strong>A First Draft of the Quokka Class</strong></p>
+<p>From there, we started fleshing out the <span class="code-chonk">Quokka</span> class with some useful data and functionality. Here was our first draft. I have included some key notes below the code, as well:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.h</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef QUOKKA_H<br />#define QUOKKA_H<br /><br />#include &lt;iostream&gt;<br /><br /><strong>class</strong> Quokka<br />{<br /><strong>public</strong>:<br />   <em><span style="color: #236fa1;">// member functions (which govern <strong>behaviors</strong> an object can perform)</span></em><br />   Quokka();  <span style="color: #236fa1;"><em>// constructor</em></span><br />   <strong>bool</strong> haveASnack(<strong>std</strong>::<strong>string</strong> snack);<br /><strong>   void</strong> printInfo();<br /><br />   <span style="color: #236fa1;"><em>// member variables (which govern the <strong>state</strong> of an object)</em></span><br /> &nbsp; <strong>std</strong>::<strong>string</strong> _name;<br />   <strong>int</strong> _howAdorable;  <span style="color: #236fa1;"><em>// 1 through 5</em></span><br />   <strong>std</strong>::<strong>string</strong> _location;<br />};<br /><br />#endif</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "quokka.h"<br />using namespace std;<br /><br /><strong>Quokka</strong>::Quokka()<br />{<br />}<br /><br /><span style="color: #236fa1;"><em>// Recall that we need Quokka:: in front of any functions that are part of the class,</em></span><br /><span style="color: #236fa1;"><em>// to distinguish them from free-floating functions that exist outside the class.</em></span><br /><span style="color: #236fa1;"><em>// Note that the datatype comes before the class name when defining functions</em></span><br /><span style="color: #236fa1;"><em>// within a class.</em></span><br /><strong>void</strong> <strong>Quokka</strong>::printInfo()<br />{<br /><span style="color: #236fa1;"><em>   // This function can refer to all the member variables inside this class!</em></span><br />   <strong>cout</strong> &lt;&lt; _name &lt;&lt; " (how adorable: " &lt;&lt; _howAdorable<br />        &lt;&lt; ", loc: " &lt;&lt; _location &lt;&lt; ")" &lt;&lt; <strong>endl</strong>;<br />}<br /><br /><span style="color: #236fa1;"><em>// We never ended up doing anything interesting with this function, but here it is.</em></span><br /><strong>bool</strong> <strong>Quokka</strong>::haveASnack(<strong>string</strong> snack)<br />{<br />   <strong>return</strong> true;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"  <em><span style="color: #236fa1;">// for Quokka class</span></em><br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br /><span style="color: #236fa1;"><em>   // If we didn't #include "quokka.h" above, the </em></span><span style="color: #236fa1;"><em>compiler would have no idea what<br />   // a Quokka was when i</em></span><span style="color: #236fa1;"><em>t reached the following lines, and so our program would<br />   // fail to compile.</em></span><br /><br /><span style="color: #236fa1;"><em>   // (<strong>Terminology</strong>) Below, when we declare q1, we are doing all of the following:</em></span><br /><span style="color: #236fa1;"><em>   //  - creating a Quokka</em></span><br /><span style="color: #236fa1;"><em>   //  - instantiating the Quokka class</em></span><br /><span style="color: #236fa1;"><em>   //  - creating an instance of the Quokka class</em></span><br /><span style="color: #236fa1;"><em>   //  - creating a Quokka object</em></span><br /><br />   <strong>Quokka</strong> q1;<br />   q1._name = "Muffinface";<br />   q1._howAdorable = 5;<br />   q1._location = "Australia";<br /><br /><span style="color: #236fa1;"><em>   // q2 has its own member variables that are distinct from the member variables</em></span><br /><span style="color: #236fa1;"><em>   // of q1. Note that Hemmy's adorableness score is only a 4 -- possibly because<br /></em><em>   // no matter how adorable you are, it's just hard to look like a 5/5 when you're</em></span><br /><span style="color: #236fa1;"><em>   // standing next to Chris Hemsworth.</em></span><br /><br />   <strong>Quokka</strong> q2;<br />   q2._name = "Hemmy";<br />   q2._howAdorable = 4;<br />   q2._location = "Australia";<br /><br />   q1.printInfo();<br />   q2.printInfo();<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">Muffinface (how adorable: 5, location: Australia)<br />Hemmy (how adorable: 4, location: Australia)</pre>
+<p>Terminology related to what's happening above:</p>
+<ul>
+<li>We refer to the variables within a class as its&nbsp;<strong>member variables</strong>.</li>
+<li>We refer to the functions within a class as its&nbsp;<strong>member functions</strong>.</li>
+<li>We often say that member variables define the <strong>state</strong> of an object, while member functions define the <strong>behaviors</strong>&nbsp;an object can perform.</li>
+<li>A function whose name matches the name of the class where it resides is a <strong>constructor function</strong>.</li>
+<li>(<span style="background-color: #eccafa; font-size: 10pt;"><em>Not mentioned in class.</em></span>) Every <span class="code-chonk">Quokka</span> we create gets its own copies of the variables above. When that happens, we refer to those variables as <strong>instance variables</strong>. In OOP, we sometimes have variables that are shared across&nbsp;<em>all</em> instances of a class. We haven't used any of those here, and I'm not sure that we'll see any of those this quarter. You might hear me use the terms "member variables" and "instance variables" interchangeably to refer to the sorts of variables we're defining above.</li>
+</ul>
+<p>Some key notes about the code above:</p>
+<ul>
+<li>We <span class="code-chonk">#include "quokka.h"</span> from any .cpp file where we want to refer to our <span class="code-chonk">Quokka</span> class.</li>
+<li>In <span class="code-chonk">quokka.h</span> and <span class="code-chonk">quokka.cpp</span>, we <span class="code-chonk">#include</span> any header files we need to enable the functionality of those files.</li>
+<li>As a convention, we often start member variable names with underscores. Those variables will be accessible from every function in our implementation file, and this naming convention will help us distinguish them from local variables within those functions.</li>
+<li>Note that it's considered best practice <strong>not</strong> to issue a <span class="code-chonk">using namespace std;</span> statement in our <span class="code-chonk">quokka.h</span> file. If we did that, then that namespace would apply to <em>every</em> source file with an <span class="code-chonk">#include "quokka.h"</span> directive. We instead prefer to qualify anything from the <span class="code-chonk">std</span> namespace in our header file using the tedious <span class="code-chonk">std::</span> syntax.</li>
+<li>Each <span class="code-chonk">Quokka</span> variable create has its&nbsp;<em>own</em> distinct copies of the variables defined in our <span class="code-chonk">Quokka</span> class. We use the dot operator to access those member variables (as in <span class="code-chonk">q1._name</span>).</li>
+<li>One of the really lovely things about the object-oriented paradigm is that when you want to know what functions you can call from an object, most IDEs will display those for you when you type the dot after your variable name (e.g., after we type <span class="code-chonk">q1.</span> in the program above). Contrast this with trying to remember the name of a function that you want to call when you can't even quite remember what library it comes from.</li>
+</ul>
+<p><strong><br />Overloading Constructor Functions</strong></p>
+<p>The approach to creating new <span class="code-chonk">Quokka</span> objects in the code above is really tedious. Every time we create one, we write several lines of code to give it a name, a rating of how adorable it is, and its location. We can make that process a lot less tedious by adding an overloaded constructor function to our class that takes those parameters as arguments! Here's how that's done. Changes are highlighted in peach:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.h</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef QUOKKA_H<br />#define QUOKKA_H<br /><br />#include &lt;iostream&gt;<br /><br /><strong>class</strong> Quokka<br />{<br /><strong>public</strong>:<br />   Quokka();<br />   <span style="background-color: #ffcc99;">Quokka(<strong>std</strong>::<strong>string</strong> name, <strong>int</strong> howAdorable, <strong>std</strong>::<strong>string</strong> profilePic);</span><br /><strong>   void</strong> printInfo();<br /><br /> &nbsp; <strong>std</strong>::<strong>string</strong> _name;<br />   <strong>int</strong> _howAdorable;  <span style="color: #236fa1;"><em>// 1 through 5</em></span><br />   <strong>std</strong>::<strong>string</strong> _location;<br />   <strong>std</strong>::<strong>string</strong> _profilePic;<br />};<br /><br />#endif</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "quokka.h"<br />using namespace std;<br /><br /><strong>Quokka</strong>::Quokka()<br />{<br />}<br /><br /><span style="background-color: #ffcc99;"><strong>Quokka</strong>::Quokka(<strong>string</strong> name, <strong>int</strong> howAdorable, <strong>string</strong> profilePic)</span><br />{<br />   <span style="color: #236fa1;"><em>// This function has access to all member variables inside the class.</em></span><br />   <span style="background-color: #ffcc99;">_name = name;</span><br />   <span style="background-color: #ffcc99;">_howAdorable = <span style="background-color: #ffcc99;">howAdorable</span>;</span><br />   <span style="background-color: #ffcc99;">_profilePic = profilePic;</span><br /><br /><span style="color: #236fa1;"><em>   // Quokkas are only found (natively) in Australia, so passing this location</em></span><br /><span style="color: #236fa1;"><em>   // as a parameter isn't necessary.</em></span><br />   <span style="background-color: #ffcc99;">_location = "Australia";</span><br />}<br /><br /><strong>void</strong> <strong>Quokka</strong>::printInfo()<br />{<br /><span style="color: #236fa1;"><em>   // This function can refer to all the member variables inside this class!</em></span><br />   <strong>cout</strong> &lt;&lt; _name &lt;&lt; " (how adorable: " &lt;&lt; _howAdorable<br />        &lt;&lt; ", loc: " &lt;&lt; _location &lt;&lt; ")" &lt;&lt; <strong>endl</strong>;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"  <em><span style="color: #236fa1;">// for Quokka class</span></em><br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <span style="color: #236fa1;"><em>// These now call our overloaded constructor!<br />   // This is so much more compact and readable!</em></span><br />   <span style="background-color: #ffcc99;"><strong>Quokka</strong> q1("Muffinface", 5, "muffinface.jpg");</span><br />   <span style="background-color: #ffcc99;"><strong>Quokka</strong> q2("Hemmy", 4, "hemmy.jpg");</span><br /><br />   q1.printInfo();<br />   q2.printInfo();<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">Muffinface (how adorable: 5, location: Australia)<br />Hemmy (how adorable: 4, location: Australia)</pre>
+<p><strong><br />Private Class Members</strong></p>
+<p>From there, we talked about the importance of private class members. We often make member variables or member functions private if giving a client access to those members could result in misuse that would leave an object in a broken state.</p>
+<p>For example, the <span class="code-chonk">Vector</span> class does not allow us to directly modify the size variable that it's keeping track of behind the scenes. Imagine how terrible it would be if we allowed that. A client could abuse it to do something like this:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   v.add(10);<br />   v.add(15);<br />   v.add(33);<br /><br />   <span style="background-color: #ba372a; color: #ffffff;"><strong>// THIS WOULD BE SO BAD</strong></span><br />   v.size = 1;<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p>At that point, our vector would be in a broken state. Behind the scenes, it would still have three elements, but the size would be set to 1. That would inhibit our ability to loop through all the elements in the vector, and our <span class="code-chonk">remove(index)</span> function (which checks whether <span class="code-chonk">index</span> is valid) would no longer be willing to access the last two elements in the vector, as it would be under the impression that they did not even exist. Yikes!</p>
+<p>So, instead, the vector makes the size variable private. A client cannot edit the size directly, but they can still <em>retrieve</em> the size using the vector's <span class="code-chonk">size()</span> function.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Super important!</em></span>) Some common reasons for making class members private include:</p>
+<ul>
+<li>Letting the client modify the member variable manually or call the member function directly could leave an object in a broken state.</li>
+<li>We want to implement logic that places restrictions on the values someone can place in a member variable.</li>
+<li>We want to control all the logic that governs changes to member variables so we can make reasonable assumptions about the state of an object throughout its entire existence.</li>
+</ul>
+<p><br /><strong>Getters and Setters</strong></p>
+<p>With that in mind, we made all of our member variables in the <span class="code-chonk">Quokka</span> class private. We then implemented various&nbsp;<strong>getter</strong> and&nbsp;<strong>setter</strong> functions:</p>
+<ul>
+<li>A <strong>getter</strong> is a function that simply returns the value of a private member variable.</li>
+<li>A <strong>setter</strong> is a function whose sole purpose is to change the value of a private member variable.</li>
+</ul>
+<p>With the <span class="code-chonk">_name</span> variable, we implemented both a getter and a setter. It might seem strange to make a member variable private if we want our client to be able to retrieve and modify that variable. Recall, however, that by forcing a client to use a setter -- rather than allowing them to modify a variable directly -- we can implement logic that places restrictions on the values they can set that variable to. That's exactly what we did with the setter of our <span class="code-chonk">_name</span> variable.</p>
+<p>Note that it's common to start the names of getter and setter functions with "get" and "set" and for the rest of the name to simply mirror the variable being accessed. (For example, <span class="code-chonk">getName()</span> and <span class="code-chonk">setName</span> for a <span class="code-chonk">_name</span> variable). However, if we are only implementing a getter for some variable and no setter, we often drop the "get" and just name the function after the variable itself. That is the case with the <span class="code-chonk">Vector</span> class's <span class="code-chonk">size()</span> function, and that's what we did with several of the functions in our <span class="code-chonk">Quokka</span> class below.</p>
+<p>Our changes are as follows . As always, key changes are highlighted in peach:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.h</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef QUOKKA_H<br />#define QUOKKA_H<br /><br />#include &lt;iostream&gt;<br /><br /><strong>class</strong> Quokka<br />{<br /><strong>public</strong>:<br />   Quokka();<br />   Quokka(<strong>std</strong>::<strong>string</strong> name, <strong>int</strong> howAdorable, <strong>std</strong>::<strong>string</strong> profilePic);<br /><strong>   void</strong> printInfo();<br />   <span style="background-color: #ffcc99;"><strong>std</strong>::<strong>string</strong> getName();</span><br /><strong>   </strong><span style="background-color: #ffcc99;"><strong>void</strong> setName(<strong>std</strong>::<strong>string</strong> name);</span><br /><strong>   </strong><span style="background-color: #ffcc99;"><strong>int</strong> howAdorable();</span><br /><strong>   </strong><span style="background-color: #ffcc99;"><strong>std</strong>::<strong>string</strong> location();</span><br /><strong>   </strong><span style="background-color: #ffcc99;"><strong>std</strong>::<strong>string</strong> profilePic();</span><br /><br /><span style="background-color: #ffcc99;"><strong>private</strong>:</span><br /> &nbsp; <strong>std</strong>::<strong>string</strong> _name;<br />   <strong>int</strong> _howAdorable;  <span style="color: #236fa1;"><em>// 1 through 5</em></span><br />   <strong>std</strong>::<strong>string</strong> _location;<br />   <strong>std</strong>::<strong>string</strong> _profilePic;<br />};<br /><br />#endif</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br /><span style="background-color: #ffcc99;">#include "lexicon.h"</span><br />#include "quokka.h"<br /><span style="background-color: #ffcc99;">#include "strlib.h"</span><br />using namespace std;<br /><br /><strong>Quokka</strong>::Quokka()<br />{<br />}<br /><br /><strong>Quokka</strong>::Quokka(<strong>string</strong> name, <strong>int</strong> howAdorable, <strong>string</strong> profilePic)<br />{<br />   _name = name;<br />   _howAdorable = howAdorable;<br />   _profilePic = profilePic;<br /><br />   _location = "Australia";<br />}<br /><br /><span style="background-color: #ffcc99;"><strong>string</strong> <strong>Quokka</strong>::getName()<br /></span>{<br />   <span style="background-color: #ffcc99;"><strong>return</strong> _name;</span><br />}<br /><br /><span style="background-color: #ffcc99;"><strong>void</strong> <span style="background-color: #ffcc99;"><strong>Quokka</strong>::</span>setName(<strong>string</strong> name)<br /></span>{<br />   <span style="background-color: #ffcc99;"><strong>Lexicon</strong> lex("bad_words.txt");</span><br /><br />   <span style="background-color: #ffcc99;"><strong>for</strong> (<strong>string</strong> naughtyWord : lex)</span><br />   {<br />      <span style="background-color: #ffcc99;"><strong>if </strong>(stringContains(toLowerCase(name), toLowerCase(naughtyWord)))</span><br />      {<br />         <span style="background-color: #ffcc99;">error("Name contains bad word: " + naughtyWord);</span><br />      }<br />   }<br /><br />   <span style="background-color: #ffcc99;">_name = name;</span><br />}<br /><br /><span style="background-color: #ffcc99;"><strong>int</strong> <span style="background-color: #ffcc99;"><strong>Quokka</strong>::</span>howAdorable()<br /></span>{<br />   <span style="background-color: #ffcc99;"><strong>return</strong> _howAdorable;</span><br />}<br /><br /><span style="background-color: #ffcc99;"><strong>string</strong> <span style="background-color: #ffcc99;"><strong>Quokka</strong>::</span>location()<br /></span>{<br />   <span style="background-color: #ffcc99;"><strong>return</strong> _location;</span><br />}<br /><br /><span style="background-color: #ffcc99;"><strong>string</strong> <span style="background-color: #ffcc99;"><strong>Quokka</strong>::</span>profilePic()<br /></span>{<br />   <span style="background-color: #ffcc99;"><strong>return</strong> _profilePic;</span><br />}<br /><br /><strong>void</strong> <strong>Quokka</strong>::printInfo()<br />{<br />   <strong>cout</strong> &lt;&lt; _name &lt;&lt; " (how adorable: " &lt;&lt; _howAdorable<br />        &lt;&lt; ", loc: " &lt;&lt; _location &lt;&lt; ")" &lt;&lt; <strong>endl</strong>;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"  <em><span style="color: #236fa1;">// for Quokka class</span></em><br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Quokka</strong> q1("Muffinface", 5, "muffinface.jpg");<br />   <strong>Quokka</strong> q2("Hemmy", 4, "hemmy.jpg");<br /><br />   <span style="background-color: #ffcc99;">q2.setName("Covfefecake");</span><br /><br />   q1.printInfo();<br />   q2.printInfo();<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>bad_words.txt</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #eeeeee; color: #000000;">covfefe<br />moist</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;"><span style="color: #f8cac6;">*** STANFORD C++ LIBRARY</span><br /><span style="color: #f8cac6;">*** The oop program has terminated unexpectedly (crashed)</span><br /><span style="color: #f8cac6;">*** A fatal error was reported:</span><br /><br /><span style="color: #f8cac6;">    Name contains bad word: covfefe</span><br /><br /><span style="color: #f8cac6;">*** To get more information about a program crash,</span><br /><span style="color: #f8cac6;">*** run your program again under the debugger.</span></pre>
+<p><strong><br />Calling Constructors without Variable Names</strong></p>
+<p>We then saw how we could put a bunch of quokkas into a <span class="code-chonk">Vector</span> without giving each of them their own variable. To do that, we just call the <span class="code-chonk">Quokka()</span> constructor directly:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"  <em><span style="color: #236fa1;">// for Quokka class</span></em><br /><span style="background-color: #ffcc99;">#include "vector.h"</span><br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br /><span style="color: #236fa1;"><em>   // Yes, we can create a vector of Quokka objects!</em></span><br />   <span style="background-color: #ffcc99;"><strong>Vector</strong>&lt;<strong>Quokka</strong>&gt; v;</span><br /><br />   <span style="background-color: #ffcc99;">v.add(<strong>Quokka</strong>("Muffinface", 5, "muffinface.jpg"));</span><br />   <span style="background-color: #ffcc99;">v.add(<strong>Quokka</strong>("Hemmy", 4, "hemmy.jpg"));</span><br />   <span style="background-color: #ffcc99;">v.add(<strong>Quokka</strong>("Percival", 5, "percival.jpg"));</span><br />   <span style="background-color: #ffcc99;">v.add(<strong>Quokka</strong>("Fred", 5, "04.jpg"));</span><br />   <span style="background-color: #ffcc99;">v.add(<strong>Quokka</strong>("Lovelace", 5, "05.jpg"));</span><br />   <span style="background-color: #ffcc99;">v.add(<strong>Quokka</strong>("Night Terror", 5, "06.jpg"));</span><br />   <span style="background-color: #ffcc99;">v.add(<strong>Quokka</strong>("Glen", 5, "07.jpg"));</span><br /><br />   <span style="background-color: #ffcc99;"><strong>for (Quokka</strong> q : v)</span><br />   {<br />      <span style="background-color: #ffcc99;">q.printInfo();</span><br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">Muffinface (how adorable: 5, location: Australia)<br />Hemmy (how adorable: 4, location: Australia)<br />Percival (how adorable: 5, location: Australia)<br />Fred (how adorable: 5, location: Australia)<br />Lovelace (how adorable: 5, location: Australia)<br />Night Terror (how adorable: 5, location: Australia)<br />Glen (how adorable: 5, location: Australia)</pre>
+<p><strong><br />Destructor Functions (Local Variables Die When We Leave a Function)</strong></p>
+<p>When a local variable goes out of scope in C++, it dies (by which I mean that the memory it was using it marked as unused so that memory can be used for other things). That's actually great! That means that if we call a function that creates a bunch of local variables, when that function returns, those variables are no longer taking up space in memory unnecessarily. (That's partly because local variables are created on the program stack, within the stack frame for a given function call. When the call returns, the stack frame is popped, and <em><strong>*poof*</strong></em> -- all the local variables go with it.)</p>
+<p>Just as C++ calls a constructor function when a new instance of some class is created, it automatically calls a <strong>destructor function</strong> when an object goes out of scope and dies. We create a destructor function much in the same way that we create a constructor function: it uses the same name as our class, except the sytnax in C++ requires that we put a tilde (<span class="code-chonk">~</span>) in front of that name.</p>
+<p>To demonstrate, I coded a destructor that printed a message to the screen, and I showed that when we reached the end of <span class="code-chonk">main()</span>, all the Quokka objects died, and their constructors were called automatically. Here are the modified <span class="code-chonk">quokka.h</span> and <span class="code-chonk">quokka.cpp</span> files, with changes highlighted in peach. (All other files are unmodified.)</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.h</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef QUOKKA_H<br />#define QUOKKA_H<br /><br />#include &lt;iostream&gt;<br /><br /><strong>class</strong> Quokka<br />{<br /><strong>public</strong>:<br />   Quokka();<br />   Quokka(<strong>std</strong>::<strong>string</strong> name, <strong>int</strong> howAdorable, <strong>std</strong>::<strong>string</strong> profilePic);<br />   <span style="background-color: #ffcc99;">~Quokka();</span><br /><strong>   void</strong> printInfo();<br />   <strong>std</strong>::<strong>string</strong> getName();<br /><strong>   </strong><strong>void</strong> setName(<strong>std</strong>::<strong>string</strong> name);<br /><strong>   </strong><strong>int</strong> howAdorable();<br /><strong>   </strong><strong>std</strong>::<strong>string</strong> location();<br /><strong>   </strong><strong>std</strong>::<strong>string</strong> profilePic();<br /><br /><strong>private</strong>:<br /> &nbsp; <strong>std</strong>::<strong>string</strong> _name;<br />   <strong>int</strong> _howAdorable;  <span style="color: #236fa1;"><em>// 1 through 5</em></span><br />   <strong>std</strong>::<strong>string</strong> _location;<br />   <strong>std</strong>::<strong>string</strong> _profilePic;<br />};<br /><br />#endif</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "lexicon.h"<br />#include "quokka.h"<br />#include "strlib.h"<br />using namespace std;<br /><br /><strong>Quokka</strong>::Quokka()<br />{<br />}<br /><br /><strong>Quokka</strong>::Quokka(<strong>string</strong> name, <strong>int</strong> howAdorable, <strong>string</strong> profilePic)<br />{<br />   _name = name;<br />   _howAdorable = howAdorable;<br />   _profilePic = profilePic;<br /><br />   _location = "Australia";<br />}<br /><br /><span style="background-color: #ffcc99;"><strong>Quokka</strong>::~Quokka()</span><br />{<br />   <span style="background-color: #ffcc99;"><strong>cout</strong> &lt;&lt; "R.I.P. " &lt;&lt; _name &lt;&lt; <strong>endl</strong>;</span><br />}<br /><br /><strong>string</strong> <strong>Quokka</strong>::getName()<br />{<br />   <strong>return</strong> _name;<br />}<br /><br /><strong>void</strong> <strong>Quokka</strong>::setName(<strong>string</strong> name)<br />{<br />   <strong>Lexicon</strong> lex("bad_words.txt");<br /><br />   <strong>for</strong> (<strong>string</strong> naughtyWord : lex)<br />   {<br />      <strong>if </strong>(stringContains(toLowerCase(name), toLowerCase(naughtyWord)))<br />      {<br />         error("Name contains bad word: " + naughtyWord);<br />      }<br />   }<br /><br />   _name = name;<br />}<br /><br /><strong>int</strong> <strong>Quokka</strong>::howAdorable()<br />{<br />   <strong>return</strong> _howAdorable;<br />}<br /><br /><strong>string</strong> <strong>Quokka</strong>::location()<br />{<br />   <strong>return</strong> _location;<br />}<br /><br /><strong>string</strong> <strong>Quokka</strong>::profilePic()<br />{<br />   <strong>return</strong> _profilePic;<br />}<br /><br /><strong>void</strong> <strong>Quokka</strong>::printInfo()<br />{<br />   <strong>cout</strong> &lt;&lt; _name &lt;&lt; " (how adorable: " &lt;&lt; _howAdorable<br />        &lt;&lt; ", loc: " &lt;&lt; _location &lt;&lt; ")" &lt;&lt; <strong>endl</strong>;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"  <em><span style="color: #236fa1;">// for Quokka class</span></em><br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>Quokka</strong>&gt; v;<br /><br />   v.add(Quokka("Muffinface", 5, "muffinface.jpg"));<br />   v.add(Quokka("Hemmy", 4, "hemmy.jpg"));<br />   v.add(Quokka("Percival", 5, "percival.jpg"));<br />   v.add(Quokka("Fred", 5, "04.jpg"));<br />   v.add(Quokka("Lovelace", 5, "05.jpg"));<br />   v.add(Quokka("Night Terror", 5, "06.jpg"));<br />   v.add(Quokka("Glen", 5, "07.jpg"));<br /><br />   <strong>for (Quokka</strong> q : v)<br />   {<br />      q.printInfo();<br />   }<br /><br />   <span style="color: #236fa1;"><em>// When we return, all our Quokka objects will be deconstructed!</em></span><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">R.I.P. Muffinface<br />R.I.P. Hemmy<br />R.I.P. Muffinface<br />R.I.P. Hemmy<br />R.I.P. Percival<br />R.I.P. Fred<br />R.I.P. Muffinface<br />R.I.P. Hemmy<br />R.I.P. Percival<br />R.I.P. Fred<br />R.I.P. Lovelace<br />R.I.P. Night Terror<br />R.I.P. Glen<br />Muffinface (how adorable: 5, loc: Australia)<br />R.I.P. Muffinface<br />Hemmy (how adorable: 4, loc: Australia)<br />R.I.P. Hemmy<br />Percival (how adorable: 5, loc: Australia)<br />R.I.P. Percival<br />Fred (how adorable: 5, loc: Australia)<br />R.I.P. Fred<br />Lovelace (how adorable: 5, loc: Australia)<br />R.I.P. Lovelace<br />Night Terror (how adorable: 5, loc: Australia)<br />R.I.P. Night Terror<br />Glen (how adorable: 5, loc: Australia)<br />R.I.P. Glen<br />R.I.P. Muffinface<br />R.I.P. Hemmy<br />R.I.P. Percival<br />R.I.P. Fred<br />R.I.P. Lovelace<br />R.I.P. Night Terror<br />R.I.P. Glen</pre>
+<p>By the way, the fact that each quokka appears to be getting deconstructed multiple times is actually an indication of the fact that there are a <em>lot</em> of copies being created of each of these quokkas as they are added to the vector. New copies are also being created every time the vector expands behind the scenes.</p>
+<p><strong><br />Geocities Rendering</strong></p>
+<p><em>Attachment: <a href="oop-geocities-quokkas.zip">oop-geocities-quokkas.zip</a></em></p>
+<p>Finally, just for fun, I dropped some code that displayed little Geocities-inspired profile pages for each of our quokkas. To do this, I implemented a <span class="code-chonk">renderProfile()</span> function in the <span class="code-chonk">Quokka</span> class. That function needed to call a prewritten <span class="code-chonk">renderGeocitiesPage(quokka)</span> function that takes as its input a <span class="code-chonk">Quokka</span> object. The problem is, if we are inside a function within the <span class="code-chonk">Quokka</span> class, we have access to all the member variables, but not to the <span class="code-chonk">Quokka</span> variable name that was created back in <span class="code-chonk">main()</span>. From within a <span class="code-chonk">Quokka</span> member function, if we want to refer to the <span class="code-chonk">Quokka</span> object from which we called that function, we have to use a special keyword built into C++: <span class="code-chonk">this</span>. (See example in the <span class="code-chonk">renderProfile()</span> function below.)</p>
+<p>The changes are as follows. The final version of this code, which includes the <span class="code-chonk">geocities</span> library I created, is attached at the very top of today's notes:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.h</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#ifndef QUOKKA_H<br />#define QUOKKA_H<br /><br />#include &lt;iostream&gt;<br /><br /><strong>class</strong> Quokka<br />{<br /><strong>public</strong>:<br />   Quokka();<br />   Quokka(<strong>std</strong>::<strong>string</strong> name, <strong>int</strong> howAdorable, <strong>std</strong>::<strong>string</strong> profilePic);<br />   ~Quokka();<br /><strong>   void</strong> printInfo();<br />   <strong>std</strong>::<strong>string</strong> getName();<br /><strong>   </strong><strong>void</strong> setName(<strong>std</strong>::<strong>string</strong> name);<br /><strong>   </strong><strong>int</strong> howAdorable();<br /><strong>   </strong><strong>std</strong>::<strong>string</strong> location();<br /><strong>   </strong><strong>std</strong>::<strong>string</strong> profilePic();<br />   <span style="background-color: #ffcc99;"><strong>void</strong> renderProfile();</span><br /><br /><strong>private</strong>:<br /> &nbsp; <strong>std</strong>::<strong>string</strong> _name;<br />   <strong>int</strong> _howAdorable;  <span style="color: #236fa1;"><em>// 1 through 5</em></span><br />   <strong>std</strong>::<strong>string</strong> _location;<br />   <strong>std</strong>::<strong>string</strong> _profilePic;<br />};<br /><br />#endif</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>quokka.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br /><span style="background-color: #ffcc99;">#include "geocities.h"</span><br />#include "lexicon.h"<br />#include "quokka.h"<br />#include "strlib.h"<br />using namespace std;<br /><br /><strong>Quokka</strong>::Quokka()<br />{<br />}<br /><br /><strong>Quokka</strong>::Quokka(<strong>string</strong> name, <strong>int</strong> howAdorable, <strong>string</strong> profilePic)<br />{<br />   _name = name;<br />   _howAdorable = howAdorable;<br />   _profilePic = profilePic;<br /><br />   _location = "Australia";<br />}<br /><br /><strong>Quokka</strong>::~Quokka()<br />{<br />   <strong>cout</strong> &lt;&lt; "R.I.P. " &lt;&lt; _name &lt;&lt; <strong>endl</strong>;<br />}<br /><br /><strong>string</strong> <strong>Quokka</strong>::getName()<br />{<br />   <strong>return</strong> _name;<br />}<br /><br /><strong>void</strong> <strong>Quokka</strong>::setName(<strong>string</strong> name)<br />{<br />   <strong>Lexicon</strong> lex("bad_words.txt");<br /><br />   <strong>for</strong> (<strong>string</strong> naughtyWord : lex)<br />   {<br />      <strong>if </strong>(stringContains(toLowerCase(name), toLowerCase(naughtyWord)))<br />      {<br />         error("Name contains bad word: " + naughtyWord);<br />      }<br />   }<br /><br />   _name = name;<br />}<br /><br /><strong>int</strong> <strong>Quokka</strong>::howAdorable()<br />{<br />   <strong>return</strong> _howAdorable;<br />}<br /><br /><strong>string</strong> <strong>Quokka</strong>::location()<br />{<br />   <strong>return</strong> _location;<br />}<br /><br /><strong>string</strong> <strong>Quokka</strong>::profilePic()<br />{<br />   <strong>return</strong> _profilePic;<br />}<br /><br /><strong>void</strong> <strong>Quokka</strong>::printInfo()<br />{<br />   <strong>cout</strong> &lt;&lt; _name &lt;&lt; " (how adorable: " &lt;&lt; _howAdorable<br />        &lt;&lt; ", loc: " &lt;&lt; _location &lt;&lt; ")" &lt;&lt; <strong>endl</strong>;<br />}<br /><br /><span style="background-color: #ffcc99;"><strong>void</strong> <strong>Quokka</strong>::renderProfile()</span><br />{<br /><span style="color: #236fa1;"><em>   // The keyword 'this' refers to the object we're inside right now -- the</em></span><br /><span style="color: #236fa1;"><em>   // object from which we called .renderProfile(), which exists back in main().</em></span><br />   <span style="background-color: #ffcc99;">renderGeocitiesPage(<strong>this</strong>);</span><br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>main.cpp</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "quokka.h"  <em><span style="color: #236fa1;">// for Quokka class</span></em><br />#include "vector.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>Quokka</strong>&gt; v;<br /><br />   v.add(Quokka("Muffinface", 5, "muffinface.jpg"));<br />   v.add(Quokka("Hemmy", 4, "hemmy.jpg"));<br />   v.add(Quokka("Percival", 5, "percival.jpg"));<br />   v.add(Quokka("Fred", 5, "04.jpg"));<br />   v.add(Quokka("Lovelace", 5, "05.jpg"));<br />   v.add(Quokka("Night Terror", 5, "06.jpg"));<br />   v.add(Quokka("Glen", 5, "07.jpg"));<br /><br />   <strong>for (Quokka</strong> q : v)<br />   {<br />      <span style="background-color: #ffcc99;">q.renderProfile();</span><br />   }<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output</strong></span></p>
+<p style="padding-left: 30px;"><img width="80%" src="resources/all-quokkas-scaled.png" /></p>
+<p><br /><strong>What's next?</strong></p>
+<p>On Monday, we will shift gears a bit to talk about pointers -- a topic that will enable a discussion of dynamic memory allocation on Wednesday, which will <em>finally</em> give us all the tools we need to implement complex ADTs in C++.</p>
+<p><br /><strong>Exercises</strong></p>
+<p>1. Code up a basic Quokka class from scratch! You can give it whatever functionality you want, but be sure to implement the following:</p>
+<ul>
+<li>at least one constructor and one destructor function</li>
+<li>a few additional member functions beyond the constructor(s) and destructor(s)</li>
+<li>a few member variables</li>
+<li>a mix of public and private members</li>
+<li>at least one getter and at least one setter</li>
+<li>a <span class="code-chonk">main()</span> function that creates <span class="code-chonk">Quokka</span> objects and calls all the member functions you have written</li>
+</ul>
+<p>2. Revisit all the notes above that are marked as "(<em><span style="background-color: #eccafa; font-size: 10pt;">Not mentioned in class.</span></em>)" These notes are supplementary, but might enrich your understanding of today's material or help clarify some of the important concepts from today's lecture.</p>
+<p>3. As always, the textbook and this week's section page are chock full of great exercises and additional examples to help reinforce this material.</p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-07
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

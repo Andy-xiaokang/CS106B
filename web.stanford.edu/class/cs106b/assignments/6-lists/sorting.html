@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Sorting Linked Lists</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Sorting Linked Lists</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="the-power-of-lists">The power of lists</h2>
+<p>One of the major advantages of linked lists over arrays is the flexibility and efficiency with which we can reorder elements. Array elements are stored in contiguous memory and rearranging elements is a tedious process of shuffling and copying elements one by one. In contrast, all that's needed to insert or remove a node within a linked list is re-assigning a pointer or two. A task like sorting that does a lot of rearrangement gains a distinct advantage when operating on a linked list instead of an array.</p>
+
+<p>Your task for this part of the assignment is to write two different routines to rearrange the nodes of a linked list into sorted order. The first uses a run-based merging sort and the second is an implementation of the classic Quicksort algorithm. This exercise will give you great practice with pointers and linked structures and deepen your understanding of sorting algorithms.</p>
+
+<h2 id="a-focus-on-testing">A focus on testing</h2>
+<p>Before you start writing code, you will first consider what infrastructure you will need to test the code you plan to write.</p>
+
+<p>In the early assignments, we supplied many provided tests and test utility functions. As your testing skills have grown, you have relied less on our provided tests and taken more ownership for developing test cases.  For this assignment, <strong>you will further take on the responsibility to develop your own utility functions</strong> that will serve as the infrastructure when writing your test cases.</p>
+
+<h3 id="utility-functions">Utility functions</h3>
+<p>Utility functions that create, compare, and output a linked list are essential components of any testing strategy. We suggest these four utility functions:</p>
+
+<ul>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">printList</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">front</span><span class="p">)</span></code></p>
+
+    <p>This "data dumper" function traverses a given linked list and prints the data value in each node. You <em>could</em> manually follow the pointers using the debugger to view those data values (as you did when searching the labyrinth), but it is more convenient to call a function to print the list in one go. You can call this utility function anywhere within your code or test cases as a debugging aid. <strong>This function is provided for you fully-implemented and working.</strong> Please make good use of it!</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="kt">void</span> <span class="n">deallocateList</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">front</span><span class="p">)</span></code></p>
+
+    <p>This utility function deallocates the memory for all the nodes in a given linked list. It can be used to recycle the memory allocated during a test case and avoid memory leaks.</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">ListNode</span><span class="o">*</span> <span class="n">createList</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">)</span></code></p>
+
+    <p>This utility function is given a vector of values and constructs an equivalent linked list containing the same values in the same order.  It can be used to construct a linked list to use as an input to a function being tested.</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="kt">bool</span> <span class="n">areEquivalent</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">front</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">)</span></code></p>
+
+    <p>This utility function compares a linked list and a vector for equivalence and returns <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> if both contain the same values in the same order. It can be used to confirm a linked list's contents match the expected.</p>
+  </li>
+</ul>
+
+<p>The last three utility functions are declared in the starter code and left for you to implement. Although it is not a strict requirement, you will need some form of utility functions, so please take our  <strong>strong recommendation to implement these utility functions.</strong> These functions are critical infrastructure for your later testing needs, and writing them is a great exercise for learning the standard linked list operations: traversing, connecting nodes, and allocating and deleting lists.</p>
+
+<p>You might ask: should I use iteration or recursion to implement my linked list functions? For certain tasks, one approach may be tidier, but in many cases either can work well. However, recursively processing a linked list has a significant drawback. The cost of a stack frame for every node in the list adds a heavy performance cost and limits the total length of list that can be processed.</p>
+
+<div id="Q6" class="question alert alert-warning">
+  <p><strong>Q6</strong>. If the <code class="language-c++ highlighter-rouge"><span class="n">deallocateList</span></code> utility function were implemented recursively, give a rough estimate of the maximum length list it could successfully handle. (Hint: refer back to your investigations for the warmup in <a href="../3-recursion/index.html" title="Recursion Etudes">Assignment 3</a>.) What would be the observed result from attempting to deallocate a list longer than this maximum?</p>
+</div>
+
+<p>Because we want our sorting routines to be able to scale up to very long lists, you <strong>must choose an iterative approach</strong> for the utility functions, not recursive.</p>
+
+<p>Test thoroughly! The utility functions need to be rock solid as they are the bedrock on which all your later tests will be built.</p>
+
+<p><em>Note:</em>  Although there is solution code for the utility functions in the lecture examples and section exercises, we strongly recommend that you write the utility functions yourself, as practicing with these simple functions is a nice segue to the more complex linked list operations to come. If you cannot get your own code working, you may want to review that code for help. If you choose to borrow from our code, be sure to make a clear <a href="../../honor_code.html" title="CS106B and the Honor Code">citation</a>. In any cases where you include code in your submission that was not authored by you, it must be cited.</p>
+
+<h3 id="allocation-deallocation-and-memory-leaks">Allocation, deallocation, and memory leaks</h3>
+<p>Your sorting functions do not allocate or deallocate nodes; they re-wire existing nodes into a different order. However, your test cases <em>do</em> allocate and deallocate lists to use as test inputs.   A typical test case will create a list using <code class="language-c++ highlighter-rouge"><span class="n">createList</span></code>, pass the list as the input to the function being tested, compare the result list to the expected using <code class="language-c++ highlighter-rouge"><span class="n">areEquivalent</span></code>, and then use <code class="language-c++ highlighter-rouge"><span class="n">deallocateList</span></code> to recycle the the list memory. To avoid reports of memory leaks, all memory allocated during the test case must be properly deallocated at the end of the test case.</p>
+
+<p>Be mindful when writing your test case that the function being tested may rearrange the lists into a different configuration than what you started from; thus you will need to work out which steps are needed to properly deallocate afterwards. For example, a test case may start by creating two input lists, but after passing those lists to <code class="language-c++ highlighter-rouge"><span class="n">merge</span></code>, they have been joined together and at the end, there will be just one list to deallocate. Similarly, a test case that creates one list and passes it to <code class="language-c++ highlighter-rouge"><span class="n">partition</span></code> will divide into three separate lists, each of which need to be individually deallocated.</p>
+
+<h2 id="sorting-tasks">Sorting tasks</h2>
+<p>With your testing strategy now mapped out, you are now ready to being on your main task, which is to implement two different linked list sorting routines. For a refresher on sort algorithms, review the <a href="../../lectures/13-sorting/index.html" title="Sorting Algorithms">lecture on sorting</a> and Chapter 10 of the textbook. The rest of this handout assumes familiarity with that content and does not repeat it.</p>
+
+<p>The two functions are you to implement are:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">runSort</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">quickSort</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Each rearranges the nodes of list into sorted order. The first implements a run-based merging sort and the second implements a classic Quicksort algorithm.</p>
+
+<h3 id="runsort">RunSort</h3>
+<p><strong>RunSort</strong> is an algorithm based on continuously merging sorted runs, building the result from the bottom-up. The result list is initially empty and thus trivially sorted.  The algorithm splits one sorted run from the input and merges it into the result. Then again: split another run from input and merge with the result. The process repeats until the remaining input is empty and result contains the final list.</p>
+
+<p>Linked lists are a great fit for RunSort. Dividing a list or inserting an element requires only re-wiring a few pointers and none of the arduous shuffling or copying that is required when using an array/vector.</p>
+
+<p>We recommend the helper functions <code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">merge</span></code> for <code class="language-c++ highlighter-rouge"><span class="n">runSort</span></code>.</p>
+
+<ul>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> helper function detaches a sorted run from the front of a given list.
+    <ul>
+      <li>A "run" is a sorted contiguous sublist. To trace out the run, traverse the list starting at the front and continue through each subsequent node that follows in sorted order.  The run stops at the first node that is out of order or at the end of the list, whichever comes first. The leftover portion is called the remainder list.</li>
+      <li>The action to detach a linked list is surprisingly trivial: after traversing to the last node in the sorted run, terminate the run with a <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code> to break the connection between the run and the list remainder.</li>
+      <li>Given the input list <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">3</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">10</span> <span class="o">-&gt;</span> <span class="mi">4</span><span class="p">}</span></code> <code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> would detach the run <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">3</span> <span class="o">-&gt;</span> <span class="mi">5</span> <span class="o">-&gt;</span> <span class="mi">5</span><span class="p">}</span></code> from the remainder list <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">10</span> <span class="o">-&gt;</span> <span class="mi">4</span><span class="p">}</span></code>.  Calling <code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> on the remainder list detaches run <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">4</span> <span class="o">-&gt;</span> <span class="mi">10</span><span class="p">}</span></code> from remainder list <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">4</span><span class="p">}</span></code> and a final call to <code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> detaches the singleton run <code class="language-c++ highlighter-rouge"><span class="p">{</span><span class="mi">4</span><span class="p">}</span></code> from an empty remainder list.</li>
+      <li><code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> must be implemented <strong>iteratively</strong>, not recursively.</li>
+      <li>Add student tests to confirm <code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> works correctly. Your test cases will use your utility functions to create, compare, and deallocate lists used as test inputs. We recommend a wide variety of test inputs such as an empty list, singleton list, sorted list (one long run), list in reverse sorted order, list of duplicates, and so on.</li>
+    </ul>
+  </li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">merge</span></code> helper function takes in two sorted lists and produces a single sorted list.
+    <ul>
+      <li>You wrote a queue-based binary merge for Assignment 3, and this is a chance to re-implement that familiar task on a new data structure.  The logic of linked list merge is same as binary merge (compare front nodes of the two lists, choose smaller to add to the result), but where that version removed an element from input queue and added to result queue, the linked list merge detaches a node from the input list and attaches it to the result list.  The trickiness comes in managing the pointers as you traverse the input lists and re-wire the nodes.</li>
+      <li>When you add a node to the result list, it needs to be placed at the end to maintain sorted order. Tracking a tail pointer will be helpful!</li>
+      <li>Before writing any <code class="language-c++ highlighter-rouge"><span class="n">merge</span></code> code, we recommend drawing diagrams and tracing the algorithm on different inputs to keep track of all the pointers flying around.</li>
+      <li><code class="language-c++ highlighter-rouge"><span class="n">merge</span></code> must be implemented <strong>iteratively</strong>, not recursively.</li>
+      <li>Once written, add student tests to confirm <code class="language-c++ highlighter-rouge"><span class="n">merge</span></code> works correctly on a wide variety of test inputs. You may be able to borrow some of the test inputs you used in Assignment 3 and re-purpose them here.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>After writing and testing <code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">merge</span></code> in isolation, the final step is to put them together into <code class="language-c++ highlighter-rouge"><span class="n">runSort</span></code>.  Start with an empty result list. At each step, split a run from the remaining input list and merge the run into the result. Rinse and repeat until the remaining input list is empty. Voila, a fully sorted list!</p>
+
+<p>Note that <code class="language-c++ highlighter-rouge"><span class="n">runSort</span></code> is <strong>entirely iterative</strong>. It loops calling <code class="language-c++ highlighter-rouge"><span class="n">splitRun</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">merge</span></code> into one sorted result.</p>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q7" class="question alert alert-warning">
+  <p><strong>Q7</strong>. The prototype of <code class="language-c++ highlighter-rouge"><span class="n">runSort</span></code> takes a <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span><span class="o">*</span></code> by reference. Explain why the pointer itself needs to be passed by reference and what the consequence would be if it were not.</p>
+</div>
+
+<h3 id="quicksort">QuickSort</h3>
+<p>QuickSort is an example of a recursive "divide-and-conquer" algorithm. It divides the input list into sublists, recursively sorts the sublists, and then joins the sorted sublists into one combined whole.  QuickSort is known as a "hard-divide, easy-join" algorithm because the bulk of its work goes into the complex division step with a trivial join to follow. The classic version of the algorithm divides the input list into sublists that are less than, equal to, or greater than a chosen pivot. After recursively sorting the sublists, they are joined in sequence.</p>
+
+<p>Linked lists are also a natural fit for QuickSort. Distributing the elements into sublists and concatenating them together can be done by re-wiring pointers, with none of the contortions used to swap/shuffle array elements.</p>
+
+<p>We recommend the helper functions <code class="language-c++ highlighter-rouge"><span class="n">partition</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">concatenate</span></code> for <code class="language-c++ highlighter-rouge"><span class="n">quickSort</span></code>.</p>
+
+<ul>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">partition</span></code> helper divides an input list into three lists: less, equal, and greater
+    <ul>
+      <li>Start by choosing the first element of the input list as the pivot value and prepare three empty sublists.</li>
+      <li>Traverse the input list and examine each node to determine which sublist to move the node to, i.e. is value strictly less than the pivot, equal to the pivot, or strictly greater that pivot?</li>
+      <li>It does not matter what order you put the elements into the sublists, so when moving nodes, choose the simplest strategy! The easiest place to add a node to a linked list is to the front.</li>
+      <li>In the process of partition, the input list is disassembled and the existing nodes are re-distributed into the sublists. The partition operation does not allocate any new nodes or make node copies.</li>
+      <li>The <code class="language-c++ highlighter-rouge"><span class="n">partition</span></code> produces three separate lists as its result. In C++, the function return only can send back a single value, so you'll need to explore using pass-by-reference parameters (a reference to a pointer, oh my!) to communicate those results back to the caller.</li>
+      <li>Be sure you understand the action of partitioning and have drawn many diagrams and traced the algorithm before you attempt to write it. It is tricky code!</li>
+      <li><code class="language-c++ highlighter-rouge"><span class="n">partition</span></code> must be implemented <strong>iteratively</strong>, not recursively.</li>
+      <li>Add many student tests to confirm the correctness of partition on a wide variety of inputs.</li>
+    </ul>
+  </li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">concatenate</span></code> helper appends one list onto another.
+    <ul>
+      <li>If you traverse to the end of the first list, you can then attach the second list with a single pointer assignment. Neat!</li>
+      <li>Joining three lists into one can be done with two calls to concatenate.</li>
+      <li><code class="language-c++ highlighter-rouge"><span class="n">concatenate</span></code> must be implemented <strong>iteratively</strong>, not recursively.</li>
+      <li>Add student test cases that confirm <code class="language-c++ highlighter-rouge"><span class="n">concatenate</span></code> does its job correctly. Be sure to consider the case when one or more of the lists is empty.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>With your thoroughly-tested helper functions  <code class="language-c++ highlighter-rouge"><span class="n">partition</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">concatenate</span></code>, the final step is to put them together into <code class="language-c++ highlighter-rouge"><span class="n">quickSort</span></code>.  Partition the input list into three sublists. Make recursive calls to <code class="language-c++ highlighter-rouge"><span class="n">quickSort</span></code> on the less and greater sublists. (The equal sublist is already trivially sorted.) Concatenate the three sorted sublists into the final result. The last detail for you to work out is an appropriate base case. Then your QuickSort is ready to roll!</p>
+
+<p>Note that <code class="language-c++ highlighter-rouge"><span class="n">quickSort</span></code> itself is recursive. It will make recursive calls to <code class="language-c++ highlighter-rouge"><span class="n">quickSort</span></code> to sort the sublists. However, the <code class="language-c++ highlighter-rouge"><span class="n">partition</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">concatenate</span></code> operations are implemented using <strong>iteration</strong>, not recursion.</p>
+
+<h3 id="intermediate-tests-versus-end-to-end">Intermediate tests versus end-to-end</h3>
+<p>Although the ultimate goal of your testing is to confirm that both of your sort functions work at a high-level (i.e. rearrange the list into sorted order), end-to-end tests will not be useful early in your development. Instead, you will need to write test cases that you can use as you go. For example, after having written each helper function, add targeted student tests that exercise that helper in isolation. Adding these tests allows you to confirm the correctness of the helper before moving on.</p>
+
+<p>The final step in your testing strategy will be end-to-end tests to confirm the top-level sort functionality. We have provided an example <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> "skeleton" that you may want to use as a template for your student tests.</p>
+
+<p>Here is a non-exhaustive list of suggested test cases to consider when building your comprehensive test suite:</p>
+
+<ul>
+  <li>Sorting an empty list</li>
+  <li>Sorting a single-element list</li>
+  <li>Sorting a list in already sorted or reverse sorted order</li>
+  <li>Sorting a list that contains some duplicate elements or all duplicate elements</li>
+  <li>Sorting a list that contains positive and negative numbers</li>
+  <li>Sorting a list of random values, randomly organized</li>
+  <li>Sorting a very long list</li>
+</ul>
+
+<p>The quality and breadth of your test cases will be an important component of the grading for this assignment. We're hoping you are ready to show us how much you have learned from the different testing exercises and provided tests that you've seen on the earlier assignments!</p>
+
+<h3 id="requirements-for-sort">Requirements for sort</h3>
+<ul>
+  <li>Your sorts must operate <strong>solely by rewiring the links</strong> between existing <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span></code>s. Do not allocate or deallocate any <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span></code>s (i.e. no calls to <code class="language-c++ highlighter-rouge"><span class="k">new</span></code> or <code class="language-c++ highlighter-rouge"><span class="k">delete</span></code>).  Do not replace/swap the <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span></code> data values. You may declare <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span><span class="o">*</span></code> pointers to be used temporarily when changing links between <code class="language-c++ highlighter-rouge"><span class="n">ListNode</span></code>s.</li>
+  <li>Do not use a sort function or library to arrange the elements. You also should not use any algorithms from the STL C++ framework.</li>
+  <li>Do not create any temporary or auxiliary data structures (array, Vector, Map, etc.).</li>
+  <li>Both of your sorts should be capable of sorting an input list of random values of effectively any length.</li>
+</ul>
+
+<h3 id="advice">Advice</h3>
+<ul>
+  <li>Be sure you have <strong>completed both warmup exercises</strong> before starting on the sorting tasks. If you ran into any trouble on the warmup, get those confusions resolved first. You want to have top-notch skills for using the debugger to examine linked structures and be well-versed in what to expect from memory errors and how to diagnose them.</li>
+  <li>Correct use of memory and pointers requires careful attention to detail. You'll likely benefit from <strong>drawing a lot of diagrams</strong> to help you keep track.</li>
+  <li>To be sure your code is doing what you intend, you'll likely need to step in the debugger and examine the state of your lists as you go. In fact, you might find it most convenient to <strong>run in the debugger full time</strong> as you work on this project, as this gives you the best tools for analyzing what is going on in your program at any given moment. This is information you cannot get any other way.</li>
+  <li>Draw out an <strong>intentional design from the start and follow a systematic development process</strong>, and you can absolutely triumph. But hacking up an attempt before completing understanding your strategy and then hoping you can prod the code into working is likely to lead to headache and heartache.</li>
+  <li>Answers to common questions about list memory allocation and deallocation:
+    <ul>
+      <li><em>Are the sorting functions responsible for allocation and deallocation of ListNodes?</em>  No. The sort operations and their helper functions neither allocate nor deallocate any ListNodes. The sort function is given an argument which is a well-formed list of allocated nodes. It then rewires those nodes into sorted order.</li>
+      <li><em>Which code, then, does allocation and deallocation?</em>  The test cases. A test case will allocate nodes and create a list, pass the list as input, confirm correctness of resulting list, and then deallocate the list.</li>
+      <li><em>If SimpleTest is reporting a memory leak with a test case, do we need to fix it?</em> Yes. A test case that allocates memory to be used in testing should properly deallocate that memory at the conclusion of the test case.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="analyzing-sort-runtime">Analyzing sort runtime</h3>
+
+<p>The RunSort algorithm clocks in an unimpressive <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code> time in the general case, but is particular well-suited to sort inputs containing long runs that are sorted or nearly-sorted. It crushes these inputs in a very zippy <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span></code> time!</p>
+
+<div id="Q8" class="question alert alert-warning">
+  <p><strong>Q8</strong>. Run time trials and provide your results that confirm that RunSort is <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code>. Verify you can achieve <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span></code> results on inputs constructed to play to its strengths.</p>
+</div>
+
+<p>The QuickSort algorithm runs in a competitive <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">NlogN</span><span class="p">)</span></code> time in the common case. However, given an extremely lopsided partition at every step of the recursion, the algorithm will degrades into its worst case performance of <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code>. What are those inputs that produce such unbalanced partitioning?</p>
+
+<div id="Q9" class="question alert alert-warning">
+  <p><strong>Q9</strong>. Run time trials and provide your results that confirm that QuickSort is<code class="language-c++ highlighter-rouge"> <span class="n">O</span><span class="p">(</span><span class="n">NlogN</span><span class="p">)</span></code> . Verify the runtime degrades to <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></code> on inputs constructed to trigger the worst case behavior.</p>
+</div>
+
+<p>The Stanford library Vector <code class="language-c++ highlighter-rouge"><span class="n">sort</span></code> uses the C++ <code class="language-c++ highlighter-rouge"><span class="n">std</span><span class="o">::</span><span class="n">sort</span></code> which is an array-based <code class="language-c++ highlighter-rouge"><span class="n">O</span><span class="p">(</span><span class="n">NlogN</span><span class="p">)</span></code> algorithm (Quicksort and Insertion Sort hybrid). You can prepare the same input sequence once in Vector form and again as a linked list, and then time the operation of Vector sort versus your linked list sort on that sequence to compare the relative performance of sorting a linked list versus an array. What do you predict will be the outcome of the great sorting race? Try it and find out!</p>
+
+<div id="Q10" class="question alert alert-warning">
+  <p><strong>Q10</strong>. Run the provided timing trials that compare your linked list QuickSort to a Vector sort on the same sequence and report the results. Who wins and why?</p>
+</div>
+
+<h2 id="extensions">Extensions</h2>
+<p>Here are some ideas for further exploration of list sorting:</p>
+
+<ul>
+  <li>Add a <strong>smarter choice of pivot for QuickSort</strong>. A poor pivot (e.g. min or max of sequence) can degrade performance all the way to a truly degenerate O(N^2).  There are many neat approaches to combat this effect, see  <a href="https://stackoverflow.com/questions/164163/QuickSort-choosing-the-pivot/">https://stackoverflow.com/questions/164163/QuickSort-choosing-the-pivot/</a> for starters.</li>
+  <li>Research and implement an <strong>alternative sorting algorithm</strong>. There are lots of interesting options! To name a few:
+    <ul>
+      <li>Selection Sort</li>
+      <li>Insertion Sort</li>
+      <li>Merge Sort (described in lecture)</li>
+      <li>Bubble Sort (but <a href="https://www.youtube.com/watch?v=k4RRi_ntQc8">Obama recommends against</a>)</li>
+      <li>Comb Sort</li>
+      <li>Shaker Sort</li>
+      <li>Gnome Sort</li>
+      <li>Block Sort</li>
+      <li>Shell Sort</li>
+      <li>Spread Sort</li>
+      <li>Strand Sort</li>
+      <li>Unshuffle Sort</li>
+    </ul>
+
+    <p>Some of these are more suited to linked lists than others, so do some background research on the algorithm before deciding whether it would be a good one to tackle.</p>
+  </li>
+</ul>
+
+<p class="w-75 mx-auto"><img src="https://imgs.xkcd.com/comics/ineffective_sorts.png" alt="comic" />
+<small><em>Courtesy of the always-wonderful <a href="https://xkcd.com/1185/">xkcd</a>.</em></small></p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-10
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

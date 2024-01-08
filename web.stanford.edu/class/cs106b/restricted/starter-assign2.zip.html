@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+    <link rel="icon" href="https://login-assets.stanford.edu/assets/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="https://login-assets.stanford.edu/assets/favicon.ico" type="image/x-icon" />
+    <script src="https://login-assets.stanford.edu/assets/js/jquery-1.11.1.min.js"></script>
+    <!-- bootstrap -->
+    <link type="text/css" rel="stylesheet" href="https://login-assets.stanford.edu/assets/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://login-assets.stanford.edu/assets/css/su-identity.css" />
+    <script src="https://login-assets.stanford.edu/assets/js/login.js"></script>
+    <!-- login CSS -->
+    <link rel="stylesheet" type="text/css" href="https://login-assets.stanford.edu/assets/css/login.css" />
+    <title>Stanford Login</title>
+    <style>
+      #duo_iframe {
+        width: 100%;
+        min-width: 304px;
+        max-width: 620px;
+        height: 330px;
+      }
+    </style>
+    <script>
+    <!--
+"use strict";
+function readLocalStorage(key) {
+    var success;
+    try {
+        var value = localStorage.getItem(key);
+        if (value != null) {
+            document.form1["shib_idp_ls_value." + key].value = value;
+        }
+        success = "true";
+    } catch (e) {
+        success = "false";
+        document.form1["shib_idp_ls_exception." + key].value = e;
+    }
+    document.form1["shib_idp_ls_success." + key].value = success;
+}
+
+function isLocalStorageSupported() {
+    try {
+        localStorage.setItem("shib_idp_ls_test", "shib_idp_ls_test");
+        localStorage.removeItem("shib_idp_ls_test");
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+    // -->
+    </script>
+</head>
+
+    <body onload="doLoad()">
+    <div id="su-wrap">
+      <!-- #su-wrap start -->
+      <div id="su-content">
+        <!-- #su-content start -->
+        <!-- Brandbar snippet start -->
+        <div id="brandbar">
+          <div class="container">
+            <a href="http://www.stanford.edu"> <img src="https://login-assets.stanford.edu/assets/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="153" height="22"> </a>
+          </div>
+          <!-- .container end -->
+        </div>
+        <!-- #brandbar end -->
+        <!-- Brandbar snippet end -->
+
+        <div id="header">
+          <div class="container">
+            <div style="margin: 1em 10px 0 0;">
+              <img alt="Stanford Login" src="https://login-assets.stanford.edu/assets/images/login-header@2x.png">
+              <h1 class="pagetitle">Stanford Login</h1>
+            </div>
+          </div>
+          <!-- /.container -->
+        </div>
+
+        <div id="content">
+          <div class="container">
+            <div class="row">
+        <div class="col-md-8">
+            <div class="info-box">
+                Loading login session information from the browser...
+            </div>
+                <noscript>
+                    <div class="info-box">
+                    Since your browser does not support JavaScript, you must press the Continue button once to proceed.
+                    </div>
+                </noscript>
+<form name="form1" action="starter-assign2.zip.html" method="post">
+    <input type="hidden" name="csrf_token" value="_cd347561e606c4790a65082f8e435e73080f1c33" />
+        <input name="shib_idp_ls_exception.shib_idp_session_ss" type="hidden" />
+        <input name="shib_idp_ls_success.shib_idp_session_ss" type="hidden" value="false" />
+        <input name="shib_idp_ls_value.shib_idp_session_ss" type="hidden" />
+        <input name="shib_idp_ls_exception.shib_idp_persistent_ss" type="hidden" />
+        <input name="shib_idp_ls_success.shib_idp_persistent_ss" type="hidden" value="false" />
+        <input name="shib_idp_ls_value.shib_idp_persistent_ss" type="hidden" />
+    <input name="shib_idp_ls_supported" type="hidden" />
+    <input name="_eventId_proceed" type="hidden" />
+    <noscript>
+        <input type="submit" value="Continue" />
+    </noscript>
+</form>
+
+<script>
+<!--
+function doLoad() {
+    var localStorageSupported = isLocalStorageSupported();
+    document.form1["shib_idp_ls_supported"].value = localStorageSupported;
+    if (localStorageSupported) {
+        readLocalStorage("shib_idp_session_ss");
+        readLocalStorage("shib_idp_persistent_ss");
+    }
+    document.form1.submit();
+}
+// -->
+</script>        </div>
+              <div class="col-md-4 security-info">
+                <p><strong>Important Security Information:</strong>
+Logging in lets you access other protected Stanford websites with this browser, not just the website you requested.                </p>
+                <div class="help">
+                </div>
+                <div class="settings">
+                  <p><a href="https://uit.stanford.edu/service/authentication/help" class="more-link"><span class="fa fa-chevron-circle-right"></span> <span>LOGIN HELP</span></a></p>
+                  <!-- <p><a href="/idp/idp/profile/user/prefs" class="more-link"><i class="fa fa-chevron-circle-right"></i> <span>Advanced Settings</span></a></p> -->
+                  <p><a href="https://accounts.stanford.edu/reset2step" class="more-link"><span class="fa fa-chevron-circle-right"></span> <span>TWO-STEP DEVICE UNAVAILABLE?</span></a></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="fineprint">Use of this system is subject to Stanford University's rules and regulations. See the <a href="https://adminguide.stanford.edu/chapter-6" target="_blank" title="Stanford University Administrative Guide">Stanford Administrative Guide</a> for more information.</p>
+              </div>
+            </div>
+          </div>
+          <!-- .container end -->
+        </div>
+        <!-- .content end -->
+
+      </div>
+      <!-- #su-content end -->
+    </div>
+    <!-- #su-wrap end -->
+
+    <!-- Global footer snippet start -->
+    <div id="global-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-sm-2" id="bottom-logo"> <a href="https://www.stanford.edu/"> <img width="105" height="49" alt="Stanford University" src="https://login-assets.stanford.edu/assets/images/footer-stanford-logo@2x.png"> </a> </div>
+          <!-- #bottom-logo end -->
+          <div class="col-xs-6 col-sm-10" id="bottom-text">
+            <ul class="list-inline">
+              <li class="home"><a href="https://www.stanford.edu/">SU Home</a></li>
+              <li class="maps alt"><a data-ua-label="global-footer" data-ua-action="visit.stanford.edu/plan/maps" class="su-link" href="http://visit.stanford.edu/plan/maps.html">Maps &amp; Directions</a></li>
+              <li class="search-stanford"><a href="http://stanford.edu/search/">Search Stanford</a></li>
+              <li class="terms alt"><a href="http://www.stanford.edu/site/terms.html">Terms of Use</a></li>
+              <li class="emergency-info"><a data-ua-label="global-footer" class="su-link" href="http://emergency.stanford.edu/">Emergency Info</a></li>
+            </ul>
+          </div>
+          <!-- .bottom-text end -->
+          <p class="copyright vcard col-sm-10 col-sm-offset-2 col-xs-12">&copy; <span class="fn org">Stanford University</span>.&nbsp; <span class="adr"> <span class="locality">Stanford</span>, <span class="region">California</span> <span class="postal-code">94305</span></span>. <span id="termsofuse"><a data-ua-label="global-footer" data-ua-action="copyright-complaints" class="su-link" href="http://www.stanford.edu/group/security/dmca.html">Copyright Complaints</a>&nbsp;&nbsp;&nbsp;<a data-ua-label="global-footer" data-ua-action="trademark-notice" class="su-link" href="https://adminguide.stanford.edu/chapter-1/subchapter-5/policy-1-5-4">Trademark Notice</a></span></p>
+        </div>
+        <!-- .row end -->
+      </div>
+      <!-- .container end -->
+    </div>
+
+    <!-- global-footer end -->
+  </body>
+</html>

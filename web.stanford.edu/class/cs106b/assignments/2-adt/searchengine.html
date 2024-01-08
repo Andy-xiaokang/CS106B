@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Search Engine</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Search Engine</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="an-introduction-to-search-engines">An introduction to search engines</h2>
+<p class="w-50 mx-auto"><img src="img/search.png" alt="google search home page" /></p>
+<p>Search engines are one of the most influential developments of the modern internet age and have completely revolutionized how users interact with the web. What was once an intractable jumble of data with no semblance of organization has become a treasure trove of useful information due to the magic of search. Armed with the power of <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code>, you can recreate this phenomenal achievement yourself. Once completed, you will understand the core technology underpinning Spotlight, Google, and Bing, and have solid practice in the use of the <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> ADTs.</p>
+
+<p>Want to see the power of search right now? Click  <span class="subtle-heading border">🔍 Search</span> in the top-right of the page navigation bar and search for <strong>easter egg</strong> to see what lurks deep in the recesses of the course website…</p>
+
+<p>In your search engine, each web page has a <em>URL</em> ("Uniform Resource Locator") that serves as its unique id and a string containing the body text of the page.  You will first write functions that pre-process the body text and populate the data structure. Next you'll implement the function to search for pages matching a search query. Finally, you will write a console program that allows the user to enter many search queries and retrieve the matching web pages. Put all together, you will have built your own mini search engine!</p>
+
+<h3 id="understanding-the-web-page-data">Understanding the web page data</h3>
+<p>We have harvested the body text from the pages of our course website into a database file that is provided in the starter project. The format of the database file is as follows:</p>
+
+<ul>
+  <li>The lines of the file are grouped into pairs with the following structure:
+    <ul>
+      <li>The first line of a pair is a page URL.</li>
+      <li>The second line of a pair is the body text of that page, with all newlines removed (the entire text of the page in a single string).</li>
+    </ul>
+  </li>
+  <li>The first two lines in the file form the first pair. The third and fourth lines form another pair, the fifth and sixth another, and so on, with alternating lines of page URL and page content.</li>
+</ul>
+
+<p>To view an example database, open the file <code class="language-c++ highlighter-rouge"><span class="n">tiny</span><span class="p">.</span><span class="n">txt</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">website</span><span class="p">.</span><span class="n">txt</span></code> in the folder <code class="language-c++ highlighter-rouge"><span class="n">Other</span> <span class="n">files</span><span class="o">/</span><span class="n">res</span></code> of the starter project.</p>
+
+<h3 id="using-an-inverted-index-for-searching">Using an inverted index for searching</h3>
+<p>To make our search efficient, we need to be thoughtful about how we structure and store the data. A poor choice in data structures would make search painfully slow, but clever use of our wonderful ADTs can avoid that fate. A search engine typically uses a nifty arrangement known as an <em>inverted index</em>.</p>
+
+<p>An inverted index is akin to the typical index in the back of a book. If you look up the keyword "internet" in the index of the CS106B <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">textbook</a>, it lists two page numbers, 18 and 821. The word internet occurs on page number 18 and again on page number 821.  Thus, an inverted index is a mapping from word to locations. You look up a keyword in an inverted index to find all the locations where that keyword occurs.</p>
+
+<p>In contrast a <em>forward index</em> operates in the other direction. For our book example, the forward index would be a mapping from a location (page number) to all the words that occur on that page.  To build an inverted index, you typically start with the data in the form of a forward index and then process to convert to the inverted form. Inverting the index takes time up front, but once complete, the inverted index supports extremely fast operations to find query matches.</p>
+
+<h2 id="on-to-the-code">On to the code!</h2>
+<p>Decomposition is one of your best tools for tackling a complex problem. We'll guide you along by breaking the problem down into a sequence of steps. Follow our steps to success!</p>
+
+<p>All of the functions and tests for the search engine are to be implemented in the file <code class="language-c++ highlighter-rouge"><span class="n">search</span><span class="p">.</span><span class="n">cpp</span></code>.</p>
+
+<h2 id="1-write-helper-function-cleantoken">1) Write helper function <code class="language-c++ highlighter-rouge"><span class="n">cleanToken</span><span class="p">()</span></code></h2>
+<p>Start by writing a helper function for this small but key string-processing task:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="n">cleanToken</span><span class="p">(</span><span class="n">string</span> <span class="n">token</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-c++ highlighter-rouge"><span class="n">cleanToken</span></code> takes in a string token and returns a "cleaned" version of the token, ready to be stored in the index.  To clean a token, extract only the letter and number characters and convert all letters to lowercase, i.e. "Wow!" becomes "wow", mid-quarter" becomes "midquarter", and "CS106B" becomes "cs106b". Standardizing on this simple canonical form allows search queries to operate case-insensitively and ignore punctuation.</p>
+
+<p>You might want to start by reworking the code from the <code class="language-c++ highlighter-rouge"><span class="n">lettersOnly</span></code> function you wrote for Soundex and change/extend as necessary. The return value from <code class="language-c++ highlighter-rouge"><span class="n">cleanToken</span></code> is the cleaned lowercase version, or will be empty string if the token is to be discarded (i.e. contains no letter or number characters).</p>
+
+<p><strong>Write test cases to confirm that <code class="language-c++ highlighter-rouge"><span class="n">cleanToken</span></code> works correctly in all situations before moving on!</strong> You will make heavy use of <code class="language-c++ highlighter-rouge"><span class="n">cleanToken</span></code> when building the inverted index and if this helper mishandles tokens, it will throw off your results and lead to sad times. It is definitely worth your time to confirm with a solid set of test cases before moving on. Remember to label your tests as <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code>.</p>
+
+<h2 id="2-write-helper-function-gathertokens">2) Write helper function <code class="language-c++ highlighter-rouge"><span class="n">gatherTokens</span><span class="p">()</span></code></h2>
+<p>The helper function <code class="language-c++ highlighter-rouge"><span class="n">gatherTokens</span></code> extracts the set of unique tokens from the body text.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">gatherTokens</span><span class="p">(</span><span class="n">string</span> <span class="n">bodytext</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The argument to <code class="language-c++ highlighter-rouge"><span class="n">gatherTokens</span></code> is a string containing the body text from a single web page. The function returns a Set of the unique cleaned tokens that appear in the body text.</p>
+
+<p>The function first <em>tokenizes</em> the body text — this means to separate the string into words using the space character as delimiter. Call the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/strlib.html" title="Documentation for strlib.h"><code class="language-c++ highlighter-rouge"><span class="n">stringSplit</span></code></a> function from the Stanford library for this task. Then call your <code class="language-c++ highlighter-rouge"><span class="n">cleanToken</span></code> helper function on each token and store the cleaned tokens into a Set. No matter how many repeat occurrences of a given word are in the body text, repeatedly adding it to a set stores just the one copy, which makes this ADT ideal for gathering the unique tokens.</p>
+
+<p>Time to test! Add test cases that confirm the output from <code class="language-c++ highlighter-rouge"><span class="n">gatherTokens</span></code>, so you will later be able to call on this function with confidence that it does its job correctly.</p>
+
+<h2 id="3-create-inverted-index-in-buildindex">3) Create inverted index in <code class="language-c++ highlighter-rouge"><span class="n">buildIndex</span><span class="p">()</span></code></h2>
+<p>The function <code class="language-c++ highlighter-rouge"><span class="n">buildIndex</span></code> reads the content from the database file and processes it into the form of an inverted index.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">buildIndex</span><span class="p">(</span><span class="n">string</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">index</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The first argument to <code class="language-c++ highlighter-rouge"><span class="n">buildIndex</span></code> is the name of the database file of the web page data, the second argument is the Map to be populated with data for the inverted index. The return value of <code class="language-c++ highlighter-rouge"><span class="n">buildIndex</span></code> is the number of documents processed from the database file.</p>
+
+<p>Before starting to code, work through a small example on paper to ensure you understand the data structure you are trying to build. Open the <code class="language-c++ highlighter-rouge"><span class="n">res</span><span class="o">/</span><span class="n">tiny</span><span class="p">.</span><span class="n">txt</span></code> database file and manually process the content to build the inverted index.</p>
+
+<div id="Q7" class="question alert alert-warning">
+  <p><strong>Q7</strong>. List the contents of the inverted index built from the <code class="language-c++ highlighter-rouge"><span class="n">res</span><span class="o">/</span><span class="n">tiny</span><span class="p">.</span><span class="n">txt</span></code> database file.</p>
+</div>
+
+<p>When you are ready to start writing code, read the previous section <a href="searchengine.html#understanding-the-web-page-data">Understanding the web page data</a> to review the format of the database file. Look at the code we provided for <code class="language-c++ highlighter-rouge"><span class="n">readMazeFile</span></code> in <code class="language-c++ highlighter-rouge"><span class="n">maze</span><span class="p">.</span><span class="n">cpp</span></code> for an example of C++ code to open a file and read the contents into a Vector of lines. Feel free to reuse that code for <code class="language-c++ highlighter-rouge"><span class="n">buildIndex</span></code>.</p>
+
+<p>For each page, you will call <code class="language-c++ highlighter-rouge"><span class="n">gatherTokens</span></code> to extract the set of unique tokens. For each token in the page, you record the match to the page's URL by adding to its entry in the inverted index. The index is of type <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span></code>, this map associates each keyword with the set of the URLs where that word occurs. The function returns the count of web pages that were processed.</p>
+
+<p>Our starter code contains some provided tests to get you started; add student tests of your own to ensure your coverage is comprehensive.  Use a <code class="language-c++ highlighter-rouge"><span class="n">TIME_OPERATION</span></code> test to confirm your function operates in reasonable time. Building the inverted index should generally not take more than 5 seconds.</p>
+
+<h2 id="4-search-using-findquerymatches">4) Search using <code class="language-c++ highlighter-rouge"><span class="n">findQueryMatches</span><span class="p">()</span></code></h2>
+
+<p>Next up is to implement the function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">findQueryMatches</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">index</span><span class="p">,</span> <span class="n">string</span> <span class="n">query</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">query</span></code> string can either be a single search term or a compound sequence of multiple terms. A search term is a single word, and a sequence of search terms is multiple consecutive terms, each of which (besides the first one) may or may not be preceded by a modifier like <code class="language-c++ highlighter-rouge"><span class="o">+</span></code> or <code class="language-c++ highlighter-rouge"><span class="o">-</span></code> (see below for details).  The same <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/strlib.html" title="Documentation for strlib.h"><code class="language-c++ highlighter-rouge"><span class="n">stringSplit</span></code></a> function used to divide the body text into tokens will be used to divide the query sentence into search terms.</p>
+
+<p>The matches to a query are found by following these rules:</p>
+<ul>
+  <li>If the query is a single search term, the matches are the web pages containing that term.</li>
+  <li>If the query contains two or more search terms, it is a <em>compound query</em>. The results for a compound query are a combination of the matches for the terms considered singly.
+    <ul>
+      <li>When a query contains additional search terms, the matches for those terms are added to the existing results. (results will match either term)
+        <ul>
+          <li>Hint: use <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Set.html" title="Documentation for Set">Set</a> operation <code class="language-c++ highlighter-rouge"><span class="n">unionWith</span></code></li>
+        </ul>
+      </li>
+      <li>A search term has a slightly altered meaning when the term is prefaced by certain modifiers:</li>
+      <li>If the user prefaces a search term with <code class="language-c++ highlighter-rouge"><span class="o">+</span></code>, then matches for this term are intersected with the existing results. (results must match both terms)
+        <ul>
+          <li>Hint: use the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Set.html" title="Documentation for Set">Set</a> operation <code class="language-c++ highlighter-rouge"><span class="n">intersect</span></code></li>
+        </ul>
+      </li>
+      <li>If the user prefaces a search term with <code class="language-c++ highlighter-rouge"><span class="o">-</span></code>, then matches for this term are removed from the existing results. (results must match one term without matching the other)
+        <ul>
+          <li>Hint: use the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Set.html" title="Documentation for Set">Set</a> operation <code class="language-c++ highlighter-rouge"><span class="n">difference</span></code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>The same token cleaning applied to the body text is also applied to query terms.</strong> Call your helper <code class="language-c++ highlighter-rouge"><span class="n">cleanToken</span></code> to process each search term to strip punctuation and convert to lowercase before performing the search for matches.</li>
+</ul>
+
+<p>Note that <strong>searching is case-insensitive</strong>, that is, a search for "binky" returns the same results as "Binky" or "BINKY". Be sure to consider what implications this has for how you create and search the index.</p>
+
+<p>Here are some example queries and how they are interpreted</p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">quokka</span></code>
+    <ul>
+      <li>matches all pages containing the term "quokka"</li>
+    </ul>
+  </li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">simple</span> <span class="n">cheap</span></code>
+    <ul>
+      <li>means <code class="language-c++ highlighter-rouge"><span class="n">simple</span> <span class="n">OR</span> <span class="n">cheap</span></code></li>
+      <li>matches pages that contain either "simple" or "cheap" or both</li>
+    </ul>
+  </li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">tasty</span> <span class="o">+</span><span class="n">healthy</span></code>
+    <ul>
+      <li>means <code class="language-c++ highlighter-rouge"><span class="n">tasty</span> <span class="n">AND</span> <span class="n">healthy</span></code></li>
+      <li>matches pages that contain both "tasty" and "healthy"</li>
+    </ul>
+  </li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">tasty</span> <span class="o">-</span><span class="n">mushrooms</span></code>
+    <ul>
+      <li>means <code class="language-c++ highlighter-rouge"><span class="n">tasty</span> <span class="n">WITHOUT</span> <span class="n">mushrooms</span></code></li>
+      <li>matches pages that contain "tasty" but do not contain "mushrooms"</li>
+    </ul>
+  </li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">tasty</span> <span class="o">-</span><span class="n">mushrooms</span> <span class="n">simple</span> <span class="o">+</span><span class="n">cheap</span></code>
+    <ul>
+      <li>means <code class="language-c++ highlighter-rouge"><span class="n">tasty</span> <span class="n">WITHOUT</span> <span class="n">mushrooms</span> <span class="n">OR</span> <span class="n">simple</span> <span class="n">AND</span> <span class="n">cheap</span></code></li>
+      <li>matches pages that match ((("tasty" without "mushrooms") or "simple") and "cheap")</li>
+    </ul>
+  </li>
+</ul>
+
+<p>There is no precedence for the operators, <strong>the query is simply processed from left to right</strong>. The matches for the first term are combined with matches for second, then combined with matches for third term and so on. In the last query shown above, the matches for <code class="language-c++ highlighter-rouge"><span class="n">tasty</span></code> are first filtered to remove all pages containing <code class="language-c++ highlighter-rouge"><span class="n">mushrooms</span></code>, then joined with all matches for <code class="language-c++ highlighter-rouge"><span class="n">simple</span></code> and lastly intersected with all matches for <code class="language-c++ highlighter-rouge"><span class="n">cheap</span></code>.</p>
+
+<p>You may assume that the query sentence is well-formed, which means:</p>
+
+<ul>
+  <li>The query sentence is non-empty and contains at least one search term</li>
+  <li>If a search term has a modifier, it will be the first character
+    <ul>
+      <li>A modifier will not appear on its own as a search term</li>
+      <li>A <code class="language-c++ highlighter-rouge"><span class="o">+</span></code> or <code class="language-c++ highlighter-rouge"><span class="o">-</span></code> character within a search term that is not the first character is not considered a modifier</li>
+    </ul>
+  </li>
+  <li>The first search term in the query sentence will never have a modifier</li>
+  <li>You can assume that no search term will clean to the empty string (i.e. has at least one letter)</li>
+</ul>
+
+<p>There is a lot of functionality to test in query processing, be sure you add an appropriate range of student tests to be sure you're catching all the cases.</p>
+
+<h2 id="5-put-it-all-together-with-searchengine">5) Put it all together with <code class="language-c++ highlighter-rouge"><span class="n">searchEngine</span><span class="p">()</span></code></h2>
+<p>Thus far, your amazing code has re-arranged a mass of unstructured text data into a highly-organized inverted index with instantaneous retrieval and fancy query-matching capability. Now take it over the finish line to build your own search engine!</p>
+
+<p>The final function to implement is:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">searchEngine</span><span class="p">(</span><span class="n">string</span> <span class="n">dbfile</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This function implements a console program that works as follows:</p>
+<ul>
+  <li>It first constructs an inverted index from the contents of the database file.</li>
+  <li>It prints how many web pages were processed to build the index and how many distinct words were found across all pages.</li>
+  <li>It enters a loop that prompts the user to enter a query</li>
+  <li>For each query entered by the user, it find the matching pages and prints the URLs.</li>
+  <li>When the user enters the empty string (<code class="language-c++ highlighter-rouge"><span class="s">""</span></code>), this indicates they are done and the program finishes.</li>
+</ul>
+
+<p>After you have completed this function, your program should behave as shown in the transcript shown below.</p>
+
+<p>Example program run (executed by running <code class="language-c++ highlighter-rouge"><span class="n">searchEngine</span><span class="p">(</span><span class="s">"res/website.txt"</span><span class="p">)</span></code> in <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">.</span><span class="n">cpp</span></code>):</p>
+<pre><code class="language-output">Stand by while building index...
+Indexed 38 pages containing 5598 unique terms.
+
+Enter query sentence (RETURN/ENTER to quit): citation
+Found 3 matching pages
+{"https://cs106b.stanford.edu/assignments/2-adt/searchengine.html",
+"https://cs106b.stanford.edu/citation", "https://cs106b.stanford.edu/honor_code"}
+
+Enter query sentence (RETURN/ENTER to quit): expect_error
+Found 4 matching pages
+{"http://cs106b.stanford.edu/assignments/2-adt/maze.html",
+"http://cs106b.stanford.edu/assignments/2-adt/searchengine.html",
+"http://cs106b.stanford.edu/assignments/2-adt/warmup.html", "http://cs106b.stanford.edu/resources/testing_guide.html"}
+
+Enter query sentence (RETURN/ENTER to quit): style +grading
+Found 8 matching pages
+{"https://cs106b.stanford.edu/about_assignments", "https://cs106b.stanford.edu/assignments/1-cpp/",
+"https://cs106b.stanford.edu/assignments/2-adt/", "https://cs106b.stanford.edu/assignments/2-adt/searchengine.html",
+"https://cs106b.stanford.edu/lectures/02-cpp/", "https://cs106b.stanford.edu/resources/style_guide.html",
+"https://cs106b.stanford.edu/resources/submit_checklist.html", "https://cs106b.stanford.edu/syllabus"}
+
+Enter query sentence (RETURN/ENTER to quit): cs106l template -qt
+Found 3 matching pages
+{"http://cs106b.stanford.edu/course_placement", "http://cs106b.stanford.edu/faq",
+"http://cs106b.stanford.edu/resources/style_guide.html"}
+}
+
+Enter query sentence (RETURN/ENTER to quit): 
+
+main() completed.
+</code></pre>
+
+<p>Way to go, 👍 you're well on your way to becoming the next internet search pioneer!</p>
+
+<h2 id="notes">Notes</h2>
+
+<ul>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">res</span></code> folder of the starter project includes two database files: <code class="language-c++ highlighter-rouge"><span class="n">tiny</span><span class="p">.</span><span class="n">txt</span></code> is the small example used in the writeup and <code class="language-c++ highlighter-rouge"><span class="n">website</span><span class="p">.</span><span class="n">txt</span></code> is the body text extracted from all of the pages in our course website (as of Oct 10). You can open these files in Qt Creator to view their contents. The project resource files are listed under <code class="language-c++ highlighter-rouge"><span class="n">Other</span> <span class="n">files</span></code> -&gt; <code class="language-c++ highlighter-rouge"><span class="n">res</span></code>. Your program can open a resource file by specifying the path as <code class="language-c++ highlighter-rouge"><span class="s">"res/myfilename"</span></code>.</li>
+</ul>
+
+<h2 id="references">References</h2>
+<ul>
+  <li><a href="https://www.geeksforgeeks.org/inverted-index/">Inverted Index on GeeksForGeeks</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Inverted_index">Wikipedia article on Inverted Indexes</a></li>
+  <li><a href="https://nlp.stanford.edu/IR-book/html/htmledition/tokenization-1.html">Stanford Natural Processing Group on Tokenization</a></li>
+</ul>
+
+<h2 id="extensions">Extensions</h2>
+
+<p>If you have completed the basic assignment requirements and and want to go further, we encourage you to try adding an extension! A non-exhaustive list of potential extensions is listed below:</p>
+
+<ul>
+  <li>Weights
+    <ul>
+      <li>When you get the results from a Google search, they are ranked so that the more relevant results are first on the list. The current Google algorithm is a well-kept trade secret (though it was originally the <a href="https://en.wikipedia.org/wiki/PageRank"><em>Page Rank</em></a> algorithm, named for its creator, then-Stanford graduate student Larry Page), but a simple approach is to give higher rank to pages with more occurrences of the search term. For this extension, you would need to re-think how you create your index to include the number of matches.</li>
+    </ul>
+  </li>
+  <li>Phrase search
+    <ul>
+      <li>The assignment does not allow a search for multi-word terms, such as <code class="language-c++ highlighter-rouge"><span class="n">section</span> <span class="n">leader</span></code>. Searching for phrases is not trivial, as you cannot simply keep a mapping of all possible phrases in the document. You could, however, keep track of <em>where</em> in each document a word is, and then use that information to determine if words in a phrase are next to each other in any particular document.</li>
+    </ul>
+  </li>
+  <li>Stop Words
+    <ul>
+      <li>The English language has many, many words that show up in text but are not particularly important for content, such as <code class="language-c++ highlighter-rouge"><span class="n">the</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">and</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">if</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">a</span></code>, etc. These words are called <em>Stop Words</em>, and it would make your index smaller if you removed such stop words from the index. Here is more <a href="https://kavita-ganesan.com/what-are-stop-words/#.XptrFy-ZM0o">info about stop words</a>.</li>
+    </ul>
+  </li>
+  <li>Stemming
+    <ul>
+      <li>In the current design, if a user searches for <code class="language-c++ highlighter-rouge"><span class="n">section</span></code> they won't find matches for <code class="language-c++ highlighter-rouge"><span class="n">sections</span></code>, even though pages that mention either might be a relevant match. <a href="https://en.wikipedia.org/wiki/Stemming"><em>Stemming</em></a> is the process of reducing words to their base form, so that (for example) both <code class="language-c++ highlighter-rouge"><span class="n">section</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">sections</span></code> would become, simply, <code class="language-c++ highlighter-rouge"><span class="n">section</span></code> in the index.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>If you have other creative ideas for extensions, run them by the course staff, and we'd be happy to give you guidance!</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-09
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

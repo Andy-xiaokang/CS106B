@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Hashing</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 25. Hashing</h1>
+ <p class="subtle-heading">Wednesday November 29</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Today we dive into the wonderful world of hashing!</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 15.3</li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=fdc986fb-09f3-4779-b7c7-b083014df4a9&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Contents:</strong></p>
+<p>1. Introduction</p>
+<p>2. Preliminaries: Two Approaches to Indexing Student Records by Student ID</p>
+<p>3. Hash Tables: Overview</p>
+<p>4. Linear Probing (Collision Resolution Policy 1 of 2)</p>
+<p>5. Best- and Worst-Case Runtimes for Insertion with Linear Probing</p>
+<p>6. Average-Case Runtime for Insertion with Linear Probing</p>
+<p>7. Additional Data for Average-Case Analysis</p>
+<p>8. The Impact of Repeated Collisions and the Role of Probability in Hashing</p>
+<p>9. Search with Linear Probing</p>
+<p>10. Clustering and Table Size with Linear Probing</p>
+<p>11. Separate Chaining (Collision Resolution Policy 2 of 2)</p>
+<p>12. Runtimes for Insertion, Search, and Deletion with Separate Chaining</p>
+<p>13. Properties of Good Hash Functions</p>
+<p>14. HashSet and HashMap</p>
+<p>15. A Cautionary Note About the Expression of Hash Runtimes</p>
+<p>16. Further Exploration</p>
+<p>17. What's next?</p>
+<p>18. Exercises</p>
+<p><strong><br />Introduction<br /></strong></p>
+<p>We began lecture today with a quick discussion of runtimes for insertion and search in a huge array that is indexed by student ID. I then introduced hash tables and hash functions. We examined two collision resolution policies (linear probing and separate chaining); and explored the runtimes of our insertion and search operations. We also discussed some properties of good hash functions.</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important note!</em></span>) Before we dive in, I just want to say that it's hard to overstate just how ✨ <strong><em>A<span style="font-size: 120%;">M</span></em>AZ<span style="font-size: 80%;">i</span><em><span style="font-size: 80%;">N</span></em>G</strong> ✨ hash tables are! The way they work is pretty incredible, as is the fact that they give us O(1) runtimes for most operations while only using O(n) space to store <em>n</em> elements. These attributes make hash tables super powerful. They are widely used for handling vast amounts of data at scale and solving complex problems efficiently. They're also the answer to a <em>lot</em> of interview problems. If you're preparing for tech interviews, I encourage you to do a deeper dive on this incredible data structure soon. Some of the supplementary notes included in today's write-up can serve as a launching point for that exploration.</p>
+<p><br /><strong>Preliminaries: Two Approaches to Indexing&nbsp;Student Records by Student ID</strong></p>
+<p>I began today with the following problem:</p>
+<p style="margin-left: 30px; margin-top: 25px; margin-bottom: 25px; padding: 10px; width: 500px; background-color: #eeeeee; border-left: 3px solid #888888;"><em>Suppose we want to store 17,000 student records and be able to look them up efficiently. Knowing that every student at Stanford has a unique 8-digit ID, how could we do that?</em></p>
+<p>We briefly discussed the possibility of using balanced BSTs (which would give us worst-case logarithmic runtime for insertion and search), and someone even suggested creating a tree where each node had 10 children -- one for each digit, 0 through 9 -- and using the path through our tree to "spell out" (so to speak) the student ID we're operating on. This latter idea is a variation of a data structure called a "trie," and it's a super awesome idea!</p>
+<p>The two ideas we spent more time exploring were:</p>
+<ul>
+<li><strong>Direct indexing in an obscenely large array.</strong> Create an array of length 100 million (since there are 100 million possible IDs on the range 00000000 through 99999999). We could then use each ID as the index where we would store the corresponding student's data in the array (perhaps in a struct that is filled with information about that student). So, if a student's Stanford ID were 05883264, we would store the data for that student at index 05883264 in the array, like so:</li>
+</ul>
+<table style="margin-left: 55px; margin-top: 15px; border-collapse: collapse; width: 482px; height: 16px;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 205px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 40px;"><span style="font-size: 10.6667px;">(data)</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 175px;">&nbsp;</td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0px 10px 10px; font-size: 11px; width: 205px;"></td>
+<td style="border: 0px; text-align: center; padding: 0px 10px 10px; font-size: 11px; width: 40px;">^<br />05883264</td>
+<td style="border: 0px; text-align: center; padding: 0px 10px 10px; font-size: 11px; width: 175px;"></td>
+</tr>
+</tbody>
+</table>
+<ul style="list-style-type: none; margin-bottom: 10px;">
+<li>This approach would give us O(1) insertion, deletion, and search operations, but we would have a <em>lot</em> of wasted space, especially since we only want to store data for 17,000 active students.</li>
+</ul>
+<ul>
+<li><strong>Binary searching a more reasonably sized, sorted array.</strong> Alternatively, if we know we only have to store data for, say, 17,000 students at any given time, we could create an array of length 17,000, insert records into that array, sort the array by the IDs, and then use binary search to look up any student record as we need it. We'd save a lot of space compared to the first approach, but we have a setup cost of O(n log n) for the sorting, and search becomes an O(log n) operation (in comparison to the O(1) operations afforded by the previous approach). Inserting a new student record would also be problematic, even if we left some extra space in the array, because we would potentially have to re-sort the entire array or perform an O(n) operation to move elements over to accommodate new ones at the beginning of the array.</li>
+</ul>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key take-away!</em></span>) The approaches above highlight a classical trade-off in computer science: sometimes using extra space can get us much better runtimes. On the other hand, in a space-constrained system, we might find ourselves forced to sacrifice runtime efficiency for the sake of getting a solution that will operate with a limited amount of memory.</p>
+<p><strong><br />Hash Tables: Overview</strong></p>
+<p>The new data structure we saw today -- the hash table -- combines the best of both worlds from the two solutions we explored to the problem above. It generally supports insert, delete, and search operations that have O(1) runtimes in the average case, but it only uses O(n) memory (where <em>n</em> is the number of elements we're storing).</p>
+<p>Here's the fundamental nature of a hash table: It's just an array coupled with a hash function that takes an element as its input (which we call the "input" or the "key") and returns a number (called a "hash code" or "hash value") that we use to find an index for that key in our array:</p>
+<table style="margin-left: 15px; margin-top: 15px; margin-bottom:15px; border-collapse: collapse; height: 69px;" border="0" cellpadding="10">
+<tbody>
+<tr style="height: 69px;">
+<td style="border: 0px solid black; text-align: right; width: 180px; height: 69px;">"input" or "key" &rarr;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 200px; height: 69px;">hash<span style="font-size: 12pt;"> function</span></td>
+<td style="border: 0px; text-align: left; font-size: 11px; width: 320px; height: 69px;"><span style="font-size: 12pt;">&rarr; "hash value" or "hash code" </span><span style="font-size: 12pt;">(an integer)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="color: var(--ic-brand-font-color-dark); font-family: inherit; font-size: 1rem;">(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key take-away!</em></span>) A hash function typically produces a large range of values, and we mod each hash code by the length of our hash table (i.e., our array) to get a valid index in that array. If you encounter a hash function in the wild that you want to use for some application, it's up to you to mod the values it returns to ensure you get a valid array index.</span></p>
+<p><span style="color: var(--ic-brand-font-color-dark); font-family: inherit; font-size: 1rem;">We saw a very simple example of a hash table in which we wanted to store eight student records in memory, and our hash function simply took each student record as input and returned the student ID as the hash code. Here are the eight names and Stanford IDs I gathered from the class today:</span></p>
+<table style="width: 396px; margin-left: 30px; margin-top: 20px; margin-bottom: 20px; border-collapse: collapse; height: 246px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;"><strong>Name</strong></span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;"><strong>Student ID<br />(hash code)</strong></span></td>
+<td style="width: 168px; text-align: center;">
+<span style="font-size: 10pt;"><strong>initial index in hash table<br /></strong></span><span style="font-size: 10pt;"><strong>(hash code % array length)</strong></span>
+</td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Jason</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06846021</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Shreya</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06682497</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">7</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Ila</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06233639</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">9</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Xander</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06194315</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">5</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Anjali</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06335094</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">4</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Rushank</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06028532</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">2</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Michael</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06629695</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">5</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Jack</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06211096</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">6</span></td>
+</tr>
+<tr>
+<td style="padding-top: 5px;" colspan="3"><em><span style="font-size: 10pt;">Each person only gave the last three digits of their ID in class, but I only preserved the last two digits, just to be on the safe side. The rest of each ID is fabricated.</span></em></td>
+</tr>
+</tbody>
+</table>
+<p>To be clear, our hash function in this case is taking an entire student record and returning just the student ID portion of that record as our hash code:</p>
+<table style="margin-left: 15px; margin-top: 15px; margin-bottom: 15px; border-collapse: collapse; height: 69px;" border="0" cellpadding="10">
+<tbody>
+<tr style="height: 69px;">
+<td style="border: 0px solid black; text-align: right; width: 150px; height: 69px;">student record &rarr;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 200px; height: 69px;">hash<span style="font-size: 12pt;"> function</span></td>
+<td style="border: 0px; text-align: left; font-size: 11px; width: 250px; height: 69px;"><span style="font-size: 12pt;">&rarr; hash code (student ID)</span></td>
+</tr>
+</tbody>
+</table>
+<p>After inserting the first six of those records into the hash table, we'll have something that looks like this:</p>
+<table style="margin-left: 15px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Jason</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Rushank</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Anjali</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Xander</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Shreya</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Ila</span></td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color: var(--ic-brand-font-color-dark); font-family: inherit; font-size: 1rem;">Here's the big problem: When we try to insert Michael's record into the hash table, our hash function tells us to go to index 5, which is already occupied by Xander's record. When multiple keys map to the same position in a hash table, we call that a "collision." The rest of our lecture today revolved around mechanisms for resolving collisions in hash tables (and how that impacts insertion, search, and deletion in a hash table).</span></p>
+<p><br /><strong>Linear Probing (Collision Resolution Policy 1 of 2)</strong></p>
+<p>With linear probing, if we encounter a collision, we simply search linearly for the next available space in the hash table. If necessary, we wrap back around to the beginning of the array. (To do that, just mod by the length of the array, often called <em>table_size</em>.)</p>
+<p>For example, when we try to insert Michael's record into the hash table above, we see there's already an element at index 5. We then move on to index 6. Since index 6 is empty, we insert Michael's record into that position. The hash table now looks like this:</p>
+<table style="margin-left: 15px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Jason</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Rushank</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Anjali</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Xander</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="color: #169179;"><strong><span style="font-size: 10.6667px;">Michael</span></strong></span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Shreya</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Ila</span></td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-family: inherit; font-size: 1rem;">Finally, when we try to insert Jack's record into the hash table, we see there's already an element at index 6. We then move on to index 7 and observe that it's occupied, as well. So, we move forward to the next spot (index 8). Since index 8 is empty, we insert Jack's record into that position. The hash table now looks like this:</span></p>
+<table style="margin-left: 15px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Jason</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Rushank</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Anjali</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Xander</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Michael</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Shreya</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="color: #169179;"><strong><span style="font-size: 10.6667px;">Jack</span></strong></span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Ila</span></td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-family: inherit; font-size: 1rem;">In code, our insertion algorithm with linear probing would look something like this:</span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 500px; background-color: #fff9e7;"><strong>void</strong> HashTable::insert(ElementType key)<br />{<br />   <strong>int</strong> hashCode = hash(key);<br /><br /><span style="color: #236fa1;"><em>   // We usually use 'size' to refer to the number of elements in a</em></span><br /><span style="color: #236fa1;"><em>   // data structure, and 'capacity' to refer to its overall capacity.</em></span><br /><span style="color: #236fa1;"><em>   // People often break from that tradition with hash tables, however,</em></span><br /><span style="color: #236fa1;"><em>   // and refer to the capacity of the array as the "table size." Hence<br /></em><em>   // the variable name below.</em></span><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; _tableSize; i++)<br />   {<br /><span style="color: #236fa1;"><em>      // </em><strong><span style="color: #ffffff; background-color: #ba372a;">WARNING!</span></strong><em> This is problematic if we have a hash function that</em></span><br /><span style="color: #236fa1;"><em>      // is capable of producing negative hash codes, which is actually</em></span><br /><span style="color: #236fa1;"><em>      // quite common. A lot of hash functions let hash codes grow and</em></span><br /><span style="color: #236fa1;"><em>      // grow and grow, to the point where they might encounter integer</em></span><br /><span style="color: #236fa1;"><em>      // overflow and become negative. In Python, modding a negative</em></span><br /><span style="color: #236fa1;"><em>      // integer by a positive one produces a non-negative result, but</em></span><br /><span style="color: #236fa1;"><em>      // in C++ (as well as C and Java), that will produce a negative</em></span><br /><span style="color: #236fa1;"><em>      // result. We need to be careful not to use a negative integer</em></span><br /><span style="color: #236fa1;"><em>      // as an array index.<br /><span style="color: #236fa1;">      //</span></em><br /><em>      // Note that taking the absolute value of index is NOT a solid</em></span><br /><span style="color: #236fa1;"><em>      // solution to this problem, as the absolute value of</em></span><br /><span style="color: #236fa1;"><em>      // numeric_limits&lt;int&gt;::min() is not a valid int value.</em></span><br />      <strong>int</strong> index = (hashCode + i) % _tableSize;<br /><br />      <strong>if</strong> (_array[index] == EMPTY)<br />      {<br />         _array[index] = key;<br />         _numElements++;<br />         <strong>break</strong>;<br />      }<br />   }<br />}</pre>
+<p><span style="font-family: inherit; font-size: 1rem;">In the code above, I'm assuming the following:</span></p>
+<ul>
+<li><span style="font-family: inherit; font-size: 1rem;"><span class="code-chonk">insert()</span> is a member function in a <span class="code-chonk">HashTable</span>.</span></li>
+<li><span style="font-family: inherit; font-size: 1rem;"><span class="code-chonk">ElementType</span> is the type for all the elements in our hash table (such as <span class="code-chonk">StudentRecord</span>).</span></li>
+<li><span style="font-family: inherit; font-size: 1rem;"><span class="code-chonk">hash()</span> is a function that produces hash codes for the given element type.</span></li>
+<li><span style="font-family: inherit; font-size: 1rem;"><span class="code-chonk">_array</span> is a class member that holds the elements in our hash table.</span></li>
+<li><span style="font-family: inherit; font-size: 1rem;"><span class="code-chonk">EMPTY</span> is a constant used to indicate that a cell in our array does not contain an element.</span></li>
+<li><span style="font-family: inherit; font-size: 1rem;"><span class="code-chonk">_tableSize</span> is a class member that keeps track of the capacity of <span class="code-chonk">_array</span>.</span></li>
+<li><span style="font-family: inherit; font-size: 1rem;"><span class="code-chonk">_numElements</span> is a class member that keeps track of the number of elements in our hash table.</span></li>
+</ul>
+<p><span style="font-family: inherit; font-size: 1rem;">A more robust insertion function would check whether the array were full before kicking off the linear probing loop and expand the array if not.</span></p>
+<p><br /><strong>Best- and Worst-Case Runtimes for Insertion with Linear Probing</strong></p>
+<p>The best-case runtime for insertion into a hash table using linear probing comes when our hash function sends us to an empty cell in the array. In that case, we encounter O(1) insertion. We encountered that best-case runtime with the first six insertions in today's linear probing example.</p>
+<p>The worst-case runtime occurs when all our elements have formed a cluster, and we need to loop through all of them before finding an open position in our table. Suppose, for example, that our hash table looks like this:</p>
+<table style="margin-left: 15px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Frank</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Tamsen</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Hanan</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Arya</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Asha</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Dierdre</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Ptolemy</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Alexa</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Fred</span></td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-family: inherit; font-size: 1rem;">Suppose we try to insert a new record for "Bobo" into the table above, and our hash function sends us to index 4. We would have to loop through every single element in that array before finding the only open position (at index 3). That would be an O(n) operation and corresponds to the worst case for insertion.</span></p>
+<p><span style="font-family: inherit; font-size: 1rem;">So far, we have the following runtimes:</span></p>
+<table style="width: 371px; margin-left: 30px; margin-top: 20px; margin-bottom: 20px; border-collapse: collapse; height: 66px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 79px; height: 12px;"><span style="font-size: 10pt;"><strong>Operation</strong></span></td>
+<td style="width: 76px; text-align: center; height: 12px;"><span style="font-size: 10pt;"><strong>Best Case</strong></span></td>
+<td style="width: 92px; text-align: center; height: 12px;"><span style="font-size: 10pt;"><strong>Worst Case</strong></span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 79px; height: 10px;"><span style="font-size: 10pt;">Insertion</span></td>
+<td style="width: 76px; text-align: center; height: 10px;"><span style="font-size: 10pt;">O(1)</span></td>
+<td style="width: 92px; text-align: center; height: 10px;"><span style="font-size: 10pt;">O(n)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong><br />Average-Case Runtime&nbsp;for Insertion with Linear Probing</strong></p>
+<p>Given our best-case runtime of O(1) and our worst-case runtime of O(n), the next reasonable question to ask is: what's our average-case runtime? Is is closer to O(n) or O(1)? Is it somewhere in the middle, such as O(log n)?</p>
+<p>To figure that out, let's count the number of comparisons ("read operations") we encountered as we inserted the above elements into our hash table and see what the average number of comparisons was per operation:</p>
+<ul>
+<li>To add Jason to the table, we had to check whether index 1 was empty. It was, and so we added Jason to the hash table at that index after just a single comparison. That's true of the first six keys we inserted into the table, actually.</li>
+<li>To add Michael to the hash table, we checked two indices (5 and 6) in order to find an open spot.</li>
+<li>To add Jack to the hash table, we checked three indices (6, 7, and 8) in order to find an open spot.</li>
+</ul>
+<p>So, the total number of comparisons we performed for all eight insertion operations was 1 + 1 + 1 +&nbsp; 1 + 1 + 1 + 2 + 3 = 11.</p>
+<p>Having gone through 11 comparisons in order to perform 8&nbsp;insertion operations, that's a rate of <sup>11</sup>/<sub>8</sub> = 1.375 comparisons per operation. That's a very small constant number of comparisons. We're getting average runtimes of O(1).</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) The key take-away here is that even though some insertions might be more expensive than others, we'd expect the vast majority of them to require only one or two comparison if we have a good hash function and a fairly uniformly distributed set of keys (inputs), which means that the runtime for insertion averages out to O(1) overall.</p>
+<p>To summarize, our insertion runtimes are:</p>
+<table style="width: 371px; margin-left: 30px; margin-top: 20px; margin-bottom: 20px; border-collapse: collapse; height: 66px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 79px;"><span style="font-size: 10pt;"><strong>Operation</strong></span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;"><strong>Best Case</strong></span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 10pt;"><strong>Average Case</strong></span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;"><strong>Worst Case</strong></span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 79px;"><span style="font-size: 10pt;">Insertion</span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;">O(1)</span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 13.3333px;">O(1)</span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;">O(n)</span></td>
+</tr>
+</tbody>
+</table>
+<p><br /><strong>Additional Data for Average-Case Analysis</strong></p>
+<p>For an additional example, here are the names and hash codes from when I did this demo in one of my previous classes. All nine of these came from actual students in one of my classes a few years ago:</p>
+<table style="margin-left: 30px; margin-top: 20px; margin-bottom: 20px; border-collapse: collapse; height: 191px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 80px;"><span style="font-size: 10pt;"><strong>Name</strong></span></td>
+<td style="width: 90px; text-align: left;"><span style="font-size: 10pt;"><strong>Student ID (hash code)</strong></span></td>
+<td style="width: 105px; text-align: left;"><span style="font-size: 10pt;"><strong>Initial Index<br /></strong></span></td>
+<td style="width: 90px; text-align: left;"><span style="font-size: 10pt;"><strong>Comparisons</strong></span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Chase</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">3918939</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Easton</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1318625</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">5</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Patrick</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9846224</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">4</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Mike</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">8746232</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">2</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Adrian</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9899820</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">0</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Austin</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">8741265</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">5&nbsp; ** Collision **</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">2</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Matthew</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9864733</span></td>
+<td style="text-align: left;"><span style="font-size: 13.3333px;">3</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Alex</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9481227</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">7</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Sebastian</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">4985574</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">4&nbsp; ** Collision **</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">5</span></td>
+</tr>
+</tbody>
+</table>
+<p>That leads to an average of 14/9 &asymp; 1.56 comparisons per operation -- again, a small constant.</p>
+<p>In another section of one of my classes, we had similar results. Again, all nine of these came from actual students in one of my classes a few years ago:</p>
+<table style="margin-left: 30px; margin-top: 20px; margin-bottom: 20px; border-collapse: collapse; height: 191px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 80px;"><span style="font-size: 10pt;"><strong>Name</strong></span></td>
+<td style="width: 90px; text-align: left;"><span style="font-size: 10pt;"><strong>Student ID<br />(hash code)</strong></span></td>
+<td style="width: 105px; text-align: left;"><span style="font-size: 10pt;"><strong>Initial Index</strong></span></td>
+<td style="width: 90px; text-align: left;"><span style="font-size: 10pt;"><strong>Comparisons</strong></span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Matthew</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">6482243</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">3</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Ryan</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9422411</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Eryn</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">8455428</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">8</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Jack</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9631657</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">7</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Jeffrey</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">4912362</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">2</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Steven</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">4681278</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">8&nbsp; ** collision **</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">2</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Josh</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">8492145</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">5</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Ashley</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9812360</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">0</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td><span style="font-size: 10pt;">Charles</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">9841138</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;"> 8&nbsp; ** collision **</span></td>
+<td style="text-align: left;"><span style="font-size: 10pt;">7</span></td>
+</tr>
+</tbody>
+</table>
+<p>That leads to an average of 16/9 &asymp; 1.78 comparisons per operation -- again, a small constant.</p>
+<p><br /><strong>The Impact of Repeated Collisions and the Role of Probability in Hashing</strong></p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Important note!</em></span>) If <em>every</em> student hashed to the same index, inserting all&nbsp;n records would result in an O(n<sup>2</sup>) runtime. (It's that Gauss sum we keep seeing: 1 + 2 + 3 + ... + n.) Even if you have a good hash function, there's no way to get around this if you just happen to get unlucky and encounter a set of inputs that all map to the same index in the hash table.</p>
+<p>I mentioned this in class today: it's totally conceivable that if we polled 10 random students on campus for their student IDs, all 10 of them could have IDs ending in the same number -- in which case they'd all collide in our hash table. In that unlucky situation, our nice O(1) runtimes go out the window. There's no way to guard against an unlucky set of inputs, but notice that the probability of that happening is very low. Probability is working in our favor here and plays a pivotal role in keeping our collision count low -- both in this example and as well as in hashing more generally.</p>
+<p><strong><br />Search with Linear Probing</strong></p>
+<p>Now, consider the implications that linear probing has for search (retrieval) in the hash table we constructed above. Here's the table again, for your convenience:</p>
+<table style="margin-left: 15px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Jason</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Rushank</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Anjali</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Xander</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Michael</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Shreya</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Jack</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Ila</span></td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+</tr>
+</tbody>
+</table>
+<p>What if we want to look up Jack, whose hash code is 6? We have to perform linear probing to search for that element. We'll end up looking at indices 6, 7, and 8 before we stop searching.</p>
+<p>Both insertion and retrieval with linear probing are O(n) operations in the worst case, which happens when we have lots of collisions or big clusters of data with no gaps, and we have to go through all n elements in the hash table before we find what we're looking for. With search, we still have best-case runtimes of O(1) and expected (or average-case) runtimes of O(1).</p>
+<p>To summarize:</p>
+<table style="width: 371px; margin-left: 30px; margin-top: 20px; margin-bottom: 20px; border-collapse: collapse; height: 100px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 79px;"><span style="font-size: 10pt;"><strong>Operation</strong></span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;"><strong>Best Case</strong></span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 10pt;"><strong>Average Case</strong></span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;"><strong>Worst Case</strong></span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 79px;"><span style="font-size: 10pt;">Insertion</span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;">O(1)</span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 13.3333px;">O(1)</span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;">O(n)</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 79px;"><span style="font-size: 10pt;">Search</span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;">O(1)</span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 13.3333px;">O(1)</span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;">O(n)</span></td>
+</tr>
+</tbody>
+</table>
+<p>With linear probing, we might observe that there are three conditions that could cause us to stop searching for a key:</p>
+<ol>
+<li>We find the key we're looking for.</li>
+<li>We loop through every index in the hash table without finding the key we're looking for or any empty cells.</li>
+<li>We find an empty space in the table, since a key would never skip an empty space during insertion and end up at a later index in the array.*</li>
+</ol>
+<p style="margin-left: 30px; margin-top: 25px; margin-bottom: 25px; padding: 10px; width: 640px; background-color: #eeeeee; border-left: 3px solid #888888;">(*)<em> The claim above in (3) about being able to stop when we see an empty space is actually quite problematic if we allow deletion from our hash table!<br /><br />For example, suppose we delete "Michael" from the table we came up with today and then search for "Jack" (starting at index 6). We don't want to stop our search upon seeing that index 6 is empty. We need to keep probing forward to find Jack at index 8.<br /><br />This has rather concerning implications for search. If we have to keep probing forward any time we see an empty cell, then our search runtime for something that is not in the table will always be O(n); we'll have to look at every index in the array before determining that our target isn't there, because every cell is either empty (which causes us to keep searching) or some element other than what we're searching for (which also causes us to keep searching).<br /><br />Can you see a way to fix this problem? How can we allow deletion but still allow our search algorithm to stop searching when it sees an empty cell? Note that rearranging the elements in our hash table any time we perform a deletion wouldn't be viable (at least not if we care about efficiency) because any collisions that happened prior to the deletion could have caused elements to end up very far away from the original positions they mapped to with the (hashCode % tableSize) formula. Recovering those elements and trying to undo all the chain reactions caused by various collisions that got them there would be a huge mess.<br /><br /><span style="font-size: 8pt; color: #000000;"><strong>Highlight for a solution:</strong> <span style="background-color: #ced4d9; color: #ced4d9;">One potential solution to this problem is to use some sort of flag to mark a cell as "dirty" whenever we delete an element from the table. A "dirty" cell is empty in the sense that we can insert a new element at that index. So, when performing an insertion, if we hit a "dirty" cell, we stop and insert at that index. However, if we encounter a "dirty" cell while searching the table for an element, we don't stop; we keep probing forward, because it's possible the thing we're looking for was inserted into the hash table at a time when that dirty cell was occupied, causing the element we're looking for to end up in a cell after that one. This presents a new problem, which is that if we perform a lot of deletions, we could end up with a lot of "dirty" cells in our hash table, and those can slow down our search runtimes. A potential workaround there is to simply keep track of what proportion of cells in a hash table are "dirty," and if that proportion gets too high, simply re-insert all the remaining elements into a fresh hash table.</span></span></em><em></em></p>
+<p><strong><br />Clustering and Table Size with Linear Probing</strong></p>
+<p>One of the problems we keep seeing with linear probing is that if we end up with all our elements in one big cluster, a single search or insertion operation can incur an O(n) runtime.</p>
+<p>One trick for getting around that is to maintain an array of length 2n, which is still O(n) space complexity. By using a table of length 2n, we expect our elements to spread out a bit more and have breathing room interspersed between them. Having some gaps spread throughout our array means that insertion and search will never result in O(n) runtimes.</p>
+<p>For example, suppose we create an array of length 16 to hold the 8 student records from above. For posterity, here are those hash codes again:</p>
+<table style="width: 396px; margin-left: 30px; margin-top: 20px; margin-bottom: 20px; border-collapse: collapse; height: 246px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;"><strong>Name</strong></span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;"><strong>Student ID<br />(hash code)</strong></span></td>
+<td style="width: 168px; text-align: center;">
+<span style="font-size: 10pt;"><strong>initial index in hash table<br /></strong></span><span style="font-size: 10pt;"><strong>(hash code % array length)</strong></span>
+</td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Jason</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06846021</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">5</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Shreya</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06682497</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Ila</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06233639</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">7</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Xander</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06194315</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">11</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Anjali</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06335094</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">6</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Rushank</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06028532</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">4</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Michael</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06629695</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">15</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Jack</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06211096</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">8</span></td>
+</tr>
+</tbody>
+</table>
+<p>Here's what we get if we insert those into a table of length 16:</p>
+<table style="margin-left: 15px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Shreya</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Rushank</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Jason</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Anjali</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Ila</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Jack</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Xander</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Michael</span></td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">10</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">11</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">12</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">13</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">14</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">15</td>
+</tr>
+</tbody>
+</table>
+<p>Notice that there's some breathing room in our table now. That means that no insertion or search operation can cause us to probe through <span style="text-decoration: underline;"><strong>all eight</strong></span> elements. Consider this:</p>
+<ul>
+<li>If our next insertion maps to index 0, 2, 3, 9, 10, 12, 13, or 14, we insert immediately without any further probing. That's as fast as insertion can get, and there's a 50% chance of that happening.</li>
+<li>If our next insertion maps to index 1, 8, 11, or 15, we have to look at a total of two cells in order to find an empty one (the one we map to initially and the one after that, which is empty). That's also still very fast, and we have a 25% chance of that happening.</li>
+<li>To varying degrees, landing on any of the other cells requires more work than the two cases listed above. Landing on index 6 initially is more expensive than landing on index 8, and landing on index 4 initially is even more expensive still. We have only a 25% chance that our next insertion will land on one of those more expensive cells initially (indices 4, 5, 6, or 7).</li>
+</ul>
+<p>In contrast, consider the following table, which is almost full:</p>
+<table style="margin-left: 15px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Frank</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 8pt;">Tamsen</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Hanan</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">&nbsp;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Arya</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Asha</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Dierdre</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Ptolemy</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Alexa</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;"><span style="font-size: 10.6667px;">Fred</span></td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+</tr>
+</tbody>
+</table>
+<ul style="margin-top: 10px;">
+<li>The only insertion that won't involve any probing is if we map to index 3 initially. We have only a 10% chance of that happening -- much lower than the 50% in the larger table above.</li>
+<li>Similarly, the only insertion that looks at exactly two cells before stopping is where we map to index 2 and stop probing at index 3. Again, we have only a 10% chance that our next insertion will do that, which is much lower than the 25% chance we had with the larger table.</li>
+<li>All other indices result in slower insertions than the two cases listed above. We have an 80% chance of encountering one of those indices (compared to only a 25% chance of that happening in the larger table), and some of those probing operations would be more expensive than the worst probing operation we could encounter with the larger table.</li>
+</ul>
+<p>More formally, we could compute the <strong>expected value</strong> of the number of cells we will have to examine in the next insertion operation. For the first table, with all its breathing room, our next insertion is expected to examine just <strong>2.125 cells</strong> in order to find an open position. In the latter table, we expect to have to examine <strong>5.5 cells</strong>, which is more than double the work required for the previous one.&nbsp;</p>
+<p>In general, keeping our hash table between 25% and 50% full can help ensure that we are less likely to encounter expensive, O(n) insertion or search operations.</p>
+<p><strong><br />Separate Chaining (Collision Resolution Policy 2 of 2)</strong></p>
+<p>After discussing linear probing at length, we turned to another collision resolution policy: separate chaining (sometimes called "chaining").</p>
+<p>The idea behind separate chaining is to maintain an array of linked lists. If two elements collide, rather than having to do any probing, we can simply add those elements to the same linked list. For example, using the student records from today's lecture with an array of 10 linked lists, we would get the following:</p>
+<p style="margin-left: 30px; margin-top: 20px;"><span style="font-size: 10pt;"><strong>Records and Hash Codes:</strong></span></p>
+<table style="width: 396px; margin-left: 30px; margin-bottom: 20px; border-collapse: collapse; height: 246px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;"><strong>Name</strong></span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;"><strong>Student ID<br />(hash code)</strong></span></td>
+<td style="width: 168px; text-align: center;">
+<span style="font-size: 10pt;"><strong>initial index in hash table<br /></strong></span><span style="font-size: 10pt;"><strong>(hash code % array length)</strong></span>
+</td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Jason</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06846021</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">1</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Shreya</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06682497</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">7</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Ila</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06233639</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">9</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Xander</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06194315</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">5</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Anjali</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06335094</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">4</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Rushank</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06028532</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">2</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Michael</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06629695</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">5</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 108px; text-align: center;"><span style="font-size: 10pt;">Jack</span></td>
+<td style="width: 98px; text-align: center;"><span style="font-size: 10pt;">06211096</span></td>
+<td style="width: 168px; text-align: center;"><span style="font-size: 10pt;">6</span></td>
+</tr>
+</tbody>
+</table>
+<p style="margin-left: 30px; margin-top: 30px;"><span style="font-size: 10pt;"><strong>Separate Chaining Diagram:</strong></span></p>
+<table style="margin-left: 30px; margin-bottom: 25px; border-collapse: collapse; height: 448px;" border="0" cellpadding="0">
+<tbody>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">0</span></td>
+<td style="background-color: #888888; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><strong><span style="font-size: 10pt; color: #ffffff;">nullptr</span></strong></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">1</span></td>
+<td style="background-color: #eeeeee; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="font-size: 13.3333px;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="padding: 0px; margin: 0px; font-size: 14pt;">&rarr;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px;"><span style="font-size: 10pt;">Jason&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">2</span></td>
+<td style="background-color: #eeeeee; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="font-size: 13.3333px;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="padding: 0px; margin: 0px; font-size: 14pt;">&rarr;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px;"><span style="font-size: 10pt;">Rushank&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">3</span></td>
+<td style="background-color: #888888; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="color: #ffffff;"><strong><span style="font-size: 10pt;">nullptr </span></strong></span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">4</span></td>
+<td style="background-color: #eeeeee; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="font-size: 13.3333px;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="padding: 0px; margin: 0px; font-size: 14pt;">&rarr;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px;"><span style="font-size: 10pt;">Anjali&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">5</span></td>
+<td style="background-color: #eeeeee; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="font-size: 13.3333px;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="padding: 0px; margin: 0px; font-size: 14pt;">&rarr;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 120px;"><span style="font-size: 10pt;">&nbsp;Michael</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="padding: 0px; margin: 0px; font-size: 14pt;">&rarr;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 120px;"><span style="font-size: 10pt;">&nbsp;Xander</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">6</span></td>
+<td style="background-color: #eeeeee; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="font-size: 13.3333px;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="padding: 0px; margin: 0px; font-size: 14pt;">&rarr;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;Jack</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">7</span></td>
+<td style="background-color: #eeeeee; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="font-size: 13.3333px;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="padding: 0px; margin: 0px; font-size: 14pt;">&rarr;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;Shreya</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">8</span></td>
+<td style="background-color: #888888; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="color: #ffffff;"><strong><span style="font-size: 10pt;">nullptr </span></strong></span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+<tr style="height: 45px;">
+<td style="border: 0px; text-align: center; padding: 10px; height: 45px;"><span style="font-size: 10pt;">9</span></td>
+<td style="background-color: #eeeeee; border: 1px solid black; text-align: center; padding: 10px; height: 45px; width: 70px;"><span style="font-size: 13.3333px;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="padding: 0px; margin: 0px; font-size: 14pt;">&rarr;</span></td>
+<td style="border: 1px solid black; text-align: center; padding: 10px;"><span style="font-size: 10pt;">Ila&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 0px; margin: 0px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+<td style="border: 0px; text-align: center; padding: 10px;"><span style="font-size: 10pt;">&nbsp;</span></td>
+</tr>
+</tbody>
+</table>
+<p>The array itself does not hold any student records. Each cell in the array holds a pointer to the head of a linked list. There are 10 separate linked lists (three of which are empty, as indicated by the <span class="code-chonk">nullptr</span> pointers). The gray boxes in the diagram above are array cells (head pointers). The white boxes are linked list nodes.</p>
+<p>Here are some key notes about separate chaining:</p>
+<ul>
+<li>When we encounter a collision, we simply throw our elements into the same linked list. Since a linked list can hold multiple elements, there is no need to probe forward to a different cell in the array.</li>
+</ul>
+<ul>
+<li>New elements typically get inserted at the head of a linked list. There are two reasons for this: (1) this gives us a fast, O(1) insertion without any need to maintain a tail pointers, and (2) elements that have been accessed recently tend to be more likely to be accessed again sometime soon, so having those at the beginning of our lists could help with our runtimes.</li>
+</ul>
+<ul>
+<li>As an aside, I mentioned that we could also order our linked lists by access frequency. To do that, we would add a counter to each node that we increment every time that record is looked up in our hash table, and we would stop every now and then to sort our nodes by those access counts.</li>
+</ul>
+<ul>
+<li>Keeping these lists short is essential for maintaining good runtimes with separate chaining. If any one linked list gets too long, traversing it becomes a slow operation.</li>
+</ul>
+<ul>
+<li>Related to the previous point: we typically keep track of a <strong>load factor</strong> when using separate chaining. The load factor is n/b, where <em>n</em> is the number of elements in our hash table and <em>b</em> is the number of "buckets" (or linked lists). This tells us the expected number of elements per bucket. In the table above, our load factor is 8/10 = 0.8. If a load factor is too high, our lists are getting too long. If a load factor is too low, we might have an excessive number of empty linked lists, meaning we would have a lot of wasted space in our array of pointers.</li>
+</ul>
+<ul>
+<li>With separate chaining, it's still possible to get unlucky and have all our elements collide into the same bucket. In that case, we end up with one long linked list, which leads to O(n) search, insertion, and deletion runtimes.</li>
+</ul>
+<p><strong><br />Runtimes for Insertion, Search, and Deletion with Separate Chaining</strong></p>
+<p>Following are the runtimes for hash table operations with separate chaining. The average-case runtimes of O(1) are based on the expectation that each linked list will contain a small constant number of elements.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Important note!</em></span>) We sometimes articulate these runtimes as O(n/b) (referring to the load factor). We expect this to be a small constant, however, which is where the O(1) runtimes come from in the following table. The O(n) runtimes correspond to situations where all our elements end up colliding into a single bucket.</p>
+<table style="width: 371px; margin-left: 30px; margin-top: 20px; margin-bottom: 20px; border-collapse: collapse; height: 136px;" border="0" cellpadding="3">
+<tbody>
+<tr style="border-bottom: 1px solid #000000; background-color: #eeeeee;">
+<td style="width: 79px;"><span style="font-size: 10pt;"><strong>Operation</strong></span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;"><strong>Best Case</strong></span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 10pt;"><strong>Average Case</strong></span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;"><strong>Worst Case</strong></span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 79px;"><span style="font-size: 10pt;">Insertion</span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;">O(1)</span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 13.3333px;">O(1)</span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;">O(n)*</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 79px;"><span style="font-size: 10pt;">Search</span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;">O(1)</span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 13.3333px;">O(1)</span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;">O(n)</span></td>
+</tr>
+<tr style="border-bottom: 1px solid #000000;">
+<td style="width: 79px;"><span style="font-size: 10pt;">Deletion</span></td>
+<td style="width: 76px; text-align: center;"><span style="font-size: 10pt;">O(1)</span></td>
+<td style="width: 103px; text-align: center;"><span style="font-size: 13.3333px;">O(1)</span></td>
+<td style="width: 92px; text-align: center;"><span style="font-size: 10pt;">O(n)</span></td>
+</tr>
+</tbody>
+</table>
+<p style="margin-left: 30px; margin-top: 25px; margin-bottom: 25px; padding: 10px; width: 640px; background-color: #eeeeee; border-left: 3px solid #888888;">(*)<em> It might seem counterintuitive to say the worst-case runtime for inserting at the head of a linked list can incur an O(n) runtime, but that's because we typically disallow the insertion of duplicate elements in a hash table. So, when performing an insertion, we first need to search the linked list we're inserting into in order to make sure it doesn't already contain the element we're inserting. If our list contains all of the table's n elements, the search operation that precedes our insertion can have an O(n) runtime. If we are willing to allow the insertion of duplicates into a hash table for some reason, we can achieve worst-case insertion runtimes of O(1).</em></p>
+<p><strong><br />Properties of Good Hash Functions</strong></p>
+<p>At the very end of today's lecture, I mentioned a few important properties of good hash functions. While the design of hash functions falls outside the scope of this class, having a good, working understanding these properties is essential to understanding how and why hashing is so awesome:</p>
+<ol style="margin-top: 10px;" start="1">
+<li><strong>A hash function should be deterministic.</strong></li>
+</ol>
+<ul style="list-style-type: none;">
+<li>A hash function must be <em>deterministic</em> (i.e., given the same input, a hash function must always produce the same output). A non-deterministic hash function (one that involves random number generation, for example) would be disastrous. If it mapped a record to index 3 upon insertion, but then mapped a record to index 8 when we went to look it up later, we'd lose our ability to efficiently look up the keys we had inserted into our hash tables.</li>
+</ul>
+<ol style="margin-top: 10px;" start="2">
+<li><strong>Given a uniform set of inputs, a hash function should produce a uniform set of hash codes.</strong></li>
+</ol>
+<ul style="list-style-type: none;">
+<li>One of the most important properties I mentioned is that a good hash function will produce a nice, uniform distribution of hash codes when given a nice, uniform distribution of inputs to process. Notice that if we gathered up 10 Stanford students at random, we'd expect approximately one of them to have a student ID ending in 0, one to have an ID ending in 1, one to have an ID ending in 2, and so on. Assuming Stanford IDs are uniformly distributed in terms of their ones digits (which I strongly expect to be the case), our hash function would put about 10% of students at index 0 in the array, 10% at index 1, 10% at index 2, and so on.</li>
+</ul>
+<ul style="list-style-type: none;">
+<li>A bad hash function is one that would map, say, 70% of students to index 1 and 30% of students to index 8. That would result in a&nbsp;<em>lot&nbsp;</em>of collisions, which leads to sucky runtimes. If we insert <em>n</em> elements into a hash table and they all collide to the same position, we end up with an overall runtime of O(n<sup>2</sup>) to insert all those elements.</li>
+</ul>
+<ol style="margin-top: 10px;" start="3">
+<li><strong>The function should produce a large range of values.</strong></li>
+</ol>
+<ul style="list-style-type: none;">
+<li>A good hash function should also produce a large range of values so that it can be used with hash tables that are both large and small. If we create a hash table of length 10,000 and insert thousands of keys into it, but our hash function only produces values 0 through 9, then we'll have a <em>lot</em> of collisions, which will drastically slow down the runtimes of our insertion operations. (Recall that when a hash function produces a hash value that exceeds the length of your array, we always mod that hash value by the array length to figure out what index to go to.)</li>
+</ul>
+<ul style="list-style-type: none;">
+<li>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Important note!</em></span>) It's not uncommon for hash functions to allow the hash codes they produce to grow so large that they actually cause integer overflow. For that reason, it can be dangerous to simply mod a hash code by our hash table length and assume we have a valid array index. Depending on the language we're in, modding a negative integer by a positive integer could yield a negative result. (I believe that's the case for C++, C, and Java, but not Python.) If we were coding up an industry-grade implementation of hash tables, we would want to guard against that and avoid trying to access a negative array index.</li>
+</ul>
+<ol style="margin-top: 10px;" start="4">
+<li><strong>The function should produce very different hash codes for similar inputs.</strong></li>
+</ol>
+<ul style="list-style-type: none;">
+<li>The utility of this property is perhaps a bit more obscure than the others. In the real world, data tends to cluster. So, if we're entering a bunch of data into a hash table, we might expect to encounter several values that are close to one another in that dataset. Having those values spread out across the hash table could be useful in avoiding clusters in our table -- and remember, clusters lead to slow runtimes.</li>
+</ul>
+<p><strong><br />HashSet and HashMap</strong></p>
+<p>I mentioned in class that the Stanford C++ Library has <span class="code-chonk">HashSet</span> and <span class="code-chonk">HashMap</span> classes:</p>
+<ul>
+<li><a class="inline_disabled" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/HashSet" target="_blank" rel="noopener">Stanford C++ HashSet documentation</a></li>
+<li><a class="inline_disabled" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/HashMap" target="_blank" rel="noopener">Stanford C++ HashMap documentation</a></li>
+</ul>
+<p>These classes are powered using hash tables (as opposed to the balanced BSTs that drive the <span class="code-chonk">Set</span> and <span class="code-chonk">Map</span> classes). They offer us O(1) runtimes (as opposed to the logarithmic runtimes we see with various <span class="code-chonk">Set</span> and <span class="code-chonk">Map</span> operations), but the tradeoff here is that when we iterate over the elements in a <span class="code-chonk">HashSet</span> or the keys in a <span class="code-chonk">HashMap</span>, they are not guaranteed to be in sorted order.</p>
+<p><br /><strong>A Cautionary Note About the Expression of Hash Runtimes</strong></p>
+<p>Note that people often present the runtimes for insertion, search, and deletion operations on hash tables as O(1) without further qualification, despite the fact that our worst-case runtimes for those operations could be O(n). This is a widely used convention, which breaks from the tradition of defaulting to the worst case when presenting an unqualified runtime. Such is the strength of our expectation that these operations will tend to be O(1) on average.</p>
+<p>These O(1) runtimes also have a hidden assumption: that the hash function we're calling is also O(1). Calling our hash function is requisite for each insertion, search, and deletion operation, and so the runtimes for those operations must be <em>at least</em> as bad as the runtime for our hash function. Many hash functions do, in fact, have O(1) runtimes, but a common exception is with strings. Many string hashing functions loop through all <em>k</em> characters in a string, resulting in (at least) O(k) runtimes just to produce a hash code. The process that follows&nbsp;<em>after</em> we have our hash code might be O(1), but if calling our hash function was O(k), the overall cost of our insertion, search, or deletion operation in that case is also O(k).</p>
+<p><br /><strong>Further Exploration</strong></p>
+<p>Hashing is everywhere in CS, and with this one lecture, we have only scratched the surface of this complex, beautiful, and powerful topic. If you want to learn more about hashing, here are some directions you could go in:</p>
+<ul>
+<li><a class="inline_disabled" href="https://en.wikipedia.org/wiki/Cryptographic_hash_function" target="_blank" rel="noopener">Cryptographic hash functions.</a> Read up on how hashing is used in cryptographic applications, including password storage. Check out the notes on that Wikipedia page about checksums, digital fingerprints, MD5, and SHA-256, as well.</li>
+<li>Hash table expansion. Read up on hash table expansion. It's not particularly complex, but when we expand a hash table, we end up having to re-insert all our elements into the table from scratch. It's an expensive operation, but we tend to at least double the length of a hash table with each expansion, so it doesn't take many expansions for them to grow quite large.</li>
+<li>Deleted element markers. Look into how deletion works with linear probing. There are some comments about that in today's notes.</li>
+<li><a class="inline_disabled" href="https://en.wikipedia.org/wiki/Hash_function" target="_blank" rel="noopener">Hash functions.</a> Read more about hash functions. Consider looking up common approaches to hashing strings.</li>
+<li>Quadratic probing. Read up on quadratic probing, a collision resolution policy that is very similar to linear probing. What advantage does quadratic probing have over linear probing? If you look into this topic, you'll also bump into an interesting proof related to the ability of quadratic probing to find an empty cell (if one exists) when attempting to perform an insertion.</li>
+<li>Code up hash tables! It shouldn't be hard to find a good hash table assignment online, or if you're feeling ambitious, you could just code them up yourself from scratch. Consider plugging different hash functions into your hash tables and performing some experiments where you keep track of the average number of cells probed per insertion/search/deletion operation to help evaluate how good those various hash functions are.</li>
+</ul>
+<p><strong><br />What's next?</strong></p>
+<p><span>On Friday, we'll talk about another super important data structure: graphs!</span></p>
+<p><span>Next week, we have a pretty chill schedule. Monday is a flex day where I'll bring in a topic related to the material we've been covering this quarter, but which won't be heavily tested on the final exam. Wednesday will be a wrap-up day where we tie up loose ends and talk about end-of-quarter logistics. Next Friday, Julie, Clinton, and I will host an ask-me-anything session where you can ask us your burning questions about CS, Stanford, industry, life, the universe, and everything.</span></p>
+<p><strong><br />Exercises</strong></p>
+<p>1. Insert the following elements into the hash table below using <span style="text-decoration: underline;"><strong>linear probing</strong></span>. Separately, insert the keys into a hash table using <span style="text-decoration: underline;"><strong>separate chaining</strong></span>. In both cases, use a table of length 10 (which means you will have to mod the hash code by 10 to kick off the insertion process).</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 500px; background-color: #fff9e7;"><strong>int</strong> myHash(<strong>int</strong> key)<br />{<br /> &nbsp; <strong>return</strong> (key - 31) * 2;<br />}</pre>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><strong>Keys to insert:</strong>&nbsp;37, 61, 39, 46, 87, 92</span></p>
+<table style="margin-left: 40px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+</tr>
+</tbody>
+</table>
+<p>2. Insert the following elements into the hash table below using <span style="text-decoration: underline;"><strong>linear probing</strong></span>. Separately, insert the keys into a hash table using <span style="text-decoration: underline;"><strong>separate chaining</strong></span>. In both cases, use a table of length 11 this time (which means you will have to mod the hash code by 11 to kick off the insertion process).</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 500px; background-color: #fff9e7;"><strong>int</strong> myHash(<strong>string</strong> s)<br />{<br /> &nbsp; <strong>if</strong> (s == "")<br />      <strong>return</strong> 0;<br /> &nbsp; <strong>else</strong><br />      <strong>return</strong> (<strong>int</strong>(tolower(s[0]) - 'a') + 1);<br />}</pre>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><strong>Keys to insert:</strong> "abacus", "dwindle", "fox", "goose", "bag", "beans", "ferocious", "delicate"</span></p>
+<table style="margin-left: 40px; margin-top: 15px; border-collapse: collapse;" border="0" cellpadding="10">
+<tbody>
+<tr>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+<td style="border: 1px solid black; text-align: center; padding: 10px; width: 50px;">&nbsp;</td>
+</tr>
+<tr>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">0</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">1</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">2</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">3</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">4</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">5</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">6</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">7</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">8</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">9</td>
+<td style="border: 0px; text-align: center; padding: 0 10px 10px 10px; font-size: 11px;">10</td>
+</tr>
+</tbody>
+</table>
+<p>3. Suppose we want to use the hash function from the previous question to insert a much larger set of strings into our hash table (some arbitrarily large number of strings, <em>n</em>), and so we create a hash table whose initial length is O(n). Is the hash function in this problem a good hash function for that purpose? Why or why not?</p>
+<p>4. If we're using linear probing, what is the <span style="text-decoration: underline;"><strong>worst-case</strong></span> big-oh runtime for inserting a single element into a hash table that already contains <em>n</em> elements? Briefly describe the specific situation that leads to this worst-case performance. What would be the best-case runtime for inserting <em>n</em> distinct elements into an initially empty hash table? What would be the worst-case runtime? What are the answers to this question if we instead us separate chaining?</p>
+<p>5. Using the names and student IDs from today's notes, trace through the insertion of those student records into hash tables of length 10 using linear probing and separate chaining. Verify the number of comparisons for each insertion, and verify the calculations for the average number of comparisons per operation.</p>
+<p>6. Knowing that hash tables give us O(1) runtimes and O(n) space complexity, why would we ever want to use any of the other data structures we've covered this quarter? In particular, can you think of anything that a linked list can do that a hash table won't do for us? What about a balanced BST? What about a priority queue?</p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-29
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

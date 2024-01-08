@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Memory Management, Pointers, and Linked Lists</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 6. Memory Management, Pointers, and Linked Lists</h1>
+ <p class="subtle-heading">Thursday November 9</p>
+<hr>
+
+<p class="attribution">
+Section materials curated by Clinton Kwarteng, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><style>
+.node {
+	border-style: solid;
+	border-width: 3px;
+    font-size: 130%;
+    text-align: center;
+    padding: 10px;
+    width:10%;
+}
+</style>
+
+<p>This week’s section exercises delve deep into the details of pointers and memory management in C++. This is an opportunity to get into the nitty gritty of things and to get closer towards gaining ultimate power over your computer! You will also gain valuable practice with linked lists, which are a new way of storing and organizing data that takes advantage of the power of pointers. Linked lists are definitely a tricky subject, but if you draw lots of diagrams and really nail down your pointer fundamentals, you'll be on the road to success. The topics covered in section this week will show up on assignment 6.</p>
+
+<p>Remember that every week we will also be releasing a Qt Creator project containing starter code and testing infrastructure for that week's section problems. When a problem name is followed by the name of a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the Qt Creator project. Here is the zip of the section starter code:</p>
+
+<p>📦 <a href="section6_starter.zip">Starter project</a></p>
+
+<p><strong>For all the problems in this handout, assume the following structures have been declared:</strong></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Node</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="1-some-pointers-on-cats">1) Some Pointers on Cats</h2>
+<p><em>Topics: Pointer tracing and memory diagrams</em></p>
+
+<p>Trace through the following function and draw the program’s memory at the designated spot. Indicate which variables are on the stack and which are on the heap, and indicate orphaned memory. Indicate with a question mark (?) memory that we don’t know the values of.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Lion</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">roar</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="o">*</span><span class="n">meow</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">purr</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">Savanna</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">giraffe</span><span class="p">;</span>
+	<span class="n">Lion</span> <span class="n">cat</span><span class="p">;</span>
+	<span class="n">Lion</span> <span class="o">*</span><span class="n">kitten</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Lion</span> <span class="o">*</span><span class="nf">explore</span><span class="p">(</span><span class="n">Savanna</span> <span class="o">*</span><span class="n">prairie</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">Lion</span> <span class="o">*</span><span class="n">leader</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">prairie</span><span class="o">-&gt;</span><span class="n">cat</span><span class="p">);</span>
+	<span class="n">leader</span><span class="o">-&gt;</span><span class="n">meow</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">;</span>
+	<span class="o">*</span><span class="p">(</span><span class="n">leader</span><span class="o">-&gt;</span><span class="n">meow</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+	<span class="n">prairie</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Savanna</span><span class="p">;</span>
+	<span class="n">prairie</span><span class="o">-&gt;</span><span class="n">cat</span><span class="p">.</span><span class="n">roar</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+	<span class="n">prairie</span><span class="o">-&gt;</span><span class="n">kitten</span> <span class="o">=</span> <span class="n">leader</span><span class="p">;</span>
+	<span class="n">prairie</span><span class="o">-&gt;</span><span class="n">kitten</span><span class="o">-&gt;</span><span class="n">roar</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+	<span class="n">prairie</span><span class="o">-&gt;</span><span class="n">kitten</span><span class="o">-&gt;</span><span class="n">meow</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">prairie</span><span class="o">-&gt;</span><span class="n">kitten</span><span class="o">-&gt;</span><span class="n">purr</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+	<span class="n">leader</span><span class="o">-&gt;</span><span class="n">purr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+	<span class="k">return</span> <span class="n">leader</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">kittens</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">Savanna</span> <span class="o">*</span><span class="n">habitat</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Savanna</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+	<span class="n">habitat</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">giraffe</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+	<span class="n">habitat</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">kitten</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+	<span class="n">habitat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">habitat</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+	<span class="n">habitat</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">kitten</span> <span class="o">=</span> <span class="n">explore</span><span class="p">(</span><span class="n">habitat</span><span class="p">);</span>
+	<span class="n">habitat</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">kitten</span><span class="o">-&gt;</span><span class="n">roar</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+	
+	<span class="c1">// DRAW THE MEMORY AS IT LOOKS HERE</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="showtime" when="2023-11-10T18:00:00-07:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#segfault")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>Orphaned memory (memory on the heap that we no longer have access to but that was not freed) is represented with dotted lines. For a full walkthrough of the
+solution, check out: <a href="https://tinyurl.com/CatsPointers">https://tinyurl.com/CatsPointers</a>.</p>
+
+<p><img src="img/cats.png" alt="Memory diagram" width="80%" /></p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-whats-the-code-do">2) What's the Code Do?</h2>
+
+<p>For each of the following diagrams, draw a picture of what the given nodes would look like after the given line of code executes. Does any memory get orphaned as a result of the operations? Assume the <code class="language-c++ highlighter-rouge"><span class="n">Node</span></code> struct is the same as struct covered in lecture that stores integers.</p>
+
+<p><strong>Diagram 1</strong></p>
+
+<p><img src="img/list1.png" alt="This image is of a linked list data structure with 2 total nodes. From left to right, the variable link points to a node which contains data of 1. This node then points to a node with data 2. The node with data 2 points to nothing (its next field is null)" width="50%" /></p>
+
+<p><strong>Code Snippet 1</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">;</span>
+<span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>Diagram 2</strong></p>
+
+<p><img src="img/list2.png" alt="This image is of a linked list data structure with 2 total nodes. From left to right, the variable link points to a node which contains data of 1. This node then points to a node with data 2. The node with data 2 points to nothing (its next field is null)" width="50%" /></p>
+
+<p><strong>Code Snippet 2</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p><strong>Example 1</strong></p>
+
+<p><img src="img/listsoln1.png" alt="This image is of a linked list data structure with 2 total nodes. From left to right, the variable link points to a node which contains data of 1. This node then points to a node with data 3. The node with data 3 points to nothing (its next field is null). There is also one orphaned node with data 2 that is not pointed to by anything else." width="35%" />
+This code produces one orphaned node with data 2.</p>
+
+<p><strong>Example 2</strong></p>
+
+<p><img src="img/listsoln2.png" alt="This image is of a linked list data structure with 2 total nodes. From left to right, the variable link points to a node which contains data of 1. This node then points to a node with data 2. The node with data 2 points to nothing (its next field is null). There is also one orphaned node with data 3 that is not pointed to by anything else." width="35%" />
+This code produces one orphaned node with data 3.</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-all-out-of-sorts-sortedcpp">3) All out of Sorts (<code class="language-c++ highlighter-rouge"><span class="n">sorted</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+<p>Write a function that takes in a pointer to the front of a linked list of integers and returns whether or not the list that's pointed to is in sorted (nondecreasing) order. An empty list is considered to be sorted. You should implement your code to match the following prototype</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isSorted</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">front</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isSorted</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">front</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">front</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Node</span><span class="o">*</span> <span class="n">current</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&gt;</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="4-braiding-a-linked-list-braidcpp">4) Braiding a Linked List (<code class="language-c++ highlighter-rouge"><span class="n">braid</span><span class="p">.</span><span class="n">cpp</span></code>)</h2>
+
+<p>Write a function braid that takes a linked list and weaves the reverse of that list into the original. (You will need to create new nodes.) Here are a few examples:</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">3</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre></div>  </div>
+</div>
+
+<p>You should implement your code to match the following prototype</p>
+
+<div align="center">
+  <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">braid</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p><em>Bonus</em>: This one also has an interesting recursive solution.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">braid</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">front</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="n">reverse</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Node</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span> <span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">newNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span>
+        <span class="n">newNode</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">;</span> 
+        <span class="n">reverse</span> <span class="o">=</span> <span class="n">newNode</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// reverse now addresses a memory-independent copy of the original list,</span>
+    <span class="c1">// where all of the nodes are in reverse order.</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Node</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">front</span><span class="p">;</span> <span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Node</span> <span class="o">*</span><span class="n">next</span> <span class="o">=</span> <span class="n">reverse</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">reverse</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">;</span>
+        <span class="n">reverse</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-08
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

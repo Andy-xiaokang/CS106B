@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Debugging warmup</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Debugging warmup</h1>
+
+<hr>
+
+<p class="attribution">
+Warmup from Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><style>
+.language-output { color: #CC0000; }
+</style>
+
+<p class="w-50 mx-auto border p-1"><img src="https://wizardzines.com/comics/understand-can-fix/understand-can-fix.png" alt="" />
+<small><a href="https://wizardzines.com/comics/understand-can-fix">Julia Evans</a></small></p>
+
+<p>This exercise will add a few new debugger tricks to your repertoire that will come in handy for this assignment and into the future.</p>
+
+<h2 id="debugging-objects">Debugging objects</h2>
+
+<p>This warmup exercise uses a bouncing ball simulation. The files <code class="language-c++ highlighter-rouge"><span class="n">ball</span><span class="p">.</span><span class="n">h</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">ball</span><span class="p">.</span><span class="n">cpp</span></code> define a <code class="language-c++ highlighter-rouge"><span class="n">Ball</span></code> class that models a ball bouncing in a window. The member variables for a ball include its <code class="language-c++ highlighter-rouge"><span class="n">x</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">y</span></code> position, its velocity on both axes, and the window where the ball is drawn.</p>
+
+<p>First, look over the code to get acquainted. Each ball is created with an ID number that is used as the label when drawing the ball. The ID number helps identify which ball is which in the drawing.</p>
+
+<p>There is one provided test for the <code class="language-c++ highlighter-rouge"><span class="n">Ball</span></code> class. This test creates a Vector of many ball objects and runs an animation loop to repeatedly move and redraw each ball.</p>
+
+<p>Run the program and select the tests for <code class="language-c++ highlighter-rouge"><span class="n">ball</span><span class="p">.</span><span class="n">cpp</span></code>. A new window pops up and a swarm of numbered balls bounce around within the window. Cool! After about 30 seconds, the test completes, and the window closes.</p>
+
+<p class="w-75 mx-auto"><img src="img/ball_animation.png" alt="screenshot of balls in motion" /></p>
+
+<p>The ball animation has a bug that sometimes causes balls to bounce incorrectly. In this exercise, you will use the debugger to track down the bug.</p>
+
+<p>Run the program again under the debugger and again select the tests for <code class="language-c++ highlighter-rouge"><span class="n">ball</span><span class="p">.</span><span class="n">cpp</span></code>. While the balls bounce, arrange the graphics and the debugger windows on your screen so you can see both simultaneously. In the debugger window, set a breakpoint on the line in <code class="language-c++ highlighter-rouge"><span class="n">ball</span><span class="p">.</span><span class="n">cpp</span></code> where <code class="language-c++ highlighter-rouge"><span class="n">pause</span></code> is called at the bottom of the animation loop. The debugger stops at this breakpoint almost immediately.</p>
+
+<p>Click the <strong>Continue</strong> button <img src="img/debugger-continue-icon.png" alt="continue button icon" /> to resume execution, and the program will complete another loop iteration and stop again at the breakpoint. Repeatedly click the <strong>Continue</strong> button and watch the graphics window as you do this. All of the balls move slightly on each iteration.</p>
+
+<h3 id="object-member-variables">Object member variables</h3>
+<p>When stopped at the breakpoint, look at the "Variables" pane in the upper-right of the debugger window. Click the triangle to expand the <code class="language-c++ highlighter-rouge"><span class="n">allBalls</span></code> Vector to see its contents.</p>
+
+<p>Click the triangles to expand the vector elements at indexes <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code> and <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">1</span><span class="p">]</span></code>.  Each element is one <code class="language-c++ highlighter-rouge"><span class="n">Ball</span></code> object.  The member variables for a Ball include its x/y position, velocity, and ID. As a convention, the names of our member variables begin with a leading underscore. Note that each Ball has its own copy of the fields. The <code class="language-c++ highlighter-rouge"><span class="n">_x</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">_y</span></code> of <code class="language-c++ highlighter-rouge"><span class="n">allBalls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code> are distinct from the <code class="language-c++ highlighter-rouge"><span class="n">_x</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">_y</span></code> of <code class="language-c++ highlighter-rouge"><span class="n">allBalls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></code>.</p>
+
+<p>Click <strong>Continue</strong> a few more times, observing the updates to the member variables for <code class="language-c++ highlighter-rouge"><span class="n">allBalls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">allBalls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></code> in the Variables pane and match those updates to the movement of those balls in the graphics window.</p>
+
+<p>Answer this question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q1" class="question alert alert-warning">
+  <p><strong>Q1</strong>. How do the values of the member variables of <code class="language-c++ highlighter-rouge"><span class="n">allBalls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code> change from iteration to iteration? Specifically, what happens to the values of <code class="language-c++ highlighter-rouge"><span class="n">_id</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">_x</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">_y</span></code>?</p>
+</div>
+
+<h3 id="the-variable-this">The variable <code class="language-c++ highlighter-rouge"><span class="k">this</span></code></h3>
+<p>While the program is stopped in the debugger, click the red dot for the breakpoint on pause to delete it. Click to add a new breakpoint on the first line of the <code class="language-c++ highlighter-rouge"><span class="n">Ball</span><span class="o">::</span><span class="n">move</span></code> method. Now click <strong>Continue</strong>.  The debugger is now going to stop on each ball move. When stopped at your new breakpoint, look at the variables in the Variables pane. Because the program is stopped inside a C++ member function, there is a special variable called <code class="language-c++ highlighter-rouge"><span class="k">this</span></code> that refers to the object currently executing the member function. When stopped inside the function <code class="language-c++ highlighter-rouge"><span class="n">Ball</span><span class="o">::</span><span class="n">move</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">this</span></code> refers to the specific ball that is taking its turn to move. Expand <code class="language-c++ highlighter-rouge"><span class="k">this</span></code> to see the member variables of the object. Use this ball's position and ID to locate the corresponding ball in the graphics window.</p>
+
+<p>Click the <strong>Continue</strong> button  to resume. The breakpoint is hit again on the next call to <code class="language-c++ highlighter-rouge"><span class="n">Ball</span><span class="o">::</span><span class="n">move</span></code>. If you look at the Variables pane, you will see that <code class="language-c++ highlighter-rouge"><span class="k">this</span></code> now refers to a different <code class="language-c++ highlighter-rouge"><span class="n">Ball</span></code> object who is now taking its turn to move. Click <strong>Continue</strong> a few more times and note how the value in the Variables pane change.  Each you'll see a different <code class="language-c++ highlighter-rouge"><span class="k">this</span></code> with its own independent member variables. When both the graphical animation and the debugger making demands on your computer, things can bog down a a bit as you try to step and observe. Be patient!</p>
+
+<p>Bring up the context menu for your breakpoint by right-click or control-click on the red dot and choose <strong>Disable breakpoint</strong>. Disabling the breakpoint leaves it in place but makes it inactive. It is marked with a dim red dot. Use <strong>Continue</strong> to resume execution, and the balls should freely animate without stopping.</p>
+
+<h3 id="debugging-in-the-context-of-randomness">Debugging in the context of randomness</h3>
+<p>When the program begins, each ball is created with a starting position and velocity; these values are chosen randomly. Quit and restart the program a few times to observe how the initial configuration varies from run to run. Occasionally a ball or two is initially placed in a location that straddles the bottom or right edge of the window. When you let the simulation run, you'll see that these balls don't move properly; they wiggle along the "stuck" edge. This is the bug we want you to diagnose.</p>
+
+<p>Trying to debug a program using a randomized test case is tough. You could try to repeatedly quit and restart until you hit upon the right conditions to trigger the buggy scenario, but this would be tedious and frustrating. A better option is to configure the random number generator to behave deterministically. Our <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/random.html" title="Documentation for random.h">random.h</a> library has a function <code class="language-c++ highlighter-rouge"><span class="n">setRandomSeed</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span></code> used to configure the random sequence to a fixed starting point. Setting the seed at the beginning of the test case will cause it to use the same sequence of random values every time.</p>
+
+<p>Edit the provided test for the ball animation to <code class="language-c++ highlighter-rouge"><span class="n">setRandomSeed</span></code> to your favorite number. You only need to set the seed once, and should do so at the start of your test case, before all calls that generate random values.</p>
+
+<p>Now run, quit, and restart the program a few times and you'll see the same configuration of balls is used on every run.  Controlling the random seed allows you to bring order out of chaos!</p>
+
+<p>The reproducible scenario you want for debugging is a starting configuration that has at least one ball stuck on the edge and enough of the stuck ball is visible that you can see its ID number.  If using your favorite number as the seed didn't produce a configuration like this, pick a different number for the seed and try again. Once you have a seed that works, you're ready to go under the debugger to investigate further.</p>
+
+<p>Run the program under the debugger. Control-click on the dim red dot for the disabled breakpoint in <code class="language-c++ highlighter-rouge"><span class="n">Ball</span><span class="o">::</span><span class="n">move</span></code> and choose <strong>Enable breakpoint</strong> from the pop-up menu. With this breakpoint now active, it stops at every single move for every single ball. Since there are many balls and each moves many times per second, having to stop and continue on each move is slow-going. We would much rather narrow our focus to the ball in trouble. For example, in this case, we know the ID of the stuck ball. Ideally, we want to stop and single step through the turn of the stuck ball, but zip past all the others.</p>
+
+<h3 id="conditional-breakpoints">Conditional breakpoints</h3>
+<p>The debugger offers just the tool we need: a <em>conditional breakpoint</em>. A condition can be added to a breakpoint to tell the debugger to only stop the program at this breakpoint if a certain condition is met.</p>
+
+<p>Control-click on the breakpoint's red dot and choose <strong>Edit breakpoint</strong> from the pop-up menu. Look for the text field labeled <strong>Condition</strong>. The condition is any C++ expression that is valid to be evaluated at the breakpoint location. It can refer to any local variables and parameters. Each time execution reaches the breakpoint location, the condition is re-evaluated, and the debugger stops only if the condition evaluates to true; otherwise, it behaves as if the breakpoint were inactive and just continues on.</p>
+
+<p class="w-50 mx-auto"><img src="img/debugging-condition.png" alt="screenshot of the conditional breakpoint popup menu, showing the line number and condition on which to stop at that line" /></p>
+
+<p>Let's try it out! Add a condition on the breakpoint to only stop if <code class="language-c++ highlighter-rouge"><span class="n">_id</span></code> is the ID number of the stuck ball in your configuration. The breakpoint in <code class="language-c++ highlighter-rouge"><span class="n">Ball</span><span class="o">::</span><span class="n">move</span></code> will only stop when executing for the stuck ball. Each <strong>Continue</strong> should take the program straight through to this particular ball's next move.</p>
+
+<p>Focus on observing what's happening to the stuck ball on each move. Do a couple of rounds with <strong>Continue</strong>, noting how the values of its member variables are changing. Contrast what is happening for the stuck ball to what you observed earlier for a correctly moving ball.</p>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q2" class="question alert alert-warning">
+  <p><strong>Q2</strong>. How do the values of the member variables of the stuck ball change from iteration to iteration? Contrast this to your answer to the previous question.</p>
+</div>
+
+<p><small><em>Instructor's Note:</em> Conditional breakpoints in Qt debugger can be a little flaky, sometimes stopping when it shouldn't or not stopping when it should. I've seen that removing and resetting the breakpoint often straightens it out. If you give it a good try and Qt refuses to cooperate, just note your experience in your answer and move on to next question.</small></p>
+
+<h3 id="changing-variables-in-the-debugger">Changing variables in the debugger</h3>
+<p>You have a hunch that moving the stuck ball to a different position would cause it to fix itself. So far, we have used the Variables pane of the debugger only to look at the values of variables. <em>Pro Tip:</em> it is also possible to <strong>change a value</strong>! Double-click the value for the <code class="language-c++ highlighter-rouge"><span class="n">_x</span></code> field of the stuck ball and change it to 0. Change its <code class="language-c++ highlighter-rouge"><span class="n">_y</span></code> to 0 also.  These changes forcibly move the stuck ball to position <code class="language-c++ highlighter-rouge"><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></code>. The next time this ball is drawn, it will appear in the upper left corner of the graphics window, the location where your changes have teleported the ball.</p>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code></p>
+
+<div id="Q3" class="question alert alert-warning">
+  <p><strong>Q3</strong>. After forcing the stuck ball to position (0, 0), does the ball move normally from there or does it stay stuck?</p>
+</div>
+<p>Given the above detective work, do you see what caused the ball to become stuck? What fix is needed to avoid getting into this situation? You may optionally modify the code to fix the bug, though this is not required.</p>
+
+<p>A conditional breakpoint can be a godsend when debugging a program that works correctly almost all the time and only rarely hits a bug. Rather than having to wade through many uninteresting/irrelevant steps, the conditional breakpoint lets you narrow in on exactly and only the situation that needs attention.</p>
+
+<p>In this exercise, you also learned how to set the random seed to make a test case behave deterministically in every run. Writing a test case that generates a large amount of random data to use as input can be great way to get broad "fuzz" coverage. If you let the computer choose the seed, it's even hitting different combos from run to run. But when trying to track down a test case failure, make use of <code class="language-c++ highlighter-rouge"><span class="n">setRandomSeed</span></code> to ensure you are working through reproducible, repeatable behavior.</p>
+
+<h2 id="debugging-arrays-and-memory">Debugging arrays and memory</h2>
+<p>The last task is to practice debugging on arrays and memory. Pointers can be a fairly lethal part of the C++ language, as there are many pitfalls you can fall into with harsh consequences.  It will take your finest debugging skills to diagnose these woes, so let's do some practicing now.</p>
+
+<h3 id="changing-the-display-format">Changing the display format</h3>
+<p>You've used the Variables pane to see the values of variables and know how to expand an ADT variable to see its contents.  Our next Pro Tip is how to view the contents of an array.</p>
+
+<p>In the assignment, you will be working with a small struct called <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> that is defined in the <code class="language-c++ highlighter-rouge"><span class="n">datapoint</span><span class="p">.</span><span class="n">h</span></code> file. Its definition is shown below. It declares the type for the <code class="language-c++ highlighter-rouge"><span class="n">label</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">priority</span></code> fields and packages those two fields together into a new struct type called <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code>.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">DataPoint</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">label</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">priority</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>In the assignment, you will be working with arrays of <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> elements so let's practice how to use the debugger to examine and manipulate these arrays.</p>
+
+<p>Open the <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> file and review the given code and the five provided test cases (four of which are currently commented out). The first test case demonstrates correct use of an array. Set a breakpoint within this test case on the statement after the loop has completed initializing the array elements. Run the program under the debugger and select the tests for <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code>.</p>
+
+<p>When the program stops at the breakpoint, note how the <code class="language-c++ highlighter-rouge"><span class="n">taskList</span></code> variable is displayed in the Variables pane. A C++ array does not track its length, so the debugger does not know how many items to display. Unless told otherwise, the debugger assumes the array length is 1 and displays only the first item. To see additional items beyond the first, you must tell the debugger how many to display.</p>
+
+<p>In the Variables pane, control-click on the variable <code class="language-c++ highlighter-rouge"><span class="n">taskList</span></code> to bring up the pop-up menu. From the menu, select "Change Value Display Format," and in the submenu section labeled "Change Display for Object Named local.taskList," select "Array of 10 items." Be sure to choose the entry  <strong>"Array of 10 items"</strong> that appears in the <strong>upper section</strong> of the popup menu. (The lower section repeats the same entries as the upper section; this lower entry is <strong>not</strong> the one you want).</p>
+
+<p><img src="img/debugging-displayformat.png" alt="screenshot of the different options for displaying arrays in the Qt Debugger" /></p>
+
+<p>The available options for array length are 10, 100, 1000, and 10000. If your array contains 50 items, you must choose whether to display only the first 10 or display 100, where the first 50 are valid followed by an additional 50 garbage items.</p>
+
+<h3 id="examine-array-memory">Examine array memory</h3>
+<p>Once you have changed the display format for <code class="language-c++ highlighter-rouge"><span class="n">taskList</span></code> to an Array of 10 items, the Variables pane will display a triangle next the variable, and if you click to expand, it will display ten <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> structs, indexed by position.</p>
+
+<p>The code allocates memory to store six <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> structs. The loop initializes the first three elements. Examine the values of the elements at indices <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code>, <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">1</span><span class="p">]</span></code>, and <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">2</span><span class="p">]</span></code> to see that the contents are as expected.</p>
+
+<p>The subsequent three elements are a valid part of the memory allocated for the array, but the contents of these elements have not been initialized. C++ has set the values according to what it normally does for that type of variable. In particular,</p>
+<ul>
+  <li>the strings have been set to the empty string</li>
+  <li>the numeric values are uninitialized, leftover garbage values</li>
+</ul>
+
+<p>Use the debugger to view the contents at indices <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">3</span><span class="p">]</span></code>, <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">4</span><span class="p">]</span></code>, and <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">5</span><span class="p">]</span></code> and confirm these default values.</p>
+
+<p>Because we told the debugger to display a total of 10 elements, it also shows slots for indices <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">6</span><span class="p">]</span> </code> through <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">9</span><span class="p">]</span></code>. These locations are outside the bounds of the allocated memory, but remember there is no such thing as bounds-checking. We told the debugger to display 10 items, so it does. What is being displayed is the contents of memory at those locations, despite being out of bounds. Unsurprisingly, these contents are even trashier than the valid but uninitialized entries. If you examine slots  <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">6</span><span class="p">]</span></code>, <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">7</span><span class="p">]</span></code>, <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">8</span><span class="p">]</span></code>, and <code class="language-c++ highlighter-rouge"><span class="p">[</span><span class="mi">9</span><span class="p">]</span></code>, you find all of the number and string values are an unpredictable mix of empty, <code class="language-c++ highlighter-rouge"><span class="o">&lt;</span><span class="n">not</span> <span class="n">accessible</span><span class="o">&gt;</span></code>, and random garbage.</p>
+
+<p>What you see in the debugger parallels what you would observe in an executing program. The value of a valid variable that has not been initialized is the default value for that variable's data type. If your code accesses an index beyond the valid range of the array, you retrieve garbage contents. There is no helpful "out of bounds" message to alert you to your mistake. The programmer herself must be vigilant!</p>
+
+<h3 id="debugging-memory-mistakes">Debugging memory mistakes</h3>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> file contains test cases to demonstrate various errors in handling array/memory. Whereas ordinary errors may cause a program to compute the wrong answer, mis-draw a fractal, or get stuck in a infinite loop, memory errors tend to have more catastrophic consequences. We want you to observe how some of the commonplace memory errors present themselves, so you can begin to get a feel for how you might diagnose such bugs when you encounter them.</p>
+
+<p>There are four test cases that each demonstrate a particular error in handling array/memory:</p>
+
+<ol>
+  <li>dereferencing a <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code> address</li>
+  <li>accessing an index outside the allocated array bounds</li>
+  <li>deleting the same memory twice</li>
+  <li>accessing memory after it has been deleted</li>
+</ol>
+
+<p>Study the code in each test case to understand why the code is in error.</p>
+
+<p>These test cases are currently commented out and you should add them into the program one at a time to observe each in isolation.  <em>Pro tip:</em> To quickly change whether a section of code is commented in or out, select the lines and use "Toggle Comment Section" under the Edit Menu, bound to the hot key <code class="language-c++ highlighter-rouge"><span class="n">Command</span></code> + <code class="language-c++ highlighter-rouge"><span class="o">/</span></code>.</p>
+
+<p>The first test case dereferences a <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code> address. Uncomment the code in this test case and rebuild. Run the program without the debugger.</p>
+
+<p>Attempting to access a <code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code> address (memory location zero) causes a swift fatal error – the program immediately halts with a pitiful cry for help written in red text to the Console window and Qt "Application Output" tab. This crash report says:</p>
+
+<pre><code class="language-output">*** STANFORD C++ LIBRARY
+*** The PQueue program has terminated unexpectedly (crashed)
+*** A segmentation fault (SIGSEGV) occurred during program execution
+
+    This error indicates your program attempted to dereference a pointer
+    to an invalid memory address (possibly out of bounds, deallocated, nullptr, ...)
+
+*** To get more information about a program crash,
+*** run your program again under the debugger.
+
+</code></pre>
+
+<p>Whenever you encounter a crash, your next move should be to run that same code under the debugger.</p>
+
+<p>When running under the debugger, a crashing program will halt at the critical moment without exiting. This will give you a chance to see where the code was executing at the time of the crash and to poke around and observe the program state. Run this test case under the debugger, and it will stop at the exact line of the bad dereference, allowing you to see that the value of <code class="language-c++ highlighter-rouge"><span class="n">taskList</span></code> is <code class="language-c++ highlighter-rouge"><span class="mh">0x0</span></code>. (<code class="language-c++ highlighter-rouge"><span class="nb">nullptr</span></code> is the memory address zero). Note that you may have to click on a different level in the debugger stack trace in order to get back to the <code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> file.</p>
+
+<p>After you're done exploring a test case, comment it back out. Then uncomment the next test case and try that one.</p>
+
+<p>For each test case, you want to observe what happens without the debugger and again with it. Some memory errors present loud and clear with a distinctive crash; others silently and insidiously do the wrong thing. The very same error can get different results in a different context or when executing on a different operating system. All of this makes debugging memory errors extra challenging.</p>
+
+<p>Consider yourself a detective who is looking through the evidence for clues that help you diagnose the situation from its aftermath. Look in the Application Output tab to see if any message was printed. Read the stack trace in the debugger to learn which action led up to the crash. Review variables to look for null or wild addresses or data values that appear uninitialized or corrupted.</p>
+
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<div id="Q4" class="question alert alert-warning">
+  <p><strong>Q4</strong>. On your system, what is the observed consequence of these memory errors:</p>
+  <ul>
+    <li>access an index outside the allocated array bounds?</li>
+    <li>delete same memory twice?</li>
+    <li>access memory after it has been deleted?</li>
+  </ul>
+</div>
+
+<p><em>Note:</em> There is no "right answer" to these questions as there is no single expected behavior for a given memory error. By trying the error, you will see one possible outcome, but the same code in a different program or running on a different computer could behave differently. The only predictable thing about memory errors is their unpredictability! In answering these questions, you are making observations about how the memory error presents on <strong>your</strong> system and learning what symptoms to look for should you need to diagnose a similar error in your own program.</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-04
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

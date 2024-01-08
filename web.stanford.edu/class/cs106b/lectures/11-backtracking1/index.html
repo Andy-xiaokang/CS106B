@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursive Backtracking and Enumeration</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 11. Recursive Backtracking and Enumeration</h1>
+ <p class="subtle-heading">Friday October 20</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>We will be further exploring recursive backtracking in order to solve more difficult problems that cannot be easily solved with iterative approaches.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 9.1-9.3</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/142517">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=67117835-64f2-4534-a492-b083014df2bf&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><strong><br />Prezi</strong></p>
+<p>Here is the Prezi from today's lecture:</p>
+<iframe src="https://prezi.com/p/embed/7jgOeGoS6o0SzQGgU9qI/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p><strong><br />Contents</strong></p>
+<p>1. Summary and Context: Sequences, Permutations, and Subsets</p>
+<p>2. Introduction to Recursive Backtracking</p>
+<p>3. Fundamental Backtracking Paradigm: "Choose, Explore, Unchoose"</p>
+<p>4. The Basic Anatomy of a Backtracking Algorithm (A Bit More Detail)</p>
+<p>5. Generating Subsets with Recursive Backtracking</p>
+<p>6. Side Note Regarding the Efficiency of <span class="code-title">printSubsets()</span></p>
+<p>7. Modifying <span class="code-title">printSubsets()</span>to Return the Number of Subsets Generated</p>
+<p>8. Partitioning with Recursive Backtracking</p>
+<p>9. Modified <span class="code-title">isPartitionable()</span> Function: Tracking our Vector Contents</p>
+<p>10. Early Termination in the <span class="code-title">isPartitionable()</span> Function</p>
+<p>11. Side Note: Returning Conditional Expressions from Boolean Functions</p>
+<p>12. Side Note: Short-Circuiting</p>
+<p>13. What's next?</p>
+<p>14. Practice Exercises</p>
+<p><br /><strong>Summary and Context: Sequences, Permutations, and Subsets</strong></p>
+<p>One of the problems we solved today was that of subset generation. Having seen that, we've now covered recursive algorithms for generating the following:</p>
+<ul>
+<li>sequences (examples: flip a coin <em>n</em> times or roll <em>n</em> six-sided dice)</li>
+<li>permutations (example: give all permutations of the characters in "cat")</li>
+<li>subsets (example: give all possible subsets of the set {a, c, t})</li>
+</ul>
+<p>The approaches to each of those form the basis for recursive solutions to plenty of problems and are worth looking over again when you have a chance. We've seen a variety of other recursive algorithms as well -- including string manipulation algorithms, such as our palindrome checker from last Wednesday, and drawing fractal.</p>
+<p><br /><strong>Introduction to Recursive Backtracking</strong></p>
+<p>Today's new topic was recursive backtracking. The basic idea behind backtracking is that we take a path toward a solution, making choices at different decision points as we go, and if we reach a dead end (where there are no more decision points and we haven't found the solution we're looking for), we backtrack -- i.e., go back to the last point where we made a decision, and make a different choice (if there are any remaining).</p>
+<p>The first example I showed today was a quintessential backtracking application: finding a path through a maze. To help visualize the backtracking process, I ran an "animation" program I cooked up that allowed us to watch a little dude wandering through a maze, searching for an exit. At each step, the program prints out whether the dude is <span class="code-chonk">Searching...</span> (changing the state of the maze and making recursive calls to explore further) or <span class="code-chonk">Backtracking...</span> (returning from dead-end recursive calls):</p>
+<p style="margin-top: 30px; margin-bottom: 30px; margin-left: 50px;"><img src="resources/mazerunner.gif" /></p>
+<p>We discussed the need to keep track of states we had already seen while exploring the maze in order to avoid getting stuck in the throes and woes of infinite recursion. (For that, I dropped breadcrumbs in the maze to keep track of cells we had already explored.) We also saw at one point that backtracking doesn't always find the shortest path from our starting state to a goal:</p>
+<p style="margin-top: 30px; margin-bottom: 30px; margin-left: 50px;"><img src="resources/mazerunner-multi.gif" /></p>
+<p><strong><br />Fundamental Backtracking Paradigm: "Choose, Explore, Unchoose"<br /></strong></p>
+<p>The fundamental backtracking paradigm boils down to the following, which you'll hear us repeating a lot as we discuss backtracking:</p>
+<ul>
+<li>choose</li>
+<li>explore</li>
+<li>unchoose</li>
+</ul>
+<p>In the context of the maze program, we have a loop that considers all possible moves (up, down, left, right). It starts by <strong>choosing</strong> one of those moves and adjusting the board accordingly. It then passes the newly modified board to the function recursively to&nbsp;<strong>explore</strong> whether that move might lead to an exit in the maze. If not, that call eventually returns, and we move the <span class="code-chonk">@</span> symbol back into position upon doing so (the&nbsp;<strong>unchoose</strong> phase of backtracking) before moving onto the next iteration of the loop to&nbsp;choose a different move and&nbsp;explore further.</p>
+<p><strong><br />The Basic Anatomy of a Recursive Backtracking Algorithm (A Bit More Detail)</strong></p>
+<p>I mentioned a few common features of backtracking algorithms in class, and pointed out that some of these features appear in some backtracking algorithms but not others. Here's a more elaborate discussion of the basic general anatomy of a recursive backtracking algorithm.</p>
+<ol>
+<li><strong>Base Case</strong><br />We often implement backtracking using recursion. Our base case generally checks whether we've succeeded at finding a solution to the problem. If so, it might perform some action (like printing the result as a string or playing a little animation that celebrates our successful exit from a maze), and/or it might return some value (a boolean indicating success or a value associated with the solution we just found). Either way, the base case gives our algorithm the ability to return to the previous function call.<br /><br /></li>
+<li><strong>(Optional) Check for Duplicate States</strong><br />Sometimes (as with the maze backtracking program I showed in class), we want to explicitly check whether we're in a state that we've already seen. If so, return from this function call rather than allowing ourselves to get stuck in an infinite loop where we constantly bounce back and forth between states we've already seen. (This can be thought of as a base case as well.)<br /><br />Sometimes, instead of checking for duplicate states explicitly, we just set up the for-loop that makes our recursive calls in a way that ensures only new, unique states are passed to the function with each recursive call. (That was our approach with the subset problem we saw today.) Hence, this step that checks for duplicate states is not always required.<br /><br /></li>
+<li><strong>Generate Possible Moves</strong><br />This is generally implemented as a loop that changes the parameters passed to this function in some way in order to generate all possible states we could reach from our current state. The steps involved with this are:<br /><br /></li>
+</ol>
+<ol style="margin-left: 45px;" type="a">
+<li><strong>Check Validity of Move</strong><br />In this loop, if we're attempting to make some sort of move (i.e., moving a character in a maze), we might first want to check whether it's valid (i.e., does it send our character into a wall, or a fiery pit of doom, or out-of-bounds in our maze grid?). If so, skip to the next iteration of this loop without making a recursive call.<br /><br /></li>
+<li><strong>Change State</strong><br />Whatever move we're about to make, now's our time to make it. We change the parameters we're passing to our backtracking algorithm to reflect the new state we'll be in after we make this move. This is the "<span style="background-color: #ffff99;"><strong>choose</strong></span>" phase of recursive backtracking.<br /><br /></li>
+<li><strong>Perform Recursive Descent</strong><br />We make our recursive call to the backtracking algorithm, passing it the new state we're in with this move (i.e., passing it the parameters we just modified in order to make the current move). This is the "<span style="background-color: #ffff99;"><strong>explore</strong></span>" phase of recursive backtracking.<br /><br /></li>
+<li><strong>(Optional) Process the Return Value of the Recursive Call</strong><br />When our recursive function call returns, we might want to capture its return value. It might be returning a boolean indicating whether it found a path to the solution we want. If it did, we might be able to stop making recursive calls. (That was our first approach to today's partitioning problem.) Alternatively, if we're looking for every possible solution to this problem, we might continue searching even if this recursive call already found one solution. (That was our first approach to generating subsets.) Recall that with the subset problem, we eventually modified our function to return how many solutions it had found so far. We captured that return value in our loop and added it to a running count of solutions to be returned from the function later.<br /><br /></li>
+<li><strong>(Optional) Undo State Change</strong><br />If we return from a recursive call, we might need to undo the state change we did in step (b) above before we can go on to the next iteration of this move-generating loop. We saw this is optional in some cases, as with subset generation, where we didn't need to worry about adding elements back to our set because we were creating new subsets with each recursive call rather than passing by reference. This is the "<span style="background-color: #ffff99;"><strong>unchoose</strong></span>" phase of recursive backtracking.</li>
+</ol>
+<p><br /><strong>Generating Subsets with Recursive Backtracking</strong></p>
+<p><em>For this section, see related Prezi at the top of today's notes.</em></p>
+<p>After discussing some basic principles behind backtracking, we turned to a new problem: generating all subsets of a given set. Given some set, <em>S</em>, we refer to the set of all subsets of <em>S</em> as the <strong>power set</strong> of <em>S</em>. For example, given the set&nbsp;<em>S</em> = {a, b, c}, the power set of <em>S</em> is a set containing the following:</p>
+<ul>
+<li>{}</li>
+<li>{a}</li>
+<li>{b}</li>
+<li>{c}</li>
+<li>{a, b}</li>
+<li>{b, c}</li>
+<li>{a, c}</li>
+<li>{a, b, c}</li>
+</ul>
+<p>Recall that with sets, order does not matter, so we do not need to include <strong>{b, a}</strong> in addition to <strong>{a, b}</strong>.</p>
+<p>After reviewing an algorithm for generating a power set (see the Prezi at the top of today's notes), we produced the following code:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><span style="color: #236fa1;"><em>// Takes a string and prints it using set notation, where each character is treated</em></span><br /><span style="color: #236fa1;"><em>// as an element in the set. For example, "abc" is printed as: {a, b, c}</em></span><br /><strong>void</strong> fancyPrint(<strong>string</strong> s)<br />{<br />   <strong>cout</strong> &lt;&lt; "{";<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; s.length(); i++)<br />   {<br />      <strong>cout</strong> &lt;&lt; s[i];<br /><br /><span style="color: #236fa1;"><em>      // We don't need a comma after our last element in the set, but we do want a</em></span><br /><span style="color: #236fa1;"><em>      // comma after all the others.</em></span><br />      <strong>if</strong> (i != s.length() - 1)<br />      {<br />         <strong>cout</strong> &lt;&lt; ", ";<br />      }<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; "}" &lt;&lt; <strong>endl</strong>;<br />}<br /><br /><span style="color: #236fa1;"><em>// 'soFar' is the (sub)set we have built so far. 'rest' contains the elements about</em></span><br /><span style="color: #236fa1;"><em>// which we have yet to make our binary choice (either include or throw away as we</em></span><br /><span style="color: #236fa1;"><em>// generate all possible subsets).</em></span><br /><strong>void</strong> printSubsets(<strong>string</strong> soFar, <strong>string</strong> rest)<br />{<br />   <strong>if</strong> (rest.empty())<br />   {<br />      fancyPrint(soFar);<br />      <strong>return</strong>;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // Pluck an element from our set of remaining elements ('rest'). Below, we will<br /></em><em>   // make a binary choice about whether to include thisOne in the subsets we<br /></em><em>   // generate.</em></span><br />   <strong>char</strong> thisOne = rest[0];<br />   <strong>string</strong> newRest = rest.substr(1);<br /><br /><span style="color: #236fa1;"><em>   // This is the recursive call where we simply discard thisOne.</em></span><br />   printSubsets(soFar, newRest);<br /><br /><span style="color: #236fa1;"><em>   // This is the recursive call where we include thisOne in our new subset.</em></span><br />   printSubsets(soFar + thisOne, newRest);<br />}<br /><br /><span style="color: #236fa1;"><em>// For simplicity, we represent our sets as strings. Each character is considered</em></span><br /><span style="color: #236fa1;"><em>// an element. For example, the set {a, b, c} is represented as the string "abc".</em></span><br /><strong>void</strong> printSubsets(<strong>string</strong> s)<br />{<br />   printSubsets("", s);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   printSubsets("abc");<br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">{}<br />{c}<br />{b}<br />{b, c}<br />{a}<br />{a, c}<br />{a, b}<br />{a, b, c}</pre>
+<p>&nbsp;</p>
+<p><strong>Side Note Regarding the Efficiency of <span class="code-title">printSubsets()</span></strong></p>
+<p>I mentioned today that because we are creating new strings to pass by value to each of our recursive function calls, there is some unnecessary slowness inherent to our <span class="code-chonk">printSubsets()</span> function. One might be inclined to ignore those operations as trivial in a less explosive function, but here those slow concatenation and string copying operations are happening within the context of an exponential algorithm! When dealing with a function that makes O(2<sup>n</sup>) recursive calls, the runtime impact from each of those calls being O(n) instead of O(1) can become non-trivial very quickly as n increases.</p>
+<p>There is, however, an important trade-off at play here. The code above is perhaps more straightforward and followable than an approach that operates on a pass-by-reference vector. The pass-by-reference approach would require some extra bookkeeping: after returning from the recursive call where <span class="code-chonk">thisOne</span> was added to <span class="code-chonk">soFar</span>, we would have to remove that element from the vector. There would also likely be a third function parameter to keep track of: an integer that tells us how far along we are in the original set passed to the function (since we likely would not modify that one within our recursive calls and would instead focus only on modifying <span class="code-chonk">soFar</span>).</p>
+<p>Those added layers of complexity might complicate the example unnecessarily and make it less followable in class, and so we have avoided them to make the code more approachable. However, it's good to be aware of these trade-offs -- especially before heading into a technical interview, where the efficiency hits from the pass-by-value parameters and string creation operations could become a topic of discussion.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) For the purposes of this class, you needn't worry about avoiding the impact those string operations are having on runtime. This is a topic to revisit later, once you're more comfortable with this material, if you're preparing for technical interviews. For now, we want you to focus on the broader picture and writing recursive functions that work and are highly readable.</p>
+<p><strong><br />Modifying <span class="code-title">printSubsets()</span>to Return the Number of Subsets Generated</strong></p>
+<p>Toward the end of class, we returned to the <span class="code-chonk">printSubsets()</span> function and modified it to return the number of solutions it found. Below is that modification.</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important note!</em></span>) This transformation is very much something I want you to be familiar with and able to implement.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #ffcc99;"><strong>int</strong></span> printSubsets(<strong>string</strong> soFar, <strong>string</strong> rest)<br />{<br />   <strong>if</strong> (rest.empty())<br />   {<br />      fancyPrint(soFar);<br />      <span style="background-color: #ffcc99;"><strong>return</strong> 1;</span><br />   }<br /><br />   <strong>char</strong> thisOne = rest[0];<br />   <strong>string</strong> newRest = rest.substr(1);<br /><br />   <span style="background-color: #ffcc99;"><strong>return</strong></span> printSubsets(soFar, newRest)<span style="background-color: #ffcc99;"> + </span><br />          printSubsets(soFar + thisOne, newRest);<br />}<br /><br /><span style="background-color: #ffcc99;"><strong>int</strong></span> printSubsets(<strong>string</strong> s)<br />{<br />   <span style="background-color: #ffcc99;"><strong>return</strong></span> printSubsets("", s);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <span style="background-color: #ffcc99;"><strong>cout</strong> &lt;&lt; </span>printSubsets("abc")<span style="background-color: #ffcc99;"> &lt;&lt; <strong>endl</strong></span>;<br />   <strong>return</strong> 0;<br />}</pre>
+<p><br /><strong>Partitioning with Recursive Backtracking</strong></p>
+<p>The next problem I presented was the following: Is it possible to partition some vector, <em>V</em>, into two vectors, <em>V<sub>1</sub></em> and <em>V<sub>2</sub></em>, such that the sum of the elements in <em>V<sub>1</sub></em> is equal to the sum of the elements in <em>V<sub>2</sub></em>? Recall that to be considered a partition, each element from <em>V</em> must occur in <strong>exactly one</strong> of the vectors <em>V<sub>1</sub></em> or <em>V<sub>2</sub></em>. We neither include an element from <em>V</em> in both <em>V<sub>1</sub></em> and <em>V<sub>2</sub></em> nor exclude an element in <em>V</em> from both of those vectors.</p>
+<p>For example, if <em>V</em> = {1, 1, 2, 3, 5}, we can partition the elements into <em>V<sub>1</sub></em> = {1, 5} and <em>V<sub>2</sub></em> = {1, 2, 3}. The elements in <em>V<sub>1</sub></em> sum to 6, as do the elements in <em>V<sub>2</sub></em>.</p>
+<p>The elements in V = {1, 4, 5, 6}, however, cannot be partitioned in such a fashion.</p>
+<p>Here is the code we wrote to solve this problem, which returns <span class="code-chonk">true</span> if the input vector can be partitioned in such a fashion, <span class="code-chonk">false</span> otherwise:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><span style="color: #236fa1;"><em>// v is the vector of (remaining) elements we have to choose from. sum1 and sum2</em></span><br /><span style="color: #236fa1;"><em>// are the sums we have so far for the two (hypothetical) vectors the elements</em></span><br /><span style="color: #236fa1;"><em>// are being partitioned into.</em></span><br /><strong>bool</strong> isPartitionable(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> sum1, <strong>int</strong> sum2)<br />{<br />   <strong>if</strong> (v.isEmpty())<br />   {<br />      <strong>return</strong> sum1 == sum2;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // Pull first element out of vector.</em></span><br />   <strong>int</strong> thisOne = v[0];<br />   v.remove(0);<br /><br /><span style="color: #236fa1;"><em>   // Below, the first recursive call adds thisOne to first vector sum rather than</em></span><br /><span style="color: #236fa1;"><em>   // second vector sum. The second recursive call instead adds thisOne to the second</em></span><br /><span style="color: #236fa1;"><em>   // vector sum.</em></span><br />   <strong>bool</strong> result = isPartitionable(v, sum1 + thisOne, sum2) ||<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;       isPartitionable(v, sum1, sum2 + thisOne);<br /><br />   <span style="color: #236fa1;"><em>// We must undo the state change where thisOne was removed from v so that when<br /></em><em>   // we return to previous calls and make different decisions regarding which<br /></em><em>   // set earlier elements went into, we can then come back to this one and decide</em></span><br /><span style="color: #236fa1;"><em>   // where it goes in different branches of our decision tree.</em></span><br />   v.insert(0, thisOne);<br /><br />   <strong>return</strong> result;<br />}<br /><br /><strong>bool</strong> isPartitionable(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v)<br />{<br />   <strong>return</strong> isPartitionable(v, 0, 0);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   v = {1, 1, 2, 3, 5};<br />   <strong>cout</strong> &lt;&lt; isPartitionable(v) &lt;&lt; <strong>endl</strong>;  <span style="color: #236fa1;"><em>// true</em></span><br /><br />   v = {1, 4, 5, 6};<br />   <strong>cout</strong> &lt;&lt; isPartitionable(v) &lt;&lt; <strong>endl</strong>;  <span style="color: #236fa1;"><em>// false</em></span><br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Modified <span class="code-title">isPartitionable()</span> Function: Tracking our Vector Contents</strong></p>
+<p>We then modified our <span class="code-chonk">isPartitionable()</span> function to keep track of the actual partition vectors being created, rather than just tracking the sums of the elements we would have placed in those vectors.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><span style="color: #236fa1;"><em>// Returns sum of all elements in a vector of ints.</em></span><br /><strong>int</strong> vecSum(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v)<br />{<br />   <strong>int</strong> sum = 0;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      sum += v[i];<br />   }<br /><br />   <strong>return</strong> sum;<br />}<br /><br /><span style="color: #236fa1;"><em>// v is the vector of (remaining) elements we have to choose from. sum1 and sum2</em></span><br /><span style="color: #236fa1;"><em>// are the sums we have so far for the two (hypothetical) vectors the elements</em></span><br /><span style="color: #236fa1;"><em>// are being partitioned into.</em></span><br /><strong>bool</strong> isPartitionable(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v1, <strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v2)<br />{<br />   <strong>if</strong> (v.isEmpty())<br />   {<br />      <strong>int</strong> sum1 = vecSum(v1);<br />      <strong>int</strong> sum2 = vecSum(v2);<br /><br />      <strong>if</strong> (sum1 == sum2)<br />      {<br />         <strong>cout</strong> &lt;&lt; "v1: " &lt;&lt; v1 &lt;&lt; <strong>endl</strong>;<br />         <strong>cout</strong> &lt;&lt; "v2: " &lt;&lt; v2 &lt;&lt; <strong>endl</strong>;<br />      }<br /><br />      <strong>return</strong> sum1 == sum2;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // Pull first element out of our source vector.</em></span><br />   <strong>int</strong> thisOne = v[0];<br />   v.remove(0);<br /><br /><span style="color: #236fa1;"><em>   // Choose and explore! We add thisOne to v1 rather than v2 and see if this<br />   // leads to a solution.<br /></em></span>   v1.add(thisOne);<br />   <strong>bool</strong> result1 = isPartitionable(v, v1, v2);<em></em><span style="color: #236fa1;"><em><br /><br /></em><em>   // Unchoose! We need to remove thisOne from v1 before making the other choice</em></span><br /><span style="color: #236fa1;"><em>   // (adding it to v2). Otherwise, the element will be in both vectors.</em></span><br />   v1.remove(v1.size() - 1);<br /><br /><span style="color: #236fa1;"><em>   // Allow for early termination! If we have found a solution, we needn't</em></span><br /><span style="color: #236fa1;"><em>   // keep exploring.</em></span><br />   <strong>if</strong> (result1)<br />   {<br /><span style="color: #236fa1;"><em>      // Even though we are cutting off all exploration, we still need to place</em></span><br /><span style="color: #236fa1;"><em>      // thisOne back in v so we aren't destroying the input vector as a side</em></span><br /><span style="color: #236fa1;"><em>      // effect of solving this problem.</em></span><br />      v.insert(0, thisOne);<br />      <strong>return</strong> true;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // Choose and explore! We now add thisOne to v2 and check whether that leads</em></span><br /><span style="color: #236fa1;"><em>   // to a solution.</em></span><br />   v2.add(thisOne);<br />   <strong>bool</strong> result2 = isPartitionable(v, v1, v2);<br /><br /><span style="color: #236fa1;"><em>   // Unchoose! We need to remove thisOne from v2. We also need to place thisOne</em></span><br /><span style="color: #236fa1;"><em>   // back in v so we aren't destroying the input vector as a side effect of</em></span><br /><span style="color: #236fa1;"><em>   // solving this problem.</em></span><br />   v2.remove(v2.size() - 1);<br />   v.insert(0, thisOne);<br /><br />   <strong>return</strong> result1 || result2;<br />}<br /><br /><strong>bool</strong> isPartitionable(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v)<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v1;<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v2;<br />   <strong>return</strong> isPartitionable(v, v1, v2);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   v = {1, 1, 2, 3, 5};<br />   <strong>cout</strong> &lt;&lt; isPartitionable(v) &lt;&lt; <strong>endl</strong>;  <span style="color: #236fa1;"><em>// true</em></span><br /><br />   v = {1, 4, 5, 6};<br />   <strong>cout</strong> &lt;&lt; isPartitionable(v) &lt;&lt; <strong>endl</strong>;  <span style="color: #236fa1;"><em>// false</em></span><br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Early Termination in the <span class="code-title">isPartitionable()</span> Function</strong></p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important note!</em></span>) Notice that both of our approaches to <span class="code-chonk">isPartitionable</span> return <span class="code-chonk">true</span> as soon as they find a solution and halt any further exploration! This is a common backtracking idiom that you must be familiar with. For an explanation on how and why the first approach avoids making both recursive calls in all cases, see the section of notes below titled, "Side Note: Short-Circuiting."</p>
+<p><strong><br />Side Note: Returning Conditional Expressions from Boolean Functions</strong></p>
+<p>If the return value of some boolean function pivots on the value of some conditional expression, simply return that expression itself rather than using&nbsp;<em>if-else</em> statements. For example:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong><span style="background-color: #e03e2d; color: #ffffff;">// AVOID THIS APPROACH</span><br /><br />if</strong> (sum1 == sum2)<br />{<br />   <strong>return</strong> true;<br />}<br /><strong>else</strong><br />{<br />   <strong>return</strong> false;<br />}</pre>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #169179; color: #ffffff;"><strong>// Prefer this approach instead.</strong></span><br /><strong><br />return</strong> sum1 == sum2;</pre>
+<p>Similarly, avoid comparing booleans directly to <span class="code-chonk">true</span>:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong><span style="background-color: #e03e2d; color: #ffffff;">// AVOID THIS APPROACH</span><br /><br />if</strong> (myBoolean<span style="background-color: #f8cac6;"> == true</span>)<br />{<br />   doSomething();<br />}</pre>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #169179; color: #ffffff;"><strong>// Prefer this approach instead.</strong></span><br /><strong><br />if</strong> (myBoolean)<br />{<br />   doSomething();<br />}</pre>
+<p>Avoid comparing booleans directly to <span class="code-chonk">false</span> by instead relying on the <span class="code-chonk">!</span> operator to perform an inversion:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong><span style="background-color: #e03e2d; color: #ffffff;">// AVOID THIS APPROACH</span><br /><br />if</strong> (myBoolean<span style="background-color: #f8cac6;"> == false</span>)<br />{<br />   doSomething();<br />}</pre>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="background-color: #169179; color: #ffffff;"><strong>// Prefer this approach instead.</strong></span><br /><strong><br />if</strong> (<span style="background-color: #bfedd2;">!</span>myBoolean)<br />{<br />   doSomething();<br />}</pre>
+<p><strong><br />Side Note: Short-Circuiting</strong></p>
+<p>Consider the following about the <span class="code-chonk">||</span> operator: if we have the expression <span class="code-chonk">a || b</span> and we know that <span class="code-chonk">a</span> is <span class="code-chonk">true</span>, we needn't look at <span class="code-chonk">b</span> in order to determine the overall value of the expression. Our result is <span class="code-chonk">true</span> no matter what:</p>
+<ul>
+<li><span class="code-chonk">true || true = true</span></li>
+<li><span class="code-chonk">true || false = true</span></li>
+</ul>
+<p>When C++ evaluates expressions with the <span class="code-chonk">||</span> operator, if the left-hand operand is <span class="code-chonk">true</span>, it will actually avoid evaluating the right-hand operand in order to save time. This is called <strong>short-circuiting</strong>.</p>
+<p>Consider the impact this might have on the runtime for the following two chunks of code:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Approach #1:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>return</strong> functionA() || functionB()</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Approach #2:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>bool</strong> resultA = functionA();<br /><strong>bool</strong> resultB = functionB();<br /><strong>return</strong> resultA || resultB;</pre>
+<p>We saw this in action in the two approaches to <span class="code-chonk">isPartitionable()</span> above. The first version of <span class="code-chonk">isPartitionable()</span> has the potential to benefit from short-circuiting, and so its runtime might be dramatically better than that of the second version in some cases. The second version -- given our need to "unchoose" between the two recursive calls it makes -- does not benefit from short-circuiting.</p>
+<p><br /><strong>What's next?</strong></p>
+<p>On Monday, we'll see further examples of recursive backtracking. After that, we'll shift gears to new topics: sorting, object-oriented programming, structs, and dynamic memory management.</p>
+<p><strong><br />Practice Exercises</strong></p>
+<p>1. As always, challenge yourself to replicate the code from today's lecture. Study the material, then take at least a 30-minute break before attempting to replicate the <span class="code-chonk">printSubsets()</span> and <span class="code-chonk">isPartition()</span> functions from scratch, without referring back to the notes.</p>
+<p>2. Be sure to trace through the modified <span class="code-chonk">printSubsets()</span> function above to be sure you understand how it is returning the number of subsets it generates. It might help to trace through a small input by hand with a decision tree diagram or to step through a small example with the debugger.</p>
+<p>3. Modify <span class="code-chonk">printSubsets()</span> to be a pass-by-reference function that operates on a vector of chars. Do this <strong>without</strong> modifying the contents of the original vector with each recursive call (and do not simply make a copy of that vector that you modify with each recursive call in order to get around this restriction). When adding and removing from the <span class="code-chonk">soFar</span> vector, be sure to do so in a computationally efficient way.</p>
+<p>Here is an outline to get your started:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>void</strong> printSubsets(<strong>Vector</strong>&lt;<strong>char</strong>&gt;&amp; soFar, <strong><span style="background-color: #000000; color: #ffffff;"> ... </span></strong>)<br />{<br />   <span style="background-color: #236fa1; color: #ffffff;"><strong>// CODE ME</strong></span><br />}<br /><strong><br />void</strong> printSubsets(<strong>Vector</strong>&lt;<strong>char</strong>&gt;<strong>&amp;</strong> v)<br />{<br />   <strong>Vector</strong>&lt;<strong>char</strong>&gt; soFar;<br />   printSubsets(<span style="background-color: #000000; color: #ffffff;"><strong> ??? </strong></span>);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   Vector&lt;char&gt; v = {'a', 'b', 'c'};<br />   printSubsets(v);<br /><br /><strong>   return</strong> 0;<br />}</pre>
+<p><strong><span style="font-size: 10pt;">Highlight for hints to Problem #3:</span></strong></p>
+<ul style="list-style-type: disc;">
+<li><span style="font-size: 10pt; background-color: #ced4d9; color: #ced4d9;">You'll want to set up the recursive helper function to take <span style="text-decoration: underline;"><strong>three</strong></span> parameters.</span></li>
+<li><span style="font-size: 10pt; background-color: #ced4d9; color: #ced4d9;">The first parameter is shown above. The second is a reference to the original vector passed to the function (v).</span></li>
+<li><span style="font-size: 10pt; background-color: #ced4d9; color: #ced4d9;">It might be helpful to pass an integer as the third parameter.</span></li>
+<li><span style="font-size: 10pt; background-color: #ced4d9; color: #ced4d9;">Use the third parameter to indicate what index you're on in the original vector, v. When you call your recursive helper function from the wrapper function, pass 0 as the initial value for this parameter. Increment that value with subsequent recursive calls. Your base case will be to stop when that value is equal to v.size().</span></li>
+<li><span style="font-size: 10pt; background-color: #ced4d9; color: #ced4d9;">For one of your recursive calls to printSubsets(), you will need to add an element to the soFar vector before making that call. Be sure to remove that element when you return from that recursive call.</span></li>
+</ul>
+<p>4. Trace through the first version of <span class="code-chonk">isPartitionable()</span> in today's notes (either by hand with a decision tree or with the debugger) and see if you can observe why the function won't work if we remove the following line:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">   <span style="color: #236fa1;"><em>// We must undo the state change where thisOne was removed from v so that when<br /></em><em>   // we return to previous calls and make different decisions regarding which<br /></em><em>   // set earlier elements went into, we can then come back to this one and decide</em></span><br /><span style="color: #236fa1;"><em>   // where it goes in different branches of our decision tree.</em></span><br />   v.insert(0, thisOne);</pre>
+<p><strong><span style="font-size: 10pt;">Highlight for hint to Problem #4:</span></strong><span style="font-size: 10pt;"> <span style="background-color: #ced4d9; color: #ced4d9;">If you remove that line of code, the function will fail for v = {1, 4, 5, 6}. The function should return false for that vector, but it will return true with that critical line removed.</span></span></p>
+<p>5. As always, the textbook and this week's section handout are chock full of great exercises to reinforce this material.</p>
+<p><br /></p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-23
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

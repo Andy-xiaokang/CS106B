@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Midterm Practice 2 Solutions</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Midterm Practice 2 Solutions</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><style>
+table td, th {padding: 8px;}
+</style>
+
+<h2 id="q1-c-fundamentals">Q1) C++ fundamentals</h2>
+
+<p>Below we give two different solutions, there are other alternate approaches that also work.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">trimPrefix</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// must order tests to confirm index is valid before accessing it</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isalpha</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="n">str</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// modify str in-place</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">trimPrefixAlt</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">isalpha</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">str</span> <span class="o">=</span> <span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// overwrite str with shortened string</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"My test cases for trimPrefix"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">input</span> <span class="o">=</span> <span class="s">"#3.14&amp;@!"</span><span class="p">;</span> <span class="c1">// try input containing NO alpha</span>
+    <span class="n">trimPrefix</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="s">""</span><span class="p">);</span>
+
+    <span class="n">input</span> <span class="o">=</span> <span class="s">"abcABC"</span><span class="p">;</span>      <span class="c1">// try input containing ONLY alpha</span>
+    <span class="n">trimPrefix</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+    <span class="n">EXPECT_EQUAL</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="s">"abcABC"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><br /></p>
+<h2 id="q2-adts">Q2) ADTs</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span> <span class="n">collect</span><span class="p">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">huntList</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">campus</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">place</span><span class="o">:</span> <span class="n">campus</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// iterate over places on campus</span>
+        <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">foundHere</span> <span class="o">=</span> <span class="n">campus</span><span class="p">[</span><span class="n">place</span><span class="p">];</span> <span class="c1">// items at place</span>
+        <span class="n">foundHere</span><span class="p">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">huntList</span><span class="p">);</span>  <span class="c1">// winnow to only items on list</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">foundHere</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// place has at least 2 items needed</span>
+            <span class="n">huntList</span><span class="p">.</span><span class="n">difference</span><span class="p">(</span><span class="n">foundHere</span><span class="p">);</span> <span class="c1">// cross items off list</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">item</span><span class="o">:</span> <span class="n">foundHere</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">place</span><span class="p">;</span>   <span class="c1">// assign item to result map</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">huntList</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>  <span class="c1">// done if have collected all</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><br /></p>
+<h2 id="q3-code-study-adts-and-big-o">Q3) Code study: ADTs and Big-O</h2>
+
+<p><strong>cleaveVector</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>cleaveSet</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span> <span class="c1">// elements listed in any order form same set</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>cleaveStack</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>cleaveQueue</strong></p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
+</code></pre></div></div>
+
+<table class="table-bordered">
+  <thead>
+    <tr>
+      <th> </th>
+      <th style="text-align: center"><code class="language-c++ highlighter-rouge"><span class="n">k</span><span class="o">=</span><span class="mi">2</span></code></th>
+      <th style="text-align: center"><code class="language-c++ highlighter-rouge"><span class="n">k</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span></code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="n">cleaveVector</span></code></td>
+      <td style="text-align: center">O(N)</td>
+      <td style="text-align: center">O(N<sup>2</sup>)</td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="n">cleaveSet</span></code></td>
+      <td style="text-align: center">O(logN)</td>
+      <td style="text-align: center">O(NlogN)</td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="n">cleaveStack</span></code></td>
+      <td style="text-align: center">O(1)</td>
+      <td style="text-align: center">O(N)</td>
+    </tr>
+    <tr>
+      <td><code class="language-c++ highlighter-rouge"><span class="n">cleaveQueue</span></code></td>
+      <td style="text-align: center">O(1)</td>
+      <td style="text-align: center">O(N)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+<h2 id="q4-recursion">Q4) Recursion</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">countHelper</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nInRow</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">nInRow</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">// too many repeats, this sequence not kGood</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">// this sequence complete and is kGood</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nf">countHelper</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">nInRow</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">countHelper</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">countKGood</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">countHelper</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><br /></p>
+<h2 id="q5-recursive-backtracking">Q5) Recursive backtracking</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">maxHelper</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">lex</span><span class="p">,</span> <span class="n">string</span> <span class="n">soFar</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// track best of this call/all recursive calls</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">lex</span><span class="p">.</span><span class="n">containsPrefix</span><span class="p">(</span><span class="n">soFar</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>   <span class="c1">// this is dead end, prune</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">lex</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">soFar</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="n">soFar</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>  <span class="c1">// found a word!</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">symbols</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">choice</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">symbols</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>  <span class="c1">// no repeats =&gt; remove choice from vector</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">maxHelper</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">lex</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="n">choice</span><span class="p">));</span> <span class="c1">// update best</span>
+        <span class="n">symbols</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">choice</span><span class="p">);</span> <span class="c1">// unchoose =&gt; restore to vector</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">best</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">maxLength</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">lex</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">maxHelper</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">lex</span><span class="p">,</span> <span class="s">""</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Just for fun, the longest such word is "IrReCoNCILaBiLiTiEs" (length 19).</p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-14
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

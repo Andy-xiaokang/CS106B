@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Linked Lists</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 6. Linked Lists</h1>
+ <p class="subtle-heading">Friday November 17</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><!-- This boilerplate inserts formatted due date -->
+
+<!--  Boilerplate content for assignment index page -->
+
+<h2 id="due-friday-november-17-at--500-pm">Due Friday, November 17 at  5:00 pm</h2>
+<ul>
+  <li><small>Submit to <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Paperless</a>. On-time submissions (before on or due date) earn a small bonus to reward your good time management! </small></li>
+  <li><small>Late work (after the due date) is accepted if within the grace period (48 hours for this assignment). We do not accept further late work.</small></li>
+  <li><small>The grace period gives you the ability to self-grant an extension; we trust you will make reasonable and sparing use of this power.</small></li>
+</ul>
+
+<hr />
+
+<p>Last week, you gained experience working with pointers in the context of arrays and dynamic memory allocation. This week, you further strengthen your pointer skills by manipulating linked lists. The pointed-based linked structures are a fundamentally different way of representing sequences than the array-based approaches you worked with in the previous assignment, and this assignment aims to build your familiarity with the joys, trials, and tribulations of working with linked lists. Along the way, you'll also deepen your understanding of some different real-world sorting algorithms. By completing the following tasks, you will become a master of pointers and linked structures – to the point where you'll finally be able to proclaim with confidence, Thank U-&gt;Next!</p>
+
+<p><em>This assignment is to be completed <strong>individually</strong>. Working in pairs/groups is not permitted.</em></p>
+
+<h2 id="learning-goals">Learning goals</h2>
+<ul>
+  <li>Students will continue to build and improve their skills of working with pointers.</li>
+  <li>Students will be able to use their knowledge of pointers to traverse and investigate linked data structures in the debugger.</li>
+  <li>Students will understand the fundamental differences between storing data in contiguous memory location as compared to organizing data pointer links.</li>
+  <li>Students will gain practice with different "idioms" of linked list usage, including pointer rewiring and insertion/removal of nodes from linked lists.</li>
+  <li>Students will understand the difference in approach of different real-world sorting algorithms and resulting performance tradeoffs.</li>
+</ul>
+
+<h2 id="assignment-parts">Assignment parts</h2>
+<p>This assignment consists of three parts: two warmup problems (<code class="language-c++ highlighter-rouge"><span class="n">warmup</span><span class="p">.</span><span class="n">cpp</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">labyrinth</span><span class="p">.</span><span class="n">cpp</span></code>), and then a single programming task on linked lists (<code class="language-c++ highlighter-rouge"><span class="n">sorting</span><span class="p">.</span><span class="n">cpp</span></code>).</p>
+
+<ul>
+  <li>
+    <h3 id="memory-debugging-warmup"><a href="warmup.html">Memory Debugging Warmup</a></h3>
+    <p>A collection of tools and strategies to prep you for working with linked lists.</p>
+  </li>
+  <li>
+    <h3 id="labyrinth"><a href="labyrinth.html">Labyrinth</a></h3>
+    <p>A hybrid coding/debugging exercise where you’ll trace through pointers in the debugger to escape from a labyrinth.</p>
+  </li>
+  <li>
+    <h3 id="sorting-linked-lists"><a href="sorting.html">Sorting Linked Lists</a></h3>
+    <p>A classic programming task: reordering the nodes of a linked list into sorted order.</p>
+  </li>
+</ul>
+
+<h2 id="getting-started">Getting started</h2>
+<p>📦 <a href="../../restricted/starter-assign6.zip.html">Starter project</a></p>
+
+<p>The starter project is provided as a zip archive. Download the zip, extract the files, and move the project folder to your CS106B folder. Open the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> file in Qt Creator to get started.</p>
+
+<h2 id="resources">Resources</h2>
+<p>Here are resources that will be helpful for this assignment:</p>
+<ul>
+  <li>The CS106B <a href="../../resources/style_guide.html" title="Style Guide">Style Guide</a></li>
+  <li><a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">A Guide to Testing Code in CS106B</a></li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/qt/commonissues.html">Common Build/Run Errors Guide</a>, put together by one of our wonderful section leaders, Jillian Tang.</li>
+  <li><a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>  Chapter 10 Sorting, Chapter 11 Pointers and Arrays, Chapter 12 Dynamic Memory Management</li>
+</ul>
+
+<h2 id="getting-help">Getting help</h2>
+<p>Working very closely with raw memory, pointers, and linked data structures will be challenging. We recommend drawing lots of diagrams and making good use of the debugger.</p>
+
+<p>Look for an announcement on the Ed forum for the YEAH session for this assignment. As always, we're here to help you if you get stuck. The <a href="https://edstem.org/us/courses/45672" title="Ed Discussion Forum">Ed forum</a> is open 24/7 for general discussion. Always start by searching first to see if your question has already been asked and answered before making a new post. To troubleshoot a problem with your specific code, your best bet is to bring it to the <a href="../../lair.html" title="LaIR helper hours">LaIR</a> helper hours or <a href="../../about_staff.html">office hours</a>.</p>
+
+<h2 id="submit">Submit</h2>
+<p>Before you call it done, run through our <a href="../../resources/submit_checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>s are crossed and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>s dotted. Then upload your completed files to Paperless for grading.</p>
+
+<p>Please submit only the files you edited; for this assignment, these files will be</p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">labyrinth</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">sorting</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">short_answer</span><span class="p">.</span><span class="n">txt</span></code></li>
+</ul>
+
+<p>🏁 <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Submit to Paperless</a></p>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Nov-10
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

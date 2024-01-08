@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Ethics of Prioritization and Ranking</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Ethics of Prioritization and Ranking</h1>
+
+<hr>
+
+<p class="attribution">
+Ethics case study written by Katie Creel, Nick Bowman, and Neel Kishnani.
+</p>
+
+
+
+<div id="content"><h2 id="design-analysis">Design analysis</h2>
+<p>You're working as a software engineer and have been contracted to build a priority queue for a client. The client's specification requests that the design support exactly three levels of priority: "high", "medium", and "low". Elements enqueued at the same priority level are to be processed in FIFO (first-in-first-out) order.  Your manager proposes a design for a new <code class="language-c++ highlighter-rouge"><span class="n">PQueue</span></code> class whose internal implementation consists of three ordinary <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>s: one for high priority elements, one for medium priority elements, and one for low priority elements. To dequeue elements, it would first drain the high priority queue, then medium and low.</p>
+
+<div id="Q15" class="question alert alert-warning">
+  <p><strong>Q15</strong>. Consider the differences between this three-bin priority queue and the priority queue you implemented on your assignment. Which would be more efficient to insert elements into and why? More generally, what are the benefits and disadvantages of using the three-bin priority queue vs. a regular priority queue?</p>
+</div>
+
+<p>Your manager tasks you with implementing the proposed priority queue. Now, you have to decide the threshold between a low priority element, a medium priority element, and a high priority element.</p>
+
+<div id="Q16" class="question alert alert-warning">
+  <p><strong>Q16</strong>. Describe a real-world system where a three-bin priority queue could be used. What factors would you use to distinguish between a low vs. medium vs. high priority element? What limitations might you need to consider when using a three-bin priority queue to represent this system?</p>
+</div>
+
+<h2 id="validity-of-rank-based-systems">Validity of rank-based systems</h2>
+
+<p>Say a college admissions department used a priority queue to rank their applicants. The admissions team decides on an algorithm to assign each applicant a weighted score, claiming that it takes into account the applicant's GPA, course load, extracurriculars, and personal statements. Each applicant's score would be a <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code> and stored into the priority queue. Once the admissions team builds up the priority queue, they take the top 500 applicants (based on their weighted score) and admit them.</p>
+
+<div id="Q17" class="question alert alert-warning">
+  <p><strong>Q17</strong>. Different institutions consider different factors in admissions and convert criteria to numbers different ways.  Regardless of which specific factors are considered, should an admissions department use a purely numerical rankings based system? Why or why not?</p>
+
+  <p>If yes, discuss what factors you think would be best to include when calculating numerical rankings and why those factors are well-represented as numbers. If not, discuss what factors you think should be considered in college admissions that would be difficult to represent as a numerical score. There are no right or wrong answers here - we're genuinely interested in your thoughts!</p>
+</div>
+
+<div id="Q18" class="question alert alert-warning">
+  <p><strong>Q18</strong>. Describe a real-world system that requires ranking but in which classification with a single number misses important context (i.e. a priority queue might not be the best way to store the objects being ranked). Make sure to use an example that hasn't already been discussed in lecture or in this assignment.</p>
+</div>
+
+<h2 id="dynamic-vs-static-priority">Dynamic vs. static priority</h2>
+<p>Our <code class="language-c++ highlighter-rouge"><span class="n">PQArray</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">PQHeap</span></code> implementations were both designed to assign a <strong>static</strong> priority to a given element. By static, we mean that once a priority is assigned, it does not change. There can be situations where an element's initially assigned priority does not take into account the full spectrum of considerations when deciding which element should be dequeued first.</p>
+
+<p>The <a href="https://unos.org/transplant/how-we-match-organs/">United Network for Organ Sharing</a> (UNOS) specifies that organ donation matching considers waiting time, distance from donor hospital, pediatric status, survival benefit, and several other factors. Say a hospital uses a priority queue to determine which patients get matched with which organs. The priority is determined from the UNOS factors and is assigned when the patient's doctor first puts in the request for an organ. However, this initial priority ranking occurs before the doctor evaluates compatibility of tissue between the donor and the recipient. Tissue compatibility increases the likelihood that the transplant will be successful.  After considering the ethical and practical implications of statically assigning priorities to patients, you suggest that the hospital redesigns their priority queue to consider each patient's priority as a <strong>dynamic</strong> value. By dynamic, we mean that a patient's priority can change from its original assigned value.</p>
+
+<div id="Q19" class="question alert alert-warning">
+  <p><strong>Q19</strong>. How would you design an implementation for the hospital's priority queue that dynamically determines which patient is the best match whenever a new organ becomes available? <strong>Note:</strong> Your design does not have to be the fastest or most efficient.</p>
+</div>
+
+<h2 id="references">References</h2>
+<p>Algorithmic prioritization in the news:</p>
+<ul>
+  <li><em>"We created poverty. Algorithms won't make that go away."</em> <a href="https://www.theguardian.com/commentisfree/2018/may/13/we-created-poverty-algorithms-wont-make-that-go-away">https://www.theguardian.com/commentisfree/2018/may/13/we-created-poverty-algorithms-wont-make-that-go-away</a></li>
+  <li><em>"What happens when an algorithm cuts your health care"</em> <a href="https://www.theverge.com/2018/3/21/17144260/healthcare-medicaid-algorithm-arkansas-cerebral-palsy">https://www.theverge.com/2018/3/21/17144260/healthcare-medicaid-algorithm-arkansas-cerebral-palsy</a></li>
+  <li><em>"New algorithms to score candidates for lifesaving organ donations"</em> <a href="http://algorithmtips.org/2021/04/29/new-algorithms-to-score-candidates-for-lifesaving-organ-donations/">http://algorithmtips.org/2021/04/29/new-algorithms-to-score-candidates-for-lifesaving-organ-donations/</a></li>
+</ul>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Nov-04
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

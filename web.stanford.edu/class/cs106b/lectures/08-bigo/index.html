@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Big-O and Algorithmic Analysis</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 8. Big-O and Algorithmic Analysis</h1>
+ <p class="subtle-heading">Friday October 13</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>This lecture covers <i>asymptotic analysis</i> and "Big O" notation, which enables us to quantitatively and qualitatively analyze algorithms for their speed.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 10.2</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/142321">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=4c7f675e-1e4f-4ef6-b25f-b083014df26c&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Prezi</strong></p>
+<p>Here's the Prezi from today's lecture:</p>
+<iframe src="https://prezi.com/p/embed/dSafJ0O8eHWF94vhp5Sr/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p><br /><strong>Contents</strong></p>
+<p>1. Preliminaries: DON'T PANIC!</p>
+<p>2. Preliminaries: A Broken Ideas for Runtime Analysis</p>
+<p>3. Toward Big-O: Another Broken Approach</p>
+<p>4. Introduction to Order Analysis (Big-O)</p>
+<p>5. Examples and Summary of Big-O Terminology</p>
+<p>6. Runtime Analysis Vignettes (Code)</p>
+<p>7. (<em>Supplementary</em>) Behind the Scenes with <span class="code-title">v.add(value)</span></p>
+<p>8. (<em>Supplementary</em>) Behind the Scenes with <span class="code-title">v.insert(index, value)</span></p>
+<p>9. Derivation of Key Summation Identity</p>
+<p>10. Exploring Linear Growth</p>
+<p>11. Runtime Estimation with Linear Growth</p>
+<p>12. Runtime Estimation with Quadratic Growth</p>
+<p>13. Big-O Runtime Comparisons</p>
+<p>14. Runtime Estimation with Exponential Growth</p>
+<p>15. Logarithmic Growth</p>
+<p>16. The Sheer Awesomeness of Logarithmic Runtimes</p>
+<p>17. What's next?</p>
+<p>18. Practice Problems</p>
+<p><strong><br />Preliminaries: DON'T PANIC!</strong></p>
+<p>If today's derivation of the following formula:</p>
+<p style="padding-left: 40px;"><img src="https://latex.codecogs.com/gif.latex?1%20+%202%20+%203%20+%20...%20+%20n%20%3D%20%7Bn%28n+1%29%5Cover2%7D" /></p>
+<p>... or the analysis of the following O(log n) function:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> weirdness(<strong>int</strong> n)<br />{<br />   <strong>int</strong> j = n;<br />   <strong>int</strong> result = 0;<br /><br />   <strong>while</strong> (j &gt; 0)<br />   {<br />      j /= 2;<br />      result++;<br />   }<br /><br />   <strong>return</strong> result;<br />}</pre>
+<p>... went a bit fast for you today,</p>
+<p style="padding-left: 40px;"><span style="color: #236fa1;"><strong><span style="font-size: 36pt;">DON'T PANIC</span></strong></span><strong></strong></p>
+<p>My expectation is that many people will have to revisit those explanations to really unpack and absorb what's going on there. If you felt a bit mystified by those, don't feel bad, and don't give up! It's normal to have to put some extra time into studying certain concepts outside of lecture. (That's one of the reasons this is a 5-unit course!)</p>
+<p>If you're pressed for time and those derivations are looking ultra indimidating, focus for now on the key take-aways for each of those examples (which are listed below in today's notes, but which I'll summarize here):</p>
+<ul>
+<li>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key Take-Away!</em></span>) The summation 1 + 2 + 3 + ... + <em>n</em> comes up&nbsp;<strong>all the time</strong> in our field. Ideally, it's good to know the closed form for that expression (the formula given above). Ultra-ideally, it's great to know how it's derived. Perhaps more realistically, though, I just want everyone to know when they see the sum of 1 through <em>n</em> that it's <strong>O(n<sup>2</sup>)</strong>.</li>
+</ul>
+<ul>
+<li>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key Take-Away!</em></span>) The key thing to take away from the <span class="code-chonk">weirdness()</span> function above is the <em>pattern:</em> if you repeatedly divide your input in half (and you only incur an O(1) operation each time you do so), that is a key pattern that indicates you have an overall runtime of O(log n).</li>
+</ul>
+<p><strong><br />Preliminaries: A Broken Ideas for Runtime Analysis</strong></p>
+<p>We started today's lecture with a discussion of the limitations of using actual clock time to compare the runtime efficiency of two programs that solve the same problem. This has all kinds of pitfalls, including (a) the need for both implementations to be run on the same machine, (b) the need to ensure the test cases used when timing those programs provide a fair basis for comparison, (c) the possibility that the results of the comparison might vary if the timing experiments were performed with different processor architectures, and (d) the fact that runtime measurements could be subject to interference from other processes running on the host machine.</p>
+<p><strong><br />Toward Big-O: Another Broken Approach</strong></p>
+<p>We then considered the merits of a more architecture-independent approach: What if we measured the runtime of a function in terms of the number of operations executed instead of the number of seconds (clock time) required for it to run? To do that, we could count the following:</p>
+<ul>
+<li>assignment statements</li>
+<li>comparison operations</li>
+<li>arithmetic operations</li>
+<li>cost of function calls (in terms of the operations above)</li>
+</ul>
+<p>For example:</p>
+<p style="padding-left: 40px;"><img src="resources/tedious-operation-counting.png" /></p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><strong>Total runtime:</strong> 4n + 4 operations</span></p>
+<p><br />That might seem on its surface like a fair and reasonable approach to runtime analysis, but it has some significant pitfalls, including:</p>
+<ul>
+<li>It's easy to miss operations! For example, in the code above, the <span class="code-chonk">i++</span> and <span class="code-chonk">sum +=</span> operations are both doing an assignment&nbsp;<em>and</em> an arithmetic operation, so they should have been counted twice. The <span class="code-chonk">v[i]</span> read has a hidden multiplication operation related to memory addresses. The <span class="code-chonk">return</span> statement actually moves a value into a register in memory and might have to count as an assignment statement, as well. This is getting tedious and unruly, and the whole process of counting operations seems susceptible to human error.</li>
+<li>Even if we could agree on what counted as a single "operation" and ensure that we always counted them accurately (good luck with that), that operation count wouldn't necessarily give us an accurate view of what happens after the program is compiled. Different instructions take different numbers of processor cycles to complete, and that can vary depending on one's processor architecture. So giving equal weight to all the operations we count in our code doesn't seem like the right approach, but there's no unified standard we can use to predict processor cycles. And even if there were, a compiler might optimize and perturb our code in unexpected ways anyway.</li>
+</ul>
+<p>So, counting operations like that is a fool's errand. It's incredibly tedious, and the numbers are ultimately pretty meaningless.</p>
+<p><strong><br />Introduction to Order Analysis (Big-O)</strong></p>
+<p>All of this led into our main topic for the day: runtime analysis with Big-O (sometimes written as "big-oh"). We'll use Big-O for the rest of the semester as we analyze the runtime complexity -- and eventually even space (i.e., memory) complexity -- of the code we write.</p>
+<p>Here's a general outline of the process we follow to find a function's Big-O runtime:</p>
+<ol start="1">
+<li>Assume the input is arbitrarily huge (whether it's an integer you're passing to the function, a vector length, or what-have-you).</li>
+</ol>
+<ol start="2">
+<li>Find the statement (or statements) executed the most in that function, and count how many times they occur. This is an architecture-independent approximation of the runtime.</li>
+</ol>
+<ol start="3">
+<li>Drop any constant coefficients from your approximation and take the highest-order term as the Big-O runtime.</li>
+</ol>
+<p>We saw that Big-O frees us from the tedium of attempting to precisely count instructions (which is ultimately a fool's errand anyway) and allows us to hone in on -- and efficiently communicate to others -- the main idea behind how rapidly a function's runtime grows as its input(s) grow.</p>
+<p><strong><br />Examples and Summary of Big-O Terminology</strong></p>
+<p>Here are the Big-O examples we saw next, along with some important terminology:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 80%;">
+  <thead>
+    <tr>
+      <th>Expression</th>
+      <th>Big-O Runtime</th>
+      <th>Alternative Phrasing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T(n) = n + 4n<sup>3</sup> + 2n<sup>2</sup> + 1055</td>
+      <td>O(n<sup>3</sup>)</td>
+      <td>cubic (polynomial)</td>
+    </tr>
+    <tr>
+      <td>T(n) = (1/6)n<sup>2</sup> + 1000n</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>quadratic (polynomial)</td>
+    </tr>
+    <tr>
+      <td>T(n) = log n + n</td>
+      <td>O(n)</td>
+      <td>linear</td>
+    </tr>
+    <tr>
+      <td>T(n) = n log n + n</td>
+      <td>O(n log n)</td>
+      <td>linearithmic</td>
+    </tr>
+    <tr>
+      <td>T(n) = log n + 40</td>
+      <td>O(log n)</td>
+      <td>logarithmic</td>
+    </tr>
+    <tr>
+      <td>T(n) = 6n + 2<sup>n</sup></td>
+      <td>O(2<sup>n</sup>)</td>
+      <td>exponential</td>
+    </tr>
+    <tr>
+      <td>T(n) = 5</td>
+      <td>O(1)</td>
+      <td>constant</td>
+    </tr>
+  </tbody>
+</table>
+<p>We read those Big-O expressions aloud as follows:</p>
+<ul>
+<li>"Big-O n-squared" or "order n-squared"</li>
+<li>"Big-O n" or "order n"</li>
+<li>"Big-O log n" or "order log n"</li>
+<li>... and so on</li>
+</ul>
+<p>Note that if the runtime of a function is constant (say, for example, it always does exactly 10 steps of work), we don't write O(10) for the Big-O runtime; we just write O(1). O(1) means "constant time."</p>
+<p><br /><strong>Runtime Analysis Vignettes (Code)</strong></p>
+<p>This section includes several examples of code from today's lecture and their corresponding runtimes. For additional explanation of each of these examples, see today's lecture video starting at timestamp 23:15.</p>
+<p>Throughout this section, I use&nbsp;<em>n</em> to indicate vector size. It's best practice to formally define any variables that appear in a Big-O expression if they do not already appear directly in the function whose runtime is being analyzed.</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong><br />Example #1</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> swap(<strong>int&amp;</strong> a, <strong>int&amp;</strong> b)<br />{<br />   <strong>int</strong> temp = a;<br />   a = b;<br />   b = temp;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">Runtime: O(1)</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong><br />Example #2</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> vectorSum(<strong>Vector</strong>&lt;<strong>int</strong>&gt; v)<br />{<br />   <strong>int</strong> sum = 0;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      sum += v[i];<br />   }<br /><br />   <strong>return</strong> sum;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">Runtime: O(n)</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong><br />Example #3</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> doubleVectorSum(<strong>Vector</strong>&lt;<strong>int</strong>&gt; v)<br />{<br />   <strong>int</strong> sum = 0;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      sum += v[i];<br />   }<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      sum += v[i];<br />   }<br /><br />   <strong>return</strong> sum;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">Runtime: O(n)</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">(<span style="background-color: #ffff99;"><em>Key Take-Away!</em></span>) Even though the runtime for Example #3 is approximately double that of Example #2, both of them have a runtime of O(n). This highlights the fact that Big-O&nbsp; analysis doesn't necessarily give a direct comparison of the performance of two functions; rather, it focuses on the kind of growth a runtime incurs as a function's input grows.</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong><br />Example #4</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> nestedSum(<strong>Vector</strong>&lt;<strong>int</strong>&gt; v)<br />{<br />   <strong>int</strong> sum = 0;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br /><em><span style="color: #236fa1;">      // This inner loop, considered in isolation, would be said to have an O(n)</span></em><br /><em><span style="color: #236fa1;">      // runtime. We're hitting this inner loop n times, though, giving us a total</span></em><br /><em><span style="color: #236fa1;">      // runtime of O(n^2) for this function.</span></em><br />      <strong>for</strong> (<strong>int</strong> j = 0; j &lt; v.size(); j++)<br />      {<br />         sum += v[i];<br />      }<br />   }<br /><br />   <strong>return</strong> sum;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">Runtime: O(n<sup>2</sup>)</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt; color: var(--ic-brand-font-color-dark); font-family: inherit;">Note: The inner loop above, considered in isolation, would be said to have an O(n) runtime. We're hitting that inner loop </span><em style="font-size: 10pt; color: var(--ic-brand-font-color-dark); font-family: inherit;">n</em><span style="font-size: 10pt; color: var(--ic-brand-font-color-dark); font-family: inherit;"> times, though, giving us a total runtime of O(n</span><sup style="color: var(--ic-brand-font-color-dark); font-family: inherit;">2</sup><span style="font-size: 10pt; color: var(--ic-brand-font-color-dark); font-family: inherit;">) for this function. We also looked at this runtime additively: the inner loop does&nbsp;<em>n</em> iterations when i = 0, another&nbsp;<em>n</em> when i = 1, and so on, giving us T(n) = n + n + ... + n = n(n) = n<sup>2</sup> iterations total.</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong><br />Example #</strong></span><span style="font-size: 10pt;"><strong>5</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> vectorSize(<strong>Vector</strong>&lt;<strong>int</strong>&gt; v)<br />{<br /><span style="color: #236fa1;"><em>   // With vectors, size() is an O(1) function call. The number of elements in a</em></span><br /><span style="color: #236fa1;"><em>   // vector is stored in a variable behind the scenes, and size() just returns</em></span><br /><span style="color: #236fa1;"><em>   // that variable.</em></span><br />   <strong>return</strong> v.size();<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">Runtime: O(n)</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt; color: var(--ic-brand-font-color-dark); font-family: inherit;">(<span style="background-color: #ffff99;"><em>Key Take-Away!</em></span>) There are two key take-aways from this example: (<strong>1</strong>) </span><span style="font-size: 10pt; color: var(--ic-brand-font-color-dark); font-family: inherit;">Firstly, we're getting into a portion of the course where we need to know something about the runtimes of functions we've been calling from various libraries -- whether standard C++ libraries or the Stanford libraries. Note that the <a class="inline_disabled" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/" target="_blank" rel="noopener">Stanford Library docs</a> contain information about runtimes for all the functions listed there. (<strong>2</strong>) Secondly, this is a <strong>pass-by-value</strong> function. That means that we create a copy of the vector when calling it, and that takes O(n) time. That's actually the dominant operation here -- not the call to <span class="tiny-chonk">v.size()</span>.</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong><br />Example #</strong></span><span style="font-size: 10pt;"><strong>6</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> vectorSizeRevised(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v)<br />{<br />   <strong>return</strong> v.size();<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">Runtime: O(1)</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 13.3333px;">Note: Passing the vector by reference is an O(1) operation, which results in a dramatic improvement in the runtime compared to Example #5.</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong><br />Example #7</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>Vector</strong>&lt;<strong>int</strong>&gt; vectorAdd(<strong>int</strong> n)<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br />      v.add(i);<br />   }<br /><br />   <strong>return</strong> v;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">Runtime: O(n)</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 13.3333px;">Note: The expected runtime for <span class="tiny-chonk">v.add(i)</span> is O(1), giving us a total runtime of O(n) for this function.</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong><br />Example #8</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>Vector</strong>&lt;<strong>int</strong>&gt; vectorInsert(<strong>int</strong> n)<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br />      v.insert(0, i);<br />   }<br /><br />   <strong>return</strong> v;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;">Runtime: O(n<sup>2</sup>)</span></p>
+<p style="padding-left: 30px;"><span style="font-size: 13.3333px;">Note: The expected runtime for <span class="tiny-chonk">v.insert(0, i)</span> is O(i), because on the i<sup>th</sup> iteration of the loop, we have <em>i</em> elements that need to be scooched over in the vector one-by-one. If we add up the number of elements we are writing in the vector at each iteration, we get: 1 + 2 + 3 + ... + n. In today's lecture, I derived the closed form for that expression. That is in today's lecture video at 29:10, and I have included a write-up about that in the notes below, as well (see the section titled, "Derivation of Key Summation Identity").</span></p>
+<p><strong><br />(<em>Supplementary</em>) Behind the Scenes with <span class="code-title">v.add(value)</span></strong></p>
+<p><span style="background-color: #ffff99; font-size: 10pt;"><em>This is <strong>somewhat</strong> supplementary information. You don't need to know this right now, but reading this section could help you develop and maintain a consistent view of what's happening behind the scenes with vector runtimes, which will be important later this quarter.</em></span></p>
+<p>In the section above, I mention that <span class="code-chonk">v.add(value)</span> has an <strong>expected</strong> runtime of O(1). That is also the runtime listed for that function in the <a class="inline_disabled" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Vector.html" target="_blank" rel="noopener">Stanford Vector docs</a>.</p>
+<p>However, a call to <span class="code-chonk">v.add(value)</span> <em>could</em> actually be an O(n) operation in somewhat rare cases, because the underlying data structure used to implement the vector might be forced to expand to accommodate a new element, and that is an O(n) operation because it involves copying all <em>n</em> elements into that newly expanded underlying data structure. This happens rarely, though, and the average runtime for inserting at the end of a vector winds up being O(1) because of how rare that expansion is.</p>
+<p>We'll explore that later in the quarter when we discuss how the vector and other ADTs are implemented. In the meantime, I wanted to provide a bit of context for that O(1) runtime so that you aren't building your understanding of these runtimes on flawed notions that will later need to be unlearned and rewired.</p>
+<p><strong><br />(<em>Supplementary</em>) Behind the Scenes with <span class="code-title">v.insert(index, value)</span></strong></p>
+<p><span style="background-color: #ffff99; font-size: 10pt;"><em>This is <strong>somewhat</strong> supplementary information. The same disclaimer applies here as in the section above.</em></span></p>
+<p>We have also seen that the runtime of <span class="code-chonk">v.insert(index, value)</span> can be as bad as O(n). That happens when we insert a value at the beginning of our vector, because all <em>n</em> elements in the vector need to scooch over to make room for the new one. That also happens if we insert into the middle of a vector with&nbsp;<em>n</em> elements. In that case, we have to scooch over n/2 elements, which is O(n). (There, I'm rewriting n/2 in my head as (1/2)n and then dropping the constant coefficient of (1/2) to get the big-oh notation.)</p>
+<p>But if we insert immediately after the last element in a vector, we only have to do <strong>one</strong> write operation (no elements get scooched over!), which is almost always going to be an O(1) operation. So, I would actually expect the following function to have an O(n) runtime because we're doing insertion at the end of the vector, which is fast:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "SimpleTest.h"<br />#include "vector.h"<br />using namespace std;<br /><br /><strong>Vector</strong>&lt;<strong>int</strong>&gt; insertAtEnd(<strong>int</strong> n)<br />{<br />&nbsp; &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br />&nbsp; &nbsp; <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &nbsp; // INSERT AT END OF VECTOR<br />&nbsp; &nbsp; &nbsp; &nbsp; v.insert(i, i);<br />&nbsp; &nbsp; }<br />&nbsp; &nbsp; <strong>return</strong> v;<br />}<br /><br /><strong>PROVIDED_TEST</strong>("runtime comparison")<br />{<br />&nbsp; &nbsp; <strong>int</strong> size;<br /><br />&nbsp; &nbsp; size = 20000;<br />&nbsp; &nbsp; TIME_OPERATION(size, insertAtEnd(size));<br /><br />&nbsp; &nbsp; size = 40000;<br />&nbsp; &nbsp; TIME_OPERATION(size, insertAtEnd(size));<br /><br />&nbsp; &nbsp; size = 80000;<br />&nbsp; &nbsp; TIME_OPERATION(size, insertAtEnd(size));<br /><br />&nbsp; &nbsp; size = 160000;<br />&nbsp; &nbsp; TIME_OPERATION(size, insertAtEnd(size));<br /><br />&nbsp; &nbsp; size = 320000;<br />&nbsp; &nbsp; TIME_OPERATION(size, insertAtEnd(size));<br /><br />&nbsp; &nbsp; size = 640000;<br />&nbsp; &nbsp; TIME_OPERATION(size, insertAtEnd(size));<br />}<br /><br /><strong>int</strong> main()<br />{<br />&nbsp; &nbsp; runSimpleTests(ALL_TESTS);<br />&nbsp; &nbsp; <strong>return</strong> 0;<br />}</pre>
+<p>Here are the runtimes I got from those tests. Notice that the runtime is approximately doubling as we double the input size, which is indicative of a linear runtime:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">size = 20000: 0.002 secs<br />size = 40000: 0.003 secs<br />size = 80000: 0.005 secs<br />size = 160000: 0.012 secs<br />size = 320000: 0.024 secs<br />size = 640000: 0.046 secs</pre>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key Take-Away!</em></span>) <span class="code-chonk">vector.insert(index, value)</span> isn't necessarily always O(n). It is more expensive to insert at the beginning of a vector than at the end. The total number of writes is generally <span class="code-chonk">vector.size() - index + 1</span>.</p>
+<p>Note, however, that inserting at the very end of a vector could actually be an O(n) operation in somewhat rare cases, because the underlying data structure used to implement the vector might be forced to expand to accommodate a new element, in which case all <em>n</em> vector elements would need to be copied into that new, expanded data structure -- an O(n) operation. This happens rarely, though, and the average runtime for inserting at the end of a vector winds up being O(1) because of how rare that expansion is. We'll explore how that works (and how we keep these expansions rare) later in the quarter when we discuss how these ADTs are implemented.</p>
+<p><strong><br />Derivation of Key Summation Identity</strong></p>
+<p>In the following (which is Example #8 from above), we saw that the inner loop was doing 1 + 2 + 3 + ... + <em>n</em> write operations each time we called the function:</p>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>Runtime:</strong> O(</span><span style="font-size: 10pt;">n<sup>2</sup>)</span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>Vector</strong>&lt;<strong>int</strong>&gt; vectorInsert(<strong>int</strong> n)<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br />      v.insert(0, i);<br />   }<br /><br />   <strong>return</strong> v;<br />}</pre>
+<p><br />To derive the closed form for that expression, I listed the first and last few terms and set them equal to <em>S</em> (which stands for "<strong>sum</strong>" and which is the term I want to solve for, ultimately):</p>
+<p style="padding-left: 30px;"><img src="https://latex.codecogs.com/gif.download?S%20%3D%201%20+%202%20+%203%20+%20...%20+%20%28n-2%29%20+%20%28n-1%29%20+%20n" alt="" /></p>
+<p>I then used the commutative property of addition to reverse the order of the terms on the right-hand side:</p>
+<p style="padding-left: 30px;"><img src="https://latex.codecogs.com/gif.download?S%3Dn%20+%20%28n-1%29%20+%20%28n-2%29%20+%20...%20+%203%20+%202%20+%201" alt="" /></p>
+<p>Note that if we add the left-hand side of both equations above, that should give us the same result as adding the right-hand side of those equations. If we do that, we get the following:</p>
+<p style="padding-left: 30px;"><img src="https://latex.codecogs.com/gif.download?2S%20%3D%20%28n+1%29%20+%20%28n+1%29%20+%20%28n+1%29%20+%20...%20+%20%28n+1%29%20+%20%28n+1%29%20+%20%28n+1%29" alt="" /></p>
+<p>If we count up the number of (<em>n</em> + 1) terms on the right-hand side of that equation, we see that we have&nbsp;<em>n</em> of them. Thus, we can simplify the right-hand side like so:</p>
+<p style="padding-left: 30px;"><img src="https://latex.codecogs.com/gif.download?2S%20%3D%20n%28n+1%29" alt="" /></p>
+<p>We then solve for <em>S</em> by dividing both sides by 2:</p>
+<p style="padding-left: 30px;"><img src="https://latex.codecogs.com/gif.download?S%20%3D%20%7B%7Bn%28n+1%29%7D%5Cover%7B2%7D%7D" alt="" /></p>
+<p>Recall that <em>S</em> was used to represent our sum, so we now have our identity:</p>
+<p style="padding-left: 30px;"><img src="https://latex.codecogs.com/gif.latex?1%20+%202%20+%203%20+%20...%20+%20n%20%3D%20%7Bn%28n+1%29%5Cover2%7D" /></p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key Take-Away!</em></span>) The summation 1 + 2 + 3 + ... + <em>n</em> comes up&nbsp;<strong>all the time</strong> in our field. Ideally, it's good to know the closed form for that expression (the formula given above). Ultra-ideally, it's great to know how it's derived. Perhaps more realistically, though, I just want everyone to know when they see the sum of 1 through <em>n</em> that it's <strong>O(n<sup>2</sup>)</strong>.</p>
+<p><br /><strong>Exploring Linear Growth</strong></p>
+<p>We then examined the following function:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> vectorMax(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v)<br />{<br /><span style="color: #236fa1;"><em>   // The following initialization to -1 is safe if we assume the vector contains</em></span><br /><span style="color: #236fa1;"><em>   // only non-negative integers.</em></span><br />   <strong>int</strong> max = -1;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      <strong>if</strong> (v[i] &gt; max)<br />      {<br />         max = v[i];<br />      }<br />   }<br /> <br />   <strong>return</strong> max;<br />}</pre>
+<p>The runtime for <span class="code-chonk">vectorMax()</span> is O(n), where&nbsp;<em>n</em> is the length of the vector we pass to it.</p>
+<p>The following chart shows actual runtimes for running this function with vectors of various sizes:</p>
+<p style="padding-left: 40px;"><img src="resources/vectorMax-results.png" width="500" /></p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><em>This chart and experimental data are courtesy of my awesome colleague, Chris Gregg.</em></span></p>
+<p>The blue line above was derived by calling the function with vectors where the maximum value was at index zero. In that case, the if-condition in the code is true only once per function call (when <span class="code-chonk">i = 0</span>), and so we only write to <span class="code-chonk">max</span> once within that loop.</p>
+<p>The red line above was derived by calling the function with a vector where each element was greater than the one before it. In that case, the if-condition <em>always</em> evaluates to true, and we write to <span class="code-chonk">max</span> at every iteration of the loop.</p>
+<p>The latter scenario (writing to <span class="code-chonk">max</span> at every iteration) is necessarily slower than the former (only writing to <span class="code-chonk">max</span> once), but we see that both scenarios still lead to O(n) runtimes.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key Take-Away!</em></span>) We see that in both cases, doubling the size of the input doubles the runtime. This is a key characteristic of linear runtimes.</p>
+<p><br /><strong>Runtime Estimation with Linear Growth</strong></p>
+<p>We then examined the following estimation problem:</p>
+<p style="margin-left: 30px; padding-left: 10px; border-left: 2px solid #cccccc;"><em>Suppose we have an <strong>O(n) function</strong> that takes <strong>100 ms</strong> to run for an input of size <strong>n = 50</strong>. How long would we expect this function to take for an input of size <strong>n = 100</strong>?</em></p>
+<p>Since this is an O(n) function, the growth factor for our inputs matches the growth factor for our runtimes: 100/50 = 2x increase (in both our input size and our runtime). So, for <strong><em>n</em> = 100</strong>, we expect the runtime to be 2 * 100 ms = <strong>200 ms</strong>.</p>
+<p><strong><br />Runtime Estimation with Quadratic Growth</strong></p>
+<p>We then examined a similar problem, but with quadratic growth instead of linear:</p>
+<p style="margin-left: 30px; padding-left: 10px; border-left: 2px solid #cccccc;"><em>Suppose we have an <strong>O(n<sup>2</sup>) function</strong> that takes <strong>100 ms</strong> to run for an input of size <strong>n = 50</strong>. How long would we expect this function to take for an input of size <strong>n = 100</strong>?</em></p>
+<p>Since the runtime is O(n<sup>2</sup>), we do not expect the growth factor for our inputs to match the growth factor for our runtime. The <strong>runtime</strong> growth factor is given by the ratio of the <strong>squared</strong> input sizes: 100<sup>2</sup>/50<sup>2</sup> = 4x increase in runtime. So, for <strong><em>n</em> = 100</strong>, we expect the runtime to be 4 * 100 ms = <strong>400 ms</strong>.</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key Take-Away!</em></span>) That might not seem like a drastic increase, but consider what happens if we bump our input size up to 1,000,000 (which isn't even all that huge of a number). Our growth factor is 1,000,000<sup>2</sup>/50<sup>2</sup> = 400,000,000x increase in runtime. So, for <strong><em>n</em> = 1,000,000</strong>, we expect the runtime to be 400,000,000 * 100 ms = 40,000,000,000 ms = 40,000,000 sec = <strong>463 <span style="text-decoration: underline;">days</span></strong>!</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Important note!</em></span>) This isn't to say that an O(n<sup>2</sup>) function will always take 463 days to run on an input of size&nbsp;<em>n</em> = 1,000,000. That only holds if the runtime for&nbsp;<em>n</em> = 50 was 100 ms to begin with. It's entirely possible to have an O(n<sup>2</sup>) function whose runtime when&nbsp;<em>n</em> = 50 is so negligible as to be practically immeasurable. I actually timed an O(n<sup>2</sup>) function today that had a runtime of just <strong>14 ms</strong> for an input of size <strong><em>n</em> = 10,000</strong>. For an input of size <strong><em>n</em> = 1,000,000</strong>, we would expect that function to have a runtime of just 140,000 ms = 140 sec = <strong>2.33 minutes</strong>. (An input of size&nbsp;<strong><em>n</em> = 100,000,000</strong>, however, would take this function <strong>16.2 days</strong> to process. That's actually pretty concerning.) (Okay, I'll stop now.)</p>
+<p><br /><strong>Big-O Runtime Comparisons</strong></p>
+<p>It gets even worse from there. Here's a fancy graph that shows how quickly cubic runtimes grow compared to quadratic runtimes:</p>
+<p style="padding-left: 40px;"><img src="resources/cubic-vs-quadratic.png" width="500" /></p>
+<p style="padding-left: 40px;"><span style="font-size: 10pt;"><em>This chart and experimental data are courtesy of my awesome colleague, Chris Gregg.</em></span></p>
+<p>I also showed the following chart in class, which gives a lovely, colorful representation of the relative growth rates of common Big-O runtimes:</p>
+<p style="padding-left: 40px;"><img src="resources/big-o-compare.png" width="500" /></p>
+<p>Take that chart with a grain of salt, though. While it shows the relative ordering of those runtimes and loosely conveys the shapes of those curves, it does not accurately represent the vast disparity between some of them or the immense closeness of others. For example, if you were to <a class="inline_disabled" href="https://www.desmos.com/calculator/lpjjt51rdd" target="_blank" rel="noopener">go to an online graphing calculator</a>, have it graph all of the following functions:</p>
+<ul>
+<li>T(n) = 1</li>
+<li>T(n) = log(n)</li>
+<li>T(n) = n</li>
+<li>T(n) = n log(n)</li>
+<li>T(n) = n^2</li>
+<li>T(n) = 2^n</li>
+</ul>
+<p>... and then zoom out just a bit, you would see very little distinction between the two slowest-growing functions (constant and logarithmic), as well as very little distinction between the two fastest-growing functions (n<sup>2</sup> and 2<sup>n</sup>):</p>
+<p style="padding-left: 40px;"><img src="resources/desmos-runtimes-labeled-shrunk.png" width="500" /></p>
+<p>That's not to say that there's no appreciable difference between O(n<sup>2</sup>) and O(2<sup>n</sup>) runtimes. (There certainly is!) It's just that they both have the potential to become very unruly very quickly as input size increases.</p>
+<p><strong><br />Runtime Estimation with Exponential Growth</strong></p>
+<p>We then used our runtime projection technique to examine how terrible exponential runtimes are:</p>
+<p style="margin-left: 30px; padding-left: 10px; border-left: 2px solid #cccccc;"><em>Suppose we have an <strong>O(2<sup>n</sup>) function</strong> that takes <strong>100 ms</strong> to run for an input of size <strong>n = 5</strong>. How long would we expect this function to take for an input of size <strong>n = 30</strong>?</em></p>
+<p>Since the runtime is O(2<sup>n</sup>), runtime growth factor is given by 2<sup>30</sup>/2<sup>5</sup> = 2<sup>25</sup> = 33,554,432. That corresponds to a 33.5 <strong>million</strong><em> </em>times&nbsp;increase in runtime. So, for <strong><em>n</em> = 30</strong>, we expect the runtime to be 33,554,432 * 100 ms = 3,355,443,200 ms = 3,355,443.2 sec = <strong>38.84 <span style="text-decoration: underline;">days</span></strong>. That's pretty wild for such a tiny value of&nbsp;<em>n</em>.</p>
+<p>We have already seen an exponential runtime in class, too: the recursive coin flip function from Wednesday's lecture on recursion! Every time we bump up the input to that function by 1, we double the number of solutions it produces. That is the key pattern that suggest an O(2<sup>n</sup>) runtime.</p>
+<p>We saw another example of exponential growth at the very end of class today with the Traveling Salesperson Problem (TSP):</p>
+<p style="padding-left: 40px;">The best known solution to TSP is O(n<sup>2</sup>2<sup>n</sup>). For the sake of simplicity, suppose we could find a O(2<sup>n</sup>) solution to the problem. If it takes us approximately <strong>4 days</strong> to compute the solution for <strong>50 cities</strong>, it would take approximately <strong>17 days</strong> to solve the problem with just <strong>52 cities</strong>, and it would take approximately <strong>194 <span style="text-decoration: underline;">years</span></strong> (<strong>!!</strong>) to solve with <strong>64 cities</strong>.</p>
+<p>(<span style="font-size: 10pt;"><span style="background-color: #ffff99;"><em>Key Take-Away!</em></span></span>) Exponential runtimes are not friendly. A small bump up in the input size, even when dealing with seemingly trivial numbers like <em>n</em> = 30 or 64, can lead to<em> huge</em> explosions in runtime.</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key Take-Away!</em></span>) If bumping your input up by 1 causes your runtime to double, that's a key indication that you have an O(2<sup>n</sup>) runtime.</p>
+<p><br /><strong>Logarithmic Growth</strong></p>
+<p>We then dissected the following function and saw that it had a logarithmic runtime:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> weirdness(<strong>int</strong> n)<br />{<br />   <strong>int</strong> j = n;<br />   <strong>int</strong> result = 0;<br /><br />   <strong>while</strong> (j &gt; 0)<br />   {<br />      j /= 2;<br />      result++;<br />   }<br /><br />   <strong>return</strong> result;<br />}</pre>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key Take-Away!</em></span>) For the formal analysis of this function, I defer to today's Prezi and the recorded lecture. The key take-away here is that if you repeatedly divide your input in half (and you only incur an O(1) operation each time you do so), that is a key pattern that indicates you have an overall runtime of O(log n).</p>
+<p><br /><strong>The Sheer Awesomeness of Logarithmic Runtimes</strong></p>
+<p>Logarithmic runtimes are astonishingly fast. Check out this chart:</p>
+<table class="table table-sm" style="margin-left: 30px; width: 200px;">
+  <thead>
+    <tr>
+      <th>n</th>
+      <th>log<sub>2</sub>n</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>8</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>1,024</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>65,536</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>1,048,576</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>33,554,432</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <td>1,073,741,824</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>Here's a fact I love to throw around: 2<sup>30</sup> is approximately 1 billion (1x10<sup>9</sup>). That means that log<sub>2</sub>(1x10<sup>9</sup>) is approximately 30. With that in mind, please take a moment to reflect on how awesomely fast a function with logarithmic runtime is. Given an input of size 1 billion, a function whose runtime is approximately log<sub>2</sub>(n) can finish in just <em>30 steps!!</em> (Give or take some multiplicative constant on that 30. This is Big-O, after all.) That's not even in the same <em>ballpark</em> as an O(n) function, which would take approximately a&nbsp;<em>billion</em> steps (again, give or take a multiplicative constant) to execute on the same input. That's some mind-blowing stuff.</p>
+<p>(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key Take-Away!</em></span>) In that respect, I would encourage you <strong>not</strong> to look at O(log n) runtimes as somehow being "half way" between O(1) and O(n) runtimes, which I think is a common misconception among people when they are first introduced to Big-O analysis. Rather, O(log n) runtimes, relatively speaking, are <i>incredibly</i> close O(1).</p>
+<p><br /><strong>What's next?</strong></p>
+<p>On Monday, we will return to our discussion of recursion. We will spend the entire week exploring more and more advanced recursive examples. We will also continue to discuss Big-O throughout, we will start to get a taste of clever algorithm design.</p>
+<p><br /><strong>Practice Problems</strong></p>
+<p>Be sure to revisit the sections labeled "(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key Take-Away!</em></span>)" in today's notes to ensure you have a firm grasp on all the main concepts from today's lecture. You might also find the sections labeled "Supplementary" to be helpful in solidifying your understanding of some of this material.</p>
+<p>Beyond that, for additional reinforcement of today's topics, I defer to today's lecture quiz, next week's section problems, and the textbook, all of which provide an abundance of examples and novel problems to play with.</p>
+<p><br /></p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-15
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

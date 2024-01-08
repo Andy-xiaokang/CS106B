@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B More Recursion</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Lecture 9. More Recursion</h1>
+ <p class="subtle-heading">Monday October 16</p>
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Continuing our exploration of recursion by discussing Binary Search, 
+then generating sequences and permutations.</p>
+
+<!-- This boilerplate inserts links to slides, Q&A, and video if available -->
+
+<!--  Boilerplate content for lecture index page -->
+
+<ul>
+  <li>Readings: <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Text</a> 8.1, 8.2, 8.3</li>
+  <li><a href="https://canvas.stanford.edu/courses/178622/quizzes/141787">Lecture quiz on Canvas</a></li>
+</ul>
+
+<p><strong>Lecture Video</strong></p>
+<iframe src="https://stanford-pilot.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=23e99a54-b2f6-44db-bc15-b083014df288&amp;autoplay=false&amp;offerviewer=true&amp;showtitle=true&amp;showbrand=true&amp;captions=true&amp;interactivity=all" height="405" width="720" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" aria-label="Panopto Embedded Video Player"></iframe>
+
+<p><br /><strong>Prezis</strong></p>
+<p>Here are the coin flip and permutations Prezis from today's lecture:</p>
+<iframe src="https://prezi.com/p/embed/T1JHZiNcZUf8M6D1rncW/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<iframe src="https://prezi.com/p/embed/4uX6FsILqaToJoQOnbfI/" id="iframe_container" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen" height="315" width="560"></iframe>
+<p><strong><br />Contents</strong></p>
+<p>1. Linear Search</p>
+<p>2. Best- and Worst-Case Runtime</p>
+<p>3. Generating Vectors of Random Integers</p>
+<p>4. Generating Sorted Vectors (and a Note About the Word "Sorted")</p>
+<p>5. Binary Search</p>
+<p>6. Binary Search Runtime (and a Reminder of the Awesomeness of Logarithmic Runtimes!)</p>
+<p>7. Midpoint Formula (and Integer Overflow)</p>
+<p>8. Function Overloading</p>
+<p>9. Recursive Sequence Generation: Coin Flips</p>
+<p>10. Recursive Permutation Generation</p>
+<p>11. What's next?</p>
+<p>12. Practice Exercises</p>
+<p><br /><strong>Linear Search</strong></p>
+<p>We dove straight into some code today. We started by writing a function that takes a vector of integers and some integer we want to search for, <span class="code-chonk">key</span>, and returns <span class="code-chonk">true</span> if the vector contains the key, <span class="code-chonk">false</span> otherwise. This function simply checks the vector sequentially, starting at index 0, and stops as soon as it finds the key. This particular approach to searching is called "linear search." Here it is in code:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// Takes a vector of integers and some key to search for. Returns true if key is</em></span><br /><span style="color: #236fa1;"><em>// in the vector, false otherwise. Passing vector by reference for efficiency.</em></span><br /><strong>bool</strong> search(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> key)<br />{<br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      <strong>if</strong> (v[i] == key)<br />      {<br />         <strong>return</strong> true;<br />      }<br />   }<br /><br /><em><span style="color: #236fa1;">   // If we make it through the loop without finding our key, it must not be in</span></em><br /><em><span style="color: #236fa1;">   // our vector.</span></em><br />   <strong>return</strong> false;<br />}</pre>
+<p>A common alternative approach to a search function like this is to return the first index where we find the key we're searching for. In that case, we often return -1 to indicate failure to find the key, because -1 is never a valid index in a vector.</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// Takes a vector of integers and some key to search for. Returns the first index<br /></em></span><span style="color: #236fa1;"><em>// where key occurs, or -1 if key is not present. Passing vector by reference for<br />// efficiency.</em></span><br /><span style="background-color: #ffcc99;"><strong>int</strong></span> search(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> key)<br />{<br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      <strong>if</strong> (v[i] == key)<br />      {<br />         <span style="background-color: #ffcc99;"><strong>return</strong> i;</span><br />      }<br />   }<br /><br /><em><span style="color: #236fa1;">   // If we make it through the loop without finding our key, it must not be in</span></em><br /><em><span style="color: #236fa1;">   // our vector.</span></em><br />   <span style="background-color: #ffcc99;"><strong>return</strong> -1;</span><br />}</pre>
+<p><br /><strong>Best- and Worst-Case Runtime</strong></p>
+<p>The linear search function is unlike any of the other functions we analyzed last Friday because its runtime isn't always a function of <em>n</em>. If <em>n</em> is arbitrarily large, but the key we're searching for is at index 0 in the vector, we end up with what looks like an O(1) ("constant") runtime. However, if the key is not in the vector, we end up searching the entire thing, which takes O(n) ("linear") time. (Recall that passing a vector to a function by reference is an O(1) operation. Passing by value would be O(n) because we would have to make a copy of the vector. Recall also that each call to <span class="code-chonk">v.size()</span> is O(1).)</p>
+<p>This led to our discussion of <strong>best-</strong> and <strong>worst-case runtime</strong>. We say the best-case runtime for linear search is O(1), and the worst-case runtime is O(n).</p>
+<p><span style="font-size: 12pt;">(<span style="background-color: #ffff99; font-size: 10pt;"><em>Key take-away!</em></span>) (<span style="color: #e03e2d; font-size: 10pt;"><em><strong>Insanely important!</strong></em></span>) </span>When discussing best- and worst-case runtimes, we&nbsp;<em>always</em> assume that the inputs to our function (in this case, the size of the vector) are arbitrarily <strong><span style="font-size: 14pt;">Hu</span>G<span style="font-size: 14pt;">e</span></strong>! So, we never say the best-case runtime corresponds to the situation where the vector has just one element (or no elements). If we did that, then the discussion of best-case runtime for&nbsp;<em>every</em> function would be come moot. We would just never pass them any inputs, and finish in constant time without even executing them. Furthermore, if we were to restrict our consideration to inputs of size&nbsp;<em>n</em> = 1, then saying our runtime was O(1) would necessarily be the same as saying our runtime was O(n) (since 1 and <em>n</em> are equal in that case), and that's just not correct.</p>
+<p>(<span style="font-size: 10pt; background-color: #ffff99;"><em>Key take-away!</em></span>) Generally speaking, if someone asks for the runtime of some function, we are implicitly looking for <strong>worst-case runtime</strong> unless otherwise specified.</p>
+<p><strong><br />Generating Vectors of Random Integers</strong></p>
+<p>To test our linear search function, we needed to generate vectors of random integers. To do that, I capitalized on the <span class="code-chonk">randomInteger(low, high)&nbsp;</span> function from Stanford's <span class="code-chonk"><a class="inline_disabled" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/random.html" target="_blank" rel="noopener">random.h</a></span> library. That function takes two integer parameters, <span class="code-chonk">low</span> and <span class="code-chonk">high</span>, and returns an integer on the range <span class="code-chonk">low</span> through <span class="code-chonk">high</span> (inclusive).</p>
+<p>(<em><span style="font-size: 10pt; background-color: #eccafa;">Not mentioned in class: note about CS vernacular.</span></em>) My use of the word "inclusive" above in the phrase "<span class="code-chonk">low</span> through <span class="code-chonk">high</span> (inclusive)" means that the function has the ability to return <span class="code-chonk">high</span> as one of its values. Sometimes we want to indicate that the range of a function's return value range goes all the way up to, but does not include, <span class="code-chonk">high</span>. In that case, we would say the function returned an integer on the range "<span class="code-chonk">low</span> to <span class="code-chonk">high</span> <span style="background-color: #ffff99;">(exclusive)</span>." The "exclusive" here generally refers to the highest endpoint and not the lowest endpoint of the range; this phrasing generally indicates that <span class="code-chonk">low</span> could be returned, but not <span class="code-chonk">high</span>. If neither endpoint were returnable, we would likely say the function returned an integer <span style="background-color: #ffff99;">between</span> <span class="code-chonk">low</span> and <span class="code-chonk">high</span> <span style="background-color: #ffff99;">(exclusive)</span>. (Notice that when distinguishing between <span class="code-chonk">high</span> being included or not, I also personally tend to switch prepositions: "through" for inclusive, "to" for exclusive.)</p>
+<p>At any rate, we used <span class="code-chonk">randomInteger(low, high)</span> to write a function that created vectors of <em>n</em> random integers, and used those to test our search function. The resulting code is as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "random.h"  <span style="color: #236fa1;"><em>// for randomInteger()</em></span><br />#include "simpio.h"  <em><span style="color: #236fa1;">// for getInteger()</span></em><br />#include "vector.h"<br />using namespace std;<br /><br /><br /><span style="color: #236fa1;"><em>// Creates and returns a vector of n random integers on the range 0 through<br />// 100 (inclusive). Assumes n is non-negative.</em></span><br /><strong>Vector</strong>&lt;<strong>int</strong>&gt; createRandoVector(<strong>int</strong> n)<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br /><em>      <span style="color: #236fa1;">// Generate random integer on the range 0 through 100 (inclusive) and add<br />      // to vector.</span></em><br />      v.add(randomInteger(0, 100));<br />   }<br /><br />   <strong>return</strong> v;<br />}<em><br /></em><span style="color: #236fa1;"><em><br />// Takes a vector of integers and some key to search for. Returns the first index<br /></em></span><span style="color: #236fa1;"><em>// where key occurs, or -1 if key is not present. Passing vector by reference for<br />// efficiency.</em></span><br /><strong>int</strong> search(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> key)<br />{<br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; v.size(); i++)<br />   {<br />      <strong>if</strong> (v[i] == key)<br />      {<br />         <strong>return</strong> i;<br />      }<br />   }<br /><br /><em><span style="color: #236fa1;">   // If we make it through the loop without finding our key, it must not be in</span></em><br /><em><span style="color: #236fa1;">   // our vector.</span></em><br />   <strong>return</strong> -1;<br />}<br /><br /><strong>int</strong> main()<br />{<br /><em><span style="color: #236fa1;">   // Create vector with 10 random integers and print to screen.</span></em><br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v = createRandoVector(10);<br />   <strong>cout</strong> &lt;&lt; v &lt;&lt; <strong>endl</strong>;<br /><br />   <strong>while</strong> (true)<br />   {<br />      cout &lt;&lt; <strong>endl</strong> &lt;&lt; "What integer shall we search for? (-1 to quit) ";<br />      <strong>int</strong> key = getInteger();<br /><br />      <strong>if</strong> (key == -1)<br />      {<br /><span style="color: #236fa1;"><em>         // Jump to end of loop and continues executing main().</em></span><br />         <strong>break</strong>;<br />      }<br /><br />      <strong>cout</strong> &lt;&lt; "result: " &lt;&lt; search(v, key) &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; "Bye!" &lt;&lt; <strong>endl</strong>;<br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Generating Sorted Vectors (and a Note About the Word "Sorted")</strong></p>
+<p>After testing our linear search function, I mentioned that it would work whether the vector we passed to it was sorted or not. I then took a moment to write two functions for generating sorted vectors of random integers. Note that when I use the word "sorted" this quarter, I implicitly mean sorted from least to greatest or, more precisely, sorted in <strong>non-decreasing order</strong>. (This is not quite the same as saying that something is sorted in increasing order. Do you remember the distinction?)</p>
+<p>The first approach simply relies on the built in <span class="code-chonk">sort()</span> function for vectors. We generate a vector as above, but sort just before returning:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// Creates and returns a vector of n random integers on the range 0 through<br />// 100 (inclusive). Assumes n is non-negative.</em></span><strong><br />Vector</strong>&lt;<strong>int</strong>&gt; createSortedRandoVector(<strong>int</strong> n)<br />{<br /> &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <strong>for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br />      v.add(randomInteger(0, 100));<br />   }<br /><br />   <span style="background-color: #ffcc99;">v.sort();</span><br />   <strong>return</strong> v;<br />}</pre>
+<p>Alternatively, I showed that we could generate a sorted and random(ish) vector without calling <span class="code-chonk">sort()</span> at all, like so:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><span style="color: #236fa1;"><em>// Creates and returns a vector of n random integers on the range 0 through<br />// 100 (inclusive). Assumes n is positive.</em></span><strong><br />Vector</strong>&lt;<strong>int</strong>&gt; createSortedRandoVector(<strong>int</strong> n)<br />{<br /> &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br />   <em><span style="color: #236fa1;">// This assumes n &gt; 0, and so we actually want to add at least one element to<br />   // our vector. We could check manually whether n were &lt;= 0 (and nope out of this<br />   // function if so), but in class, I just made this assumption.<br /></span></em>   v[0] = randomInteger(0, 10);<br /><br />   <strong>for</strong> (<strong>int</strong> <span style="background-color: #ffcc99;">i = 1</span>; i &lt; n; i++)<br />   {<br /><em><span style="color: #236fa1;">      // By adding a non-negative integer to the value stored in the previous cell,</span></em><br /><em><span style="color: #236fa1;">      // we ensure this cell gets a value greater than or equal to the previous one.</span></em><br /><em><span style="color: #236fa1;">      // Thus, our vector ends up sorted.</span></em><br />      v.add(<span style="background-color: #ffcc99;">v[i - 1] +</span> randomInteger(0, 10));<br />   }<br /><br />   <strong>return</strong> v;<br />}</pre>
+<p>Note that the latter approach throws off the probability distribution and is not recommended in applications where a uniform distribution is desired. This is presented strictly to show an interesting approach to getting a sorted and random(ish) list of integers in the event that we don't have a sort function available to us. (Historical side note: I used to use this approach to generate random(ish) sorted containers in lecture when teaching classes in C (not C++). C's built-in sorting function isn't the most friendly, and I often didn't have time to clearly explain the details of how it worked in class, so I instead used this other approach as a stand-in whenever it was good enough for our purposes at the time.)</p>
+<p><strong><br />Binary Search</strong></p>
+<p>Having created sorted vector, we next discussed <strong>binary search</strong> -- a search algorithm that capitalizes on the sortedness of our vectors to give us faster runtimes than linear search. The main idea behind binary search is that we start by examining the element in the<strong>&nbsp;middle</strong> of our vector. If the key we're searching for is less than that middle element, then if it appears in the vector at all, it must be to the <i>left</i> of that middle element (since our vector is sorted). That means we can eliminate the <strong><em>entire right half</em></strong> of the vector from our search space! Similarly, if the key we're searching for is <em>greater</em> than the middle element, it must be to the&nbsp;<em>right</em> of that middle element, which allows us to eliminate the <strong><em>entire left half</em></strong> of the vector from our search space!</p>
+<p>From there, we repeatedly go to the middle element of our remaining search space until we either find the key or whittle our search space down to zero elements. A more detailed explanation of binary search is available in today's lecture at timestamp 18:05. An explanation of the recursive implementation of binary search is available at timestamp 26:30. Here is our resulting code:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />#include "random.h"<br />#include "simpio.h"<br />#include "vector.h"<br />using namespace std;<br /><strong><br /></strong><span style="color: #236fa1;"><em>// Binary search from positions lo through hi (inclusive) for our key. Return first</em></span><br /><span style="color: #236fa1;"><em>// index where found, or -1 if not found. Passing vector by reference for efficiency.</em></span><strong><br /></strong><strong>int</strong> binarySearch(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> key, <strong>int</strong> lo, <strong>int</strong> hi)<br />{<br /><span style="color: #236fa1;"><em>   // Base case: If our indices have crossed over, the key must not be present.</em></span><br />   <strong>if</strong> (lo &gt; hi)<br />   {<br />      <strong>return</strong> -1;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // See note about this midpoint formula in the section of today's notes<br /></em><em>   // titled, "Midpoint Formula (and Integer Overflow)."</em></span><br />   <strong>int</strong> mid = lo + (hi - lo) / 2;<br /><br />   <strong>if</strong> (key &lt; v[mid])<br />   {<br />      <strong>return</strong> binarySearch(v, key, lo, mid - 1);<br />   }<br />   <strong>else if</strong> (key &gt; v[mid])<br />   {<br />      <strong>return</strong> binarySearch(v, key, mid + 1, hi);<br />   }<br />   <strong>else</strong><br />   {<br /><em><span style="color: #236fa1;">      // Hooray, we found it. :)</span></em><br />      <strong>return</strong> mid;<br />   }<br />}<br /><br /><span style="color: #236fa1;"><em>// Wrapper function for binary search. This is the one our client would call.</em></span><br /><strong>int</strong> binarySearch(<strong>Vector</strong>&lt;<strong>int</strong>&gt;<strong>&amp;</strong> v, <strong>int</strong> key)<br />{<br />   <strong>return</strong> binarySearch(v, key, 0, v.size() - 1);<br />}<br /><br /><strong>Vector</strong>&lt;<strong>int</strong>&gt; createSortedRandoVector(<strong>int</strong> n)<br />{<br /> &nbsp; <strong>Vector</strong>&lt;<strong>int</strong>&gt; v;<br /><br /><strong>   for</strong> (<strong>int</strong> i = 0; i &lt; n; i++)<br />   {<br />      v.add(randomInteger(0, 50));<br />   }<br /><br />   v.sort();<br /><strong>   return</strong> v;<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>Vector</strong>&lt;<strong>int</strong>&gt; v = createSortedRandoVector(10);<br />   <strong>cout</strong> &lt;&lt; v &lt;&lt; <strong>endl</strong>;<br /><br /> &nbsp; <strong>while</strong> (true)<br />   {<br />      <strong>cout</strong> &lt;&lt; <strong>endl</strong> &lt;&lt; "What integer shall we search for? (-1 to quit) ";<br />      <strong>int</strong> key = getInteger();<br /><br />      <strong>if</strong> (key == -1)<br />      {<br />         <strong>break</strong>;<br />      }<br /><br />      <strong>cout</strong> &lt;&lt; "-&gt; result: " &lt;&lt; binarySearch(v, key) &lt;&lt; <strong>endl</strong>;<br />   }<br /><br />   <strong>cout</strong> &lt;&lt; "Bye!" &lt;&lt; <strong>endl</strong>;<br />   <strong>return</strong> 0;<br />}</pre>
+<p><strong><br />Binary Search Runtime (and a Reminder of the Awesomeness of Logarithmic Runtimes!)</strong></p>
+<p>Notice that with each O(1) comparison to the midpoint of our remaining search space, binary search cuts our search space in half. This repeated halving of our search space matches the pattern we saw last Friday for logarithmic runtimes. Indeed, the worst-case runtime for binary search is O(log n). The best-case runtime is O(1), where the key we're searching for is at the very middle of the vector and is therefore the first element we examine.</p>
+<p>Recall from Friday that logarithmic runtimes are <strong><em>A<span style="font-size: 120%;">M</span></em>A<em>Z</em><span style="font-size: 80%;">i</span><em><span style="font-size: 80%;">N</span></em>G</strong>! I mentioned last week that log<sub>2</sub>(2 billion) &asymp; 30. That means that if we have a sorted vector, binary search can determine whether it contains a particular element with just <span style="text-decoration: underline;"><em><strong>30 operations</strong><strong> at most!!<span style="font-size: 14pt;">!<span style="font-size: 18pt;">!</span></span></strong></em></span>&nbsp;(Give or take a multiplicative constant, of course. This is Big-O, after all.) Compare that to linear search, which would potentially have to examine <em><strong>all 2 billion elements</strong></em> to determine whether a particular key was present in the vector. This is a <em><strong>vast</strong></em> disparity whose amazingness cannot be understated.</p>
+<p><strong><br />Midpoint Formula (and Integer Overflow)</strong></p>
+<p>On most systems, an <span class="code-chonk">int</span> variable in C++ can hold values -2,147,483,648 through 2,147,483,647. If we add 1 to the maximum possible integer value, it actually wraps back around to the opposite end of the range and gives us -2,147,483,648. This is called <strong>integer overflow</strong>:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><br /><strong>int</strong> main()<br />{<br />   <strong>int</strong> biggest = 2147483647;<br />   biggest++;<br /><br />   <strong>cout</strong> &lt;&lt; biggest &lt;&lt; <strong>endl</strong>;  <span style="color: #236fa1;"><em>// prints -2147483648</em></span><br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p>Here's why this is relevant to today's lecture: in the binary search function above, we might be tempted to use the following formula to calculated the midpoint between <span class="code-chonk">lo</span> and <span class="code-chonk">hi</span>:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> mid = (lo + hi) / 2;</pre>
+<p>Consider what happens if we end up binary searching a vector with two billion and one elements, though:</p>
+<ul>
+<li>Initially, lo = 0 and hi = 2,000,000,001. The midpoint formula above gives us mid = 1,000,000,000 (after integer truncation).</li>
+<li>Now suppose the key we're searching for is greater than the element at index 1,000,000,000. In that case, we set lo = mid + 1. hi is unchanged.</li>
+<li>We now have lo = 1,000,000,001 and hi = 2,000,000,001. The midpoint formula above gives us (1,000,000,001 + 2,000,000,001) / 2. In the real world, that's all fine and dandy, but in C++, that addition operation gives us integer overflow; C++ can't handle the value 3,000,000,002 when dealing with integers. In this case, integer overflow gives us mid = (lo + hi) / 2 = -1,294,967,294 / 2 = &minus;647,483,647, which is an invalid index. Our program would crash spectacularly if we tried to access that position in a vector.</li>
+</ul>
+<p>The alternative formula, <span class="code-chonk">mid = lo + (hi - lo) / 2;</span>, is algebraically equivalent to the one above, but as long as <span class="code-chonk">lo</span> and <span class="code-chonk">hi</span> are valid integers to begin with, this one cannot possible result in integer overflow. (Trace through that formula with <span class="code-chonk">lo = 1,000,000,001</span> and <span class="code-chonk">hi = 2,000,000,001</span> to convince yourself that we never encounter an intermediary result that is greater than <span class="code-chonk">hi</span>, and therefore, if <span class="code-chonk">hi</span>itself was a valid non-negative integer, we cannot possibly encounter integer overflow with this formula.)</p>
+<p>This might all seem a bit pedantic, but it has been known to come up in tech interviews.</p>
+<p><br /><strong>Function Overloading</strong></p>
+<p>When we talked about wrapper functions on <a href="../07-recursion1/index.html">Wednesday</a> of last week, I used the following naming convention:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>void</strong> buzzyHelper(...)<br />{<br />   ...<br />}<br /><br /><strong>void</strong> buzzy(...)<br />{<br />   buzzyHelper(...);<br />}</pre>
+<p>When writing our <span class="code-chonk">binarySearch()</span> function today, instead of appending <span class="code-chonk">Helper</span> to the end of the name of our helper function, I simply gave both the wrapper and recursive helper functions the same name:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;"><strong>int</strong> binarySearch(<strong>Vector</strong>&lt;<strong>int</strong>&gt;&amp; v, <strong>int</strong> key, <strong>int</strong> lo, <strong>int</strong> hi)<br />{<br />   ...<br />}<br /><br /><strong>int</strong> binarySearch(<strong>Vector</strong>&lt;<strong>int</strong>&gt;&amp; v, <strong>int</strong> key)<br />{<br />   <strong>return</strong> binarySearch(v, key, 0, v.size() - 1);<br />}</pre>
+<p>This is an example of <strong>function overloading</strong> in C++. Function overloading is where we give multiple functions the same name and allow C++ to determine which one to call based on the number and types of parameters we're passing to the function. This streamlines our code somewhat by freeing us from the need to clutter and elongate the names of our helper functions.</p>
+<p><strong><br />Recursive Sequence Generation: Coin Flips<br /></strong></p>
+<p><em>For this section, see related Prezi at the top of today's notes.</em></p>
+<p>The next recursive function we examined today generated all possible sequences we might encounter by flipping a coin some number of times. For example, if we flip a coin 3 times, the sequences we might encounter are as follows (where 'H' represents heads, 'T' represents tails):</p>
+<ul>
+<li>HHH</li>
+<li>HHT</li>
+<li>HTH</li>
+<li>HTT</li>
+<li>THH</li>
+<li>THT</li>
+<li>TTH</li>
+<li>TTT</li>
+</ul>
+<p>For an explanation of how to generate these coin-flip sequences, as well as a walk-through of the following code, see timestamp 37:28 of today's lecture. In the Prezi, we walked through a <strong>recursive tree diagram</strong> (sometimes referred to as a <strong>decision tree</strong> in problems like this, where each recursive call involves making some sort of choice -- such as whether to flip a head or a tail). Hopefully the diagram helped shed some light on how the recursive algorithm works and how each of these sequences is generated.</p>
+<p>Following is the code we created, which is very short, yet immensely powerful. It's generating an explosion of sequences -- 2<sup>n</sup> of them, to be exact:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br /></strong><span style="color: #236fa1;"><em>// Prints all possible coin flip sequences (consisting of characters 'H' and/or 'T')<br />// starting with the sequence we have</em></span><span style="color: #236fa1;"><em> generated so far (soFar) and ending with n</em></span><br /><span style="color: #236fa1;"><em>// additional coin flips.</em></span><strong><br />void </strong>coinFlip(<strong>string</strong> soFar, <strong>int</strong> n)<strong><br /></strong>{<br /><span style="color: #236fa1;"><em>   // If there are no more coins to flip, we have generated a sequence of the</em></span><br /><span style="color: #236fa1;"><em>   // desired length. Print it.</em></span><br />   <strong>if</strong> (n == 0)<br />   {<br />      <strong>cout</strong> &lt;&lt; soFar &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong>;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // If there are coins remaining to be flipped, generate both possibilities:</em></span><br /><span style="color: #236fa1;"><em>   // one where we flip a head (adding 'H' to the sequence we've generated so far)</em></span><br /><span style="color: #236fa1;"><em>   // and one where we flip a tail (adding 'T' to soFar). In both cases, we have</em></span><br /><span style="color: #236fa1;"><em>   // one less coin to flip. We make both recursive calls because we want to</em></span><br /><span style="color: #236fa1;"><em>   // generate all possible sequences, which necessarily means exploring both</em></span><br /><span style="color: #236fa1;"><em>   // possible outcomes for this particular coin flip.</em></span><br />   coinFlip(soFar + "H", n - 1);<br />   coinFlip(soFar + "T", n - 1);<br />}<br /><br /><span style="color: #236fa1;"><em>// Our wrapper function, which serves as a gateway to the recursive coinFlip()</em></span><br /><span style="color: #236fa1;"><em>// function above. Generates all possible coin flip sequences (made up of the<br /></em><em>// characters 'H' and 'T') of length n.</em></span><br /><strong>void</strong> coinFlip(<strong>int</strong> n)<br />{<br /><span style="color: #236fa1;"><em>   // The empty string we're passing as our first parameter below indicates that</em></span><br /><span style="color: #236fa1;"><em>   // we are starting with an empty sequence. We have not yet flipped any coins,</em></span><br /><span style="color: #236fa1;"><em>   // and so the sequence does not yet contain any 'H' or 'T' characters.</em></span><br />   coinFlip("", n);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   coinFlip(3);<br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">HHH<br />HHT<br />HTH<br />HTT<br />THH<br />THT<br />TTH<br />TTT</pre>
+<p><strong><br />Recursive Permutation Generation</strong></p>
+<p><em>For this section, see related Prezi at the top of today's notes.</em></p>
+<p>The final recursive function we examined today generated all permutations of a given string. A <strong>permutation</strong> is just a re-ordering of elements. For example, each of the following strings is a permutation of the characters in "cat":</p>
+<ul>
+<li>cat</li>
+<li>cta</li>
+<li>act</li>
+<li>atc</li>
+<li>tac</li>
+<li>tca</li>
+</ul>
+<p>For an explanation of this particular approach to generating permutations, as well as a walk-through of the following code, see timestamp 46:30 of today's lecture. Our final approach to generating permutations was as follows:</p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #fff9e7;">#include &lt;iostream&gt;<br />#include "console.h"<br />using namespace std;<br /><strong><br /></strong><span style="color: #236fa1;"><em>// Swap the characters at indices i and j in our string. We use this helper function<br /></em><em>// to keep our permute() function as clutter-free and readable as possible.</em></span><strong><br />void</strong> swap(<strong>string&amp;</strong> s, <strong>int</strong> i, <strong>int</strong> j)<br />{<br />    <strong>int</strong> temp = s[i];<br />    s[i] = s[j];<br />    s[j] = temp;<br />}<br /><br /><span style="color: #236fa1;"><em>// Permute all characters in our string starting at index k. Print all resulting<br /></em><em>// permutations.</em></span><br /><strong>void</strong> permute(<strong>string&amp;</strong> s, <strong>int</strong> k)<br />{<br /><span style="color: #236fa1;"><em>   // k is the first of all indices in our string that remain to be permuted. If</em></span><br /><span style="color: #236fa1;"><em>   // k == s.length() (which is not a valid index in our string), that means we</em></span><br /><span style="color: #236fa1;"><em>   // must have permuted all the characters already, and were are therefore ready</em></span><br /><span style="color: #236fa1;"><em>   // to print a permutation and return to previous recursive calls.</em></span><br />   <strong>if</strong> (k == s.length())<br />   {<br />      <strong>cout</strong> &lt;&lt; s &lt;&lt; <strong>endl</strong>;<br />      <strong>return</strong>;<br />   }<br /><br /><span style="color: #236fa1;"><em>   // Of the remaining characters (from index k onward), let's select each of them</em></span><br /><span style="color: #236fa1;"><em>   // to be swapped down into index k and make a recursive call for each of those</em></span><br /><span style="color: #236fa1;"><em>   // options.</em></span><br />   <strong>for</strong> (<strong>int</strong> i = k; i &lt; s.length(); i++)<br />   {<br />      swap(s, k, i);<br />      permute(s, k + 1);<br />      swap(s, k, i);<br />   }<br />}<br /><br /><span style="color: #236fa1;"><em>// Our wrapper function, which serves as a gateway to the recursive permute()</em></span><br /><span style="color: #236fa1;"><em>// function above.</em></span><br /><strong>void</strong> permute(<strong>string&amp;</strong> s)<br />{<br /><span style="color: #236fa1;"><em>   // The 0 (zero) in the function call below indicates that we start our</em></span><br /><span style="color: #236fa1;"><em>   // permutation process by choosing a character to freeze into place</em></span><br /><span style="color: #236fa1;"><em>   // at index 0. Our recursive calls will move forward to choose other</em></span><br /><span style="color: #236fa1;"><em>   // characters to freeze into place at the remaining indices.</em></span><br />   permute(s, 0);<br />}<br /><br /><strong>int</strong> main()<br />{<br />   <strong>string</strong> s = "cat";<br />   permute(s);<br /><br />   <strong>return</strong> 0;<br />}</pre>
+<p style="padding-left: 30px;"><span style="font-size: 10pt;"><strong>output:</strong></span></p>
+<pre style="margin-left: 30px; font-family: monospace; font-size: 11px; width: 600px; background-color: #000000; color: #ffffff;">cat<br />cta<br />act<br />atc<br />tac<br />tca</pre>
+<p><strong><br />What's next?</strong></p>
+<p>We will spend the next three days of class talking about recursion. This Wednesday, we will talk about fractals and see a few other examples of recursive functions related to today's sequences and permutations functions. On Friday and next Monday, we will talk about recursive backtracking.</p>
+<p><strong><br />Practice Exercises</strong></p>
+<p>1. After reviewing today's notes, be sure to take a break and then code up all three recursive functions from class today from scratch, without referring back to the notes. This will help you hone yours skills with "safe" problems whose solutions you have already seen, which can serve as a gentle stepping stone to the section problems and assignment problems if you're finding some of those a bit too difficult to jump into straight away.</p>
+<p>2. Be sure to review the permutations Prezi and poke at the code to see how that function works. This is a fairly sophisticated function, and it was covered quite quickly today. Trace through the code either by drawing a recursive tree diagram by hand, following along with the Prezi for this problem, or using the debugger to step through the code and watch the string change with each recursive call.&nbsp;</p>
+<p>3. What happens if we remove the second call to the <span class="code-chonk">swap()</span> function in today's recursive <span class="code-chonk">permute()</span> function? Be sure to trace through what happens in the code with and without that (un)swap operation to see why it is necessary.</p>
+<p>4. When coding binary search today, we saw two approaches to calculating the midpoint between two integers. Which of those approaches was capable of producing incorrect results, and why was that the case? Also, prove that both approaches are algebraically equivalent, despite the fact that one of them could, in practice, introduce a bug into our binary search function.</p>
+<p>5. Write an iterative version of binary search. Test it carefully on sorted arrays of varying lengths and compositions.</p>
+<p>6. What is the Big-O runtime for the <span class="code-chonk">coinFlip()</span> function from today's lecture?</p>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution to Problem #6:</strong> <span style="background-color: #ced4d9; color: #ced4d9;">This is a bit tricky. Since each recursive call spawns to more recursive calls until we hit our base cases, it might look like this function's runtime is O(2<sup>n</sup>) ("exponential"). It's actually worse than that, though, because we are passing strings by value -- meaning that we create an entirely new copy of our string with each recursive call -- and those strings keep getting longer and longer. The details of the analysis for this function are beyond the scope of anything we have covered so far in class, and so you actually needn't worry about the answer to this problem, but the runtime ends up being O(n2<sup>n</sup>). I am bringing this up mostly to ensure that if anyone was looking at that function today and thinking it was O(2<sup>n</sup>), they won't continue to hold to that incorrect notion and ignore the cost of those string copies.</span></span></p>
+<p>7. What is the Big-O runtime for the <span class="code-chonk">permute()</span> function from today's lecture?</p>
+<p><span style="font-size: 10pt;"><strong>Highlight for solution to Problem #7:</strong> <span style="background-color: #ced4d9; color: #ced4d9;">This one is O(n!). Note that we end up generating n! distinct permutations. In isolation, each call we make along the way only performs O(1) operations since we're passing our string by reference and not making any new copies of that string.</span></span></p>
+<p>8. As always, the textbook and this week's section handout are chock full of great exercises and additional examples and explanations to help reinforce this material.</p>
+<p><br /></p>
+
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-17
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Mazes</title>
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../syllabus.html">Syllabus</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_resources.html">Resources</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_lectures.html">Lectures</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_section.html">Sections</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_assignments.html">Assignments</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../about_exams.html">Exams</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1klB-kNo6D-5i3l1joROtTqiPoGB8YorA/edit#gid=1136049055">🗓Schedule</a></li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../search.html">🔍Search</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Mazes</h1>
+
+<hr>
+
+<p class="attribution">
+Assignment written by Julie Zelenski
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>A <em>maze</em> is a twisty arrangement of corridors that challenges the solver to find a path from the entry to the exit. This part of the assignment is about using ADTs to represent, process, and solve mazes.</p>
+
+<p class="w-50 mx-auto border"><img src="img/solve_animating.gif" alt="animation of BFS search on maze" /></p>
+
+<h2 id="an-introduction-to-mazes">An introduction to mazes</h2>
+<p>Labyrinths and mazes have fascinated humans since ancient times (remember <a href="https://www.youtube.com/watch?v=8qrZ1clEp-Y">Theseus and the Minotaur</a>?), but mazes can be more than just recreation. The mathematician Leonhard Euler was one of the first to analyze mazes mathematically, and in doing so, he founded the branch of mathematics known as topology. Many algorithms that operate on mazes are closely related to graph theory and have applications to diverse tasks such as designing circuit boards, routing network traffic, motion planning, and social networking.</p>
+
+<p>Your goal for the maze portion of the assignment to implement neat algorithms to solve a maze, while gaining practice with ADTs.</p>
+
+<p>Before jumping into the code, please carefully read this background information on how we will represent mazes, which ADTs to  use, and the format of the provided maze data files.</p>
+
+<h3 id="a-grid-represents-a-maze">A Grid represents a maze</h3>
+<p>A maze can be modeled as a two-dimensional array where each element is either a wall or a corridor.</p>
+<ul>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code> from the Stanford library is an ideal data structure for this. A maze is represented as a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span></code>.</li>
+  <li>Each grid element is one "cell" of the maze. The element at location (row, col) is <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> when there is an open corridor at that location and <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code> if it is a wall.</li>
+</ul>
+
+<p>A maze is read from a text file. Each line of the file is one row of the maze. Within a row, the character <code class="language-c++ highlighter-rouge"><span class="err">@</span></code> is a wall, and <code class="language-c++ highlighter-rouge"><span class="o">-</span></code> is a corridor. Here is a sample 5x7 maze file (5 rows by 7 columns):</p>
+
+<pre><code class="language-output">-------
+-@@@@@-
+-----@-
+-@@@-@-
+-@---@-
+</code></pre>
+
+<h3 id="a-gridlocation-is-a-struct-containing-fields-row-and-col">A GridLocation is a struct containing fields row and col</h3>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code> is a companion type to represent a location in a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code>.  A <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code> has two fields, <code class="language-c++ highlighter-rouge"><span class="n">row</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">col</span></code>, that are packaged together a C++ struct. The sample code below demonstrates using a <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code> variable and assigning and accessing its <code class="language-c++ highlighter-rouge"><span class="n">row</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">col</span></code> fields.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1">// Declare a new GridLocation</span>
+ <span class="n">GridLocation</span> <span class="n">chosen</span><span class="p">;</span> <span class="c1">// GridLocation provides default initialization to 0,0</span>
+ <span class="n">chosen</span><span class="p">.</span><span class="n">row</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>      <span class="c1">// assign row of chosen location to 3</span>
+ <span class="n">chosen</span><span class="p">.</span><span class="n">col</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>      <span class="c1">// assign col of chosen location to 4</span>
+ 
+ <span class="c1">// Alternative way to initialize row,col when declaring a GridLocation</span>
+ <span class="n">GridLocation</span> <span class="n">exit</span> <span class="o">=</span> <span class="p">{</span> <span class="n">maze</span><span class="p">.</span><span class="n">numRows</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">maze</span><span class="p">.</span><span class="n">numCols</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span> <span class="p">};</span>
+
+ <span class="c1">// Can use a GridLocation to index into a Grid</span>
+ <span class="c1">// Below test checks whether chosen location is an open corridor</span>
+ <span class="k">if</span> <span class="p">(</span><span class="n">maze</span><span class="p">[</span><span class="n">chosen</span><span class="p">])</span> <span class="c1">// chosen was set to {3, 4} so this accesses maze[3][4]</span>
+ <span class="p">...</span>
+
+ <span class="c1">// Can compare two GridLocations for equality</span>
+ <span class="k">if</span> <span class="p">(</span><span class="n">chosen</span> <span class="o">==</span> <span class="n">exit</span><span class="p">)</span>
+ <span class="p">...</span>
+
+ <span class="c1">// Can access the GridLocation's row &amp; col fields by name using dot syntax</span>
+ <span class="k">if</span> <span class="p">(</span><span class="n">chosen</span><span class="p">.</span><span class="n">row</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">chosen</span><span class="p">.</span><span class="n">col</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+ <span class="p">...</span>
+</code></pre></div></div>
+
+<h3 id="a-vector-of-gridlocations-is-a-path">A Vector of GridLocations is a path</h3>
+<p>A path through the maze is an ordered sequence of connecting <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code>s. Using a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;</span></code> is just right!  A valid maze solution path starts at the maze entrance, steps through connecting <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code>s, and ends at the maze exit.</p>
+
+<p>In the "<code class="language-c++ highlighter-rouge"><span class="n">Other</span> <span class="n">files</span><span class="o">/</span><span class="n">res</span></code>" folder, a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">soln</span></code> text file contains a solution for the corresponding maze files. Here is the solution file for the 5x7 maze shown earlier. The solution path is a sequence of 11 <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code>s, starting at <code class="language-c++ highlighter-rouge"><span class="n">r0c0</span></code> (row 0, col 0), and ending at <code class="language-c++ highlighter-rouge"><span class="n">r4c6</span></code>.</p>
+
+<pre><code class="language-output">{r0c0, r0c1, r0c2, r0c3, r0c4, r0c5, r0c6, r1c6, r2c6, r3c6, r4c6}
+</code></pre>
+<p>Our starter code provides the function <code class="language-c++ highlighter-rouge"><span class="n">readSolutionFile</span></code> that reads a solution path into a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;</span></code>. Not every provided maze has a corresponding <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">soln</span></code> file, part of your job will be to write code to generate solutions!</p>
+
+<h3 id="resources-for-the-stanford-adts">Resources for the Stanford ADTs</h3>
+<ul>
+  <li>Documentation for Stanford collections: <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Grid.html" title="Documentation for Grid">Grid</a>, <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/GridLocation.html" title="Documentation for GridLocation">GridLocation</a>, <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Stack.html" title="Documentation for Stack">Stack</a>, <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Queue.html" title="Documentation for Queue">Queue</a>, <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Vector.html" title="Documentation for Vector">Vector</a></li>
+  <li>Section 6.1 of the <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">textbook</a> introduces <code class="language-c++ highlighter-rouge"><span class="k">struct</span></code> types</li>
+  <li>In the lower-left corner of your Qt Creator window, there is a magnifying glass by a search field. If you type the name of a header file such as <code class="language-c++ highlighter-rouge"><span class="n">grid</span><span class="p">.</span><span class="n">h</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">gridlocation</span><span class="p">.</span><span class="n">h</span></code> , Qt will display the corresponding header file.</li>
+  <li>A few reminders for using our ADT/templates:
+    <ul>
+      <li>The assignment operator for our ADTs makes a deep copy. Assigning from one Vector/Set/Stack to another creates a copy of the ADT and a copy of all its elements.</li>
+      <li>When using a C++ template, the type name must include the type of element being stored.  Declaring a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> without specifying the element type just won't fly, and a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span></code> is not the same thing as a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code>. The error messages you receive when you have mismatches in template types can be cryptic and hard to interpret. Bring your template woes to LaIR or the Ed forum, and we can help untangle them with you.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="on-to-the-code">On to the code!</h2>
+<p>In <code class="language-c++ highlighter-rouge"><span class="n">maze</span><span class="p">.</span><span class="n">cpp</span></code>, you will write two helper functions that process grids and paths and two maze-solving functions. You will also be writing comprehensive test cases.</p>
+
+<h2 id="1-write-helper-function-generatevalidmoves">1) Write helper function <code class="language-c++ highlighter-rouge"><span class="n">generateValidMoves</span><span class="p">()</span></code></h2>
+<p>Your first task is to implement the helper function to generate the neighbors for a given location:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;</span> <span class="n">generateValidMoves</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">maze</span><span class="p">,</span> <span class="n">GridLocation</span> <span class="n">cur</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Given a maze represented as a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code> of <code class="language-c++ highlighter-rouge"><span class="kt">bool</span></code> and a current <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span> <span class="n">cur</span></code>, this function returns a <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> of all valid moves from <code class="language-c++ highlighter-rouge"><span class="n">cur</span></code>. Valid moves are those GridLocations that are:</p>
+<ul>
+  <li>Exactly one "step" away from <code class="language-c++ highlighter-rouge"><span class="n">cur</span></code> in one of the four cardinal directions (N, S, E, W)</li>
+  <li>Within bounds for the <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code> (hint: Grid has a handy <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/Grid#Method:inBounds">inBounds</a> check)</li>
+  <li>An open corridor, not a wall</li>
+</ul>
+
+<p>There are a few provided tests for <code class="language-c++ highlighter-rouge"><span class="n">generateValidMoves</span></code>, but these tests are not fully comprehensive.  <strong>Write at least 3 additional tests to make sure your helper function works correctly.</strong> Remember to label your tests as <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code>.</p>
+
+<h2 id="2-write-helper-function-validatepath">2) Write helper function <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span><span class="p">()</span></code></h2>
+<p>Next you'll write a function to confirm that a path is a valid maze solution:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">validatePath</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">maze</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&amp;</span> <span class="n">path</span><span class="p">)</span>
+</code></pre></div></div>
+<p class="w-50 mx-auto"><img src="img/solved.png" alt="rectangular maze with dotted path leading from entry to exit" /></p>
+<p>The image above displays a valid solution; each colored dot marks a GridLocation along the path. A path is a valid solution to a maze if it meets the following criteria:</p>
+
+<ul>
+  <li>The path is not empty</li>
+  <li>The path starts at the entry (upper left corner) of the maze</li>
+  <li>The path ends at the exit (lower right corner) of the maze</li>
+  <li>Each location in the path is a valid move from the previous path location
+    <ul>
+      <li>Hint: rather than re-implement the same logic you already did for <code class="language-c++ highlighter-rouge"><span class="n">generateValidMoves</span></code>, simply call that function and check whether a move is contained in the set of valid moves.</li>
+    </ul>
+  </li>
+  <li>The path must not contain a loop, i.e. the same location cannot appear more than once in the path
+    <ul>
+      <li>Hint: a <code class="language-c++ highlighter-rouge"><span class="n">Set</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;</span></code> is a good data structure for tracking seen locations and avoiding a repeat.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The function <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code> completes successfully if all of the criteria for a valid solution are met. If it instead detects that the path violates one of the above constraints, <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code>  should call the <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> function from <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/error.html" title="Documentation for error.h">error.h</a> to report what is wrong.  The <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> function stops execution and prints your explanatory message:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">error</span><span class="p">(</span><span class="s">"Here is my message about what has gone wrong"</span><span class="p">);</span>
+</code></pre></div></div>
+<p>The function <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code> will require careful testing to confirm that it correctly detects all forms of valid and invalid paths.  We've provided a few tests to get you started, but you will need additional tests of your own to complete the job. <strong>Write at least 3 student test cases for <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code>.</strong></p>
+
+<p>Note the use of the new test types <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_ERROR</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_NO_ERROR</span></code> in our provided tests. An <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_ERROR</span></code> test case evaluates an expression, expecting that the operation will raise an error. While executing the test, the SimpleTest framework will "catch" the error, record that it happened, and resume. Because the error was expected, the test case is marked <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code>.  If an error was expected but didn't materialize, the test case is marked <code class="language-c++ highlighter-rouge"><span class="n">Incorrect</span></code>. <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_NO_ERROR</span></code> operates in the reverse: it expects the code to run without errors and if so, it is <code class="language-c++ highlighter-rouge"><span class="n">Correct</span></code>. If an error is raised, it is marked <code class="language-c++ highlighter-rouge"><span class="n">Incorrect</span></code>. More information on the different test macros can be found in the <a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">CS106B Testing Guide</a>.</p>
+
+<p>After writing <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code>, not only will you be familiar with using the ADTs to represent mazes, now you have a function to help when testing the functions you will write next. Having thoroughly tested your <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code> on a variety of invalid paths means you can be confident that it is the oracle of truth when it comes to confirming a solution. Your future self thanks you!</p>
+
+<div id="Q5" class="question alert alert-warning">
+  <p><strong>Q5</strong>. After you have written your test cases, describe your testing strategy to confirm that your <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code> operates as intended. How confident are you that it works correctly in all cases?</p>
+</div>
+
+<h3 id="notes-about-our-provided-maze-files">Notes about our provided maze files</h3>
+<p>The starter project includes a <code class="language-c++ highlighter-rouge"><span class="n">res</span></code> folder containing maze files of various sizes, some with solutions.  The <code class="language-c++ highlighter-rouge"><span class="n">maze</span><span class="p">.</span><span class="n">cpp</span></code> file includes code for the functions <code class="language-c++ highlighter-rouge"><span class="n">readMazeFile</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">readSolutionFile</span></code>. We provide these files and code to help with your testing. Please use them! You can also create additional mazes of your own.</p>
+<ul>
+  <li>All maze files are well-formed and can be successfully read by <code class="language-c++ highlighter-rouge"><span class="n">readMazeFile</span></code>.</li>
+  <li>The maze grid is rectangular and contains at least two rows and two columns.</li>
+  <li>The grid locations at upper-left (entrance) and lower-right (exit) are both open corridors.</li>
+  <li>All solution files are well-formed and can be successfully read by <code class="language-c++ highlighter-rouge"><span class="n">readSolution</span> <span class="n">File</span></code>.</li>
+  <li>if a maze has a corresponding solution file, the solution file contains a path that is a valid solution for the maze.</li>
+  <li>If a maze does not have a solution file, it may or may not be solvable.</li>
+</ul>
+
+<h2 id="3-write-solvemazebfs">3) Write <code class="language-c++ highlighter-rouge"><span class="n">solveMazeBFS</span><span class="p">()</span></code></h2>
+
+<p>Now you're ready to tackle the solve function that finds a solution path for a given maze.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">solveMazeBFS</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">maze</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&amp;</span> <span class="n">soln</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Solving a maze can be seen as a specific instance of a path-finding problem, where the challenge is to find a route from the entrance to the exit. Path-finding comes up in a variety of situations such as packet routing on the internet, robot motion planning, analyzing gene mutations, spell correction, and more.</p>
+
+<p><strong>Breadth-first search</strong> (BFS) is a classic and elegant algorithm for finding a path. A breadth-first search considers paths outward from the entry location in a radial fashion until it finds the exit. The first paths examined take one hop from the entry. If any of these reach the exit location, success! If not, the search expands to those paths that are two hops long. At each subsequent step, the search expands radially, examining all paths of length three, then of length four, and so on, stopping at the first path that reaches the exit.</p>
+
+<p>Breadth-first search is typically implemented using a queue. The queue stores partial paths that represent possibilities to explore. The first paths enqueued are all length one, followed by enqueuing the length two paths, and so on. Because a queue processing elements in FIFO order, all shorter paths are dequeued and processed before the longer paths make their way to the front of queue. This means paths are tried in order of increasing length and thus a solution path found via breadth-first search will be the shortest possible such solution.</p>
+
+<p>At each step, the algorithm considers the current path at the front of the queue. If the current path ends at the exit, it must be a completed solution path. If not, the algorithm considers the current path, extends it to reach locations that are one hop further away in the maze, and enqueues those extended paths to be examined in later rounds.</p>
+
+<p><a name="bfs_steps"></a>
+Here are the steps followed by a breadth-first search:</p>
+
+<ol>
+  <li>Create an empty queue of paths. Each path is a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;</span></code> and the queue of paths is of type <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&gt;</span></code>.
+    <ul>
+      <li>A nested ADT type like this looks a little scary at first, but it is just the right tool for this job!</li>
+    </ul>
+  </li>
+  <li>Create a length-one path containing just the entry location. Enqueue that path.
+    <ul>
+      <li>In our mazes, the entry is always the location in the upper-left corner, and the exit is the lower-right.</li>
+    </ul>
+  </li>
+  <li>While there are still more paths to explore:
+    <ul>
+      <li>Dequeue the frontmost element from the queue. This is the <em>current path</em>.</li>
+      <li>If the current path ends at exit:
+        <ul>
+          <li>You're done, the current path is a solution!</li>
+        </ul>
+      </li>
+      <li>Otherwise:
+        <ul>
+          <li>Determine the viable neighbors from the end location of the current path. A viable neighbor is a valid move that has not yet been visited during the search.</li>
+          <li>For each viable neighbor, make copy of current path, extend by adding neighbor and enqueue it.</li>
+          <li>Repeat step 3.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>If the queue of paths is empty, this maze has no solution.</li>
+</ol>
+
+<p>Some details to keep in mind as you're implementing BFS:</p>
+<ul>
+  <li>The search should not revisit previously visited locations or create a path with a cycle.  For example, if the current path leads from location <code class="language-c++ highlighter-rouge"><span class="n">r0c0</span></code> to <code class="language-c++ highlighter-rouge"><span class="n">r1c0</span></code>, you should not extend the path by moving back to location <code class="language-c++ highlighter-rouge"><span class="n">r0c0</span></code>.</li>
+  <li>You should not call <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code> within your <code class="language-c++ highlighter-rouge"><span class="n">solveMazeBFS</span></code> function, but you can call it in your test cases to confirm the validity of paths found by <code class="language-c++ highlighter-rouge"><span class="n">solveMazeBFS</span></code>.</li>
+  <li>If a solution was found, the function returns <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> and the pass-by-reference parameter <code class="language-c++ highlighter-rouge"><span class="n">soln</span></code> stores the solution. If the maze could not be solved, the function returns <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code>.</li>
+  <li>For a helpful visualization and debugging aid, you can use our provided <a href="maze.html#mazegraphics"><code class="language-c++ highlighter-rouge"><span class="n">mazegraphics</span></code></a> to add a graphical animation of the algorithm.</li>
+</ul>
+
+<p>We have provided some tests to get your started.  <strong>Add 2 or more student tests that further verify the correct functionality of the <code class="language-c++ highlighter-rouge"><span class="n">solveMazeBFS</span></code> function.</strong></p>
+
+<h2 id="4-write-solvemazedfs">4) Write <code class="language-c++ highlighter-rouge"><span class="n">solveMazeDFS</span><span class="p">()</span></code></h2>
+
+<p>Your final task for maze is to implement depth-first search:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">solveMazeDFS</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">maze</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&amp;</span> <span class="n">soln</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Depth-first search is an alternate path-finding algorithm that works similarly to breadth-first search, but tries the possible paths in a different order. Once a depth-first search starts on a path, it goes deep, continuing until it reaches its ultimate end and only if unsuccessful, moves on to try other paths. Both algorithms consider all possible paths in search of a solution, the difference being in which order they consider the paths.</p>
+
+<p>The power of ADTs makes it magically easy to convert between the two algorithms. Depth-first search uses the same <a href="maze.html#bfs_steps">steps for a breadth-first search</a> but everywhere you see <code class="language-c++ highlighter-rouge"><span class="n">queue</span></code> with <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span><span class="o">/</span><span class="n">dequeue</span></code> operations, substitute a <code class="language-c++ highlighter-rouge"><span class="n">stack</span></code> with <code class="language-c++ highlighter-rouge"><span class="n">push</span><span class="o">/</span><span class="n">pop</span></code> operations. Whereas BFS uses a queue of paths, enqueuing paths to the back and dequeuing the next path to explore from the front, a DFS instead uses a stack and pushes paths to the top and popping the next path to explore from the top. Using a queue considers paths in FIFO (first-in-first-out) order , a stack will process the paths in LIFO (last-in-first-out) order.</p>
+
+<p>This means that implementing <code class="language-c++ highlighter-rouge"><span class="n">solveMazeDFS</span></code> is going to be a snap - just a switcheroo in which ADTs are being used. For this function:</p>
+
+<ul>
+  <li>copy/paste your working implementation from <code class="language-c++ highlighter-rouge"><span class="n">solveMazeBFS</span></code></li>
+  <li>change the data type of <code class="language-c++ highlighter-rouge"><span class="n">allPaths</span></code> from <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&gt;</span></code> to <code class="language-c++ highlighter-rouge"><span class="n">Stack</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&gt;</span></code></li>
+  <li>change Queue operations (enqueue/dequeue) into Stack operations (push/pop)</li>
+</ul>
+
+<p>Voila, you've done it! Add tests to confirm the solutions found by <code class="language-c++ highlighter-rouge"><span class="n">solveMazeDFS</span></code> are valid according to <code class="language-c++ highlighter-rouge"><span class="n">validatePath</span></code>. You now have two powerful algorithms to solve a maze and have gotten lots of practice with ADTs – way to go! 👏 Congratulations! 👏</p>
+
+<div id="Q6" class="question alert alert-warning">
+  <p><strong>Q6</strong>. Most students are sold on the benefit of the fancy features provided by <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> but the ADT skeptics may question the value of <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code> ADTs, seeing them as nothing more than a restricted <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>. Make your best argument to convince them of the benefits these ADTS have over <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>.</p>
+</div>
+
+<p><a name="mazegraphics"></a></p>
+<h3 id="graphics-optional">Graphics (optional)</h3>
+<p>As BFS or DFS is exploring various paths through the maze, you may be wishing you could follow along to ensure your algorithm is working as you intend. One good option is running under the debugger as you did in the warmup, watching how the variables change as you step through the code.  We also thought an animation that shows the progress of the algorithm visually could be neat, so we wrote some graphic support routines that you can try out. This is entirely optional, but using them may help with your debugging and testing and just generally make the program more fun.</p>
+
+<p>The provided <code class="language-c++ highlighter-rouge"><span class="n">mazegraphics</span></code> module has functions to initialize the graphics for a maze and highlight the current path.  Read the <code class="language-c++ highlighter-rouge"><span class="n">mazegraphics</span><span class="p">.</span><span class="n">h</span></code> header file for more details about:</p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">initGraphicsForMaze</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">maze</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">pauseForClick</span><span class="p">)</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">highlightPath</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="n">string</span> <span class="n">color</span><span class="p">)</span></code></li>
+</ul>
+
+<p>The general idea is to call <code class="language-c++ highlighter-rouge"><span class="n">initGraphicsForMaze</span></code> once before starting the search. Each time you dequeue/pop a new current path, call <code class="language-c++ highlighter-rouge"><span class="n">highlightPath</span></code> to display it. If you supply <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> as the second argument to <code class="language-c++ highlighter-rouge"><span class="n">initGraphicsForMaze</span></code>, each call to <code class="language-c++ highlighter-rouge"><span class="n">highlightPath</span></code> will pause and wait for the user to click before continuing. This gives you time to watch the animation and see how the path is updated and follow along with the algorithm and debug its operation.</p>
+
+<p><em>There is no requirement that your solver animate its process, our testing will only confirm that you correctly find solution paths. If you don't think the animation will be valuable or you find it that it introduces more problems than it solves, you are free to skip it.</em></p>
+
+<h2 id="references">References</h2>
+<p>There are many interesting facets to mazes and much fascinating mathematics underlying them. Mazes will come up again several times this quarter. Chapter 9 of the <a href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">textbook</a> uses a recursive depth-first search as path-finding algorithm. At the end of the quarter when we talk about graphs, we'll explore the equivalence between mazes and graphs and note how many interesting results in mazes came from breakthroughs in graph algorithms.</p>
+
+<ul>
+  <li>Walter Pullen, <em>Maze Classification</em>. <a href="http://www.astrolog.org/labyrnth/algrithm.htm">http://www.astrolog.org/labyrnth/algrithm.htm</a>  Website with lots of great info on mazes and maze algorithms</li>
+  <li>Jamis Buck. <em>Maze Algorithms</em>. <a href="https://www.jamisbuck.org/mazes/">https://www.jamisbuck.org/mazes/</a> Fun animations of maze algorithms. He also wrote the excellent book about <a href="https://www.amazon.com/gp/product/1680500554/">Mazes for Programmers: Code Your Own Twisty Little Passages</a>.</li>
+</ul>
+
+<h2 id="extensions">Extensions</h2>
+<p>If you have completed the assignment and want to explore further, here are some ideas for extensions.</p>
+
+<ul>
+  <li>Instead of reading pre-written mazes from a file, you could instead generate a new random maze on demand. There are an amazing (I could not resist…) variety of algorithms for maze construction, ranging from the simple to the sublime. Here are a few names to get you started:  backtracking, depth-first, growing tree, sidewinder, along with algorithms named for their inventor:  Aldous-Broder, Eller, Prim, Kruskal, Wilson, and many others.</li>
+  <li>Try out other maze solving algorithms. How does BFS and DFS measure up against the approaches in terms of solving power or runtime efficiency? Take a look at other solvers such as random mouse, wall following, recursive depth-first, Bellman-Ford, or others.</li>
+  <li>There are many other neat maze-based games out there that make fun extensions. You might gather ideas from Robert Abbott's <a href="http://www.logicmazes.com">http://www.logicmazes.com</a> or design a maze game board after inspiration from these <a href="https://medium.com/analytics-vidhya/optimizing-a-maze-with-graph-theory-genetic-algorithms-and-haskell-e3702dd6439f">musings on mazes</a> from Chris Smith.</li>
+</ul>
+
+<p>The last word from XKCD <a href="https://xkcd.com/2407/">https://xkcd.com/2407/</a></p>
+
+<p class="w-50 mx-auto"><img src="https://imgs.xkcd.com/comics/depth_and_breadth.png" alt="xkcd comic comparing BFS to DFS" /></p>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2023</br>
+    Notice regarding uploading to websites:  This content is protected and may not be shared, uploaded, or distributed.<BR>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2023-Oct-09
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>
