@@ -119,8 +119,8 @@ string soundex(string s) {
 }
 
 
-/* TODO: Replace this comment with a descriptive function
- * header comment.
+/* the soundexSearch function find the same soundex name from the file
+ * to your surname from the input
  */
 void soundexSearch(string filepath) {
     // This provided code opens the specified file
@@ -135,8 +135,6 @@ void soundexSearch(string filepath) {
          << allNames.size() << " names found." << endl;
 
     // The names read from file are now stored in Vector allNames
-
-    /* TODO: Fill in the remainder of this function. */
     string surname;
     Vector<string> result;
     while (true) {
