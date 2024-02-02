@@ -4,6 +4,7 @@
 #include "stack.h"
 #include "vector.h"
 #include "strlib.h"
+#include "map.h"
 using namespace std;
 
 bool processPostfix(string expr, int& result) {
@@ -118,6 +119,20 @@ PROVIDED_TEST("invalid postfix expressions")
 int main()
 {
     runSimpleTests(ALL_TESTS);
-    cout << true;
+    Vector<int> numbers = {1, 2, 3, 4, 5};
+    for (int& num : numbers) {
+        num += 2;
+    }
+    cout << numbers << endl;
+
+    Map<string, Vector<string>> map;
+    Vector<string> juliaName = map["julia"];
+    juliaName.add("zelensiki");
+    juliaName.add("standford");
+    Vector<string>& chrisNames = map["Chris"];
+    chrisNames.add("Gregg");
+    chrisNames.add("Piech");
+    cout << map << endl;
+    cout << "map size " << map.size() << endl;
     return 0;
 }

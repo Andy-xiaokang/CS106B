@@ -8,3 +8,10 @@ CS106B Programming Abstractions in C++
 * watch the videos for each chapter section  
 * **reading each lecture reading** 
 * **finish the section and assignment**
+
+## resource  
+[archived website 2022 winter](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/)  
+lecture notes 2023 fall quarter in this repo
+[bilibili video](https://www.bilibili.com/video/BV1G7411k7jG)  
+[youtube video](https://www.youtube.com/playlist?list=PL-h0BZdG_K4kAmsfvAik-Za826pNbQd0d)  
+
