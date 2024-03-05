@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Midterm Exam Logistics</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="midterm_logistics.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="midterm_logistics.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="midterm_logistics.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="midterm_logistics.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="midterm_logistics.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="midterm_logistics.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Midterm Exam Logistics</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<div class="pset-bordered" style="background-color: #ffffcc;">
+<h2 id="midterm-quick-info">Midterm Quick Info</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong><em>Exam Goes Out</em></strong></td>
+      <td> </td>
+      <td>Friday, February 4th at 10:30AM Pacific</td>
+    </tr>
+    <tr>
+      <td><strong><em>Exam Comes Due</em></strong></td>
+      <td> </td>
+      <td>Sunday, February 6th at 10:30AM Pacific</td>
+    </tr>
+    <tr>
+      <td><strong><em>Topic Coverage</em></strong></td>
+      <td> </td>
+      <td>Cumulative; focused on Lectures 00 - 10 and Assignments 0 - 3. Topics purely in section handouts or the textbook won't be tested.</td>
+    </tr>
+    <tr>
+      <td><strong><em>Exam Format</em></strong></td>
+      <td> </td>
+      <td>48-hour take-home exam, written to take three hours, structured similarly to a standard programming assignment</td>
+    </tr>
+    <tr>
+      <td><strong><em>How It's Graded</em></strong></td>
+      <td> </td>
+      <td>Similar to programming assignments: functionality score is based on correctness; style score is based on coding style.</td>
+    </tr>
+    <tr>
+      <td><strong><em>Honor Code Policies</em></strong></td>
+      <td> </td>
+      <td>See below for full details. Open-book, open-note, open-Internet. You are not allowed to communicate with other humans about the exam.</td>
+    </tr>
+    <tr>
+      <td><strong><em>How to Prepare</em></strong></td>
+      <td> </td>
+      <td>Get coding practice, review past IG feedback, and keep the SLs in the loop while you're studying.</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<p><br /></p>
+
+<h2 id="exam-timing-and-format">Exam Timing and Format</h2>
+
+<p>The CS106B midterm exam is coming up soon. It’s a take-home coding exam. The exam will go out on Friday, February 4th at 10:30AM, and it will come due on Sunday, February 6th at 10:30AM (Pacific time). We’ve designed it to take three hours, though you’ll have 48 hours to complete it. The exam focus is</p>
+
+<ul>
+  <li>Lecture 00 – Lecture 10 (through but not including big-O notation), and</li>
+  <li>Assignment 0 – Assignment 3.</li>
+</ul>
+
+<p>The topics from after this point (Lectures 11 – 13 and Assignment 4) are also fair game for the exam, though they will not be as emphasized. In particular, we’ll assume that you’ll have worked through Assignment 4 and that you’re up-to-speed with the lectures on big-O notation.
+You are responsible for the material from lectures and from the assignments, so you should be prepared to answer questions about topics that came up purely on the coding assignments (say, using the debugger, memoization, structs, etc.). We will not test you on anything that appears purely in the section handouts or purely in the textbook, though those are excellent resources when studying.</p>
+
+<p>The exam format is very similar to that of the assignments. We’ll release a set of starter files for Qt Creator and expect you’ll be doing your coding there. We’ll provide the problem descriptions themselves through the CS106B website, the same way we’ve handled normal assignment handouts. And you’ll submit everything through Paperless, just as usual. (We do not have the same 24-hour grace period for late submissions; <strong><em>please leave adequate buffer time to submit!</em></strong>)</p>
+
+<h2 id="our-exam-philosophy">Our Exam Philosophy</h2>
+
+<p><strong><em>We want you to do well on this exam.</em></strong> To be very explicit about our exam philosophy:</p>
+
+<ul>
+  <li>We're <strong><em>not</em></strong> trying to weed out weak students.</li>
+  <li>We're <strong><em>not</em></strong> trying to enforce a curve where there isn't one.</li>
+  <li>We’re <strong><em>not</em></strong> trying to measure “coding potential” or “innate programming ability.”</li>
+</ul>
+
+<p>Rather, we want you to show what you've learned up to this point so that you get a sense for where you stand and where you can improve. The exam format is basically the same as the coding assignments, with the exception that you’ll be doing everything individually and without help from the course staff or other students.</p>
+
+<h2 id="honor-code-policies">Honor Code Policies</h2>
+
+<p>You are required to abide by the Honor Code policies outlined in our <a href="honor_code.html" title="CS106B and the Honor Code">Honor Code Policies</a>. We’d like to call particular attention to the following rules.</p>
+
+<p><strong><em>This midterm exam must be completed individually.</em></strong> It is a violation of the Stanford Honor Code to communicate with any other humans about the exam, to solicit solutions to this exam, or to share your solutions with others
+.
+This exam is open-book, so you are free to make use of all course materials on the course website and in the textbook. You are also permitted to search online for conceptual information (for example, by visiting Wikipedia). However, <strong><em>you are not permitted to communicate with other humans about the exam or to solicit help from others</em></strong>. For example, you <strong><em>must not** communicate with other students in the course about the exam, and you **</em>must not</strong>* ask questions on sites like Chegg or Stack Overflow. (You may ask questions to the course staff on Ed; if you do, you must post your questions privately. See below for details.)</p>
+
+<p>All work done with the assistance of any material in any way (other than provided CS106B course materials) must include a detailed citation (e.g., “I visited the Wikipedia page for <em>X</em> on Problem 1 and made use of insights <em>A</em>, <em>B</em>, and <em>C</em>”). <strong><em>Copying solutions is never acceptable</em></strong>, even with a citation, and is always a violation of the Honor Code. If by chance you encounter solutions to a problem, navigate away from that page before you feel tempted to copy.</p>
+
+<p>If you become aware of any Honor Code violations by any student in the class, your commitments under the Stanford Honor Code obligate you to inform course staff.</p>
+
+<h2 id="getting-help">Getting Help</h2>
+
+<p>Because this is an exam, we will not be able to help out with coding or debugging questions the way that we normally do on the assignments. For example, we will not be able to help interpret compiler error messages, assist with C++ syntax, investigate crashes in your code, assist with debugging, etc. After all, part of the purpose of the exam is for you to demonstrate your ability to work through coding problems independently.</p>
+
+<p>We can, however, answer a small set of questions about the exam problems, mostly clarifying questions about what the instructions mean or help getting the project files set up on your machine. To ask these sorts of questions, make a private post on EdStem. <strong><em>All questions about the exam must be posted privately, and you must not post any code on EdStem.</em></strong></p>
+
+<h2 id="preparing-for-the-exam">Preparing for the Exam</h2>
+<p>There are a number of ways that you can prepare for this upcoming exam. Here is our recommendation of what you should do to get into the best shape that you can.</p>
+
+<ol>
+  <li>
+    <p><strong><em>Redo the assignments.</em></strong> When you’re first working on the assignments, you’re simultaneously trying to figure out what the assignment is asking you to do, solidifying your understanding of the content from lecture, tinkering around to see what happens, and figuring out the necessary problem-solving techniques. That’s fine, and that’s normal. What matters, though, is that, in that process, you internalized the appropriate techniques and developed your coding and problem-solving skills.</p>
+
+    <p>If you have the time to do so, pick one or two of the most challenging programming questions we asked you to solve, download a fresh copy of the starter files, and <em>solve the same problem again without referencing your overall solution</em>. If you’re able to do so with a little trial and error, great! It means that you’ve gotten out of that assignment what we expected you to get out of that assignment. On the other hand, if you’re struggling on the assignment a second time, there’s a good chance that some key skill or technique hasn’t yet clicked for you, and it’s worth talking to your SL or stopping by the LaIR to talk through the ideas.</p>
+
+    <p>If you worked with a partner, it’s doubly valuable to attempt the problems a second time on your own, just to make sure that you personally are comfortable taking on the questions and that you weren’t leaning too much on your partner for insights.</p>
+  </li>
+  <li>
+    <p><strong><em>Work through practice problems.</em></strong> We’ve posted a collection of practice problems on the course website. It’s a compilation of old exam problems, which might give you a better sense of what sorts of questions we might ask.</p>
+
+    <p>When you’re working through those problems, <em>don’t just hand-write things and call it a day</em>. Make sure that you actually got things working. So download a blank set of starter files from the course website, type up your solution, and try running it on some sample test cases. If things work, great! If not, try debugging your code and see if you can fix it. If you’re still stuck, no worries! That’s a great indicator that you should ping your SL or drop by the LaIR to get some help.</p>
+  </li>
+  <li>
+    <p><strong><em>Work through the section problems.</em></strong> The problems we give out in the section handouts each week are a great way to practice specific skills. Want to sharpen your recursion skills? Look at Section Handout 3 or Section Handout 4. Want to shore up your C++ fundamentals? Look at Section Handout 1 and Section Handout 2.</p>
+  </li>
+  <li>
+    <p><strong><em>Review IG feedback and make sure you understand it completely and unambiguously.</em></strong> We hold interactive grading sessions on the assignments for a good reason – it’s a chance for someone with more coding experience than you (your section leader) to offer their advice and insights about how you can do a better job in the future. If you haven’t yet done so, take some time to review the feedback you received. If there are suggestions of the form “try doing it this way next time,” take a few minutes and actually go do it the other way. If there are stylistic points that they’ve pointed out to you, great! Go patch up your code to meet those style guidelines.</p>
+
+    <p>And hey, what should you do if you find something that you don’t understand? Ping your SL and ask for clarification!</p>
+  </li>
+  <li>
+    <p><strong><em>Keep the SLs in the loop.</em></strong> As you're studying, please take the initiative to ask us questions when you have them. If you're not sure about how or why a certain piece of code works, or why a certain piece of code doesn't work, or why a certain concept works a certain way, etc., go on EdStem or stop by the LaIR and ask us a question. If you worked through any practice problems (section handouts or practice exams), ask your section leader to review your answers and offer polite but honest feedback on how you did and what you need to work on. You can also visit office hours if you’d like!</p>
+  </li>
+</ol>
+
+<h2 id="how-we-grade">How We Grade</h2>
+<p>We’ll be grading the exam similarly to how we grade programming assignments. We’ll run your code on a variety of test cases (many of which we’ll have shared with you in the starter files) to determine what aspects of the code are working properly and which aspects need work, and we’ll review how you’ve structured your code to assign a style grade.</p>
+
+<p><strong><em>We do not assign points by counting how many tests you pass</em></strong>. Instead, we review your code, identify what works and what doesn’t, and assign a score based on your overall correctness and strategy. This means that if your code is mostly on the wrong track but coincidentally happens to pass most of the tests, we may assign a lower score than if your code is basically correct but has a tiny error that causes it to fail most of the tests. In other words, it’s always best to try to get the code working according to the best of your ability, rather than submitting something that you know is mostly incorrect but happens to pass a lot of the tests.</p>
+
+<p>We will be grading for style along the lines of what we do on the assignments. After all, we hope that you’re internalizing our style recommendations and starting to write well-commented, clearly-decomposed code the first time around. In particular:</p>
+
+<ul>
+  <li>
+    <p><strong><em>Use descriptive variable and function names</em></strong>. Single-letter variable names (or worse, single-letter function names) make it significantly harder to understand your code.</p>
+  </li>
+  <li>
+    <p><strong><em>Properly indent your code</em></strong>. Remember that Qt Creator can auto-indent your code for you; highlight the code to indent and press Command+I or Ctrl+I (depending on your OS).</p>
+  </li>
+  <li>
+    <p><strong><em>Comment difficult parts of your code</em></strong>. This isn’t required, but if you have anything you think is really gnarly, it never hurts to add a comment explaining what you are doing!</p>
+  </li>
+</ul>
+
+<p>We want to be transparent about our grading philosophy for exams and our exam policies. Here's a quick rundown of some of the frequently asked questions about CS106B exams.</p>
+
+<ul>
+  <li>
+    <p><strong><em>Do you give partial credit?</em></strong> Yes, absolutely! Because the exam is open-resource, we generally do not award partial credit for answers that just consist of a lot of code copied from lecture, section handouts, etc. The best way to earn partial credit on the problem is to make a good effort to solve it, and to do so in a way that shows you understand the underlying methodology.</p>
+  </li>
+  <li>
+    <p><strong><em>Can I write more than one answer to a problem?</em></strong> No, please do not do this. If you put down multiple answers to a question, we will grade whichever answer gives you the fewest number of points. This policy is in place to prevent “shotgunning” down multiple answers with the hope that one of them will work.</p>
+  </li>
+  <li>
+    <p><strong><em>Is pseudocode okay?</em></strong> We generally discourage people from writing pseudocode on an exam. It is better to just write real C++ code, or to at least outline in C++ what you would be doing. You should not expect to receive much, if any, partial credit for writing pseudocode.</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong><em>You can do this.</em></strong> Best of luck on the exam!</p>
+</blockquote>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Feb-08
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

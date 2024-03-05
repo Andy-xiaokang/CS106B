@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Practice Final Exam</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="practice-final.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="practice-final.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="practice-final.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="practice-final.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="practice-final.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../../section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../../section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../../section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../../section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../../section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../../section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../../section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="practice-final.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Practice Final Exam</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><h2 id="starter-files">Starter Files</h2>
+
+<p>The starter files for this practice exam are available here:</p>
+
+<blockquote>
+  <p><a href="practice-final/Practice&#32;Final&#32;Exam.zip">📦 Practice Exam Starter Files</a></p>
+</blockquote>
+
+<h2 id="problem-one-all-squared-away">Problem One: All Squared Away</h2>
+<p>Here’s a little number puzzle: can you arrange the numbers 1, 2, 3, …, and 15 in a sequence such that the sum of any two adjacent numbers is a perfect square? (A <strong><em>perfect square</em></strong> is a number that’s the square of an integer. So, for example, 16 = 4<sup>2</sup> is a perfect square, and 1 = 1<sup>2</sup> is a perfect square, but 19 isn’t a perfect square). There is indeed a way to do this, which is shown here:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="mi">8</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">15</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">13</span><span class="p">,</span>  <span class="mi">12</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">11</span><span class="p">,</span>  <span class="mi">14</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">9</span>
+</code></pre></div></div>
+
+<p>However, you <em>can’t</em> do this with the numbers 1, 2, 3, …, 18, and you <em>can’t</em> do this with the numbers 1, 2, 3, …, 19, but you <em>can</em> do this with the numbers 1, 2, 3, …, 23.</p>
+
+<p>Open the file <code class="language-c++ highlighter-rouge"><span class="n">AllSquaredAway</span><span class="p">.</span><span class="n">cpp</span></code> and implement a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">hasSquareSequence</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">sequence</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a number <em>n</em>, then determines whether there is some way to arrange the numbers 1, 2, 3, …, n such that each number appears exactly once and the sum of any two adjacent numbers is a perfect square. If so, the function should return <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> and update the outparameter <code class="language-c++ highlighter-rouge"><span class="n">sequence</span></code> to contain one such way of arranging the numbers in this way. If not, the function should return <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code>, and it can do whatever it likes to the <code class="language-c++ highlighter-rouge"><span class="n">sequence</span></code> parameter.</p>
+
+<p>For convenience, we have provided you with a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isPerfectSquare</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that takes as input an integer and returns whether that integer is a perfect square. (Please do not modify this function.)</p>
+
+<p>You are encouraged to write your own <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> cases in <code class="language-c++ highlighter-rouge"><span class="n">AllSquaredAway</span><span class="p">.</span><span class="n">cpp</span></code>, but you are not required to do so. Our provided tests are available in <code class="language-c++ highlighter-rouge"><span class="n">AllSquaredAwayTests</span><span class="p">.</span><span class="n">cpp</span></code>.</p>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>You must implement this function recursively – that’s kinda what we’re testing here – but you are welcome to make the <code class="language-c++ highlighter-rouge"><span class="n">hasSquareSequence</span></code> function a wrapper.</p>
+  </li>
+  <li>
+    <p>If the input value <em>n</em> is zero or negative, your function should call <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> to report an error. However, an input with <em>n</em> = 1 is permissible and should produce the sequence of just the number 1 on its own.</p>
+  </li>
+  <li>
+    <p>There are no constraints on what the <code class="language-c++ highlighter-rouge"><span class="n">sequence</span></code> parameter may hold when your function is first called. It could be empty, or it could contain a gigantic list of random numbers.</p>
+  </li>
+  <li>
+    <p>Do not modify the signatures of <code class="language-c++ highlighter-rouge"><span class="n">hasSquareSequence</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">isPerfectSquare</span></code>. Those functions must have the exact parameters and return values shown here.</p>
+  </li>
+  <li>
+    <p>Your solution does not have to be as efficient as possible, but should be fast enough to pass all the stress tests in the appropriate amount of time (plus several stress tests we will use when grading). However, simply passing the provided stress tests does not guarantee that your code is sufficiently efficient.</p>
+  </li>
+</ul>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="practice-final.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>The main observations we need to solve this problem are the following. First, since this problem talks about finding a way of rearranging things in a sequence, we're going to approach this as a permutations-type problem. At each point, we'll ask the question "which of the remaining numbers should come next?" Second, since we're asking the question "is it possible to do this?" (or, equivalently, "are there any ways to do this?"), we can frame this as a backtracking problem. We'll try out each option and, if any option works, immediately stop and report that we've found a solution.</p>
+
+<p>Simply trying out all possible permutations won't be fast enough here. For example, with <em>n</em> = 35, there are 35! = 10,333,147,966,386,144,929,666,651,337,523,200,000,000 possible ways of ordering the numbers 1, 2, …, 35. However, most of those orderings are "silly." For example, no sequence starting with 1, 2 could possibly work, since 1 + 2 isn't a perfect square. Restricting ourselves by only appending numbers to the sequence that form a perfect square when added into the previous total <em>dramatically</em> cuts down the number of options that we need to try, and makes it surprisingly quick to find a solution for 1, 2, …, 35.</p>
+
+<p>Here's one possible way to put this together:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isPerfectSquare</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+<span class="kt">bool</span> <span class="nf">hasSequenceRec</span><span class="p">(</span><span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">remaining</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">soFar</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">result</span><span class="p">);</span>
+
+<span class="kt">bool</span> <span class="nf">hasSquareSequence</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Error-handling. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Bad!"</span><span class="p">);</span>
+
+    <span class="cm">/* Create a set of the numbers 1, 2, 3, ..., n. */</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">values</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* See if we can order it. */</span>
+    <span class="k">return</span> <span class="n">hasSequenceRec</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">{},</span> <span class="n">result</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* Given the set of remaining elements and the vector we've assembled so far, can we arrange
+ * the remaining elements at the end of the sequence to form a square sequence?
+ */</span>
+<span class="kt">bool</span> <span class="nf">hasSequenceRec</span><span class="p">(</span><span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">remaining</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">soFar</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: No elements are left. We must have ordered everything. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">remaining</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">soFar</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Recursive case: Some number comes next. It needs to either be the first in the sequence
+     * or add with the previous number to give a perfect square.
+     */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="o">:</span> <span class="n">remaining</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">soFar</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">||</span> <span class="n">isPerfectSquare</span><span class="p">(</span><span class="n">soFar</span><span class="p">[</span><span class="n">soFar</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">elem</span><span class="p">))</span> <span class="o">&amp;&amp;</span>
+            <span class="n">hasSequenceRec</span><span class="p">(</span><span class="n">remaining</span> <span class="o">-</span> <span class="n">elem</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="n">elem</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-two-big-o-analysis-revisited">Problem Two: Big-O Analysis Revisited</h2>
+<p>We’ve provided you a collection of five functions in <code class="language-c++ highlighter-rouge"><span class="n">BigOFunctions</span><span class="p">.</span><span class="n">cpp</span></code>, along with the runtime plotter you had in Assignment 5. For each of those functions, determine its big-O time complexity, and <strong><em>briefly explain your reasoning</em></strong> (at most fifty words per answer). Place your answers in the file <code class="language-c++ highlighter-rouge"><span class="n">BigOAnswers</span><span class="p">.</span><span class="n">txt</span></code>.</p>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>You do not need to – and in fact, should not – write any code here.</p>
+  </li>
+  <li>
+    <p>The advice from Assignment 5 about the runtime plotter is still applicable here – watch out for noise due to background processes running, understand that very small runtimes can be heavily influenced by noise, etc.</p>
+  </li>
+  <li>
+    <p>Feel free to consult the <a href="https://web.stanford.edu/class/cs106b/materials/library/documentation/">Stanford C++ Library Documentation</a> for information about the big-O costs of different operations on different types.</p>
+  </li>
+</ul>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="practice-final.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterativePrinting</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">row</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">col</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'*'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This one runs in time <strong>O(n<sup>2</sup>)</strong>. To see where this comes from, note that every thousandth iteration of the outer loop will have <code class="language-c++ highlighter-rouge"><span class="n">row</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span></code>, so every thousandth iteration of the outer loop does O(n) work. This means that we do O(n) work from the inner loop a total of O(n) times (specifically, it's roughly n / 1000 times) for a net total of O(n<sup>2</sup>) work.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterativePQ</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* This priority queue type is backed by a binary heap, the same way the
+     * HeapPQueue from Assignment 6 was.
+     */</span>
+    <span class="n">PriorityQueue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pq</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+           <span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="n">j</span><span class="p">);</span>
+       <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">pq</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">pq</span><span class="p">.</span><span class="n">dequeue</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">total</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This one runs in time <strong>O(n<sup>2</sup> log n)</strong>. The answer of O(n<sup>2</sup> log n<sup>2</sup>) is also correct. To see why, notice that by properties of logarithms, log n<sup>2</sup> = 2 log n = O(log n). We didn't talk about that fact this quarter, so we accepted both answers. Going forward, though, you should avoid writing O(log n<sup>2</sup>) and instead write O(log n).</p>
+
+<p>To see where this comes from, let's break the code down into two sections. The first loop nest runs for a total of O(n<sup>2</sup>) iterations; this pattern of "count from 0 to n, counting from 0 to i on each step" is the same pattern that we saw when working with selection sort and insertion sort. However, the fact that this loop nest runs O(n<sup>2</sup>) times doesn't mean that it does O(n<sup>2</sup>) work. Because each iteration enqueues an item into a priority queue, we have to factor in that cost as well. Generally speaking, adding to a priority queue with k items takes time O(log k). We're adding O(n<sup>2</sup>) items into the priority queue, so the cost of each insertion could be as high as O(log n<sup>2</sup>) = O(log n). That gives us a bound of O(n<sup>2</sup> log n) work for this first loop.</p>
+
+<p>(It turns out that, surprisingly, each enqueue here takes only time O(1). Why? Because the item that's being added in will have a higher weight than all others, so the bubble-up step will terminate immediately without swapping anything. That makes the cost of the top loop a smaller O(n<sup>2</sup>), but that doesn't turn out to matter.)</p>
+
+<p>Next we go to the second loop. How long will it take to run? Well, there are O(n<sup>2</sup>) total items in the priority queue, and we're dequeuing each of them in turn. Each dequeue takes time O(log n<sup>2</sup>) = O(log n), so doing O(n<sup>2</sup>) of them will add up to O(n<sup>2</sup> log n).</p>
+
+<p>(And in this step, we do actually have to do the full logarithmic work each time, since swapping the heaviest element to the top and bubbling down will always cause the item to sink all the way down to the bottom.)</p>
+
+<p>Overall, we do O(n<sup>2</sup> log n) work in both loops, so the overall runtime is O(n<sup>2</sup> log n).</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterativeHashSet</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* This type is backed by a chained hash table that rehashes whenever the
+     * load factor exceeds a small constant.
+     */</span>
+    <span class="n">HashSet</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">mySet</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">mySet</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mySet</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">mySet</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">total</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This one runs in (expected) time <strong>O(n)</strong>. Adding n elements to a hash table takes time O(n) since each insertion takes (expected, amortized) O(1) time and we do n of them. The second loop does n lookups and n removes, each of which takes (expected) time O(1) for a net total of (expected) O(n) time. All these operations are (expected) O(1) because the hash table does appropriate rehashing to keep the load factor low.</p>
+
+<p>You may have noticed that we're saying all these operations are <em>expected</em> O(1) rather than <em>worst-case</em> O(1), and that's because there's some randomness due to the choice of hash function. In practice, you can basically treat these operations as if they really were worst-case O(1) because the probability that the operations take longer is very, very low. But in the worst case, we could technically say that this code could take up to O(n<sup>2</sup>) time to run if everything lands in the same bucket, but the odds of that are vanishingly small.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterativeLooping</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">total</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This one runs in time <strong>O(log n)</strong>. The inner loop works by shrinking <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> by a factor of two on each iteration, so the number of iterations is O(log n). Since each loop iteration does O(1) work, the total work done is O(log n).</p>
+
+<p>This function produces some pretty spectacular runtime plots. On Windows systems, the timing code registers 0ms for each call. On macOS and Linux, the timing numbers are basically a bunch of small random numbers. And the reason for this is that this code is really, <em>really</em> fast. Figure that if n = 1,000,000,000 that this loop will run 32 times, and since the work done is so small the timing system has a heck of a time trying to measure how fast this is.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterativeVector</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">values</span> <span class="o">+=</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span> <span class="c1">// randomInteger runs in time O(1).</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">values</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Uses an algorithm with the same runtime complexity as mergesort. */</span>
+        <span class="n">values</span><span class="p">.</span><span class="n">sort</span><span class="p">();</span>
+
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">values</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">total</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This one also runs in time <strong>O(n<sup>2</sup> log n)</strong>. To see why, let's break down the code into smaller pieces. The top loop appends n items to a vector, which takes time O(n).</p>
+
+<p>To see how long the next loop takes, let's look at a single iteration. Each iteration does O(n log n) work to sort the vector, then O(1) work to add to <code class="language-c++ highlighter-rouge"><span class="n">total</span></code> and replace <code class="language-c++ highlighter-rouge"><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code>, and finally O(n) work to do <code class="language-c++ highlighter-rouge"><span class="n">values</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></code>. Adding this up means that we do O(n log n) work, since big-O notation ignores the lower-order terms (both O(1) and O(n) are dominated by O(n log n)). So each loop iteration does O(n log n) work and there are n iterations, for a net total of O(n<sup>2</sup> log n).</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-three-leapfrog-hashing">Problem Three: Leapfrog Hashing</h2>
+<p>In this problem, you'll implement a type of hash table called a <strong><em>leapfrog hash table</em></strong> that's a hybrid between a chained hash table and a linear probing hash table.</p>
+
+<p>Leapfrog hashing, like linear probing and Robin Hood hashing, is an open-addressing table, which means the hash table is made of a collection of individual slots, each of which can either be empty or hold an item. The slot type for leapfrog hashing is as follows:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Slot</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">SlotType</span> <span class="n">type</span><span class="p">;</span> <span class="c1">// SlotType::EMPTY or SlotType::FILLED</span>
+    <span class="kt">int</span> <span class="n">link</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>This slot type is the same as what you'd find in standard linear probing with one major change: the <code class="language-c++ highlighter-rouge"><span class="n">link</span></code> field. This field can hold one of two values: either the constant <code class="language-c++ highlighter-rouge"><span class="n">NOT_LINKED</span></code>, indicating that the slot is not linked to another slot, or the index of another slot in the table.</p>
+
+<p>We can visualize a leapfrog hash table by drawing it out like a regular linear probing table, with the addition of links between slots. For example, here's a sample leapfrog hash table. Here, we're using a (bad, just for expository purposes) hash function that hashes each number to its last digit:</p>
+
+<p><img src="practice-final/img/Q3I1.jpg" alt="Image of a table of 10 elements. Index zero holds the value 10, indexes 1, 2 and 9 are empty, indicies 3 - 8 hold the values 13, 14, 15, 23, 24, and 33 in that order. Index 3 has an arrow pointing to index 6 and index 6 has an arrow pointing to index 8. Index 4 has an index pointing to index." /></p>
+
+<p>In this picture, if there's a link from one slot to another, we've drawn an arrow from the first slot to the slot it links to. Empty slots, and slots whose link is <code class="language-c++ highlighter-rouge"><span class="n">NOT_LINKED</span></code>, are drawn with no outgoing arrows.</p>
+
+<h3 id="lookups-in-leapfrog-hashing">Lookups in Leapfrog Hashing</h3>
+
+<p>Lookups in a leapfrog hash table work as follows. As in linear probing or Robin Hood hashing, we begin by hashing the item in question to find its home slot. If that slot is empty, then the element is definitely not in the table and we can stop looking. If that slot is full and contains the item we're looking up, great! We've found it. Otherwise, the element might still be in the table, but just not in the position it wants to be in, so we will need to search for it.</p>
+
+<p>This is where the <code class="language-c++ highlighter-rouge"><span class="n">link</span></code> field comes into play. Rather than using the linear probing technique, we'll instead move from this slot to the slot given by the <code class="language-c++ highlighter-rouge"><span class="n">link</span></code> field, seeing if the element is there. We'll keep following the links from one slot to the next until either (1) we find the element or (2) we need to follow a link pointer from a slot whose <code class="language-c++ highlighter-rouge"><span class="n">link</span></code> field is the constant <code class="language-c++ highlighter-rouge"><span class="n">NOT_LINKED</span></code>, indicating that the slot has no outgoing link. (This behavior of jumping around the table is where the name "leapfrog hashing” comes from.) The sequence of slots we visit this way is called a <strong><em>chain</em></strong>.</p>
+
+<p>For example, suppose we want to look up 33 in the above table. We begin by hashing 33 to get slot 3, which is our starting slot. That slot is full, but contains a value other than 33 (specifically, 13). We therefore follow its link to slot 6. Slot 6 has 23 in it, which isn't what we're looking for, so we follow its link to slot 8. Slot 8 contains 33, so we've found the item we're looking for.</p>
+
+<p>As another example, suppose we're looking for 17, which is not in the table. We begin by hashing 17 to get slot 7, which currently holds 24. That's not what we're looking for. Since slot 7 has no outgoing link, we stop searching and report that 17 is not in the table.</p>
+
+<p>To look up 10, we hash to slot 0, find that 10 is present, and therefore signal that 10 is in the table.</p>
+
+<p>Next, suppose we want to look up 16. We begin by jumping to slot 6, which holds 23 (not what we’re looking for), so we follow the link to slot 8. Slot 8 contains 33, which isn’t what we’re looking for, and since it has no outgoing link we stop searching and report that the table doesn't contain 16.</p>
+
+<p>Finally, suppose we want to look up 11. We jump to slot 1, find that it's empty, and therefore immediately know that 11 isn't in the table.</p>
+
+<h3 id="insertions-in-leapfrog-hashing">Insertions in Leapfrog Hashing</h3>
+
+<p>Insertions in leapfrog hashing working as follows. We begin by first checking that the item we want to insert isn't in the table; if it is, then we don't need to do anything. Otherwise, the item isn't present, and we need to add it. We jump to the slot given by the item's hash code, then follow the links until we come to the last slot in the chain.</p>
+
+<p>For example, suppose we want to insert 43 into this table:</p>
+
+<p><img src="practice-final/img/Q3I1.jpg" alt="Image of a table of 10 elements. Index zero holds the value 10, indexes 1, 2 and 9 are empty, indicies 3 - 8 hold the values 13, 14, 15, 23, 24, and 33 in that order. Index 3 has an arrow pointing to index 6 and index 6 has an arrow pointing to index 8. Index 4 has an index pointing to index." /></p>
+
+<p>Item 43 has hash code 3, so we begin in slot 3. We follow links from slot 3 to slot 6, then from slot 6 to slot 8, stopping in slot 8 because there is no outgoing link.</p>
+
+<p>At this point, we need to find another free spot in the table at which to insert 43. To do so, we use a regular linear probing search starting in the slot just after the one we ended in (wrapping around, of course) until we find a free slot. Our chain ended in slot 8, so we start a linear probing search from slot 9. That slot is empty, so we place 43 there, linking slot 8 to slot 9. Since 43 is now at the end of its chain, we set its link to <code class="language-c++ highlighter-rouge"><span class="n">NOT_LINKED</span></code>, since nothing comes after it. This is shown here:</p>
+
+<p><img src="practice-final/img/Q3I2.5.png" alt="A copy of the image above, now with another arrow from index 8 to index 9 and the value 43 stored at index 9." /></p>
+
+<p>Now, suppose we insert 34. We jump to slot 4 to start, then follow links until we reach the end of the chain. That takes us to slot 7. From here, we do linear probing, starting in slot 8, to find a free slot. That wraps us around the table to slot 1. We put 34 there, adding a link from slot 7 to slot 1, as shown here:</p>
+
+<p><img src="practice-final/img/Q3I3.jpg" alt="A duplicate of the image above with an arrow pointing from index  to index 1 and the value 34 stored at index 1." /></p>
+
+<p>You might have noticed that, at least in this table, all items in a chain have the same hash code (13, 23, 33, and 43; 14, 24, and 34). But that's just a coincidence and isn't guaranteed to be true. For example, suppose we insert 17. We jump to slot 7, then follow the link to slot 1, then use linear probing to place 17 into slot 2. That's shown here:</p>
+
+<p><img src="practice-final/img/Q3I4.jpg" alt="Duplicate of above image, with value 1 stored at index 2 and an arrow pointing from index 1 to index 2." /></p>
+
+<p>To recap, here's how the lookup and insertion procedures work:</p>
+
+<ul>
+  <li>
+    <p><strong><em>Lookup:</em></strong> Jump to the slot given by the item's hash code, and stop if the slot is empty. Otherwise, follow links forward until you either find the item or run out of links to follow.</p>
+  </li>
+  <li>
+    <p><strong><em>Insert:</em></strong> Proceed as with a lookup. If you don't find the item, use linear probing starting from right after the last slot visited until an empty slot is found, placing the item there and updating links as appropriate.</p>
+  </li>
+</ul>
+
+<p>There are some edge cases to watch out for when dealing with insertions. You have to make sure not to insert the same item twice, not to insert into a full table, and to handle the case where the initial slot is empty.</p>
+
+<h3 id="your-task">Your Task</h3>
+
+<p>Your task is to implement the <code class="language-c++ highlighter-rouge"><span class="n">LeapfrogHashTable</span></code> class shown below. Since we only discussed lookups and insertions, you do not need to handle removal of elements.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LeapfrogHashTable</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">LeapfrogHashTable</span><span class="p">(</span><span class="n">HashFunction</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">hashFn</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">LeapfrogHashTable</span><span class="p">();</span>
+
+    <span class="kt">int</span>  <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">contains</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">insert</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">printDebugInfo</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    
+<span class="nl">private:</span>
+    <span class="k">enum</span> <span class="k">class</span> <span class="nc">SlotType</span> <span class="p">{</span>
+        <span class="n">FILLED</span><span class="p">,</span>
+        <span class="n">EMPTY</span>
+    <span class="p">};</span>
+    
+    <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">NOT_LINKED</span> <span class="o">=</span> <span class="cm">/* something that isn't a valid link index */</span><span class="p">;</span>
+    
+    <span class="k">struct</span> <span class="nc">Slot</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value</span><span class="p">;</span>
+        <span class="n">SlotType</span> <span class="n">type</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">link</span><span class="p">;</span>
+    <span class="p">};</span>
+    
+    <span class="n">Slot</span><span class="o">*</span> <span class="n">elems</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>You should not change or remove any of the code given here, but you are welcome to add to it.</p>
+
+<p>All your code should go in the files <code class="language-c++ highlighter-rouge"><span class="n">LeapfrogHashTable</span><span class="p">.</span><span class="n">h</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">LeapfrogHashTable</span><span class="p">.</span><span class="n">cpp</span></code>. You are encouraged to write your own <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> cases in <code class="language-c++ highlighter-rouge"><span class="n">LeapfrogHashTable</span><span class="p">.</span><span class="n">cpp</span></code>, but you are not required to do so. Our provided tests are available in <code class="language-c++ highlighter-rouge"><span class="n">LeapfrogHashTableTests</span><span class="p">.</span><span class="n">cpp</span></code>.</p>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>An excellent warmup before you start coding things up: look at the very first image of a leapfrog hash table from this section. In what order did we insert those items into the hash table? Is there exactly one way to do it, or are there many? You do not need to submit your answers to this question; it's just a warmup to help solidify your understanding of how leapfrog hashing works. However, we definitely recommend doing this before you write any code to make sure you're rock solid on how the procedures work!</p>
+  </li>
+  <li>
+    <p>As with Assignment 7, you must do all of your own memory management, and you must not use any of the standard container types (<code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code>, etc.)</p>
+  </li>
+  <li>
+    <p>As with Assignment 7, your hash table should have a fixed size given by the number of slots specified by the hash function in the constructor. You should not rehash even if the table starts to get full. In particular, insertions should fail if the table is full.</p>
+  </li>
+  <li>
+    <p>As with Assignment 7, your implementations of <code class="language-c++ highlighter-rouge"><span class="n">contains</span><span class="p">()</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">insert</span><span class="p">()</span></code> must not be recursive, since that might result in stack overflows on large inputs.</p>
+  </li>
+  <li>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">size</span><span class="p">()</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">isEmpty</span><span class="p">()</span></code> functions should run in time O(1).</p>
+  </li>
+  <li>
+    <p>We have provided a set of tests for <code class="language-c++ highlighter-rouge"><span class="n">LeapfrogHashTable</span></code> that are not as extensive as the ones from Assignment 7. You are encouraged to write your own tests, but you are not required to do so.</p>
+  </li>
+  <li>
+    <p>You can do whatever you'd like with <code class="language-c++ highlighter-rouge"><span class="n">printDebugInfo</span></code>. We won't be calling this function when grading your submission.</p>
+  </li>
+  <li>
+    <p>Do not change any of the signatures of the functions from <code class="language-c++ highlighter-rouge"><span class="n">LeapfrogHashTable</span></code>, edit the <code class="language-c++ highlighter-rouge"><span class="n">SlotType</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">Slot</span></code> types, or remove the <code class="language-c++ highlighter-rouge"><span class="n">Slot</span><span class="o">*</span> <span class="n">elems</span></code> data member. You may, however, add additional private data members or private member functions.</p>
+  </li>
+  <li>
+    <p>Your code should be fast enough to pass all the provided stress tests (plus several we will use during grading). However, simply passing the provided stress tests does not guarantee that your code is sufficiently efficient.</p>
+  </li>
+</ul>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="practice-final.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>Here's one way to do this. Our solution has two extra data members: a <code class="language-c++ highlighter-rouge"><span class="n">HashFunction</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> named <code class="language-c++ highlighter-rouge"><span class="n">hashFn</span></code>, and an <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code> named <code class="language-c++ highlighter-rouge"><span class="n">logicalSize</span></code>.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Stash the hash function for later, and mark all slots empty. */</span>
+<span class="n">LeapfrogHashTable</span><span class="o">::</span><span class="n">LeapfrogHashTable</span><span class="p">(</span><span class="n">HashFunction</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">hashFn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">hashFn</span> <span class="o">=</span> <span class="n">hashFn</span><span class="p">;</span>
+
+    <span class="n">elems</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Slot</span><span class="p">[</span><span class="n">hashFn</span><span class="p">.</span><span class="n">numSlots</span><span class="p">()];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">hashFn</span><span class="p">.</span><span class="n">numSlots</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">elems</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">type</span> <span class="o">=</span> <span class="n">SlotType</span><span class="o">::</span><span class="n">EMPTY</span><span class="p">;</span>
+        
+        <span class="cm">/* No need to set the link field; we aren't going to be reading it
+         * from empty slots.
+         */</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* Clean up our memory. */</span>
+<span class="n">LeapfrogHashTable</span><span class="o">::~</span><span class="n">LeapfrogHashTable</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">elems</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Jump to the initial slot and walk the chain to see if the element is there. */</span>
+<span class="kt">bool</span> <span class="n">LeapfrogHashTable</span><span class="o">::</span><span class="n">contains</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">hashFn</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+
+    <span class="cm">/* If the slot is empty, the item is definitely not here. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">type</span> <span class="o">==</span> <span class="n">SlotType</span><span class="o">::</span><span class="n">EMPTY</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="cm">/* Walk th chain. */</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Found it? */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">type</span> <span class="o">==</span> <span class="n">SlotType</span><span class="o">::</span><span class="n">FILLED</span> <span class="o">&amp;&amp;</span> <span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">value</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        
+        <span class="cm">/* Move on, or give up. */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">link</span> <span class="o">==</span> <span class="n">NOT_LINKED</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">link</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* Walk to the end of the chain, and do linear probing from there. */</span>
+<span class="kt">bool</span> <span class="n">LeapfrogHashTable</span><span class="o">::</span><span class="n">insert</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Don't insert an item that's already here. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">contains</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="cm">/* Don't insert into a full table. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">hashFn</span><span class="p">.</span><span class="n">numSlots</span><span class="p">())</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="cm">/* Proceed as if looking something up. */</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">hashFn</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+
+    <span class="cm">/* If the slot is full, proceed to the end of the chain and use linear
+     * probing to find a free slot.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">type</span> <span class="o">==</span> <span class="n">SlotType</span><span class="o">::</span><span class="n">FILLED</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Walk to the end of the chain. */</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">link</span> <span class="o">!=</span> <span class="n">NOT_LINKED</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">link</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Record this index; we'll need to link it to our new slot. */</span>
+        <span class="kt">int</span> <span class="n">lastSpot</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span>
+
+        <span class="cm">/* Do standard linear probing from here. */</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">hashFn</span><span class="p">.</span><span class="n">numSlots</span><span class="p">();</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">type</span> <span class="o">==</span> <span class="n">SlotType</span><span class="o">::</span><span class="n">FILLED</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">hashFn</span><span class="p">.</span><span class="n">numSlots</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Link the last spot here. */</span>
+        <span class="n">elems</span><span class="p">[</span><span class="n">lastSpot</span><span class="p">].</span><span class="n">link</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* The final home of this item has no outgoing link. */</span>
+    <span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">link</span> <span class="o">=</span> <span class="n">NOT_LINKED</span><span class="p">;</span>
+
+    <span class="cm">/* Place the item here. */</span>
+    <span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">type</span> <span class="o">=</span> <span class="n">SlotType</span><span class="o">::</span><span class="n">FILLED</span><span class="p">;</span>
+    <span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">value</span> <span class="o">=</span> <span class="n">key</span><span class="p">;</span>
+    <span class="n">logicalSize</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Return the cached size. */</span>
+<span class="kt">int</span> <span class="n">LeapfrogHashTable</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">logicalSize</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* We're empty if our size is zero. */</span>
+<span class="kt">bool</span> <span class="n">LeapfrogHashTable</span><span class="o">::</span><span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">LeapfrogHashTable</span><span class="o">::</span><span class="n">printDebugInfo</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="cm">/* They said I could do anything, so I did nothing! */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We saw a bunch of variability in the answers submitted. Some of you set all slots' <code class="language-c++ highlighter-rouge"><span class="n">link</span></code> field to <code class="language-c++ highlighter-rouge"><span class="n">NOT_LINKED</span></code> once in the constructor. Some of you split the linear probing step into two separate searches, one from the home slot to the end of the table and one from the beginning of the table to home slot. Some of you combined the loops for linear probing and chain walking into a single loop, having a flag indicating which mode to use.</p>
+
+<p>The most common mistakes we saw were off-by-one errors when traversing the chains (often skipping the very first or very last item in the chain), forgetting to check whether items were present during an insertion, and forgetting to check whether a slot was filled before reading its value. (That last one often manifested as errors where the empty string would appear in the table even if it had not been added; this happens because the strings in the slots all default to empty.)</p>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Mar-11
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

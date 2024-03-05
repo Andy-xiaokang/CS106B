@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursion Etudes</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 3. Recursion Etudes</h1>
+
+<hr>
+
+<p class="attribution">
+Section materials curated by Neel Kishnani, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<p>This week’s section exercises explore the ins and outs of content from week 3 – thinking recursively! These problems will help in gaining familiarity with recursive problem-solving.</p>
+
+<blockquote>
+  <p>📦 <a href="section3_starter.zip">Starter code</a></p>
+</blockquote>
+
+<h2 id="1-recursion-tracing">1) Recursion Tracing</h2>
+
+<p><em>Topics: Recursion call and return, Tracing</em></p>
+
+<p>Below are a collection of recursive functions, along with an initial call to each of those functions. Determine what value is returned from each function. As a note, some of these functions contain bugs (or at least, highly misleading code structures) that make them not behave in the way you might initially expect, and it's worth making a note, for each function, what <em>specifically</em> that function does that's Cruel and Unusual.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">bishkek</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">n</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">137</span><span class="p">;</span>
+    <span class="n">bishkek</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">result</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">bishkek</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="n">result</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">bishkek</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">3</span><span class="p">);</span>
+    <span class="n">result</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// (1) Determine what this outputs!</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">bishkek</span> <span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">batken</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">return</span> <span class="n">batken</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">subList</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// (2) Determine what this outputs!</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">batken</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">})</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="showtime" when="2022-01-28T18:00:00-08:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#deebo")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>There’s a lot to talk about here, so let’s go through these one at a time.</p>
+
+<p>In the function <code class="language-c++ highlighter-rouge"><span class="n">bishkek</span></code>, you might have noticed that the values returned by the recursive calls to <code class="language-c++ highlighter-rouge"><span class="n">bishkek</span></code> are never used. This means that we can figure out what <code class="language-c++ highlighter-rouge"><span class="n">bishkek</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span></code> returns simply by skipping the recursive calls and looking at what happens to the variable <code class="language-c++ highlighter-rouge"><span class="n">result</span></code>. In this case, we see that it starts at 137, then is incremented three times. This means that <code class="language-c++ highlighter-rouge"><span class="n">bishkek</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span></code> returns 140, and we don’t have to investigate what goes on inside the recursive calls at all.</p>
+
+<p>The lesson from this function is:</p>
+
+<p class="alert alert-primary keith-callout"><strong>When writing a recursive function that returns a value, always use the return values from your recursive calls!</strong></p>
+
+<hr />
+
+<p>Now, let’s look at <code class="language-c++ highlighter-rouge"><span class="n">batken</span></code>. An important detail to notice in this function is that there’s something broken with how the for loop works: <strong><em>the for loop can never execute more than once</em></strong>. That’s because the last line of the <code class="language-c++ highlighter-rouge"><span class="k">for</span></code> loop is a <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> statement, and a <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> statement ends the current function call. As a result, here’s what happens:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">batken</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">})</span></code> returns the value of <code class="language-c++ highlighter-rouge"><span class="n">batken</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">})</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">batken</span><span class="p">({</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">})</span></code> returns the value of <code class="language-c++ highlighter-rouge"><span class="n">batken</span><span class="p">({</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">})</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">batken</span><span class="p">({</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">})</span></code> returns the value of <code class="language-c++ highlighter-rouge"><span class="n">batken</span><span class="p">({</span><span class="mi">4</span><span class="p">})</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">batken</span><span class="p">({</span><span class="mi">4</span><span class="p">})</span></code> skips the for loop because the initial value of <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> is equal to the size of the vector, so then it proceeds to return 0.</li>
+</ul>
+
+<p>Therefore, the return value is zero.</p>
+
+<p>This leads to this piece of advice:</p>
+
+<p class="alert alert-primary keith-callout"><strong>It is exceedingly rare in <em class="underline">any</em> context, and in particular in the context of recursion, to have a for loop that ends with an unconditional return statement.</strong></p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-splitting-the-bill">2) Splitting The Bill</h2>
+
+<p><em>Topic: Recursion, Combinations, Sets</em></p>
+
+<p>You’ve gone out for coffees with a bunch of your friends and the waiter has just brought back the bill. How should you pay for it? One option would be to draw straws and have the loser pay for the whole thing. Another option would be to have everyone pay evenly. A third option would be to have everyone pay for just what they ordered. And then there are a ton of other options that we haven’t even listed here!</p>
+
+<p>Your task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">listPossiblePayments</span><span class="p">(</span><span class="kt">int</span> <span class="n">total</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">people</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a total amount of money to pay (in dollars) and a set of all the people who ordered something, then lists off every possible way you could split the bill, assuming everyone pays a whole number of dollars. For example, if the bill was $4 and there were three people at the lunch (call them A, B, and C), your function might list off these options:</p>
+
+<pre><code class="language-plain">  A: $4,   B: $0,   C: $0
+  A: $3,   B: $1,   C: $0
+  A: $3,   B: $0,   C: $1
+  A: $2,   B: $2,   C: $0
+  A: $2,   B: $1,   C: $1
+  A: $2,   B: $0,   C: $1
+              …
+  A: $0,   B: $1,   C: $3
+  A: $0,   B: $0,   C: $4
+</code></pre>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>The total amount owed will always be nonnegative. If the total owed is negative, you should use the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error.</li>
+  <li>There is always at least one person in the set of people. If not, you should report an error.</li>
+  <li>You can list off the possible payment options in any order that you'd like. Just don't list the same option twice.</li>
+  <li>The output you produce should indicate which person pays which amount, but aside from that it doesn't have to exactly match the format listed above. Anything that correctly reports the payment amounts will get the job done.</li>
+</ul>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>The insight that we used in our solution is that the first person has to pay <strong>some</strong> amount of money. We can't say for certain how much it will be, but we know that it's going to have some amount of money that's between zero and the full total. We can then try out every possible way of having them pay that amount of money, which always leaves the remaining people to split up the part of the bill that the first person hasn't paid.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Lists off all ways that the set of people can pay a certain total, assuming
+ * that some number of people have already committed to a given set of payments.
+ *
+ * @param total The total amount to pay.
+ * @param people Who needs to pay.
+ * @param payments The payments that have been set up so far.
+ */</span>
+<span class="kt">void</span> <span class="nf">listPossiblePaymentsRec</span><span class="p">(</span><span class="kt">int</span> <span class="n">total</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">people</span><span class="p">,</span>
+                             <span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">payments</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: if there's one person left, they have to pay the whole bill. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">finalPayments</span> <span class="o">=</span> <span class="n">payments</span><span class="p">;</span>
+        <span class="n">finalPayments</span><span class="p">[</span><span class="n">people</span><span class="p">.</span><span class="n">first</span><span class="p">()]</span> <span class="o">=</span> <span class="n">total</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">finalPayments</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive case: The first person has to pay some amount between 0 and the
+     * total amount. Try all of those possibilities.
+     */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">payment</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">payment</span> <span class="o">&lt;=</span> <span class="n">total</span><span class="p">;</span> <span class="n">payment</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/* Create a new assignment of people to payments in which this first
+             * person pays this amount.
+             */</span>
+            <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">updatedPayments</span> <span class="o">=</span> <span class="n">payments</span><span class="p">;</span>
+            <span class="n">updatedPayments</span><span class="p">[</span><span class="n">people</span><span class="p">.</span><span class="n">first</span><span class="p">()]</span> <span class="o">=</span> <span class="n">payment</span><span class="p">;</span>
+            <span class="n">listPossiblePaymentsRec</span><span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="n">payment</span><span class="p">,</span> <span class="n">people</span> <span class="o">-</span> <span class="n">people</span><span class="p">.</span><span class="n">first</span><span class="p">(),</span>
+                                    <span class="n">updatedPayments</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">listPossiblePayments</span><span class="p">(</span><span class="kt">int</span> <span class="n">total</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">people</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Edge cases: we can't pay a negative total, and there must be at least one
+     * person.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">total</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Guess you're an employee?"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="n">error</span><span class="p">(</span><span class="s">"Dine and dash?"</span><span class="p">);</span>
+
+    <span class="n">listPossiblePaymentsRec</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="n">people</span><span class="p">,</span> <span class="p">{});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-change-we-can-believe-in">3) Change We Can Believe In</h2>
+
+<p><em>Topics: Sets, Recursion, Optimization</em></p>
+
+<p>In the US, as is the case in most countries, the best way to give change for any total is to use a <em>greedy strategy</em> – find the highest-denomination coin that’s less than the total amount, give one of those coins, and repeat. For example, to pay someone 97¢ in the US in cash, the best strategy would be to:</p>
+
+<ul>
+  <li>give a half dollar (50¢ given, 47¢ remain), then</li>
+  <li>give a quarter (75¢ given, 22¢ remain), then</li>
+  <li>give a dime (85¢ given, 12¢ remain), then</li>
+  <li>give a dime (95¢ given, 2¢ remain), then</li>
+  <li>give a penny (96¢ given, 1¢ remain), then</li>
+  <li>give another penny (97¢ given, 0¢ remain).</li>
+</ul>
+
+<p>This uses six total coins, and there’s no way to use fewer coins to achieve the same total.</p>
+
+<p>However, it’s possible to come up with coin systems where this greedy strategy doesn’t always use the fewest number of coins. For example, in the tiny country of Recursia, the residents have decided to use the denominations 1¢, 12¢, 14¢, and 63¢, for some strange reason. So suppose you need to give back 24¢ in change. The best way to do this would be to give back two 12¢ coins. However, with the greedy strategy of always picking the highest-denomination coin that’s less than the total, you’d pick a 14¢ coin and ten 1¢ coins for a total of fifteen coins. That’s pretty bad!</p>
+
+<p>Your task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">fewestCoinsFor</span><span class="p">(</span><span class="kt">int</span> <span class="n">cents</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">coins</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a number of cents and a <code class="language-c++ highlighter-rouge"><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span></code> indicating the different denominations of coins used in a country, then returns the minimum number of coins required to make change for that total. In the case of US coins, this should always return the same number as the greedy approach, but in general it might return a lot fewer! Once you’ve written this function, discuss with the group whether memoization (described in the handout for Assignment 3) would be appropriate here. If so, go and add memoization to this function. If not, explain why not.</p>
+
+<p>And here’s a question to ponder: given a group of coins, how would you determine whether the greedy algorithm is always optimal for those coins?</p>
+
+<p>You can assume that the set of coins always contains a 1¢ coin, so you never need to worry about the case where it’s simply not possible to make change for some total. You can also assume that there are no coins worth exactly 0¢ or a negative number of cents, since that makes no sense. (No pun intended.) Finally, you can assume that the number of cents to make change for is nonnegative.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>The idea behind this solution is the following: if we need to make change for zero cents, the only (and, therefore, best!) option is to use 0 coins. Otherwise, we need to give back at least one coin. What’s the first coin we should hand back? We don’t know which one it is, but we can say that it’s got to be one of the coins from our options and that that coin can’t be worth more than the total. So we’ll try each of those options in turn, see which one ends up requiring the fewest coins for the remainder, then go with that choice. The code for this is really elegant and is shown here:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Given a collection of denominations and an amount to give in change, returns
+ * the minimum number of coins required to make change for it.
+ *
+ * @param cents How many cents we need to give back.
+ * @param coins The set of coins we can use.
+ * @return The minimum number of coins needed to make change.
+ */</span>
+
+<span class="kt">int</span> <span class="nf">fewestCoinsFor</span><span class="p">(</span><span class="kt">int</span> <span class="n">cents</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">coins</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: You need no coins to give change for no cents. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cents</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive case: try each possible coin that doesn’t exceed the total as
+     * as our first coin.
+     */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">bestSoFar</span> <span class="o">=</span> <span class="n">cents</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Can never need this many coins; see why?</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">coin</span><span class="o">:</span> <span class="n">coins</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/* If this coin doesn’t exceed the total, try using it. */</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">coin</span> <span class="o">&lt;=</span> <span class="n">cents</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">bestSoFar</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">bestSoFar</span><span class="p">,</span> <span class="n">fewestCoinsFor</span><span class="p">(</span><span class="n">cents</span> <span class="err">–</span> <span class="n">coin</span><span class="p">,</span> <span class="n">coins</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">bestSoFar</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// For the coin we just used.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We asked whether memoization would be appropriate here, and the answer is "yes, definitely!" Imagine, for example, that we’re using this algorithm on US coins, and we want to see the fewest number of coins required to make change for 10¢. Our options include first using a dime, first using a nickel, and first us- ing a penny. Both of those latter two routes will eventually want to know the best way to make change for 5¢, the case where we use a nickel immediately needs to know this, and the case where we first use a penny will want to know how to do this for 9¢, which eventually needs to know 8¢, etc. down to 5¢. Without using memoization, we’d end up with a ton of redundant computation, which would slow things down dramatically. With memoization, this will be lightning fast for most numbers!</p>
+
+<p>Here's what this might look like:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Given a collection of denominations and an amount to give in change, returns
+ * the minimum number of coins required to make change for it. This uses a table
+ * to memoize its results.
+ *
+ * @param cents How many cents we need to give back.
+ * @param coins The set of coins we can use.
+ * @param memoizedResults A table mapping numbers of cents to the minimum number
+ *                        of coins needed to make that total, for memoization.
+ * @return The minimum number of coins needed to make change.
+ */</span>
+<span class="kt">int</span> <span class="nf">fewestCoinsForMemoized</span><span class="p">(</span><span class="kt">int</span> <span class="n">cents</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">coins</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">memoizedResults</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: You need no coins to give change for no cents. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cents</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Base case: if we already know the answer, just return it! */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">memoizedResults</span><span class="p">.</span><span class="n">containsKey</span><span class="p">(</span><span class="n">cents</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">memoizedResults</span><span class="p">[</span><span class="n">cents</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive case: try each possible coin that doesn’t exceed the total as
+     * as our first coin.
+     */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">bestSoFar</span> <span class="o">=</span> <span class="n">cents</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// More than we ever need; see why?</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">coin</span><span class="o">:</span> <span class="n">coins</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/* If this coin doesn’t exceed the total, try using it. */</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">coin</span> <span class="o">&lt;=</span> <span class="n">cents</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kt">int</span> <span class="n">needed</span> <span class="o">=</span> <span class="n">fewestCoinsForMemoized</span><span class="p">(</span><span class="n">cents</span> <span class="err">–</span> <span class="n">coin</span><span class="p">,</span> <span class="n">coins</span><span class="p">,</span>
+                             <span class="n">memoizedResults</span><span class="p">);</span>
+                <span class="n">bestSoFar</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">bestSoFar</span><span class="p">,</span> <span class="n">needed</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="cm">/* Store the result for later. */</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">bestSoFar</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">memoizedResults</span><span class="p">[</span><span class="n">cents</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cm">/**
+ * Given a collection of denominations and an amount to give in change, returns
+ * the minimum number of coins required to make change for it.
+ *
+ * @param cents How many cents we need to give back.
+ * @param coins The set of coins we can use.
+ * @return The minimum number of coins needed to make change.
+ */</span>
+<span class="kt">int</span> <span class="nf">fewestCoinsFor</span><span class="p">(</span><span class="kt">int</span> <span class="n">cents</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">coins</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">memoizedResults</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">fewestCoinsForMemoized</span><span class="p">(</span><span class="n">cents</span><span class="p">,</span> <span class="n">coins</span><span class="p">,</span> <span class="n">memoizedResults</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="4-ordering-prerequisites">4) Ordering Prerequisites</h2>
+
+<p><em>Topics: Maps, Vectors, Permutations, Recursion</em></p>
+
+<p>Imagine you have some collection of tasks that need to be done. Some of those tasks might depend on one another. For example, you might be navigating the CS Core, shown here:</p>
+
+<p><img src="img/dependencygraph.png" alt="Dependency graph explaining the CS Core: We see CS110 depends on CS107, which depends on CS106B, which depends on CS106A; and that CS161 depends on CS109 which depends on both CS106B and CS103, both of which also depend on CS106A." /></p>
+
+<p>Here, the arrows indicate prerequisites. CS106B has CS106A as a prerequisite, CS110 has CS107 as a prerequisite, CS109 has both CS106B and CS103 as prerequisites, and CS106A has no prerequisites. Assuming you can only take one CS class per quarter, what possible orderings are there for these classes that don’t violate any prerequisites? Your task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">listLegalOrderingsOf</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">prereqs</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a Map representing the prerequisite structure, then lists all possible orders in which you could complete those tasks without violating the prerequisites. The prereqs map is structured so that each key is a task and each value is the set of that task’s immediate prerequisites. For example, the CS Core would be represented by the following map:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="s">"CS103"</span> <span class="o">:</span> <span class="p">{</span> <span class="s">"CS106A"</span> <span class="p">}</span>
+<span class="s">"CS106A"</span> <span class="o">:</span> <span class="p">{</span> <span class="p">}</span>
+<span class="s">"CS106B"</span> <span class="o">:</span> <span class="p">{</span> <span class="s">"CS106A"</span> <span class="p">}</span>
+ <span class="s">"CS107"</span> <span class="o">:</span> <span class="p">{</span> <span class="s">"CS106B"</span> <span class="p">}</span>
+ <span class="s">"CS109"</span> <span class="o">:</span> <span class="p">{</span> <span class="s">"CS103"</span><span class="p">,</span> <span class="s">"CS106B"</span> <span class="p">}</span>
+ <span class="s">"CS110"</span> <span class="o">:</span> <span class="p">{</span> <span class="s">"CS107"</span> <span class="p">}</span>
+ <span class="s">"CS161"</span> <span class="o">:</span> <span class="p">{</span> <span class="s">"CS109"</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Given this structure, your function would then print out all the following:</p>
+
+<pre><code class="language-plain">CS106A, CS106B, CS107, CS110, CS103, CS109, CS161
+CS106A, CS103, CS106B, CS109, CS161, CS107, CS110
+CS106A, CS106B, CS107, CS103, CS109, CS161, CS110
+              (... many, many more ...)
+</code></pre>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>Every task will be present in the Map. A task with no prerequisites will be represented as a key
+whose value is an empty Set, as is the case for CS106A in the above example.</li>
+  <li>Your function must not list off the same ordering twice.</li>
+  <li>Your function must not work by simply generating all possible permutations of the tasks and then printing out just the ones that obey all the constraints. That would just be too inefficient.</li>
+  <li>Your output doesn’t have to exactly match our format. List off the orderings in whatever format you’d like. In case it helps, you can directly print a Map, Set, Vector, or Lexicon to cout.</li>
+  <li>It’s entirely possible that the set of tasks you’re given can’t actually be ordered. For example, if the task "Learn Recursion" depends on "Learn Recursion", then no matter how you order things the prerequisites won’t be satisfied. In that case, your function should just not print any- thing at all. Chances are, you won’t need to do anything fancy to make this work. It’ll just fall out naturally.</li>
+</ul>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>There are a number of different ways to do this. The key insight we used in this solution is that at each point in time, we can choose any task to do as the next task provided that we’ve already handled all its prerequisites. That gives us some number of things to try at each step, so we’ll try doing each of them first.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kt">void</span> <span class="nf">listLegalOrderingsRec</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">prereqs</span><span class="p">,</span>
+                           <span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">tasksPerformed</span><span class="p">,</span>
+                           <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">tasksRemaining</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: If there are no remaining tasks, output this as one possible
+    * option.
+    */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">tasksRemaining</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">tasksPerformed</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Otherwise, try adding in as a possible next task all tasks that have had
+    * all their prerequisites satisfied.
+    */</span>
+
+    <span class="cm">/* For convenience, convert the vector of tasks into a set. */</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">tasksDone</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">task</span><span class="o">:</span> <span class="n">tasksPerformed</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tasksDone</span> <span class="o">+=</span> <span class="n">task</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">task</span><span class="o">:</span> <span class="n">remainingTasks</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">prereqs</span><span class="p">[</span><span class="n">task</span><span class="p">].</span><span class="n">isSubsetOf</span><span class="p">(</span><span class="n">tasksDone</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">newTasks</span> <span class="o">=</span> <span class="n">tasksPerformed</span><span class="p">;</span>
+            <span class="n">newTasks</span> <span class="o">+=</span> <span class="n">task</span><span class="p">;</span>
+            <span class="n">listLegalOrderingsRec</span><span class="p">(</span><span class="n">prereqs</span><span class="p">,</span> <span class="n">newTasks</span><span class="p">,</span> <span class="n">tasksRemaining</span> <span class="err">–</span> <span class="n">task</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">listLegalOrderingsOf</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">prereqs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">tasks</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">task</span><span class="o">:</span> <span class="n">prereqs</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tasks</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">task</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">listLegalOrderingsRec</span><span class="p">(</span><span class="n">prereqs</span><span class="p">,</span> <span class="p">{},</span> <span class="n">tasks</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Mar-09
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

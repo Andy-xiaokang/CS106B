@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursive Backtracking</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 4. Recursive Backtracking</h1>
+
+<hr>
+
+<p class="attribution">
+Section materials curated by Neel Kishnani, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>This week’s section exercises explore the ins and outs of content from weeks 4 and 5, focusing on delving more deeply into recursive backtracking and its applications, plus a bit of Big-O!</p>
+
+<p>Each week, we will also be releasing a Qt Creator project containing starter code and testing infrastructure for that week's section problems. When a problem name is followed by the name of a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the Qt Creator project. Here is the zip of the section starter code:</p>
+
+<blockquote>
+  <p>📦 <a href="starter_section4.zip">Starter code</a></p>
+</blockquote>
+
+<h2 id="1-weights-and-balances">1) Weights and Balances</h2>
+
+<p><em>Thank you to Eric Roberts for this problem</em></p>
+
+<p><em>Topics: Recursion, Combinations, Backtracking</em></p>
+
+<div class="alert alert-info">
+    <p>
+        I am the only child of parents who weighed, measured, and priced everything; for whom what could not be weighed, measured, and priced had no existence.
+    </p>
+
+    <strong>
+        —Charles Dickens, Little Dorrit, 1857
+    </strong>
+</div>
+
+<p>In Dickens’s time, merchants measured many commodities using weights and a two-pan balance – a practice that continues in many parts of the world today. If you are using a limited set of weights, however, you can only measure certain quantities accurately.</p>
+
+<p>For example, suppose that you have only two weights: a 1-ounce weight and a 3-ounce weight. With these you can easily measure out 4 ounces, as shown:</p>
+
+<p><img src="img/weights_1.png" alt="A scale, with a large lump on the left equally balanced by two weights on the right, one weighing 1 ounce and another weighing 3 ounces." /></p>
+
+<p>It’s more interesting to discover that you can also measure out 2 ounces by shifting the 1-ounce weight to the other side, as follows:</p>
+
+<p><img src="img/weights_2.png" alt="A scale, with both a small lump and a 1-ounce weight on the left equally balanced by a single 3 ounce weight on the right." /></p>
+
+<p>Write a recursive function,</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isMeasurable</span><span class="p">(</span><span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">weights</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that determines whether it is possible to measure out the desired target amount with a given set of weights, which is stored in the vector weights.</p>
+
+<p>As an example, the function call</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">isMeasurable</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">})</span>
+</code></pre></div></div>
+
+<p>should return <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> because it is possible to measure out two ounces using the sample weight set as illustrated in the preceding diagram. On the other hand, calling</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">isMeasurable</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="p">})</span>
+</code></pre></div></div>
+
+<p>should return <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code> because it is impossible to use the 1- and 3-ounce weights to add up to 5 ounces. However, the call</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">isMeasurable</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span> <span class="p">})</span>
+</code></pre></div></div>
+
+<p>should return <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code>: you can measure the six-ounce weight by placing it and the one-ounce weight on one side of the scale and the seven-ounce weight on the other.</p>
+
+<p>Here’s a function question to ponder: let’s say that you get to choose <em>n</em> weights. Which ones would you pick to give yourself the best range of weights that you’d be capable of measuring?</p>
+
+<div class="showtime" when="2021-02-12T18:00:00-08:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#burrow")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>Imagine that we start off by putting the amount to be measured (call it <em>n</em>) on the left side of the balance. This makes the imbalance on the scale equal to <em>n</em>. Imagine that there is some way to measure <em>n</em>. If we put the weights on the scale one at a time, we can look at where we put that first weight (let’s suppose it weighs <em>w</em>). It must either:</p>
+
+<ul>
+  <li>go on the left side, making the net imbalance on the scale <em>n + w</em>, or</li>
+  <li>go on the right side, making the net imbalance on the scale <em>n – w</em>, or</li>
+  <li>not get used at all, leaving the net imbalance <em>n</em>.</li>
+</ul>
+
+<p>If it is indeed truly possible to measure <em>n</em>, then one of these three options has to be the way to do it, even if we don’t know which one it is. The question we then have to ask is whether it’s then possible to measure the new net imbalance using the weights that remain – which we can determine recursively! On the other hand, if it’s not possible to measure <em>n</em>, then no matter which option we choose, we’ll find that there’s no way to use the remaining weights to make everything balanced!</p>
+
+<p>If we’re proceeding recursively, which we are here, we need to think about our base case. There are many options we can choose from. One simple one is the following: imagine that we don’t have any weights at all, that we’re asked to see whether some weight is measurable using no weights. In what circumstances can we do that? Well, if what we’re weighing has a nonzero weight, we can’t possibly measure it – placing it on the scale will tip it to some side, but that doesn’t tell us how much it weighs. On the other hand, if what we’re weighing is completely weightless, then putting it on the scale won’t cause it to tip, convincing us that, indeed, it is weightless! So as our base case, we’ll say that when we’re down to no remaining weights, we can measure <em>n</em> precisely if <em>n = 0</em>. With that in mind, here’s our code:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Given an amount, a list of weights, and an index, determines whether it's
+ * possible to measure n using the weights at or after the index given by
+ * startPoint.
+ *
+ * @param amount The amount to measure, which can be positive, negative or 0.
+ * @param weights The weights available to us.
+ * @param index The starting index into the weights Vector.
+ * @return Whether the amount can be measured using the weights from the specified
+ *         index and forward.
+ */</span>
+<span class="kt">bool</span> <span class="nf">isMeasurableRec</span><span class="p">(</span><span class="kt">int</span> <span class="n">amount</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">weights</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">==</span> <span class="n">weights</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">amount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">isMeasurableRec</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span>                  <span class="n">weights</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">||</span>
+             <span class="n">isMeasurableRec</span><span class="p">(</span><span class="n">amount</span> <span class="o">+</span> <span class="n">weights</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">weights</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">||</span>
+             <span class="n">isMeasurableRec</span><span class="p">(</span><span class="n">amount</span> <span class="o">-</span> <span class="n">weights</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">weights</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">isMeasurable</span><span class="p">(</span><span class="kt">int</span> <span class="n">amount</span><span class="p">,</span> <span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">weights</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">isMeasurableRec</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-chemowizrdy">2) CHeMoWIZrDy</h2>
+
+<p><em>Topics: Recursion, Backtracking, Sets</em></p>
+
+<p>Some words in the English language can be spelled out using just element symbols from the Periodic Table. For example, “began” can be spelled out as BeGaN (beryllium, gallium, nitrogen), and “feline” can be spelled out as FeLiNe (iron, lithium, neon). Not all words have this property, though; the word “interesting” cannot be made out of element letters, nor can the word “chemistry” (though, interestingly, the word “physics” can be made as PHYSICS (phosphorous, hydrogen, yttrium, sulfur, iodine, carbon, sulfur).</p>
+
+<p>Write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isElementSpellable</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">symbols</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that accepts as input a string and a <code class="language-c++ highlighter-rouge"><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> containing all element symbols (stored with the proper capitalization), then returns whether that string can be written using only element symbols. Once you’ve gotten that function working, modify the function so that it has this signature:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isElementSpellable</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">result</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function should behave as before, except that if it turns out that it is possible to spell the input string just using element symbols, the variable result is overwritten with one possible way of doing so.</p>
+
+<p>Here’s a final variation to consider, which is much more challenging than the previous one but would be a great way to practice your recursive problem-solving. (As in, do this problem only if you have a good amount of time; it’s challenging!) As mentioned above, not all strings can be written using element symbols. The title of this problem is supposed to be “Chemowizardry,” but that just isn’t quite spellable using element symbols, so we compromised on “Chemowizrdy,” cutting out two letters. Write a function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">closestApproximationTo</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">symbols</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a string, then returns the longest subsequence of the input string that can be spelled out using element symbols, capitalized appropriately. For example, given the input “Chemowizardry,” the function should return “CheMoWIZrDy.”</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>Here’s one possible implementation of the isElementSpellable function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Given a word and an element symbol, returns whether the word starts with that
+ * particular element symbol.
+ *
+ * @param word The word in question
+ * @param symbol The symbol in question.
+ * @return Whether the word starts with that element symbol.
+ */</span>
+<span class="kt">bool</span> <span class="nf">startsWithElement</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">word</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">symbol</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">startsWith</span><span class="p">(</span><span class="n">toLowerCase</span><span class="p">(</span><span class="n">word</span><span class="p">),</span> <span class="n">toLowerCase</span><span class="p">(</span><span class="n">symbol</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * Given a word and a set containing all the element symbols in the Periodic
+ * Table, returns whether it’s possible to spell that word using just element
+ * symbols.
+ *
+ * @param text The word
+ * @param symbols The element symbols in the Periodic Table.
+ * @return Whether that text can be spelled out.
+ */</span>
+<span class="kt">bool</span> <span class="nf">isElementSpellable</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">word</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">symbols</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: the empty string can be spelled out by simply using no strings
+     * from the list of symbols.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">word</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive case: try each element symbol to see whether any of them match
+     * the first characters of the input string. We could alternatively rely on
+     * the fact that all element symbols are between 1 and 3 characters long, but
+     * just in case that changes we won't assume that here. :-)
+     */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">symbol</span><span class="o">:</span> <span class="n">symbols</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">startsWithElement</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+                <span class="n">isElementSpellable</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">symbol</span><span class="p">.</span><span class="n">length</span><span class="p">()),</span> <span class="n">symbols</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="cm">/* If none of those options work, there is no way to spell this word using
+         * element symbols.
+         */</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can modify this code to report the way in which the string would match by making a slight modification to the recursive step to accumulate element symbols together as we unwind back up.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isElementSpellable</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">word</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">symbols</span><span class="p">,</span>
+                        <span class="n">string</span><span class="o">&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: the empty string can be spelled out by simply using no strings
+     * from the list of symbols.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">word</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>  <span class="c1">// This is the proper way to spell this word.</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive case: try each element symbol to see whether any of them match
+     * the first characters of the input string. We could alternatively rely on
+     * the fact that all element symbols are between 1 and 3 characters long, but
+     * just in case that changes we won't assume that here. :-)
+     */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">symbol</span><span class="o">:</span> <span class="n">symbols</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">startsWithElement</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">symbol</span><span class="p">))</span> <span class="p">{</span>
+                <span class="cm">/* See if we can spell what's left. */</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">isElementSpellable</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">symbol</span><span class="p">.</span><span class="n">length</span><span class="p">()),</span>
+                    <span class="n">symbols</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="cm">/* Because we could, we know that result is now filled in with
+                     * how to spell the rest of the word (that's what the function
+                     * says it will do!). We just need to prepend the element
+                     * symbol we used.
+                     */</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">symbol</span> <span class="o">+</span> <span class="n">result</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="cm">/* If none of those options work, there is no way to spell this word using
+         * element symbols.
+         */</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, to the challenge problem of getting the best optimization. This one is a lot harder because we might not end up using all the letters in the original string – in fact, we might delete large chunks of the string in order to make more things fit.</p>
+
+<p>We could do this by going one character at a time, seeing what to do with that character, but that turns out to be fairly tricky. Instead, we’ll opt for another approach. We’ll ask the question: which element symbol should go at the start of the approximation? For each possible element symbol, we need to check that the characters within that symbol actually appear somewhere in the input string. But the tricky bit is that they don’t have to be consecutive. For example, in converting “chemowizardry” to “CHeMoWIZrDy,” we deleted the a between the z and the r to make zirconium (Zr) fit, and we deleted the r between the d and y to get dysprosium (Dy) to fit. So when we try using an element symbol, we need to find all the characters that make it up, in sequence, possibly with spaces in them. That’s tricky but doable.</p>
+
+<p>And what happens if no element symbol fits? Then we just end up approximating things with the empty string.</p>
+
+<p>Here’s what this might look like:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">closestApproximationTo</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">word</span><span class="p">,</span> <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">symbols</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: If the string is empty, the best approximation is to use no
+     * element symbols.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">word</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+
+    <span class="cm">/* Recursive case: Try all possible elements to see which one goes first. */</span>
+    <span class="n">string</span> <span class="n">best</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span> <span class="c1">// In case nothing matches, we return the empty string.</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">element</span><span class="o">:</span> <span class="n">symbols</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* See where this element fits. We need to find each character in sequence
+         * but possibly with gaps between them.
+         */</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">toLowerCase</span><span class="p">(</span><span class="n">element</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">toLowerCase</span><span class="p">(</span><span class="n">word</span><span class="p">).</span><span class="n">find</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">element</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">index</span> <span class="o">!=</span> <span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">toLowerCase</span><span class="p">(</span><span class="n">word</span><span class="p">).</span><span class="n">find</span><span class="p">(</span><span class="n">element</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* If we found everything, this is a possible match. */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">!=</span> <span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">with</span> <span class="o">=</span> <span class="n">element</span> <span class="o">+</span> <span class="n">closestApproximationTo</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                                         <span class="n">symbols</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">best</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">with</span><span class="p">.</span><span class="n">length</span><span class="p">())</span> <span class="n">best</span> <span class="o">=</span> <span class="n">with</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">best</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-barnstorming-brainstorming">3) Barnstorming Brainstorming</h2>
+
+<p><em>Topics: Recursion, Backtracking, Permutations</em></p>
+
+<p>You’re campaigning for office and it’s down to the very last week before the election. A last-minute tour of swing states/districts/areas can have a huge impact on your final vote totals, so you decide to see whether it’s possible to visit all of them in a short amount of time. As as simplifying assumption for this problem, let’s assume that each of your campaign stops is represented as a <code class="language-c++ highlighter-rouge"><span class="n">GPoint</span></code>, which represents a point in space. You can access the x and y coordinates of a <code class="language-c++ highlighter-rouge"><span class="n">GPoint</span></code>, which are <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code>s, by using the syntax <code class="language-c++ highlighter-rouge"><span class="n">pt</span><span class="p">.</span><span class="n">x</span><span class="p">()</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">pt</span><span class="p">.</span><span class="n">y</span><span class="p">()</span></code>. Further, let’s assume the travel time between two points is equal to their Euclidean (straight line) distance. Write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">canVisitAllSites</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">sites</span><span class="p">,</span> <span class="kt">double</span> <span class="n">travelTimeAvailable</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a list of all the sites you’d like to visit and an amount of free time available to you and returns whether it’s possible to visit all those sites in the allotted time (assume you’ve already factored in the cost of speaking at each site and that you’re just concerned about the travel time.) You can start wherever you’d like. Once you’ve gotten that working, update your function so that it has this signature:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">canVisitAllSites</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">sites</span><span class="p">,</span> <span class="kt">double</span> <span class="n">travelTimeAvailable</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">result</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function works as before, except that if it’s possible to visit all the sites, it fills in the parameter result with the list of the cities in the order you should visit them. Then think about whether memoization would be appropriate here and, if so, update your code to use it.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>This problem essentially boils down to generating all permutations of the sites and seeing whether any of them fit in the specified timeframe. The intuition we’ll use in writing up this solution is similar to the one we used to generate permutations in class – we’ll look at all options for the next place to go, consider what would happen if we visited any of them, and see if any of those options lead to success.
+One catch here is that in order to measure distances we need to remember where we just were, since we have to measure distances based on where we used to be. That in itself is somewhat interesting because the very first place we visit isn’t proceeded by anything, so we’ll separate that from the rest of the recursion logic.</p>
+
+<p>Here’s what that looks like:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Given a list of sites to visit and a total travel time, plus the location of
+ * the last city visited, returns whether it's possible to visit all of those
+ * locations in the specified amount of time.
+ *
+ * @param sites The list of sites left to visit.
+ * @param timeAvailable How much time is left.
+ * @param last The last place we visited.
+ * @return Whether we can visit those sites starting at the given location.
+ */</span>
+<span class="kt">bool</span> <span class="nf">canVisitAllSitesRec</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">sites</span><span class="p">,</span> <span class="kt">double</span> <span class="n">timeAvailable</span><span class="p">,</span>
+                         <span class="k">const</span> <span class="n">GPoint</span><span class="o">&amp;</span> <span class="n">last</span><span class="p">);</span>
+
+<span class="cm">/**
+ * Given a Vector, returns a new Vector formed by removing the element at the
+ * specified index.
+ *
+ * @param sites The list of sites.
+ * @param index The index in question.
+ * @return That vector with that index removed.
+ */</span>
+<span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;</span> <span class="n">removeAt</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;</span> <span class="n">sites</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+
+<span class="kt">bool</span> <span class="nf">canVisitAllSites</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">sites</span><span class="p">,</span> <span class="kt">double</span> <span class="n">timeAvailable</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* If there aren't any sites, we can always visit them all! */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">sites</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="cm">/* Try all possible starting points and see if any of them work. */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sites</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">canVisitAllSitesRec</span><span class="p">(</span><span class="n">removeAt</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">timeAvailable</span><span class="p">,</span> <span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * Returns the Euclidean distance between two points.
+ *
+ * @param one The first point.
+ * @param two The second point.
+ * @return The distance between them.
+ */</span>
+<span class="kt">double</span> <span class="nf">distanceBetween</span><span class="p">(</span><span class="k">const</span> <span class="n">GPoint</span><span class="o">&amp;</span> <span class="n">one</span><span class="p">,</span> <span class="k">const</span> <span class="n">GPoint</span><span class="o">&amp;</span> <span class="n">two</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">one</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">two</span><span class="p">.</span><span class="n">x</span><span class="p">();</span>
+    <span class="kt">double</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">one</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">two</span><span class="p">.</span><span class="n">y</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">dy</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">canVisitAllSitesRec</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">sites</span><span class="p">,</span> <span class="kt">double</span> <span class="n">timeAvailable</span><span class="p">,</span>
+                         <span class="k">const</span> <span class="n">GPoint</span><span class="o">&amp;</span> <span class="n">last</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: If no sites remain, we're done! */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">sites</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive case: see where we go next. */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sites</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/* See how long this is going to take. If it's too far, then we
+             * can't go there next.
+             *
+             * We can actually be way more aggressive here due to the triangle
+             * inequality: the fastest way to a point is to go straight there.
+             * If we can't make it there from here in time, there's no alternate
+             * route we could take that would be any better. The only reason we
+             * didn't optimize the code this way was because in general you can't
+             * make assumptions like this.
+             */</span>
+            <span class="kt">double</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">distanceBetween</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">timeAvailable</span> <span class="o">&amp;&amp;</span>
+                <span class="n">canVisitAllSitesRec</span><span class="p">(</span><span class="n">removeAt</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">timeAvailable</span> <span class="o">-</span> <span class="n">dist</span><span class="p">,</span>
+                                    <span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Looks like no options worked. Oh well! */</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To update this code to not just tell us whether there is a route, but to also say what the route is, we can update the function so that, when it finds a route that works, it adds in the city that we considered at the current level of the recursion. Here’s what that looks like, with the helper functions and documentation removed:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">canVisitAllSites</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">sites</span><span class="p">,</span> <span class="kt">double</span> <span class="n">timeAvailable</span><span class="p">,</span>
+                      <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* If there aren't any sites, we can always visit them all! */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">sites</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span> <span class="c1">// Best option is the empty list.</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Try all possible starting points and see if any of them work. */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sites</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">canVisitAllSitesRec</span><span class="p">(</span><span class="n">removeAt</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">timeAvailable</span><span class="p">,</span> <span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                                <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/* Prepend the starting city. */</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">canVisitAllSitesRec</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">sites</span><span class="p">,</span> <span class="kt">double</span> <span class="n">timeAvailable</span><span class="p">,</span>
+                         <span class="k">const</span> <span class="n">GPoint</span><span class="o">&amp;</span> <span class="n">last</span><span class="p">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GPoint</span><span class="o">&gt;&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: If no sites remain, we're done! */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">sites</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span> <span class="c1">// Empty list is the correct visit order here.</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive case: see where we go next. */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sites</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">double</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">distanceBetween</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">timeAvailable</span> <span class="o">&amp;&amp;</span>
+                <span class="n">canVisitAllSitesRec</span><span class="p">(</span><span class="n">removeAt</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">timeAvailable</span> <span class="err">–</span> <span class="n">dist</span><span class="p">,</span>
+                                    <span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">result</span><span class="p">))</span> <span class="p">{</span>
+                <span class="cm">/* Result will have been filled in with the best sequence to use
+                 * given the remaining cities, so we just need to fill in this
+                 * particular city.
+                 */</span>
+                <span class="n">result</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sites</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="cm">/* Looks like no options worked. Oh well! */</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This function would <strong><em>not</em></strong> be a good candidate for memoization. It’s extremely unlikely that we’d arrive at the same recursive call in two different ways, since that would mean that somehow we visited the same set of cities in two different ways and ended up using exactly the same amount of time to do so.</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="4-pattern-matching">4) Pattern Matching</h2>
+<p><em>Topics: Recursion, Backtracking, Strings</em></p>
+
+<p>One of the concepts you’ll probably run into if you continue on as a programmer (or take CS103!) is the <strong><em>regular expression</em></strong>, a way of representing a pattern to match as a string. Regular expressions make it easy to write code to search for complicated patterns in text and break them apart, and a lot of our starter files include them to parse test case files. This problem addresses a simplified version of regular expression matching.</p>
+
+<p>Let’s imagine that you have a <strong><em>pattern string</em></strong> that consists of letters, plus the special characters star (*), dot (.), and question-mark (?). The star symbol means “any string of zero or more characters,” the dot means “any individual character,” and the question-mark means “nothing, or any character.” Here are some examples:</p>
+
+<ul>
+  <li>The pattern <code class="language-c++ highlighter-rouge"><span class="n">a</span><span class="o">*</span></code> means “match the letter a, then match any number of characters,” so it essentially means “match anything beginning with an a.” As a result, <code class="language-c++ highlighter-rouge"><span class="n">a</span><span class="o">*</span></code> would match apple, apply, and apoplexy, but not Amicus (it’s case-sensitive), banana (contains an a, but doesn’t start with one), or moose (which isn’t even close).</li>
+  <li>The pattern <code class="language-c++ highlighter-rouge"><span class="o">*</span><span class="n">a</span><span class="o">*</span></code> means “match any number of characters, then an a, then any number of characters,” so it essentially means “match any string containing an a.” Therefore, the pattern <code class="language-c++ highlighter-rouge"><span class="o">*</span><span class="n">a</span><span class="o">*</span></code> would match ramadan, diwali, shavuot, and advent but not the strings eid, sukkot, lent, or holi.</li>
+  <li>The pattern <code class="language-c++ highlighter-rouge"><span class="n">th</span><span class="p">...</span></code> means “match th, then math any three characters,” so it matches five-letter words starting with th. For example, this would match there and third, but not the or other.</li>
+  <li>The pattern <code class="language-c++ highlighter-rouge"><span class="n">colo</span><span class="o">?</span><span class="n">r</span></code> means “match colo, then optionally match another character, then match r,” so it would match color and colour (as well as coloxr), but not colors or colours.</li>
+</ul>
+
+<p>Your task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">matches</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">pattern</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a string and a pattern, then returns whether that string matches the pattern.</p>
+
+<p>Once you’re done, ask yourself whether memoization would make this function any faster, and, if so, update this function to use memoization.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>The recursion here works by recursively consuming both the pattern and the text, but its base case is only for the case where the pattern is empty, since an empty pattern only matches the empty string while an empty string can match a nonempty pattern. (Do you see why?) The solution we’ve introduced here uses a quick optimization that’s worth keeping in your back pocket. Because we always munch from the front of the pattern and text strings, any text or pattern string we encounter later on is going to be a suffix of the original text or pattern. Therefore, rather than making lots of copies of strings by using string::substr, we’ll just keep track of the index of the next character in each string that we need to process.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">matchesRec</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="kt">int</span> <span class="n">textIndex</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">pattern</span><span class="p">,</span> <span class="kt">int</span> <span class="n">patternIndex</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: If we've consumed the pattern, confirm we consumed the text. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">patternIndex</span> <span class="o">==</span> <span class="n">pattern</span><span class="p">.</span><span class="n">length</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">textIndex</span> <span class="o">==</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive step: there's more pattern to match. See what to do here. */</span>
+    <span class="cm">/* Case 1: The next pattern character is a letter. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isalpha</span><span class="p">(</span><span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">textIndex</span> <span class="o">!=</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span>               <span class="c1">// Text isn't empty</span>
+               <span class="n">text</span><span class="p">[</span><span class="n">textIndex</span><span class="p">]</span> <span class="o">==</span> <span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="c1">// That char matches</span>
+               <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="cm">/* Case 2: The next pattern character is a dot. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'.'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">textIndex</span> <span class="o">!=</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+               <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="cm">/* Case 3: The next pattern character is a ?. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'?'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">||</span>
+            <span class="p">(</span><span class="n">textIndex</span> <span class="o">!=</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+             <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="cm">/* Case 4: The next pattern character is a star. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'*'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">||</span>
+           <span class="p">(</span><span class="n">textIndex</span> <span class="o">!=</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+            <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span><span class="p">));</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"Unknown pattern character."</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">matches</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">pattern</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This function is very amenable to memoization, especially given that texts with multiple stars or question marks in them can possibly match the same text in several different ways.</p>
+
+<p>We’re going to use the handy SparseGrid type for our memoization. It’s essentially a 2D grid that may have missing entries, which is perfect for memoization where our table is initially empty and then has entries filled in as the recursion progresses.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">matchesRec</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="kt">int</span> <span class="n">textIndex</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">pattern</span><span class="p">,</span> <span class="kt">int</span> <span class="n">patternIndex</span><span class="p">,</span>
+                <span class="n">SparseGrid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;&amp;</span> <span class="n">memo</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="cm">/* Base case: If we've consumed the pattern, confirm we consumed the text. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">patternIndex</span> <span class="o">==</span> <span class="n">pattern</span><span class="p">.</span><span class="n">length</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">textIndex</span> <span class="o">==</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="cm">/* Base case: If we've memoized the result, return it. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">memo</span><span class="p">.</span><span class="n">isSet</span><span class="p">(</span><span class="n">textIndex</span><span class="p">,</span> <span class="n">patternIndex</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">memo</span><span class="p">[</span><span class="n">textIndex</span><span class="p">][</span><span class="n">patternIndex</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="cm">/* Recursive step always has to write the answer down. We'll store that value
+     * in a variable that we write at the very end of the function.
+     */</span>
+    <span class="kt">bool</span> <span class="n">answer</span><span class="p">;</span>
+
+    <span class="cm">/* Case 1: The next pattern character is a letter. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isalpha</span><span class="p">(</span><span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">textIndex</span> <span class="o">!=</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                 <span class="n">text</span><span class="p">[</span><span class="n">textIndex</span><span class="p">]</span> <span class="o">==</span> <span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">&amp;&amp;</span>
+                 <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">memo</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="cm">/* Case 2: The next pattern character is a dot. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'.'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">textIndex</span> <span class="o">!=</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                 <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">memo</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="cm">/* Case 3: The next pattern character is a ?. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'?'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span> <span class="o">||</span>
+               <span class="p">(</span><span class="n">textIndex</span> <span class="o">!=</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+               <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">memo</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="cm">/* Case 4: The next pattern character is a star. */</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pattern</span><span class="p">[</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'*'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span> <span class="o">||</span>
+                 <span class="p">(</span><span class="n">textIndex</span> <span class="o">!=</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                 <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">patternIndex</span><span class="p">,</span> <span class="n">memo</span><span class="p">));</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"Unknown pattern character."</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">memo</span><span class="p">[</span><span class="n">textIndex</span><span class="p">][</span><span class="n">patternIndex</span><span class="p">]</span> <span class="o">=</span> <span class="n">answer</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">matches</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">pattern</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">SparseGrid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">memo</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pattern</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">matchesRec</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">memo</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="5-advocating-for-exponents">5) Advocating for Exponents</h2>
+<p><em>Topics: Big-O (and a lil' recursion)</em></p>
+
+<p>Below is a simple function that computes the value of <em>m<sup>n</sup></em> when <em>n</em> is a nonnegative integer:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="n">m</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>What is the big-O complexity of the above function, written in terms of <em>m</em> and <em>n</em>?  You can assume that it takes time O(1) to multiply two numbers.</li>
+  <li>ii.	If it takes 1μs to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</li>
+</ol>
+
+<p>Below is a recursive function that computes the value of <em>m<sup>n</sup></em> when <em>n</em> is a nonnegative integer:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">m</span> <span class="o">*</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>What is the big-O complexity of the above function, written in terms of m and n?  You can assume that it takes time O(1) to multiply two numbers.</p>
+  </li>
+  <li>
+    <p>If it takes 1μs to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</p>
+  </li>
+</ol>
+
+<p>Based on this observation, we can write this recursive function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">halfPower</span> <span class="o">=</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">halfPower</span> <span class="o">*</span> <span class="n">halfPower</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">halfPower</span> <span class="o">=</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">m</span> <span class="o">*</span> <span class="n">halfPower</span> <span class="o">*</span> <span class="n">halfPower</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>What is the big-O complexity of the above function, written in terms of m and n?  You can assume that it takes time O(1) to multiply two numbers.</p>
+  </li>
+  <li>
+    <p>If it takes 1μs to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</p>
+  </li>
+</ol>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="n">m</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>What is the big-O complexity of the above function, written in terms of <em>m</em> and <em>n</em>?  You can assume that it takes time O(1) to multiply two numbers.</li>
+</ol>
+
+<p class="alert alert-warning">This function runs in time O(n). It runs the loop n times, at each step doing O(1) work. There is no dependence on m in the runtime.</p>
+
+<ol>
+  <li>ii.	If it takes 1μs to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</li>
+</ol>
+
+<p class="alert alert-warning">We know that this code runs in time O(n), so it scales roughly linearly with the size of n. Therefore, if it took 1μs to compute a value when n = 100, it will take roughly 100 times longer when we plug in n = 10000. As a result, we’d expect this code would take about 100μs to complete.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">m</span> <span class="o">*</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="err">–</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>What is the big-O complexity of the above function, written in terms of m and n?  You can assume that it takes time O(1) to multiply two numbers.</li>
+</ol>
+
+<p class="alert alert-warning">If we trace through the recursion, we’ll see that we make a total of n recursive calls, each of which is only doing O(1) work. Adding up all the work done by these recursive calls gives us a total of O(n) work, as before.</p>
+
+<ol>
+  <li>If it takes 1μs to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</li>
+</ol>
+
+<p class="alert alert-warning">As before, this should take about 100μs.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">raiseToPower</span><span class="p">(</span><span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">halfPower</span> <span class="o">=</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">halfPower</span> <span class="o">*</span> <span class="n">halfPower</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">halfPower</span> <span class="o">=</span> <span class="n">raiseToPower</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">m</span> <span class="o">*</span> <span class="n">halfPower</span> <span class="o">*</span> <span class="n">halfPower</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>What is the big-O complexity of the above function, written in terms of m and n?  You can assume that it takes time O(1) to multiply two numbers.</li>
+</ol>
+
+<p class="alert alert-warning">Notice that each recursive call does O(1) work (there are no loops anywhere here), then calls itself on a problem that’s half as big as the original one. This means that only O(log n) recursive calls will happen (remember that repeatedly dividing by two is the hallmark of a logarithm), so the total work done here is O(log n).</p>
+
+<ol>
+  <li>If it takes 1μs to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>, approximately how long will it take to compute <code class="language-c++ highlighter-rouge"><span class="n">raiseToPower</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span></code>?</li>
+</ol>
+
+<p class="alert alert-warning">We know that the runtime when n = 100 is roughly 1μs. Notice that 1002 = 10,000, so we’re essentially asking for the runtime of this function when we square the size of the input. Also notice that via properties of logarithms that log n2 = 2 log n. Therefore, since we know the runtime grows rough-ly logarithmically and we’ve squared the value of n, this should take about twice as long as before, roughly 2μs.</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="6-revisiting-reversals">6) Revisiting Reversals</h2>
+<p><em>Topics: Recursion, Big-O</em></p>
+
+<p>In one of our earlier lectures, we wrote this function to reverse a string:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">reverseOf</span><span class="p">(</span><span class="n">string</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">str</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">str</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">reverseOf</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Let n be the length of the input string. What is the big-O complexity of the above function? You may find the following facts useful:</p>
+
+<ul>
+  <li>The runtime of the string::substr function is O(k), where k is the length of the string returned.</li>
+  <li>The runtime of concatenating two strings is O(k), where k is the length of the string returned.</li>
+  <li>The runtime of comparing two strings is O(k), where k is the length of the shorter of the two strings being compared.</li>
+  <li>The runtime of making a copy of a string is O(k), where k is the length of the string.</li>
+  <li>The runtime of choosing a single character out of a string is O(1).</li>
+</ul>
+
+<p>Now, let’s suppose you change that function so that it takes its argument by const reference, as shown here:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">reverseOf</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">str</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">str</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">reverseOf</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, what’s the big-O time complexity of this function? Do you think it would be faster than before?</p>
+
+<p>Here’s a completely different way of reversing a string:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">reverseOf</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">str</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">reverseOf</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> 
+                    <span class="n">reverseOf</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Talk with your fellow sectionees about how this function works. What does it do? Why is it correct? Then, once you’ve got that sorted out, think about how efficient it is. What’s the big-O time complexity of this function, assuming that string::length runs in time O(1)?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">reverseOf</span><span class="p">(</span><span class="n">string</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">str</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">str</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">reverseOf</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Notice that when we call this function with a string of length n, we do O(n) work inside the function. That comes from the cost of making the substring of length n-1, plus the work to concatenate the resulting string with str[0], plus the cost of initializing the argument of the function we called, which takes its argument by value. We then make a recursive call on a problem of size n-1. The net effect is that, like with insertion and selection sort, we’re roughly doing work</p>
+
+<pre><code class="language-plain">n + (n-1) + (n-2) + … + 2 + 1
+</code></pre>
+
+<p>which works out to O(n^2) work.</p>
+
+<p>If we rewrite this code so that we have the argument passed in by const reference, then we still haven’t changed the fact that we’re doing O(n) work inside the body of the function call, so the overall runtime is still going to be O(n^2). However, we should expect it to run a bit faster, since we are reducing the total amount of work that we need to do. at each step.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">reverseOf</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">str</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">reverseOf</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> 
+                    <span class="n">reverseOf</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Notice that any given function call to reverseOf will still do O(n) work on a string of length n, since we have to create the two substrings (total length n) and concatenate them together to form a longer string of length n. However, this code is different from the previous part in that there are two recursive calls, not one, and each one is to a subproblem whose size is roughly n/2.</p>
+
+<p>But we’ve seen this before! This is just like mergesort, which does linear work at each call and makes two subcalls on problems of size n/2. That means that this runs in time O(n log n).</p>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Feb-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

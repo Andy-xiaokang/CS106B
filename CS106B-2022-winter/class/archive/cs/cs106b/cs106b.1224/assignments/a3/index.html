@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursion!</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../../section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../../section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../../section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../../section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../../section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../../section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../../section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 3. Recursion!</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<!-- This boilerplate inserts formatted due date -->
+
+<!--  Boilerplate content for assignment index page -->
+
+<h2 id="due-friday-january-28-at-1030-am">Due Friday, January 28 at 10:30 am</h2>
+
+<ul>
+  <li><small>Submissions received by the due date receive a small <strong>on-time bonus</strong>. </small></li>
+  <li><small>All students are granted a pre-approved extension or "grace period" of 24 hours after the due date. Late submissions are accepted during the grace period with no penalty.</small></li>
+  <li><small>The <strong>grace period expires Sat, Jan 29 at 10:30 am</strong>, after which we cannot accept further late submissions.</small></li>
+  <li><small>All due dates and submission times are expressed in Pacific time.</small></li>
+</ul>
+
+<p><strong><em>You are permitted to work on this assignment in pairs.</em></strong></p>
+
+<hr />
+
+<p>This assignment is all about recursive problem-solving. You've practiced writing recursive functions in Assignment 1 and in section, and now it's time to take those skills, combine them with the techniques we've covered over the past couple of lectures, and make some pretty impressive pieces of software.</p>
+
+<p>We've chosen these problems because we think they're a great sampler of the different sorts of fundamental recursive techniques that we've explored. We hope that you find these problems interesting and get a better feel for what recursion can do!</p>
+
+<p>This assignment has four parts to it, and you have seven days to complete it. We recommend that you start this assignment early and make slow, steady progress throughout the week. Here's a recommended timetable:</p>
+
+<ul>
+  <li>Complete the Sierpinski Triangle within a day of this assignment going out.</li>
+  <li>Complete Human Pyramids within two days of this assignment going out.</li>
+  <li>Complete What Are YOU Doing? within four days of this assignment going out.</li>
+  <li>Complete Shift Scheduling within seven days of this assignment going out.</li>
+</ul>
+
+<p>Recursive problem-solving can take a bit of time to get used to, and that's perfectly normal. Putting in an hour or two each day working on this assignment will give you plenty of time to adjust and gives you a comfortable buffer in case you get stuck somewhere.</p>
+
+<p>As always, feel free to get in touch with us if you need any assistance.
+We're happy to help out!</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>You are welcome to work in pairs on this assignment. If you do, please note that</p>
+
+<blockquote>
+  <p><strong><em>it is not a good idea to have one partner do two of the four parts of this assignment and to have the other partner do the other two,</em></strong> that</p>
+
+  <p><strong><em>you are responsible for understanding how to solve all of the problems given out here, regardless of how you divvy up the work,</em></strong> and that</p>
+
+  <p><strong><em>if you are working in pairs, both partners should be looking at the same screen the whole time the assignment is being worked on.</em></strong></p>
+</blockquote>
+
+<p>Historically, students that have split the work in half have had substantially below-average learning outcomes in the course, especially when it comes to the exams. On the other hand, students that sit at the same computer and talk through what they're doing with their partner tend to have substantially above-average learning outcomes in the course.</p>
+
+<p>Stated succinctly, <strong><em>pair programming is about working together, not working separately</em></strong>.</p>
+
+</div>
+
+<p><br /></p>
+
+<h2 id="assignment-logistics">Assignment Logistics</h2>
+
+<h3 id="starter-files">Starter Files</h3>
+
+<p>We provide a ZIP of the starter project. Download the zip, extract the files, and double-click the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> file to open the project in Qt Creator.</p>
+
+<blockquote>
+  <p>📦 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdXgRi6zeGL5-WQtD7vvsk9yT50Zo3DqieWbihFAllbStnANA/viewform?usp=sf_link">Starter code</a></p>
+</blockquote>
+
+<h3 id="resources">Resources</h3>
+
+<p>Feel free to check out our <a href="../../resources/python_to_cpp.html" title="Python to C++ Guide">Python-to-C++ guide</a> if you're moving from Python to C++. Also, check out our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>, <a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">guide to testing</a>, and <a href="../../resources/debugging_guide.html" title="Debugging Your Code">debugging guide</a>.</p>
+
+<h3 id="getting-help">Getting Help</h3>
+
+<p>Keep an eye on the <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> for an announcement of the Assignment 3 <strong>YEAH</strong> (YEAH = Your Early Assignment Help) group session where our veteran section leaders will answer your questions and share pro tips. We know it can be daunting to sit down and break the barrier of starting on a substantial programming assignment – come to YEAH for advice and confidence to get you on your way!</p>
+
+<p>We also here to help if you get run into issues along the way! The <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> is open 24/7 for general discussion about the assignment, lecture topics, the C++ language, using Qt, and more. Always start by searching first to see if your question has already been asked and answered before making a new post.</p>
+
+<p>To troubleshoot a problem with your specific code, your best bet is to bring it to the <a href="../../lair.html" title="LaIR helper hours">LaIR</a> helper hours or <a href="../../about_staff.html">office hours</a>.</p>
+
+<h2 id="part-one-the-sierpinski-triangle">Part One: The Sierpinski Triangle</h2>
+
+<p>One of the most famous self-similar fractals is the <strong><em>Sierpinski triangle</em></strong>. As with many self-similar images, it's defined recursively:</p>
+
+<ul>
+  <li>An order-0 Sierpinski triangle is a regular, filled triangle.</li>
+  <li>An order-<em>n</em> Sierpinski triangle, where <em>n</em> &gt; 0, consists of three
+Sierpinski triangles of order <em>n</em> – 1, each half as large as the
+main triangle, arranged so that they meet corner-to-corner.</li>
+</ul>
+
+<p>For example, here are Sierpinski triangles of the first few orders:</p>
+
+<blockquote>
+  <p><img src="img/0a6983e497b8d576da6570feae4fded5.png" alt="Sierpinski triangles, orders 0 through 4" /></p>
+</blockquote>
+
+<p>Take a minute to confirm that the order-1 Sierpinski triangle indeed
+consists of three smaller copies of the order-0 Sierpinski triangle,
+that the order-2 Sierpinski triangle is formed from three smaller copies
+of the order-1 Sierpinski triangle, etc.</p>
+
+<p>As a note, although it might look like we're drawing a single black
+triangle with a lot of white triangles inside it, that's actually not
+the case. Every triangle drawn here is black; the white triangles
+represent places where no triangle was drawn.</p>
+
+<p>Your task is to implement a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">drawSierpinskiTriangle</span><span class="p">(</span><span class="n">GWindow</span><span class="o">&amp;</span> <span class="n">window</span><span class="p">,</span>
+                            <span class="kt">double</span> <span class="n">x0</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y0</span><span class="p">,</span>
+                            <span class="kt">double</span> <span class="n">x1</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y1</span><span class="p">,</span>
+                            <span class="kt">double</span> <span class="n">x2</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y2</span><span class="p">,</span>
+                            <span class="kt">int</span> <span class="n">order</span><span class="p">)</span>
+</code></pre></div></div>
+<p>that takes as input a window in which to draw the Sierpinski triangle, coordinates of the three points defining the corners of that triangle, and the order of that triangle, then draws the Sierpinski triangle of that order. If the order parameter is less than zero, use the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error.</p>
+
+<p>To draw a triangle, you can use this helpful <code class="language-c++ highlighter-rouge"><span class="n">drawTriangle</span></code> function that we've provided:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">drawTriangle</span><span class="p">(</span><span class="n">GWindow</span><span class="o">&amp;</span> <span class="n">window</span><span class="p">,</span>
+                  <span class="kt">double</span> <span class="n">x0</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y0</span><span class="p">,</span>
+                  <span class="kt">double</span> <span class="n">x1</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y1</span><span class="p">,</span>
+                  <span class="kt">double</span> <span class="n">x2</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y2</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function takes in a <code class="language-c++ highlighter-rouge"><span class="n">GWindow</span></code> in which to draw the triangle, along with the coordinates of its three corners, then draws a black triangle with the specified corner coordinates.</p>
+
+<p>To summarize, here's what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="part-1-requirements">Part 1 Requirements</h4>
+<ol>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">drawSierpinskiTriangle</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">Sierpinski</span><span class="p">.</span><span class="n">cpp</span></code>. Don’t forget to handle the case where the order is negative.</li>
+  <li>Use the “Interactive Sierpinski” option to check your work. In particular, make sure your triangle looks correct after dragging the corner points around and changing the order of the triangle via the slider in the bottom of the window.</li>
+</ol>
+</div>
+
+<p>Once you've gotten that working, click "Sierpinski Bungee Jump" to see just how deep the recursion rabbit hole goes. And yes, that's your code powering the bungee jump. We're just specifying coordinates. 😃</p>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p><strong><em>Draw pictures!</em></strong> The meat of this part of the assignment is figuring out where each triangle's corners are, and that's much easier to do with a schematic in front of you.</p>
+  </li>
+  <li>
+    <p>Some helpful math: the midpoint of a line segment whose endpoints are (x₁, y₁) and (x₂, y₂) is located at position ((<em>x</em>₁ + <em>x</em>₂)/2, (<em>y</em>₁ + <em>y</em>₂)/2). You may find this useful when determining where the corners of the smaller triangles are.</p>
+  </li>
+  <li>
+    <p>The three corner points of the triangle don't necessarily have to form an equilateral triangle or be parallel to the base or side of the window. There isn't any particular ordering to which corner is given by (<em>x</em>₀, <em>y</em>₀), which is given by (<em>x</em>₁, <em>y</em>₁), and which is given by (<em>x</em>₂, <em>y</em>₂).</p>
+  </li>
+  <li>
+    <p>Repeating a point from earlier – you should only draw the black triangles that make up the Sierpinski triangle. The white parts of the triangle are, in a sense, "negative space;" they're the regions where nothing is drawn.</p>
+  </li>
+  <li>
+    <p>The only function you should call to draw things in the window is <code class="language-c++ highlighter-rouge"><span class="n">drawTriangle</span></code>, which we mentioned earlier in this handout. You don't need to, say, call the <code class="language-c++ highlighter-rouge"><span class="n">drawPolarLine</span></code> function from lecture or anything like that.</p>
+  </li>
+  <li>
+    <p>Don't forget to call <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> in the case where the order is less than zero.</p>
+  </li>
+  <li>
+    <p>Our coordinate system uses real numbers. Remember that C++ has separate types for integers and real numbers and be careful not to mix the two up.</p>
+  </li>
+</ul>
+
+<h2 id="part-two-human-pyramids">Part Two: Human Pyramids</h2>
+<p>A human pyramid is a way of stacking people vertically. With the exception of the people in the bottom row, each person splits their weight evenly on the two people below them in the pyramid.</p>
+
+<p>For example, consider the following human pyramid:</p>
+
+<blockquote>
+  <p><img src="img/humanpyramid.png" alt="A human pyramid. The person on top is labeled A. Beneath person A are people B and C. Beneath B and C are people D, E, and F. Beneath D, E, and F are G, H, I, and J. Beneath G, H, I, and J are K, L, M, N, and O. Person A, B, and C are smiling. The people toward the bottom of the pyramid appear to be in pretty signficant pain due to all the weight they're carrying." /></p>
+</blockquote>
+
+<p>In the pyramid shown above, person <em>A</em> splits her weight across people <em>B</em> and <em>C</em>, and person <em>H</em> splits his weight – plus the accumulated weight of the people he's supporting – onto people <em>L</em> and <em>M</em>. It can be mighty uncomfortable to be in the bottom row, since you'll have a lot of weight on your back! In this question, you'll explore just how much weight that is. Just so we have nice round numbers here, let's assume that everyone in the pyramid weighs exactly 160 pounds.</p>
+
+<p>Person <em>A</em> at the top of the pyramid has no weight on her back. People <em>B</em> and <em>C</em> each carry half of person <em>A</em>'s weight, so each shoulders 80 pounds. Uncomfortable, but not too bad.</p>
+
+<p>Now, let's consider the people in the third row. Focus on person <em>E</em>. How much weight is she supporting? Well, she's directly supporting half the weight of person <em>B</em> (80 pounds) who is immediately above and to the left of her, and half the weight of person <em>C</em> (80 pounds) who is immediately above and to the right of her. On top of this, she's feeling some of the weight people <em>B</em> and <em>C</em> are carrying. Half of the weight that person <em>B</em> shoulders (40 pounds) gets transmitted to person <em>E</em> and half the weight person <em>C</em> shoulders (40 pounds) similarly gets sent down to person <em>E</em>, so person <em>E</em> ends up feeling an extra 80 pounds. That means she's supporting a net total of 240 pounds. That's going to be noticeable!</p>
+
+<p>Not everyone in that third row is feeling the same amount, though; let's take person <em>D</em> for example. The only weight on person <em>D</em> comes from person <em>B</em> in the row above them to their right, because no one is sitting above their left shoulder. Person <em>D</em> therefore ends up supporting</p>
+
+<ul>
+  <li>half of person <em>B</em>'s body weight (80 pounds), plus</li>
+  <li>half of the weight person <em>B</em> is holding up (40 pounds),</li>
+</ul>
+
+<p>so person <em>D</em> ends up supporting 120 pounds, only half of what <em>E</em> is feeling! Going deeper in the pyramid, how much weight is person <em>H</em> feeling? Well, person <em>H</em> is supporting</p>
+
+<ul>
+  <li>half of person <em>D</em>'s body weight (80 pounds),</li>
+  <li>half of person <em>E</em>'s body weight (80 pounds), plus</li>
+  <li>half of the weight person <em>D</em> is holding up (60 pounds), plus</li>
+  <li>half of the weight person <em>E</em> is holding up (120) pounds.</li>
+</ul>
+
+<p>The net effect is that person <em>H</em> is carrying 340 pounds – ouch! A similar calculation shows that person <em>I</em> is also carrying 340 pounds – can you see why? Compare this to person <em>G</em>. Person <em>G</em> is supporting</p>
+
+<ul>
+  <li>half of person <em>D</em>'s body weight (80 pounds), plus</li>
+  <li>half of the weight person <em>D</em> is holding up (60 pounds),</li>
+</ul>
+
+<p>for a net total of 140 pounds. That's a lot, but it's not nearly as bad as what person <em>H</em> is feeling! Finally, let's look at poor person <em>M</em> in the middle of the bottom row. How is he doing? Well, he's supporting</p>
+
+<ul>
+  <li>half of person <em>H</em>'s body weight (80 pounds),</li>
+  <li>half of person <em>I</em>'s body weight (80 pounds),</li>
+  <li>half of the weight person <em>H</em> is holding up (170 pounds), and</li>
+  <li>half of the weight person <em>I</em> is holding up (170 pounds),</li>
+</ul>
+
+<p>for a net total of 500 pounds. Yikes! No wonder he looks so unhappy.</p>
+
+<p>There's a nice, general pattern here that lets us compute how much weight is on each person's back:</p>
+
+<ul>
+  <li>Each person weighs exactly 160 pounds.</li>
+  <li>Each person supports half the body weight of each of the people
+immediately above them, plus half of the weight that each of those
+people are supporting.</li>
+</ul>
+
+<p>The question then becomes – given some person in the pyramid, how much weight are they supporting?</p>
+
+<h3 id="milestone-1-the-initial-implementation">Milestone 1: The Initial Implementation</h3>
+
+<p>Using the pattern mentioned above, as your first milestone for this problem, write a recursive function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="nf">weightOnBackOf</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pyramidHeight</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input the row and column number of a person in a human pyramid, along with the number of rows in the pyramid (its height), then returns the total weight on that person's back.</p>
+
+<p>The coordinate system we're using for these pyramids works as follows. Rows increase from top to bottom. The topmost row is row 0, the row below that is row 1, then row 2, etc. Columns increase from left to right, with the leftmost person in each row being in column 0, the person to their right being in column 1, etc.</p>
+
+<blockquote>
+  <p><img src="img/humanpyramid_milestone1.png" alt="A human pyramid annotated with coordinates. The topmost person is at postiion (0, 0). Below her are people at positions (1, 0) and (1, 1). Below them are people at positions (2, 0), (2, 1), and (2, 2). And below that are people at positions (3, 0), (3, 1), (3, 2), and (3, 3)." /></p>
+</blockquote>
+
+<p>In our previous example, person <em>A</em> would be at position (0, 0) since she's at the top of the pyramid. Person <em>B</em> would be at position (1, 0) since she's the leftmost person in the next row down, and so on and so forth, until Person <em>O</em>, who is at position (4, 4). Recall that in our previous pyramid there were 5 rows and the bottommost row has 5 people in it, people <em>K</em> through <em>O</em>.</p>
+
+<p>If the provided (row, col) position passed into <em>weightOnBackOf</em> is out of bounds you should use the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error. For example, if you're asked to look up position (-1, 0), or position (2, 3), you'd always report an error. Position (3, 1) is in-bounds provided that the pyramid height is at least four, but would be out of bounds if the pyramid height was one, two, or three.</p>
+
+<p>Your implementation of <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span></code> must be implemented recursively. <strong><em>Test your solution thoroughly!</em></strong> You should write at least one test before moving on.</p>
+
+<p>To summarize, here's what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="milestone-1-requirements">Milestone 1 Requirements</h4>
+<ol>
+  <li>Add at least one test to <code class="language-c++ highlighter-rouge"><span class="n">HumanPyramids</span><span class="p">.</span><span class="n">cpp</span></code> to cover a case not tested by the other test cases. This is a great opportunity to check that you understand the problem setup.</li>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span></code> function from HumanPyramids.cpp to report the weight on the back of the indicated person in a human pyramid. Test your solution thoroughly before proceeding, noting that your implementation will be slow if you look deep in the pyramid. Don’t forget to call <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> if the input coordinates are out of bounds!</li>
+</ol>
+</div>
+
+<p>Some notes on this first milestone:</p>
+
+<ul>
+  <li>Remember that the <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code> and <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code> types are distinct in C++, and be careful not to mix them up. Your weight calculations should be done with <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code>s.</li>
+  <li>Due to the way that the <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code> type works in C++, the values that you get back from your program in large pyramids might contain small rounding errors that make the value close to, but not exactly equal to, the true value (we're talking about very small errors – less than a part in a thousand). Don't worry if this happens.</li>
+</ul>
+
+<h3 id="milestone-2-speeding-things-up">Milestone 2: Speeding Things Up</h3>
+
+<p>When you first code up this function, you'll find that it's pretty quick to tell you how much weight is on the back of the person in row 5, column 3, but that it takes a long time to say how much weight is on the back of the person in row 30, column 15. Why is this?</p>
+
+<p>Think about what happens if we call <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span></code>. (For simplicity of exposition in this section, we're going to leave off the height parameter.) This makes two new recursive calls: one to <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span></code>, and one to <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span></code>. This first recursive call in turn fires off two more: one to <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span></code> and another to <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span></code>. The second recursive call then calls <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span></code>.</p>
+
+<p>Notice that there are two calls to <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span></code> here. This means that there's a redundant call being made to <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span></code>, so all the work done to compute that intermediate answer is done twice. That call will in turn fire off its own redundant recursive calls, which in turn fire off their own redundant calls, etc. This might not seem like much, but the number of recursive calls can be huge. For example, calling <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span></code> makes over 600,000,000 recursive calls!</p>
+
+<p>There are many techniques for eliminating redundant calls. One common approach is <strong><em>memoization</em></strong> (no, that's not a typo). Intuitively, memoization works by making an auxiliary table keeping track of all the recursive calls that have been made before and what value was returned for each of them. Then, whenever a recursive call is made, the function first checks the table before doing any work. If the the recursive call has already been made in the past, the function just returns that stored value. This prevents values from being computed multiple times, which can dramatically speed things up!</p>
+
+<p>In pseudocode, memoization looks something like this:
+<strong>Before:</strong></p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Ret function(Arg a) {
+   if (base-case-holds) {
+      return base-case-value;
+   } else {
+      do-some-work;
+      return recursive-step-value;
+   }
+}
+</code></pre></div></div>
+
+<p><strong>After:</strong></p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Ret functionRec(Arg a, Table&amp; table) {
+   if (base-case-holds) {
+      return base-case-value;
+   } else if (table contains a) {
+      return table[a];
+   } else {
+      do-some-work;
+      table[a] = recursive-step-value;
+      return recursive-step-value;
+   }
+}
+
+Ret function(Arg a) {
+    Table table;
+    return functionRec(a, table);
+}
+</code></pre></div></div>
+
+<p>In the above pseudocode, we're making reference to a type called <strong><em>Table</em></strong>. There isn't actually a type <strong><em>Table</em></strong>; rather, it's a placeholder for "some type that you can use to look up a value associated with the arguments to the function." We'll leave it up to you to decide what type is best for this.</p>
+
+<p>Notice that this transformation makes what was the original function a wrapper function. That's necessary both because we need to create the table somewhere and because we don't want folks using the function to see that the extra parameters have been added in.</p>
+
+<p>As a final step, modify <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span></code> so that it uses memoization to avoid recomputing values unnecessarily. The <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span></code> function must still take the same arguments as before, since our starter code expects to be able to call it with just three arguments (row, column, and height), so you'll need to make it a wrapper function. Once you've done that, try comparing how long it takes to evaluate <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span></code> both with and without memoization. Notice a difference? For fun, try computing <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></code>. This will take a staggeringly long time to complete without memoization – the sun will probably burn out before you get an answer – but with memoization you should get back an answer instantly!</p>
+
+<p>To summarize what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="milestone-2-requirements">Milestone 2 Requirements</h4>
+<p>Speed up your implementation by modifying it to use memoization. Test your solution thoroughly using our provided tests, plus any others you add.</p>
+</div>
+
+<p>Some notes on this milestone:</p>
+<ul>
+  <li>We’ve included a stress test to make sure that memoization is working correctly. Because it can take a lot of CPU time if memoization isn’t implemented correctly, we’ve pro-grammed the test to always fail until you explicitly turn the test on. Follow the instruc-tions given in the test failure to enable the test.</li>
+  <li>One of the bigger questions you’ll need to think through is what type to use to represent the memoization table. There are lots of different options here. Fundamentally, you need something where you can input a (row, col) pair and get back a value. There are lots of containers you can use for this, and lots of ways to represent (row, col) pairs. Some are easier to work with than others. Try things out and see what you find!</li>
+  <li>Do not add or remove parameters from the <code class="language-c++ highlighter-rouge"><span class="n">weightOnBackOf</span></code> function. Instead, make it a wrapper around a new function that actually does all the recursive magic.</li>
+  <li>Make sure that the actual recursive function calls itself and not the wrapper function. If the recursive function calls the wrapper function, it'll discard the memoization table and start with a new one (do you see why?), which will eliminate all the benefits. More generally, the wrapper should always call the recursive function, and the recursive function should never call the wrapper.</li>
+</ul>
+
+<p>Once you’ve finished this milestone, choose the “Human Pyramids” option from the menu bar at the top of the program and drag the slider around to change the height of the pyramid. What numbers do you get back? Does that surprise you?</p>
+
+<h2 id="part-three-what-are-you-doing">Part Three: What Are YOU Doing?</h2>
+
+<p>In conversational English, emphasizing different words in a sentence can change its meaning. For example, the statement</p>
+
+<blockquote>
+  <p>"what are YOU doing?"</p>
+</blockquote>
+
+<p>places the emphasis on the person being spoken to, with the connotation being "what are you, as opposed to the other people here, doing?" On the other hand, the statement</p>
+
+<blockquote>
+  <p>"what are you DOING?"</p>
+</blockquote>
+
+<p>puts the emphasis on "doing," with the connotation that the speaker is exasperated or surprised by the listener's behavior. Contrast that with</p>
+
+<blockquote>
+  <p>"WHAT ARE YOU DOING?,"</p>
+</blockquote>
+
+<p>which sounds like someone is shouting, or</p>
+
+<blockquote>
+  <p>"what ARE you doing?,"</p>
+</blockquote>
+
+<p>which reads as a request for clarification about what the listener happens to be doing at the moment.</p>
+
+<p>All in all, there are sixteen different ways we could emphasize the words in this sentence:</p>
+
+<div style="columns:2">
+<ul>
+  <li>what are you doing?</li>
+  <li>what are you DOING?</li>
+  <li>what are YOU doing?</li>
+  <li>what are YOU DOING?</li>
+  <li>what ARE you doing?</li>
+  <li>what ARE you DOING?</li>
+  <li>what ARE YOU doing?</li>
+  <li>what ARE YOU DOING?</li>
+  <li>WHAT are you doing?</li>
+  <li>WHAT are you DOING?</li>
+  <li>WHAT are YOU doing?</li>
+  <li>WHAT are YOU DOING?</li>
+  <li>WHAT ARE you doing?</li>
+  <li>WHAT ARE you DOING?</li>
+  <li>WHAT ARE YOU doing?</li>
+  <li>WHAT ARE YOU DOING?</li>
+</ul>
+</div>
+
+<p>Your task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">allEmphasesOf</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">sentence</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> containing a sentence, then returns a <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> containing all the ways of capitalizing the words in that sentence.</p>
+
+<p>The input to this function is a string representing a sentence. It's probably a lot easier to work not with a single string representing a whole sentence, but with a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> representing all the pieces of that sentence. For this purpose, we've provided you with</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">tokenize</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">sentence</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>which takes as input a sentence, then returns a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> representing the individual units that make up that sentence. For example, given the input</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Quoth</span> <span class="n">the</span> <span class="n">raven</span><span class="p">,</span> <span class="s">"Nevermore."</span>
+</code></pre></div></div>
+
+<p>the <code class="language-c++ highlighter-rouge"><span class="n">tokenize</span></code> function would return the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> shown here:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">Quoth</span><span class="p">]</span> <span class="p">[</span> <span class="p">]</span> <span class="p">[</span><span class="n">the</span><span class="p">]</span> <span class="p">[</span> <span class="p">]</span> <span class="p">[</span><span class="n">raven</span><span class="p">]</span> <span class="p">[,]</span> <span class="p">[</span> <span class="p">]</span> <span class="p">[</span><span class="s">"] [Nevermore] [.] ["</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Calling <code class="language-c++ highlighter-rouge"><span class="n">allEmphasesOf</span><span class="p">(</span><span class="s">"Quoth the raven, </span><span class="se">\"</span><span class="s">Nevermore.</span><span class="se">\"</span><span class="s">"</span><span class="p">)</span></code> should return these strings:</p>
+
+<div style="columns:2">
+<ul>
+  <li>quoth the raven, "nevermore."</li>
+  <li>quoth the raven, "NEVERMORE."</li>
+  <li>quoth the RAVEN, "nevermore."</li>
+  <li>quoth the RAVEN, "NEVERMORE."</li>
+  <li>quoth THE raven, "nevermore."</li>
+  <li>quoth THE raven, "NEVERMORE."</li>
+  <li>quoth THE RAVEN, "nevermore."</li>
+  <li>quoth THE RAVEN, "NEVERMORE."</li>
+  <li>QUOTH the raven, "nevermore."</li>
+  <li>QUOTH the raven, "NEVERMORE."</li>
+  <li>QUOTH the RAVEN, "nevermore."</li>
+  <li>QUOTH the RAVEN, "NEVERMORE."</li>
+  <li>QUOTH THE raven, "nevermore."</li>
+  <li>QUOTH THE raven, "NEVERMORE."</li>
+  <li>QUOTH THE RAVEN, "nevermore."</li>
+  <li>QUOTH THE RAVEN, "NEVERMORE."</li>
+</ul>
+</div>
+
+<p>These strings are formed by considering all possible ways of rendering each word in both upper-case and lower-case, keeping the rest of the input string (spaces, commas, periods, etc.) unchanged. You should consider a word to be any string that starts with a letter.</p>
+
+<p>Test your code thoroughly! Our provided starter code has some sample tests included, but they aren't exhaustive and you'll need to expand them. You will need to write at least one custom test case, and we recommend adding even more.</p>
+
+<p>To summarize, here's what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="part-three-requirements">Part Three Requirements</h4>
+<ol>
+  <li>Implement the function <code class="language-c++ highlighter-rouge"><span class="n">allEmphasesOf</span></code> in <code class="language-c++ highlighter-rouge"><span class="n">WhatAreYouDoing</span><span class="p">.</span><span class="n">cpp</span></code> so that it returns a set of all the different ways the words in the input sentence can be capitalized. The non-word strings in the sentence should be included in the output unchanged from the original.</li>
+  <li>Add at least one test case in to the list of test cases, then test thoroughly.</li>
+  <li>After your code passes all the tests, play around with the demo app to have some fun with your program.</li>
+</ol>
+</div>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>We recommend that your implementation call <code class="language-c++ highlighter-rouge"><span class="n">tokenize</span></code> exactly once to convert the input string into a sequence of tokens; there's no need to call <code class="language-c++ highlighter-rouge"><span class="n">tokenize</span></code> repeatedly.</li>
+  <li>You should completely ignore the initial capitalization of the words in the input sentence. For example, the result of calling <code class="language-c++ highlighter-rouge"><span class="n">allEmphasesOf</span></code> on the strings <code class="language-c++ highlighter-rouge"><span class="s">"Happy birthday!"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"HAPPY BIRTHDAY!"</span></code>, and <code class="language-c++ highlighter-rouge"><span class="s">"hApPy BiRtHdAy!"</span></code> should all be the same.</li>
+  <li>To check if a string represents a word, check if its first character is a letter. Use the <code class="language-c++ highlighter-rouge"><span class="n">isalpha</span></code> function from the header file <code class="language-c++ highlighter-rouge"><span class="o">&lt;</span><span class="n">cctype</span><span class="o">&gt;</span></code> to do this. You don't need to handle the case where a string has letters in it but not in the first position.</li>
+  <li>Use the <code class="language-c++ highlighter-rouge"><span class="n">toUpperCase</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">toLowerCase</span></code> functions from <code class="language-c++ highlighter-rouge"><span class="s">"strlib.h"</span></code> to convert a string to upper-case or lower-case. Be careful – these functions don't modify their arguments, and instead return new strings with the case of the letters changed.</li>
+  <li>There may not be any words in the input sentence. For example, the input sentence might just be a smiley face emoticon (<code class="language-c++ highlighter-rouge"><span class="s">":-)"</span></code>) or a series of numbers (<code class="language-c++ highlighter-rouge"><span class="s">"867-5309"</span></code>).</li>
+  <li>You don't need to – and in fact, shouldn't – use the <code class="language-c++ highlighter-rouge"><span class="n">stringSplit</span></code> function or <code class="language-c++ highlighter-rouge"><span class="n">TokenScanner</span></code> type to break the original string apart into words. Instead, rely on our handy <code class="language-c++ highlighter-rouge"><span class="n">tokenize</span></code> function, which we've written for you specifically for this assignment.</li>
+  <li>Make sure that your solution doesn’t generate the same string more than once. In particular, make sure that your solution doesn’t call <code class="language-c++ highlighter-rouge"><span class="n">toUpperCase</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">toLowerCase</span></code> on non-word tokens. If your recursion branches, making one call where the punctuation symbol is converted to upper case and another call where the punctuation symbol is converted to lower case, then it will do a lot of unnecessary work regenerating the same strings twice. (Do you see why?)</li>
+  <li>As you saw in Assignment 2, the default C++ <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> type is is pretty bad when it comes to handling non-English characters. As a result, if you feed perfectly reasonable statements like "नमस्ते" or "ٱلسَّلَامُ عَلَيْكُمْ" or "你好" into the <code class="language-c++ highlighter-rouge"><span class="n">tokenize</span></code> function, the results may be completely wrong.</li>
+</ul>
+
+<h2 id="part-four-shift-scheduling">Part Four: Shift Scheduling</h2>
+<p><strong><em>(We recommend completing Problem Three before starting on this part of the assignment.)</em></strong></p>
+
+<p><sup><em>Thanks to Katie Creel for helping with the design of the Embedded Ethics "Explore and Evaluate" questions.</em></sup></p>
+
+<p>You're in charge of a small business and have just hired a new part-time employee with flexible hours to help out. You'd like to schedule her hours in a way that gets her to produce the most value.</p>
+
+<p>For each shift, you have an estimate of how much money the employee would produce if she worked that shift. Ideally, you'd have her work <em>every</em> shift, but alas, that isn't possible. There are two restrictions. First, the employee has a limited number of hours she's allowed to work each week. Second, you can't assign the employee to work concurrent shifts. (As great a hire as she was, she can only be in one place at one time). Given these restrictions, what shifts should you assign to your new hire?</p>
+
+<p>For example, imagine that your new employee is available for twenty hours each week. There's a variety of tasks she could do, each of which has different shifts. Here's the different shifts she could take, as well as how much value (measured in dollars) she'll produce in each:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Mon</span>  <span class="mi">8</span><span class="n">AM</span> <span class="o">-</span> <span class="mi">12</span><span class="n">PM</span><span class="o">:</span></code> $27</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Mon</span> <span class="mi">12</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">4</span><span class="n">PM</span><span class="o">:</span></code> $28</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Mon</span>  <span class="mi">4</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">8</span><span class="n">PM</span><span class="o">:</span></code> $25</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Mon</span>  <span class="mi">8</span><span class="n">AM</span> <span class="o">-</span>  <span class="mi">2</span><span class="n">PM</span><span class="o">:</span></code> $39</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Mon</span>  <span class="mi">2</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">8</span><span class="n">PM</span><span class="o">:</span></code> $31</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Tue</span>  <span class="mi">8</span><span class="n">AM</span> <span class="o">-</span> <span class="mi">12</span><span class="n">PM</span><span class="o">:</span></code> $7</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Tue</span> <span class="mi">12</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">4</span><span class="n">PM</span><span class="o">:</span></code> $7</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Tue</span>  <span class="mi">4</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">8</span><span class="n">PM</span><span class="o">:</span></code> $11</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Tue</span>  <span class="mi">8</span><span class="n">AM</span> <span class="o">-</span>  <span class="mi">2</span><span class="n">PM</span><span class="o">:</span></code> $10</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Tue</span>  <span class="mi">2</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">8</span><span class="n">PM</span><span class="o">:</span></code> $8</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Wed</span>  <span class="mi">8</span><span class="n">AM</span> <span class="o">-</span> <span class="mi">12</span><span class="n">PM</span><span class="o">:</span></code> $10</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Wed</span> <span class="mi">12</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">4</span><span class="n">PM</span><span class="o">:</span></code> $11</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Wed</span>  <span class="mi">4</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">8</span><span class="n">PM</span><span class="o">:</span></code> $13</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Wed</span>  <span class="mi">8</span><span class="n">AM</span> <span class="o">-</span>  <span class="mi">2</span><span class="n">PM</span><span class="o">:</span></code> $19</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Wed</span>  <span class="mi">2</span><span class="n">PM</span> <span class="o">-</span>  <span class="mi">8</span><span class="n">PM</span><span class="o">:</span></code> $25</li>
+</ul>
+</div>
+
+<p>So, when should she come in to work? You might be eyeing the high-value Monday 8:00AM – 2:00PM and 2:00PM – 8:00PM time slots. That would bring in a full $70, using up twelve of her permitted twenty hours. You might then have her spend her remaining eight hours Wednesday afternoon in the 12:00PM – 4:00PM and 4:00PM – 8:00PM shifts, netting you another $24 for a total take-home of $94.</p>
+
+<p>With a little creativity, though, you might note that you actually would make more if instead of having her work eight hours on Wednesday in two four-hour time slots, you instead had her work six hours from 2:00PM – 8:00PM and bring in $25 of value, simultaneously upping your total take-home to $95 and giving her two free hours.</p>
+
+<p>Even this isn't optimal – as enticing as those $39 and $31 time slots on Monday are, it's actually better to have your employee work the three four-hour shifts on Monday, bringing in $27, $28, and $25, respectively, for a total of $80 on Monday. Overall, if you pick the three four-hour shifts on Monday and the closing six-hour shift on Wednesday, your new hire is bringing in $105 and clocking in only eighteen hours, below the twenty-hour limit.</p>
+
+<h3 id="milestone-one-find-highest-value-schedules">Milestone One: Find Highest-Value Schedules</h3>
+
+<p>Your task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">Shift</span><span class="o">&gt;</span> <span class="n">highestValueScheduleFor</span><span class="p">(</span><span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Shift</span><span class="o">&gt;&amp;</span> <span class="n">shifts</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxHours</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> of all the possible shifts, along with the maximum number of hours the employee is allowed to work for, then returns which shifts the employee should take in order to generate the maximum amount of value. Here, <code class="language-c++ highlighter-rouge"><span class="n">Shift</span></code> is a <code class="language-c++ highlighter-rouge"><span class="k">struct</span></code> containing information about when the shift is (what day of the week it is, when it starts, and when it ends). It's defined in the header file <code class="language-c++ highlighter-rouge"><span class="n">Shift</span><span class="p">.</span><span class="n">h</span></code>. Chances are that you won't need to read any of the fields of this <code class="language-c++ highlighter-rouge"><span class="k">struct</span></code>, and that instead you'll want to use these functions from <code class="language-c++ highlighter-rouge"><span class="n">Shift</span><span class="p">.</span><span class="n">h</span></code>:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">lengthOf</span><span class="p">(</span><span class="k">const</span> <span class="n">Shift</span><span class="o">&amp;</span> <span class="n">shift</span><span class="p">);</span>    <span class="c1">// Returns the length of a shift.     </span>
+<span class="kt">int</span> <span class="nf">valueOf</span><span class="p">(</span><span class="k">const</span> <span class="n">Shift</span><span class="o">&amp;</span> <span class="n">shift</span><span class="p">);</span>     <span class="c1">// Returns the value of this shift.   </span>
+<span class="kt">bool</span> <span class="nf">overlapsWith</span><span class="p">(</span><span class="k">const</span> <span class="n">Shift</span><span class="o">&amp;</span> <span class="n">one</span><span class="p">,</span>  <span class="c1">// Returns whether two shifts overlap.</span>
+                  <span class="k">const</span> <span class="n">Shift</span><span class="o">&amp;</span> <span class="n">two</span><span class="p">);</span> 
+</code></pre></div></div>
+
+<p>Now, let's talk strategy. We recommend approaching this problem in the following way. Select, however you'd like, some shift out of <code class="language-c++ highlighter-rouge"><span class="n">shifts</span></code>. If the employee can't take this shift, either because it overlaps with a shift she's already been assigned or because it would exceed her total hour limit, then the only option is to not give the employee that shift. Otherwise, there are two options: you could either give the employee the shift, or not give the employee the shift. One of these two options will be better than the other, or they'll be tied for how much value is produced. You won't know which one is better until you try them out, so (recursively) explore both options and report whichever one leads to more value.</p>
+
+<p>As you're working on this one, make sure to test thoroughly! If you have forty or so shifts to pick from, it'll be extremely difficult to determine whether your code produces the best option simply by eyeballing the answer. Instead, craft smaller examples (say, with between zero and five shifts) and see how your code does. Think of all the tricksy cases that might arise – long shifts that aren't worth much, short shifts worth a lot, overlapping shifts that are equally good, etc. – and make sure your code handles those cases well. We've included some tests for you to use when you're getting started, and there's at least one case we know of that we didn't test for. As usual, you'll need to add at least one custom test case of your own.</p>
+
+<p>With that said, here's what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="milestone-one-requirements">Milestone One Requirements</h4>
+<ol>
+  <li>Implement <code class="language-c++ highlighter-rouge"><span class="n">highestValueScheduleFor</span></code> using the strategy we outlined above. Select some shift and think about what happens if you assign the employee that shift (if that’s even an option) and what happens if you don’t assign the employee that shift. Take whichever option leads to a better result, and report the set of shifts you’d pick if you chose that route. Use the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error if <code class="language-c++ highlighter-rouge"><span class="n">numHours</span> <span class="o">&lt;</span> <span class="mi">0</span></code>.</li>
+  <li>Add at least one test using <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code>. Ideally, test something not already covered.</li>
+</ol>
+</div>
+
+<p>Some notes on this problem:</p>
+<ul>
+  <li>You may find it easiest to work on this in stages. First, solve this problem ignoring the restriction that you can’t pick two overlapping shifts. Then, once you have that version working, edit your solution to enforce that you can’t pick overlapping shifts.</li>
+  <li>If multiple schedules are tied for producing the most value, you’re free to choose any of them.</li>
+  <li>While you are allowed to look directly at the fields of the <code class="language-c++ highlighter-rouge"><span class="n">Shift</span></code> struct, we don’t recommend this. Use the helper functions mentioned on the previous page instead.</li>
+  <li>The best schedule might not use up all of the employee's available hours.</li>
+  <li>The values assigned to shifts can be arbitrary. It might be the case that a shift from 2PM to 4PM produces ten units of value while another from 10AM to 6PM the same day produces four.</li>
+  <li>It’s fine if the worker has zero available hours – that just means that she’s really busy that week – but if <code class="language-c++ highlighter-rouge"><span class="n">maxHours</span></code> is negative you should call <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> to report an error.</li>
+  <li>There are two general strategies you can use to explore sets of shifts. One option is to generate all possible combinations of shifts, checking only at the end to see whether the shifts overlap with one another or exceed the hourly limits. You should avoid this option – the number of choices of shifts is so huge that this will not finish running in any rea-sonable timeframe. The other is to only build up collections of shifts that, at the time they’re built, are known not to exceed the time limit or to contain overlapping shifts. You should favor this approach, since it significantly reduces the number of shift sets to check.</li>
+</ul>
+
+<p>Once you've finished writing your solution, try running our demo program, which will let you generate random weights on some standard shift sets and see what schedules end up getting chosen.</p>
+
+<h3 id="milestone-two-explore-and-evaluate">Milestone Two: Explore and Evaluate</h3>
+
+<p>Some companies assign different shifts to workers each week, and they do so by running code that's pretty similar to the code you wrote here, feeding in weekly forecasts. As you can see from the demo program, this can easily lead to schedules that vary wildly from week to week. If the person you're hiring needs to arrange for child care each week, this rapid swing in shift selection can be extremely stressful. In fact, this has been so rough on workers that <a href="https://www.nytimes.com/interactive/2014/08/13/us/starbucks-workers-scheduling-hours.html">it made national news</a>.</p>
+
+<p>So take a look at the code that you wrote. We assume that nothing in your code says something like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">isSingleMother</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">chooseShiftsArbitrarilyAndCapriciously</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">chooseStableShifts</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Instead, what's happening here is that your code is designed to purely optimize a single quantity – the amount of revenue generated by the employee – and doesn't take anything else into account. Your code isn't malicious; it just oblivious to the surrounding context.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="milestone-two-requirements">Milestone Two Requirements</h4>
+
+<p>Answer the following questions in <code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code>.</p>
+
+<p><strong>Q1:</strong> At present, your <code class="language-c++ highlighter-rouge"><span class="n">highestValueScheduleFor</span></code> function only has access to a shift's time and the value in dollars it will yield the company. List at least two other pieces of information about each shift that would make it possible for your <code class="language-c++ highlighter-rouge"><span class="n">highestValueScheduleFor</span></code> to strike a better balance between the interests of the company and of the individual worker. Then describe how you might gather or collect this data. (Your answer should be 2 - 4 sentences long.)</p>
+
+<p><strong>Q2:</strong> Now, suppose you want to edit your code to integrate the information you've gathered above when generating schedules. To do this, you'd need to change some part of your code that evaluates how "good" a proposed schedule is. Identify the exact code in your program that handle this task. You don't need to edit this code - just tell us what it is. (Your answer should consist of a copy-paste of the relevant lines of code.)</p>
+
+<p><strong>Q3:</strong> Let's suppose, for the sake of argument, that you've asked the company and the worker to give a numeric ranking between 1 ("strongly dislike") and 5 ("strongly like") indicating how much they value each shift. Consider the following three schedules:</p>
+
+<ul>
+  <li>Across Schedule 1, the average ranking by the company is 2 / 5 and the average ranking by the worker is 4 / 5.</li>
+  <li>Across Schedule 2, the average ranking by the company is 3 / 5 and the average ranking by the worker is 3 / 5.</li>
+  <li>Across Schedule 3, the average ranking by the company is 4 / 5 and the average ranking by the worker is 2 / 5.</li>
+</ul>
+
+<p>Rank these schedules from "best" to "worst." Why did you pick the order that you did? What values are you expressing in your choice of ranking? (Your answer should be 2 - 4 sentences in length.)</p>
+
+</div>
+
+<p>The lesson here is to <em>be careful about what you optimize</em>. Computers can help you find strategies that maximize lots of different quantities. Make sure you pick a quantity that takes in the perspectives of all the stakeholders in a situation. Get it right and you end up with schedules where workers are happy and companies make money. Get it wrong and you significantly impair quality of life.</p>
+
+<p>As you've seen in Q3, determining how to balance competing views is challenging and requires value judgments. Keep this in mind as you move forward and build larger software systems: the choices you make in your software translate your value judgments into real impacts on real people.</p>
+
+<h2 id="optional-part-five-extensions">(Optional) Part Five: Extensions!</h2>
+<p>As always, if you'd like to go above and beyond what's required for this assignment, you are welcome to do so in whatever way speaks the most to you. If you’re planning on doing extensions, please submit two versions of your assignment – one with exten-sions and one without – so that grading goes more smoothly.</p>
+
+<p>Here are a few suggestions to help you get started.</p>
+
+<ul>
+  <li>
+    <p><strong><em>Sierpinski Triangle:</em></strong> The Sierpinski triangle is only one of many self-similar images; consider coding up another! We’d love to see what you create. Check Wikipedia for some suggestions of different self-similar images.</p>
+
+    <p>Alternatively, although this assignment is all about recursion, if you're up for a challenge, try replacing the recursive version of your code with an iterative function that draws an order-<em>n</em> Sierpinski triangle. Which one did you find easier to write?</p>
+  </li>
+  <li>
+    <p><strong><em>Human Pyramids:</em></strong> There's another way to avoid making multiple recursive calls called <em>dynamic programming</em> that's equivalent to memoization, but uses iteration rather that re-cursion. Look up dynamic programming and try coding this function up both ways. Which one do you find easier?</p>
+
+    <p>Another question to consider: We assumed everyone in the pyramid weighed exactly 160 pounds. What if that’s not the case? How much weight does everyone feel then?</p>
+  </li>
+  <li>
+    <p><strong><em>What Are YOU Doing?:</em></strong> This problem put stress patterns onto a particular structure (words in sentences), but that idea can be used in other contexts as well. What would music sound like if you emphasized certain notes and not others? Could you produce all the ways of pronouncing certain words by changing the stress patterns on the syllables?</p>
+
+    <p>This problem is designed around English. Are there similar concepts in other languages? If so, we'd love to see you experiment with adapting this code to process other patterns.</p>
+  </li>
+  <li>
+    <p><strong><em>Shift Scheduling:</em></strong> Your answers in the second milestone indicate that there's still significant room for improvement with how the scheduling system works. Modify the shift scheduler so that it's aware of other pieces of information about shifts and worker preferences, and describe why you chose the version that you did.</p>
+
+    <p>The current version of shift scheduling assumes you're scheduling a single worker's shifts. What if you have to schedule shifts for multiple workers? Come up with a system that allocates shifts this way, then put together a writeup explaining how your system works and how it strikes a balance between company and worker preferences.</p>
+  </li>
+</ul>
+
+<h2 id="general-notes">General Notes</h2>
+<p>Here's some clarifications, notifications, expectations, and recommendations for this assignment.</p>
+<ul>
+  <li><strong><em>Your functions must actually use recursion;</em></strong> it defeats the point of the assignment to solve these problems iteratively! That being said, as you’ll see in lecture next week, it’s perfectly alright for recursive functions to contain loops. The main question is whether your solution fundamentally works by breaking problems down into smaller copies of themselves. If so, great! If not, you may want to revisit your solution.</li>
+  <li><strong><em>Test your code thoroughly!</em></strong> We’ve included some test cases with the starter files, but they aren’t exhaustive. Be sure to add tests as you go!</li>
+  <li><strong><em>Recursion can take some time to get used to,</em></strong> so don’t be dismayed if you can’t immediately sit down and solve these problems. We’ve allowed you to work in pairs on this assignment so that you can discuss ideas with a partner, which can be a great way build an intuition for the concepts. Ask for advice and guidance if you need it. Once everything clicks, you’ll have a much deeper understanding of just how cool a technique this is. We’re here to help you get there!</li>
+</ul>
+
+<h2 id="submission-instructions">Submission Instructions</h2>
+<p>Before you call it done, run through our <a href="../../resources/submit_checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>s are crossed and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>s are dotted. Make sure your code follows our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>. Then upload your completed files to Paperless for grading.</p>
+
+<p><strong>Partner Submissions:</strong></p>
+<ul>
+  <li>If you forget to list your partner you can resubmit to add one</li>
+  <li>Either person can list the other, and the submissions (both past and future) will be combined</li>
+  <li>Partners are listed per-assignment</li>
+  <li>You can't change/remove a partner on an individual submission</li>
+</ul>
+
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Sierpinski</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">HumanPyramids</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">WhatAreYouDoing</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">ShiftScheduling</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code> <em>(don't forget this one!)</em></li>
+</ul>
+
+<p>You don't need to submit any of the other files in the project folder.</p>
+
+<blockquote>
+  <p>🏁 <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Submit to Paperless</a></p>
+</blockquote>
+
+<p>If you modified any other files that you modified in the course of coding up your solutions, submit those as well. And that’s it! You’re done!</p>
+
+<blockquote>
+  <p><strong><em>Good luck, and have fun!</em></strong></p>
+</blockquote>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Feb-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

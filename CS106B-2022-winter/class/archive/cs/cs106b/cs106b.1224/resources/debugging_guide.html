@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Debugging Your Code</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="debugging_guide.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="debugging_guide.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="debugging_guide.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="debugging_guide.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="debugging_guide.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="debugging_guide.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Debugging Your Code</h1>
+
+<hr>
+
+<p class="attribution">
+Written by Keith Schwarz
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>In the course of working on any programming project you will invariably run into a spot where your code just plain doesn’t work the way you want it to. It might not compile and give you some super cryptic error message. It might run but give the wrong answer, or run but never complete. Or it might run and crash for mysterious reasons. When this happens, you’ll need to debug your error before you can move on.</p>
+
+<p>As you may know, we have LaIR hours every Sunday through Thursday. If you ever get really, really stuck, we recommend stopping on by to get some help.</p>
+
+<p>Knowing how to debug effectively is one of the single most important skills you can have as a programmer. When you’re working outside the classroom – whether it’s in a research lab, an independent project, a company, a nonprofit, etc. – you won’t have the luxury of the LaIR to help you get unstuck, and yet you’ll still be expected to deliver results. Accordingly, if you ask for help in the LaIR, the section leaders are likely to inquire into more depth about how you’ve tried to fix the error on your own. If you haven’t made much of an effort to do so, the SLs are more likely to help show you how to debug your code than they are to find and fix the bug for you.</p>
+
+<p><strong><em>Before you go to the LaIR to get help, we recommend that you work through this handout</em></strong>. In doing so, there’s a good chance that you’ll figure out what the underlying error is and how to fix it. In the event that you aren’t able to sort out the issue, then you’ll have a much more targeted and focused question to bring to the LaIR.</p>
+
+<p>Without further ado, here’s our advice about how to debug your code.</p>
+
+<h2 id="step-zero-dont-panic">Step Zero: Don't Panic</h2>
+
+<p>There’s an old joke that goes like this:</p>
+
+<ul>
+  <li>Q: What’s the first thing you should do when you find yourself stuck in hole?</li>
+  <li>A: Stop digging!</li>
+</ul>
+
+<p>When you’re writing a program and you find that it doesn’t work, your instinct might be to try to take the code you have and change it to fix it. In some cases, this is totally fine. Maybe you look at the code and think “oh, whoops, I forgot a semicolon” or “oh whoops, I forgot a return statement.” That’s all fine and well.</p>
+
+<p>But if you’re in a spot where the code doesn’t work and you really legitimately don’t know what’s going on, one of the worst things you can do is to start making changes to your code without a plan. Now you have two bugs – the bug you originally had, plus the new one you just inserted by changing things.</p>
+
+<p>An important thing to keep in mind when debugging is that <strong><em>the bug can’t move</em></strong>. It’s sitting there in your code, hiding in plain sight, waiting to do the wrong thing. If you don’t make changes to your code, then it can’t move anywhere. It can’t sneak from one part of the code into the other. It’s just waiting to be found.</p>
+
+<blockquote>
+  <p><strong><em>“When debugging, novices insert corrective code; experts remove defective code.”</em></strong></p>
+</blockquote>
+
+<p>So don’t go changing anything. Instead, switch into debugging mode. Put on your sleuthing hat, and get ready to go on a bug hunt.</p>
+
+<p>With that having been said, your first step is to figure out what the real underlying problem is.</p>
+
+<h2 id="step-one-identify-the-specific-issue-you-have">Step One: Identify the Specific Issue You Have</h2>
+
+<p>The first question you should ask yourself is</p>
+
+<blockquote>
+  <p>What is the <strong><em>specific</em></strong> problem that you’re running into?</p>
+</blockquote>
+
+<p>It might seem silly to ask this, but it’s important to make sure that you understand what specifically the issue is that you’re running into. If you show up in the LaIR and all you can say is “my program doesn’t work,” it’s unlikely that anyone is going to be able to help you fix the issue, since that information by itself isn’t precise enough for the section leaders to know what’s going on.</p>
+
+<p>As a first step, try to classify the error you’re getting into one of four different categories:</p>
+
+<ul>
+  <li>
+    <p><strong><em>Compiler error</em></strong>: The program doesn’t even compile.</p>
+  </li>
+  <li>
+    <p><strong><em>Program crash</em></strong>: The program compiles and runs, but it crashes.</p>
+  </li>
+  <li>
+    <p><strong><em>Infinite loop</em></strong>: The program just seems to hang without anything happening.</p>
+  </li>
+  <li>
+    <p><strong><em>Logic error</em></strong>: The program runs, but it produces the wrong answer.</p>
+  </li>
+</ul>
+
+<p>Once you’ve identified what class of error you’re getting, you can take some next steps to pin that error down more precisely.</p>
+
+<p>Once you’ve identified what class of error you’re getting, you can take some next steps to pin that error down more precisely.</p>
+
+<ul>
+  <li>
+    <p><strong><em>Compiler error</em></strong>: What is the specific error message you’re getting? Is it localized to a particular line of code? If so, what line of code is that? If you have multiple different compiler errors in the same program, always just look at the first of them, since follow-up errors often result from the compiler trying to recover from an earlier error and failing.</p>
+  </li>
+  <li>
+    <p><strong><em>Program crash</em></strong>: On what specific line is the program crashing? What sort of error are you getting back? Can you get a stack trace? Make sure you can answer all of these questions, since they’ll be important for smoking out the bug later on. In most cases, you can figure out where the crash occurs by running the program in debug mode and waiting for the debugger to pop up when something goes wrong. Once you’ve found the crash, you’ll need to localize it; see the “Localizing a Bug” section later on.</p>
+  </li>
+  <li>
+    <p><strong><em>Infinite loop</em></strong>: Where in the program is the infinite loop? Don’t guess – use the debugger to find out. Run the program in debug mode, and when it seems to be hanging, click the “interrupt” button (it looks like a giant pause button) to pause the program at its current point. That should give you a stack trace of where you are in the program, which will pinpoint the specific area where the infinite loop occurs. You might find, sometimes, that your program isn’t in a loop but is just paused and waiting for you to type something in, in which case, problem solved!</p>
+  </li>
+  <li>
+    <p><strong><em>Logic error</em></strong>: If you’re getting the wrong answer, what specific function is producing the wrong answer? Once you’ve found that function, there are a couple reasons why it could be giving a wrong answer. It might, for example, give back the wrong answer because the input that was provided to it was incorrect and the error is actually earlier on in the program. Therefore, your task at this point is to localize where the bug is (see the “Localizing the Bug” section).</p>
+  </li>
+</ul>
+
+<p>A unifying theme in the above discussion is that, when possible, you’ll want to use your tools to help you figure out what’s going wrong. When you first have a program that isn’t working, it can seem really overwhelming, but by asking the right questions you can convert the Hairy Scary problem of “it’s broken” into a more concrete question, like “what exactly is it about this particular loop that makes it run forever?” or “why does this particular line of code cause a crash?”</p>
+
+<p>A unifying theme in the above discussion is that, when possible, you’ll want to use your tools to help you figure out what’s going wrong. When you first have a program that isn’t working, it can seem really overwhelming, but by asking the right questions you can convert the Hairy Scary problem of “it’s broken” into a more concrete question, like “what exactly is it about this particular loop that makes it run forever?” or “why does this particular line of code cause a crash?”</p>
+
+<h3 id="localizing-a-bug">Localizing a Bug</h3>
+
+<p>In some cases, you’ll end up finding that your program does the wrong thing at a particular step – maybe it reads off the end of a string (oops), or perhaps it computes and returns the wrong value (oops). When that happens, you’ll have to identify the root cause of the problem before you can move on so that you know where to focus your efforts.</p>
+
+<p>As an example, let’s suppose that you want to write a function that takes in a string and counts up how many distinct characters it has. For example, “hi” has two distinct characters, while “hello” has four.</p>
+
+<p>One way you can do this is to sort the characters in the string alphabetically, then count up how many different “runs” of equal characters there are. For example, given the string “Banana,” you’d form the string “aaaBnn,” which has three runs of equal characters (aaa, B, nn) and therefore has three different characters. You could imagine writing the function like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">distinctCharactersIn</span><span class="p">(</span><span class="n">string</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">string</span> <span class="n">sorted</span> <span class="o">=</span> <span class="n">sort</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+	<span class="k">return</span> <span class="n">countRunsIn</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, imagine you’re running this function and you find that it gives back the wrong answer on the input “Banana,” and this shows up because the starter code compares your answer to a reference answer and says that it has the wrong answer. You can be fairly confident that the issue is that the <code class="language-c++ highlighter-rouge"><span class="n">distinctCharactersIn</span></code> function is returning the wrong value, but until you know <em>why</em> it’s returning the wrong value it’s going to be hard to do anything about it. For example, here are four different things that could go wrong here:</p>
+
+<ul>
+  <li>
+    <p>The input provided to the function is somehow wrong, so you’re counting the number of distinct characters in the wrong string. (You sometimes hear this referred to as “garbage in, garbage out:” if you ask the wrong question, you get the wrong answer.)</p>
+  </li>
+  <li>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">sort</span></code> function doesn’t correctly sort the characters of the string.</p>
+  </li>
+  <li>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">countRunsIn</span></code> function doesn’t correctly count how many runs of characters there are.</p>
+  </li>
+  <li>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">countRunsIn</span></code> function is being called with the wrong arguments.</p>
+  </li>
+  <li>
+    <p>Fundamentally, the logic being used is incorrect.</p>
+  </li>
+</ul>
+
+<p>Without digging into your code a bit more, it’s hard to know for sure which of these errors is the real one. Therefore, when you find this bug, the first step is to localize it to a particular region of the code. Here are some things you may want to do:</p>
+
+<ul>
+  <li>
+    <p>Run the program with the debugger turned on. Set a breakpoint at the top of the function.</p>
+  </li>
+  <li>
+    <p>Confirm that the input to the function is what you think it should be. If it’s supposed to be “Banana,” make sure that that is indeed what you’re working with. If not, you’ve found your error. The question then is “why is it that my function isn’t getting the input I thought it was going to get?,” and you can work backwards to see how that happened.</p>
+  </li>
+  <li>
+    <p>Step over the <code class="language-c++ highlighter-rouge"><span class="n">sort</span></code> function. What output do you get from <code class="language-c++ highlighter-rouge"><span class="n">sort</span><span class="p">(</span><span class="n">input</span><span class="p">)</span></code>? What output did you expect to get from <code class="language-c++ highlighter-rouge"><span class="n">sort</span><span class="p">(</span><span class="n">input</span><span class="p">)</span></code>? If these disagree, you’ve found what’s going on – the real culprit is that <code class="language-c++ highlighter-rouge"><span class="n">sort</span><span class="p">(</span><span class="n">input</span><span class="p">)</span></code> is broken. Now you can start looking at <code class="language-c++ highlighter-rouge"><span class="n">sort</span></code> to see what’s wrong.</p>
+  </li>
+  <li>
+    <p>Step over the <code class="language-c++ highlighter-rouge"><span class="n">countRunsIn</span></code> function. What output do you get from it? What output did you expect to get from it? If they disagree, you’ve found the error – you’re not properly counting runs, and that means you should look at <code class="language-c++ highlighter-rouge"><span class="n">countRunsIn</span></code>.</p>
+  </li>
+  <li>
+    <p>Step into the <code class="language-c++ highlighter-rouge"><span class="n">countRunsIn</span></code> function. What is the input to the function? How does <code class="language-c++ highlighter-rouge"><span class="n">countRunsIn</span></code> operate, and what calculation will it make to that input?</p>
+  </li>
+  <li>
+    <p>Look at the overall return value. If you correctly sorted the input and correctly counted runs and yet you <em>still</em> aren’t getting the right answer, that means that the error is possibly a logic error. Maybe sorting the characters and counting runs just isn’t a good way to solve this problem.</p>
+  </li>
+</ul>
+
+<p>The process described here – check that the inputs are right, go step by step and make sure that each step does the right thing, then check that the output matches what you expected – is an incredibly valuable way to figure out what’s going on in your program. In the course of performing these steps, you might end up discovering the exact error and won’t need to proceed any further. If you can show up in the LaIR and tell the SLs that you’ve worked through this process and done your best to localize the error, you’re in great shape.</p>
+
+<h2 id="step-two-determine-how-to-trigger-the-problem">Step Two: Determine How to Trigger the Problem</h2>
+
+<p>Okay, you’ve now localized the error. If it’s a compiler error, you know what line it’s on. If it’s a crash, you know which line crashes and you’ve figured out whether the crash is because the line got the wrong input or because it has the right input and still crashes anyway. If it’s an infinite loop, you know where the loop is. If it’s a logic error, you’ve figured out where specifically things aren’t going right. In other words, ideally, at this point, you can confidently answer this question:</p>
+
+<blockquote>
+  <p><strong><em>Where in the program is the root cause of the issue you’re seeing?</em></strong></p>
+</blockquote>
+
+<p>The next question is to figure out how you can trigger the issue. Let’s go back to our example from before. Suppose the code gives the wrong answer when given the input “Banana.” Here’s a question: will the code <em>always</em> give back the wrong answer, regardless of the input, or is there something special about “Banana?” If there’s something special about “Banana,” does it have to do with the fact that it has some letters that repeat (a and n), some letters that don’t (B), or a mix between upper-case and lower-case letters? Or does it have to do with which letters are repeated? Or does it have to do with how many total characters there are? Your next step is to answer this question:</p>
+
+<blockquote>
+  <p><strong><em>In what cases does this error occur?</em></strong></p>
+</blockquote>
+
+<p>In coming up with an answer to this question, you’ll narrow down the scope of the cause of the problem so that you can get a sense of what to look for.</p>
+
+<p>Let’s go back to our “Banana” mishap from before. A great next step in that case would be to try running the program on inputs <em>other</em> than “Banana” so that you can try to sort out what’s going wrong. It wouldn’t be a bad idea to try running the program on a bunch (no pun intended) of other strings so that you can peel back (pun intended) the veil of mystery about what’s going on.</p>
+
+<p>If you have no idea what the issue might be, try running some different inputs through the program. Try small inputs: 0, the empty string, etc. Try large inputs. If you’re working with strings, try lower-case strings, UPPER-CASE STRINGS, and Mixed-CaSE strings. See what you find. Does the program work correctly on some cases? Write those cases down. Does the program fail on some other cases? Write those down too.</p>
+
+<p>If you’re working on a program and the only way you know how to trigger the error is on a very large input (say, a large sample file), then it’s doubly important to find another case where the error occurs. Chances are the issue has less to do with the fact that the input is big and more to do with the fact that the input contains some pattern somewhere that you don’t handle properly. One technique for figuring out the issue is to take the test file you’re getting the wrong answer on and to dramatically shrink it. Cut out the first half, or last half, and see if you still get an error. If so, cut that half in half, etc. Eventually, you’ll zero in on the issue.</p>
+
+<p>If that doesn’t work, look at the smaller test cases that you are passing. Is there anything that they all have in common? If so, try creating your own test cases that look different from those ones. Working with text files, and all the inputs are free of spelling errors? Mash the keyboard and generate some garbage. Working with numbers? Try odd numbers, even numbers, negative numbers, 0, fractions, etc. Just throw things at the program until you can reproduce it.</p>
+
+<p>If you <em>can’t</em> get the error to show up in other cases, or if you can only get the error to show up in super large files, that in itself might be worth a trip to the LaIR so that you can get the section leaders, who all have their share of Debugging Battle Scars, to offer some input.</p>
+
+<p>If you <em>do</em> have a better sense of what sorts of inputs cause the error and which sorts don’t, look over them and see if there’s a pattern. In many cases there will be something obvious – you get the answer wrong for any strings of length two or more, or the function crashes on anything of odd length, or it fails on anything ending in the letter e, etc. – and that’s really, really good to know because it will inform what you should look for in the next step. Alternatively, if the program <em>always</em> gives the wrong answer, then that’s good to know as well – it means that there’s something fundamentally amiss and that you’re not looking for edge cases.</p>
+
+<h2 id="step-three-rubber-duck-debug">Step Three: Rubber-Duck Debug</h2>
+
+<p>At this point, you should be able to answer this question:</p>
+
+<blockquote>
+  <p><strong><em>Where in the program is the root cause of the issue you’re seeing, and what type of input seems to cause the problem?</em></strong></p>
+</blockquote>
+
+<p>Your next step is to walk through your code, one step at a time, to see why things aren’t working.</p>
+
+<p>Our recommendation for this step is to use a time-honored software engineering technique amusingly called <a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">rubber-duck debugging</a>. The idea is the following. Pull out a tiny yellow rubber duck, or any other inanimate object, and then go one line at a time through the buggy region of the code and explain why every single thing you’ve written is <em>clearly</em> and <em>obviously</em> correct, being as specific and precise as possible. Calling a function? Explain to the duck why you call that function and why every input to the function is <em>clearly</em> and <em>obviously</em> the right input to that function. Running a loop? Explain to the duck why <em>of course</em> the bounds of the loop are <em>totally</em> correct and that you don’t have an off-by-one error in them. Proceeding recursively? Tell the duck about how it’s <em>really obvious</em> why you chose the right base case, and why that base case is correct, and why you return the right thing in that base case.</p>
+
+<p>From experience, I’d say that nine times out of ten you’ll run into a line of code where, in explaining it to the duck, you realize something’s not quite right. And congrats! You’ve probably found your bug.</p>
+
+<p>When you’re just getting started programming, you may run into another case – you come across a line of code that for the life of you you can’t explain to the duck. You’re not sure why it’s there or what you were thinking as you were writing it. When that happens, that’s a sign that you may have written something that really shouldn’t be there. That’s a great indicator that you may want to remove that line of code and then restart your process. That might instantly fix the issue, or it might expose another.</p>
+
+<p>Oh, and if you’re working with a partner, your partner is a great stand-in for a rubber duck, though (hopefully) the reverse isn’t true. 😃</p>
+
+<h2 id="step-four-really-dive-deep">Step Four: Really Dive Deep</h2>
+
+<p>At this point, you can answer the following question:</p>
+
+<blockquote>
+  <p><strong><em>Where in the program is the root cause of the issue you’re seeing, what type of input seems to cause the problem, and what does every line of code in that part of the program do?</em></strong></p>
+</blockquote>
+
+<p>When this happens, it’s time to go and ask for some help. This means that you’re at a point where you’re pretty sure you’re looking in the right place, and you think you know what causes it, and you think that every line of code is correct. Clearly one of those assumptions isn’t right, and at this point you should go to the LaIR and get one of the section leaders to look over your code and offer some feedback.</p>
+
+<p>You might find you localized the error to the wrong place in the code. You might find you misinterpreted the directions or just flat out made an error when writing test cases and thought that something working was broken or vice-versa. And you might find there’s some weird syntactic nuance in the program where a line of code does something fundamentally different than what you expected. In each case, having outside review would be super useful, and that’s precisely why you should ask for help!</p>
+
+<p>Once you’ve found the error, make a note of what you did wrong. Was it a simple typo you didn’t know to look for? Was it a logic error that hadn’t occurred to you? Or was it just a boneheaded mistake, the sort of thing that everyone makes every now and then? Regardless, see what you can learn from it. Maybe the SL showed you a new way to debug things, or maybe they showed you a different way of thinking about things. Maybe you now know how to read an error message you previously didn’t. In any case, hopefully you walk away having learned something new.</p>
+
+<p>Getting good at programming takes time, and I honestly think that a large part of it is just having had enough time to make a lot of mistakes. Over time, you’ll build up an immune system for bugs – things will look fishy and you’ll catch the error before you make it.</p>
+
+<p>Until then, best of luck, and happy debugging!</p>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Jan-06
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

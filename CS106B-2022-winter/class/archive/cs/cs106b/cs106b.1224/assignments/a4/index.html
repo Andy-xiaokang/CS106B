@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Recursion to the Rescue!</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../../section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../../section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../../section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../../section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../../section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../../section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../../section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 4. Recursion to the Rescue!</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<!-- This boilerplate inserts formatted due date -->
+
+<!--  Boilerplate content for assignment index page -->
+
+<h2 id="due-friday-february-4-at-1030-am">Due Friday, February 4 at 10:30 am</h2>
+
+<ul>
+  <li><small>Submissions received by the due date receive a small <strong>on-time bonus</strong>. </small></li>
+  <li><small>All students are granted a pre-approved extension or "grace period" of 24 hours after the due date. Late submissions are accepted during the grace period with no penalty.</small></li>
+  <li><small>The <strong>grace period expires Sat, Feb 5 at 10:30 am</strong>, after which we cannot accept further late submissions.</small></li>
+  <li><small>All due dates and submission times are expressed in Pacific time.</small></li>
+</ul>
+
+<p><strong><em>You are permitted to work on this assignment in pairs.</em></strong></p>
+
+<hr />
+
+<p>Recursion is a powerful problem-solving tool with tons of practical applications. This assignment centers on two real-world recursion problems, each of which we think is interesting in its own right. By the time you’re done with this assignment, we think you’ll have a much deeper appreciation both for recursive problem solving and for what sorts of areas you can apply your newfound skills to.</p>
+
+<p>There are three problems in this assignment. The first one is a warmup, and the next two are the main coding exercises.</p>
+
+<ul>
+  <li><strong>Debugging Practice:</strong> The debugger is a powerful tool for helping understand what a program is doing. Learning how to harness it is important to developing as a programmer.</li>
+  <li><strong>Matchmaker:</strong> We need to partner people up. What's the best way to do so?</li>
+  <li><strong>Disaster Planning:</strong> Cities need to plan for natural disasters. Emergency supplies are expensive. What’s the cheapest way to prepare for an emergency?</li>
+</ul>
+
+<p>You have plenty of time to work on this assignment if you make slow and steady progress. Here's our recommended timetable:</p>
+
+<ul>
+  <li>Aim to complete the debugging exercises within one day of this assignment going out.</li>
+  <li>Aim to complete Matchmaker within four days of this assignment going out.</li>
+  <li>Aim to complete Disaster Planning within seven days of this assignment going out.</li>
+</ul>
+
+<div class="pset-bordered" style="background-color: white;">
+<blockquote>
+  <p><strong>You are encouraged to work in pairs on this assignment. Just don’t work in pairs by splitting the assignment in half. 😃</strong></p>
+</blockquote>
+</div>
+
+<p><br /></p>
+
+<h2 id="assignment-logistics">Assignment Logistics</h2>
+
+<h3 id="starter-files">Starter Files</h3>
+
+<p>We provide a ZIP of the starter project. Download the zip, extract the files, and double-click the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> file to open the project in Qt Creator.</p>
+
+<blockquote>
+  <p>📦 <a href="Assignment&#32;4.zip">Starter code</a></p>
+</blockquote>
+
+<h3 id="resources">Resources</h3>
+
+<p>Feel free to check out our <a href="../../resources/python_to_cpp.html" title="Python to C++ Guide">Python-to-C++ guide</a> if you're moving from Python to C++. Also, check out our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>, <a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">guide to testing</a>, and <a href="../../resources/debugging_guide.html" title="Debugging Your Code">debugging guide</a>.</p>
+
+<h3 id="getting-help">Getting Help</h3>
+
+<p>Keep an eye on the <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> for an announcement of the Assignment 4 <strong>YEAH</strong> (YEAH = Your Early Assignment Help) group session where our veteran section leaders will answer your questions and share pro tips. We know it can be daunting to sit down and break the barrier of starting on a substantial programming assignment – come to YEAH for advice and confidence to get you on your way!</p>
+
+<p>We also here to help if you get run into issues along the way! The <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> is open 24/7 for general discussion about the assignment, lecture topics, the C++ language, using Qt, and more. Always start by searching first to see if your question has already been asked and answered before making a new post.</p>
+
+<p>To troubleshoot a problem with your specific code, your best bet is to bring it to the <a href="../../lair.html" title="LaIR helper hours">LaIR</a> helper hours or <a href="../../about_staff.html">office hours</a>.</p>
+
+<h2 id="part-one-debugging-practice">Part One: Debugging Practice</h2>
+
+<p>When you encounter a bug in a program, your immediate instinct is probably to say something like</p>
+
+<blockquote>
+  <p><em>"Why isn't my program doing what I want it to do?"</em></p>
+</blockquote>
+
+<p>One of the best ways to answer that question is to instead answer this other one:</p>
+
+<blockquote>
+  <p><em>"What <strong>is</strong> my program doing, and why is that different than what I intended?"</em></p>
+</blockquote>
+
+<p>The debugger is powerful tool for answering questions like these. You explored the debugger in Assignment 0 (when you learned how to set breakpoints and use Step In, Step Over, and Step Out) and in Assignment 1 (when you learned how to walk up and down the call stack). This part of the assignment is designed to refresh your skills in those areas and to give you practice working the debugger in more elaborate recursive problems.</p>
+
+<h3 id="milestone-1-explore-the-towers-of-hanoi">Milestone 1: Explore the Towers of Hanoi</h3>
+<p>The Towers of Hanoi problem is a classic puzzle that has a beautiful recursive solution. If you haven’t yet done so, take a few minutes to read Chapter 8.1 of the textbook, which explores this problem in depth.</p>
+
+<p>We’ve provided you with a <code class="language-c++ highlighter-rouge"><span class="n">TowersOfHanoi</span><span class="p">.</span><span class="n">cpp</span></code> file, which includes a correct, working solution to the Towers of Hanoi problem. Take a minute to run the “Towers of Hanoi” demo from the main program. Choose the “Go!” button to begin the animation, and marvel at how that tiny recursive function is capable of doing so much. Isn’t that amazing?</p>
+
+<p>With that said, let’s dive into the meat of what you’ll be doing. We’re going to ask you to use the debugger and its features to get a better sense for how the code works.</p>
+
+<p>Open the <code class="language-c++ highlighter-rouge"><span class="n">TowersOfHanoi</span><span class="p">.</span><span class="n">cpp</span></code> file, then set a breakpoint on the first line of the <code class="language-c++ highlighter-rouge"><span class="n">solveTowersOfHanoi</span></code> function. Run the program in debug mode, choose the “Towers of Hanoi” option from the menu at the top of the program, but don’t click the “Go!” button yet. When the debugger engages, it halts execution of the running program so that you can inspect what’s going on. This means that the graphics window might not be operational – you might find that you can’t drag it around, or resize it, or move it, etc. Therefore, we recommend that before you hit the “Go!” button to bring up the debugger, you resize the demo app window and the Qt Creator window so that they’re both fully visible.</p>
+
+<p>Once you’re ready, hit the “Go!” button. This will trigger the breakpoint. You’ll see a yellow arrow pointing at the line containing the breakpoint, and the local variables window will have popped up.</p>
+
+<p>First, investigate the pane in the debugger that shows local variables and their values. Because totalMoves has not yet been initialized, its value is unspecified; it might be 0, or it might be a random garbage value. The function’s parameters, though, should be clearly visible at this point.</p>
+
+<p>You should now be able to answer the following questions. To do so, edit the file <code class="language-c++ highlighter-rouge"><span class="n">DebuggingAnswers</span><span class="p">.</span><span class="n">txt</span></code> with your answers:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="question-1">Question 1</h4>
+<p>What are the values of all the parameters to the <code class="language-c++ highlighter-rouge"><span class="n">solveTowersOfHanoi</span></code> function?</p>
+
+<h4 id="question-2">Question 2</h4>
+<p>Some function in our starter code called <code class="language-c++ highlighter-rouge"><span class="n">solveTowersOfHanoi</span></code>. What file was that function defined in, and what was the name of that function? (Hint: use the call stack!)</p>
+</div>
+
+<p>Once you’ve answered these questions, go back to the <code class="language-c++ highlighter-rouge"><span class="n">TowersOfHanoi</span><span class="p">.</span><span class="n">cpp</span></code> file, and make sure you see a yellow arrow pointing at the line containing your breakpoint. Let’s now single-step through the program. Use the “Step Over” button to advance past the call to the function <code class="language-c++ highlighter-rouge"><span class="n">initHanoiDisplay</span></code>, which configures the graphics window. If you’ve done this correctly, you should see the disks and spindles.</p>
+
+<p>Now, keeping clicking “Step Over” to advance through the other lines in the function. When you step over the line containing the call to moveTower, you should see the disks move to solve the Towers of Hanoi. Doesn’t get old, does it? 😃
+You should now be ready to answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">DebuggingAnswers</span><span class="p">.</span><span class="n">txt</span></code>.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="question-3">Question 3</h4>
+<p>How many total moves were required to solve this instance of Towers of Hanoi?</p>
+</div>
+
+<p>At this point, hit the “Continue” button to let the program keep running as usual. Click the “Go!” button again to trigger your breakpoint a second time.</p>
+
+<p>This time, instead of using Step Over, we’re going to use Step Into. Rather than stepping over function calls, Step Into goes inside the function being called so you can step through each of its statements. (If the current line is not a function call, Step Into and Step Over do the same thing.)</p>
+
+<p>Use Step Into to enter the call to <code class="language-c++ highlighter-rouge"><span class="n">initHanoiDisplay</span></code>. The editor pane will switch to show the contents of the <code class="language-c++ highlighter-rouge"><span class="n">src</span><span class="o">/</span><span class="n">Demos</span><span class="o">/</span><span class="n">TowersOfHanoiGUI</span><span class="p">.</span><span class="n">cpp</span></code> file and the yellow arrow will point to the first line of the <code class="language-c++ highlighter-rouge"><span class="n">initHanoiDisplay</span></code> function. This code is unfamiliar, you didn't write it, and you didn't intend to start tracing it. Step Out is your escape hatch. This “giant step” executes the rest of the current function up to where it returns. Use Step Out to return to <code class="language-c++ highlighter-rouge"><span class="n">solveTowersOfHanoi</span></code>.</p>
+
+<p>The next line of code in <code class="language-c++ highlighter-rouge"><span class="n">solveTowersOfHanoi</span></code> is the pause function, another library function you don't want to trace through. You could step in and back out, but it's simpler to just Step Over.</p>
+
+<p>You are interested in tracing through the <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> function, so use Step Into to go inside. Once inside, single-step through the code until the program is just about to execute the first recursive call to <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code>. Now, press Step Over to execute it. The GUI window will show the left tower, except for the bottom disc, moving from the left peg to the middle peg, leaving the bottom disk uncovered. This should also cause the value of <code class="language-c++ highlighter-rouge"><span class="n">totalMoves</span></code> to count all moves made by that recursive call.
+Now, answer the following question:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="question-4">Question 4</h4>
+<p>What is the value of the <code class="language-c++ highlighter-rouge"><span class="n">totalMoves</span></code> variable inside the first <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> call after stepping over its first recursive sub-call? (In other words, just after stepping over the first recursive sub-call to <code class="language-c++ highlighter-rouge"><span class="n">moveTower</span></code> inside the <code class="language-c++ highlighter-rouge"><span class="k">if</span></code> statement in the recursive function.)</p>
+</div>
+
+<p>The next Step Over moves the bottom disk. The final Step Over moves the smaller tower on top. Use Continue to resume normal execution and finish the demo.</p>
+
+<p>Press the “Go!” button a third time. This time, do your own tracing and exploration to solidify your understanding of recursion and its mechanics. Watch the animated disks and consider how this relates to the sequence of recursive calls. Observe how stack frames are added and removed from the debugger call stack. Select different levels on the call stack to see the value of the parameters and the nesting of recursive calls. Here are some suggestions for how stepping can help:</p>
+
+<ul>
+  <li>Stepping <strong>over</strong> a recursive call can be helpful when thinking holistically. A recursive call is simply a “magic” black box that completely handles the smaller subproblem.</li>
+  <li>Stepping <strong>into</strong> a recursive call allows you to trace the nitty-gritty details of moving from an outer recursive call to the inner call.</li>
+  <li>Stepping <strong>out</strong> of a recursive call allows you to follow along with the action when backtracking from an inner recursive call to the outer one.</li>
+</ul>
+
+<h3 id="milestone-2-debug-a-broken-permutations-function">Milestone 2: Debug a Broken Permutations Function</h3>
+<p>Your next task is to use the debugger to do what it’s designed for – to debug a program!</p>
+
+<p>In <code class="language-c++ highlighter-rouge"><span class="n">Permutations</span><span class="p">.</span><span class="n">cpp</span></code>, we have provided you an <strong>incorrect</strong> implementation of a function to generate permutations recursively. The <code class="language-c++ highlighter-rouge"><span class="n">permutationsRec</span></code> function contains a small but significant error. It’s not that far from working correctly – in fact, <em>there is a one-character mistake in that function</em> – but what difference a single character can make! Your task is to use the debugger to figure out the following:</p>
+
+<ul>
+  <li>What is the one-character mistake in the program?</li>
+  <li>With the one-character mistake in the program, what does the program actually do? And why is that not what we want it to do?</li>
+</ul>
+
+<p>Choose “Permutations” from the top menu and you’ll be able to type in strings, call the broken <code class="language-c++ highlighter-rouge"><span class="n">permutationsOf</span></code> function, and see the output that’s produced. Try various inputs and observe the difference between what’s produced and what’s supposed to be produced. (How can you see what’s supposed to happen? You could always run the lecture code from Monday when we wrote a correct recursive permutations function!) It can be difficult to tease out the impact of the bug when you are tracing through a deep sequence of recursive calls. Try a variety of simple inputs to find the <em>smallest possible input</em> for which you can observe an error and use that as your test case. Specifically, you’re aiming to find an input where</p>
+<ul>
+  <li>the output produced is wrong, and</li>
+  <li>no shorter input produces the wrong answer.</li>
+</ul>
+
+<p>Using your minimized test case, trace the operation of <code class="language-c++ highlighter-rouge"><span class="n">permutationsRec</span></code> to observe what’s going on internally. Diagram the decision tree that is being traversed and match the tree to what you see in the debugger as you step in/out/over. Select different stack frames in the call stack to see the state being maintained in each of the outer frames.</p>
+
+<p>Eventually, you should find the bug. Once you have, answer the following questions by editing the <code class="language-c++ highlighter-rouge"><span class="n">DebuggingAnswers</span><span class="p">.</span><span class="n">txt</span></code> file.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="question-5">Question 5</h4>
+<p>What is the smallest possible input that triggers the bug?</p>
+
+<h4 id="question-6">Question 6</h4>
+<p>What is the one-character error in the program?</p>
+
+<h4 id="question-7">Question 7</h4>
+<p>Explain why that one-character bug causes the function to return the exact output you see when you feed in the input you provided in Q5. You should be able to specifically account for where things go wrong and how the place where the error occurs causes the result to change from “completely correct” to “terribly wrong.”</p>
+</div>
+
+<p>As a hint on this problem: you might have noticed that we didn’t pass the parameters in by <code class="language-c++ highlighter-rouge"><span class="k">const</span></code> reference. If you’ve tried hunting the bug for fifteen minutes and haven’t found it yet, try changing the parameters to use pass-by-const-reference and see if you notice anything. That might help you <em>find</em> the bug, but to <em>understand</em> the bug you’ll need to do some more exploration in the debugger.</p>
+
+<p>We’ve asked you to answer these questions because this sort of bug-hunting is useful for understanding recursive functions and what makes them break. In particular, keep the following in mind:</p>
+
+<ul>
+  <li>When trying to debug a recursive function, <strong>look for the simplest case where the recursion gives the wrong answer.</strong> Having a small test case makes it easy to reproduce the error and to trace through what’s happening in the debugger.</li>
+  <li>Using Step In, Step Over, and Step Out, it’s possible to watch recursion work at different levels of detail. Step In lets you see what’s going on at each point in time. Step Over lets you see what a recursive function does in its entirety. Step Out lets you run the current stack frame to completion to see how the code behaves as a whole.</li>
+</ul>
+
+<h2 id="part-two-matchmaker">Part Two: Matchmaker</h2>
+
+<h3 id="background-perfect-matchings">Background: Perfect Matchings</h3>
+
+<p>You have a group of people all taking the same small class. That class lets people work in pairs on the assignments, and folks are interested in finding someone to work with. After everyone chats with each other, they each make a list of the people they’d be comfortable working with. The question then arises – given everyone’s preferences, is it possible to pair everyone off so that they’re partnered with someone they want to work with?</p>
+
+<p>We can visualize this problem by drawing a circle for each person, then drawing lines connecting pairs of people who would be comfortable working with one another. Here’s an example of what that might look like:</p>
+
+<blockquote>
+  <p><img src="img/mm/SampleGraph.png" alt="!! TODO: Text description of this image. !!" /></p>
+</blockquote>
+
+<p>For example, in the above diagram, person <em>B</em> could potentially partner with people <em>A</em>, <em>C</em>, <em>E</em>, and <em>G</em>; person <em>A</em> could only partner with person <em>B</em>; and person <em>D</em> could partner with any of people <em>C</em>, <em>G</em>, or <em>H</em>. We can encode this diagram as a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span></code>, where each key in the map represents a person and each value represents the set of people they could potentially partner with. For example, the above diagram would be encoded as follows:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"A": { "B" },                    
+"B": { "A", "C", "E", "G" },     
+"C": { "B", "D", "G" },          
+"D": { "C", "G", "H" },          
+"E": { "B", "F" },               
+"F": { "E", "G" },               
+"G": { "B", "C", "D", "F", "H" },
+"H": { "D", "G" }  
+</code></pre></div></div>
+<p>Now that we see which pairs of people could potentially be paired up, we need to decide which people we will actually partner together. There are many ways we could do this. For example, consider this first possible option:</p>
+
+<blockquote>
+  <p><img src="img/mm/Match1.png" alt="!! TODO: Describe this image !!" /></p>
+</blockquote>
+
+<p>In this matching, we've paired <em>B</em> with <em>E</em>, paired <em>C</em> with <em>G</em>, and paired <em>D</em> with <em>H</em>. That leaves <em>A</em> and <em>F</em> without a partner.</p>
+
+<p>Here's another option:</p>
+
+<blockquote>
+  <p><img src="img/mm/Match2.png" alt="!! TODO: Describe this image !!" /></p>
+</blockquote>
+
+<p>We've paired <em>A</em> and <em>B</em>, paired <em>F</em> with <em>G</em>, and paired <em>D</em> with <em>H</em>. This leaves <em>E</em> and <em>C</em> alone.</p>
+
+<p>Now, consider this option:</p>
+
+<blockquote>
+  <p><img src="img/mm/Match3.png" alt="!! TODO: Describe this image !!" /></p>
+</blockquote>
+
+<p>This is the (not very good) option of just pairing off <em>B</em> and <em>E</em>, leaving people <em>A</em>, <em>C</em>, <em>D</em>, <em>F</em>, <em>G</em>, and <em>H</em> unpaired.</p>
+
+<p>However, we can do better than all three of the above options. Here's a better matching:</p>
+
+<blockquote>
+  <p><img src="img/mm/Match4.png" alt="!! TODO: Describe this image !!" /></p>
+</blockquote>
+
+<p>Here, we pair <em>A</em> with <em>B</em>, pair <em>C</em> with <em>D</em>, pair <em>E</em> with <em>F</em>, and pair <em>G</em> with <em>H</em>. This forms partners out of people who want to work together and does so in a way that matches everyone with a partner. Such an arrangement is called a <strong><em>perfect matching</em></strong>.</p>
+
+<p>More generally, a perfect matching is a way to pair people off so that</p>
+
+<ul>
+  <li>each person is assigned a partner,</li>
+  <li>no person is assigned two or more partners, and</li>
+  <li>each partner pair corresponds to one of the original potential pairings.</li>
+</ul>
+
+<p>In some scenarios, like the one shown above, it’s possible to find a perfect matching. However, depending on who wants to work with one another, it’s not always possible to find perfect matchings. Below are several examples of groups of people with no perfect matching. Take a minute to convince yourself why a perfect matching isn’t possible in each case.</p>
+
+<blockquote>
+  <p><img src="img/mm/NoPerfectMatch1.png" alt="!! TODO: Describe this image !!" /></p>
+</blockquote>
+
+<blockquote>
+  <p><img src="img/mm/NoPerfectMatch2.png" alt="!! TODO: Describe this image !!" /></p>
+</blockquote>
+
+<blockquote>
+  <p><img src="img/mm/NoPerfectMatch3.png" alt="!! TODO: Describe this image !!" /></p>
+</blockquote>
+
+<h3 id="milestone-one-find-perfect-matchings">Milestone One: Find Perfect Matchings</h3>
+
+<p>Your first task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">hasPerfectMatching</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">possibleLinks</span><span class="p">,</span>
+                        <span class="n">Set</span><span class="o">&lt;</span><span class="n">Pair</span><span class="o">&gt;&amp;</span> <span class="n">matching</span><span class="p">);</span>                         
+</code></pre></div></div>
+
+<p>that takes as input a group of people and the possible links between them, then determines whether a perfect matching exists. If one does, the function should return <code class="language-c++ highlighter-rouge"><span class="nb">true</span></code> and set the <code class="language-c++ highlighter-rouge"><span class="n">matching</span></code> outparameter to hold one such perfect matching. If one doesn’t, the function should return <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code>, and the contents of matching can be whatever you want them to be.</p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">Pair</span></code> type represents a pair of strings, where the order of the strings doesn’t matter. (More specifically, <code class="language-c++ highlighter-rouge"><span class="n">Pair</span></code> always stores the strings in alphabetical order.) You can use it like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Pair</span> <span class="nf">greek1</span><span class="p">(</span><span class="s">"Castor"</span><span class="p">,</span> <span class="s">"Pollux"</span><span class="p">);</span> <span class="c1">// Create a pair.</span>
+<span class="n">Pair</span> <span class="nf">greek2</span><span class="p">(</span><span class="s">"Pollux"</span><span class="p">,</span> <span class="s">"Castor"</span><span class="p">);</span> <span class="c1">// Same pair; order doesn't matter.</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">greek1</span> <span class="o">==</span> <span class="n">greek2</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// true; elements are the same even though in a different order</span>
+<span class="p">}</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">greek1</span><span class="p">.</span><span class="n">first</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span>
+     <span class="o">&lt;&lt;</span> <span class="n">greek1</span><span class="p">.</span><span class="n">second</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// Prints Castor, Pollux</span>
+</code></pre></div></div>
+
+<p>As a hint for this problem, at each point in time, you’ll find either that everyone is paired off, or that there’s someone who isn’t paired. In the first case, great! You’re done, and you have a perfect matching. In the second case, pick some person who isn’t yet paired off, then try all possible ways of pairing them off with an unpaired person.</p>
+
+<p>Before you start writing any code for this one, you should add a custom test case of your own to make sure you’re comfortable with the statement of the problem. There are lots of cases we didn’t check for – see if you can find one that’s relatively simple.</p>
+
+<p>With that in mind, here’s your first milestone:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="milestone-one-requirements">Milestone One Requirements</h4>
+<ol>
+  <li>
+    <p>Add at least one <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> for <code class="language-c++ highlighter-rouge"><span class="n">hasPerfectMatching</span></code> to <code class="language-c++ highlighter-rouge"><span class="n">Matchmaker</span><span class="p">.</span><span class="n">cpp</span></code>. This is a great way to confirm that you understand what the function you’ll be writing is supposed to do.</p>
+  </li>
+  <li>
+    <p>Implement the <code class="language-c++ highlighter-rouge"><span class="n">hasPerfectMatching</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">Matchmaker</span><span class="p">.</span><span class="n">cpp</span></code>.</p>
+  </li>
+</ol>
+</div>
+
+<p>Some notes and hints on this problem:</p>
+
+<ul>
+  <li>
+    <p>The links in <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span></code> are symmetric: if person <em>A</em> is a possible match for person <em>B</em>, then person <em>B</em> is also a possible match for person <em>A</em>. You can assume we’ll never call this function on an input where that isn’t the case.</p>
+  </li>
+  <li>
+    <p>No person will ever have a possible link to themselves. Each link really does represent a pair of people.</p>
+  </li>
+  <li>
+    <p>It’s possible that there’s a person in <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span></code> who isn’t linked to anyone, meaning that they aren’t comfortable working with anyone. In that case, there’s no perfect matching.</p>
+  </li>
+  <li>
+    <p>You may find it easier to solve this problem first by simply getting the return value right, completely ignoring the <code class="language-c++ highlighter-rouge"><span class="n">matching</span></code> outparameter. Once you’re sure that your code is always producing the right answer, update it so that you actually fill in <code class="language-c++ highlighter-rouge"><span class="n">matching</span></code>. Doing so shouldn’t require too much code, and it’s way easier to add this in at the end than it is to debug the whole thing all at once.</p>
+  </li>
+  <li>
+    <p>You can assume that <code class="language-c++ highlighter-rouge"><span class="n">matching</span></code> is empty when the function is called.</p>
+  </li>
+  <li>
+    <p>If your function returns <code class="language-c++ highlighter-rouge"><span class="nb">false</span></code>, the final contents of <code class="language-c++ highlighter-rouge"><span class="n">matching</span></code> don’t matter, though we suspect your code will probably leave it blank.</p>
+  </li>
+  <li>
+    <p>If you need to grab a key out of a <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> and don’t care which key you get, use the function <code class="language-c++ highlighter-rouge"><span class="n">map</span><span class="p">.</span><span class="n">firstKey</span><span class="p">()</span></code>. To grab a key out of a <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code>, use <code class="language-c++ highlighter-rouge"><span class="n">set</span><span class="p">.</span><span class="n">first</span><span class="p">()</span></code>. (Which of these functions, if any, you use in this function are up to you.)</p>
+  </li>
+  <li>
+    <p>Although the parameters to this function are passed by <code class="language-c++ highlighter-rouge"><span class="k">const</span></code> reference, you’re free to make extra copies of the arguments or to set up whatever auxiliary data structures you’d like. If you find you’re “fighting” your code – an operation that seems simple is taking a lot of lines – it might mean that you need to change your data structures.</p>
+  </li>
+  <li>
+    <p>You might be tempted to solve this problem by repeatedly taking a person with the most possible partners and then assigning them a partner, or taking the person with the fewest possible partners and picking a partner for them, or something like this. Solutions like these are called <strong><em>greedy algorithms</em></strong>, and while greedy algorithms do work well for some problems, this problem is not one of them. To the best of our knowledge, there is no known greedy algorithm for this problem.</p>
+  </li>
+  <li>
+    <p>The very last of the provided tests is a “stress test” designed to check that your algorithmic strategy avoids unnecessary work. Specifically, this test is designed to check whether your code repeatedly generates the same matchings multiple times, or spends time exploring matchings that couldn’t possibly work (say, matchings where a person was intentionally never assigned a partner). If this test never finishes running, or it finishes running only after a very long time, it may mean that the strategy you’ve picked for this problem is intrinsically inefficient. If you run into this, take a look over your code. Make sure each matching you generate is generated exactly once and that you don’t, say, try assigning the same pair of people to each other multiple times.</p>
+  </li>
+</ul>
+
+<h3 id="background-maximum-weight-matchings">Background: Maximum-Weight Matchings</h3>
+
+<p>Perfect matchings are one way to assign partners, but there’s not the only or best way to do so. Indeed, there are two major shortcomings of this approach.</p>
+
+<ul>
+  <li>
+    <p>If a particular combination of students has a perfect matching, then we can always assign partners to everyone. But there are many cases where this isn’t possible. A simple case would be if there’s an odd number of students, in which case someone necessarily won’t get a partner.</p>
+  </li>
+  <li>
+    <p>Up to this point, we’ve been assuming that each pair of people either could be partners, or could not be partners. However, reality is messier than this. There might be a person who could be okay partners with one person, so-so partners with a second, but excellent partners with a third. In that case, we may want to prioritize matching with the third person, since that would be better than the other two options.</p>
+  </li>
+</ul>
+
+<p>To account for this, we’ll make some changes to our model. As before, we’ll have everyone list people they may want to work with. Unlike before, though, each one of those possible pairs will have an associated <strong><em>weight</em></strong> representing how good a match they would be. Larger weights correspond to better matches, and smaller weights correspond to worse matches. In the extreme case, a weight of zero means “these two people are equally happy working together and not working together,” and negative weights mean “these two people would actively dislike being paired.” That might give us a picture like this one here:</p>
+
+<blockquote>
+  <p><img src="img/mm/WeightedSampleGraph.png" alt="!! TODO: Describe this picture" /></p>
+</blockquote>
+
+<p>For example, the value of partnering up person <em>A</em> and person <em>B</em> is 3, but the value of partnering up person <em>A</em> and person <em>E</em> is 5. That means that <em>A</em> would rather work with <em>E</em> than with <em>B</em>, but is still open to working with <em>B</em> if that ends up being better for the group. Notice, though, that person <em>A</em> does not want to work with person <em>C</em> or person <em>D</em>, as evidenced by the lack of lines connecting <em>A</em> to <em>C</em> or <em>A</em> to <em>D</em>.</p>
+
+<p>There’s no way to find a perfect matching in this graph – there’s an odd number of people here, so someone has to be left out. However, we can try to find matchings that have a large total weight, corresponding to finding better-quality matches between people. For example, here's one option:</p>
+
+<blockquote>
+  <p><img src="img/mm/WeightedMatch1.png" alt="!! TODO: Describe this picture" /></p>
+</blockquote>
+
+<p>Here, we pair off <em>A</em> with <em>B</em> and pair <em>C</em> with <em>D</em> for a total weight of 6. This leaves <em>E</em> unpaired. However, there's a higher-weight matching than this one:</p>
+
+<blockquote>
+  <p><img src="img/mm/WeightedMatch2.png" alt="!! TODO: Describe this picture" /></p>
+</blockquote>
+
+<p>Notice that we've just paired off <em>B</em> and <em>E</em> for a total weight of 7, leaving the other three people unpaired. However, apparently <em>B</em> and <em>E</em> so strongly desire working together that this is a higher-weight matching than the one above! But it's not the highest-weight matching possible. Here's a better one:</p>
+
+<blockquote>
+  <p><img src="img/mm/WeightedMatch3.png" alt="!! TODO: Describe this picture" /></p>
+</blockquote>
+
+<p>This pairs up <em>A</em> with <em>E</em> and pairs <em>B</em> with <em>D</em>, leaving <em>C</em> unpaired. Even though each of those matches is individually worse than the match between <em>B</em> and <em>E</em>, the total weight of this matching is 9. And yet even this matching can be bested! Below is the highest-weight matching possible here:</p>
+
+<blockquote>
+  <p><img src="img/mm/WeightedMatch4.png" alt="!! TODO: Describe this picture" /></p>
+</blockquote>
+
+<p>This pairs off <em>A</em> with <em>E</em> and <em>B</em> with <em>C</em> for a total weight of 11. This is the highest weight of any matching here, and so it's called a <strong><em>maximum-weight matching</em></strong>.</p>
+
+<p>Notice that a maximum-weight matching might not always be a perfect matching. In the above case, there is no perfect matching possible because there's an odd number of people. But even in cases where perfect matchings do exist, the maximum-weight matching might not be perfect. For example, here’s a simple case where there’s a perfect matching (pair <em>A</em> with <em>B</em> and pair <em>C</em> with <em>D</em> for a total weight of 2) that isn’t the maximum-weight matching (which would be to pair <em>B</em> with <em>C</em> for a total weight of 3, leaving <em>A</em> and <em>D</em> unpartnered).</p>
+
+<blockquote>
+  <p><img src="img/mm/MaxIsntPerfect.png" alt="!! TODO: Describe this picture" /></p>
+</blockquote>
+
+<p>This is a potential downside to this approach, though in many cases the benefits of assigning better partnerships outweighs this drawback. Keep that in mind as you're working through this assignment.</p>
+
+<h3 id="milestone-two-find-maximum-weight-matchings">Milestone Two: Find Maximum-Weight Matchings</h3>
+
+<p>Your next task is to implement a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">Pair</span><span class="o">&gt;</span> <span class="n">maximumWeightMatching</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">possibleLinks</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a weighted preference graph, then returns a matching in that graph with the maximum possible weight.</p>
+
+<p>The parameter to this function is a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span></code>, which might raise some eyebrows. Fortunately, it has a nice interpretation. Each key is a person in the group. The associated value is <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> from other people in the group to the weight of the link to that person. As an example, here’s one sample group of people, along with the associated map.</p>
+
+<blockquote>
+  <p><img src="img/mm/WeightedSampleGraph.png" alt="!! TODO: Describe this image. !!" /></p>
+</blockquote>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"A": { "B": 3,  
+       "E": 5 },
+"B": { "A": 3,  
+       "C": 6,  
+       "D", 4,  
+       "E", 7 },
+"C": { "B": 6,  
+       "D", 3 },
+"D": { "B": 4,  
+       "C", 3,  
+       "D", 4 },
+"E": { "A": 5,  
+       "B", 7,  
+       "D", 4 } 
+</code></pre></div></div>
+
+<p>If the above map is called <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span></code>, then, for example, <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span><span class="p">[</span><span class="s">"A"</span><span class="p">][</span><span class="s">"E"</span><span class="p">]</span></code> gives the weight of the potential link between <em>A</em> and <em>E</em> (here, 5), and <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span><span class="p">[</span><span class="s">"B"</span><span class="p">][</span><span class="s">"D"</span><span class="p">]</span></code> gives the weight of the potential link between <em>B</em> and <em>D</em>.</p>
+
+<p>To repeat an important point from above – a maximum weighted matching might not necessarily be a perfect matching. This means that your code must allow for the case where a particular person is not matched with anyone else.</p>
+
+<p>As before, you should write at least one custom test case (a <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code>) for this problem before you start writing any code. This is a great way to confirm that you understand what’s being asked of you prior to working on the backtracking logic.</p>
+
+<p>With that said, here’s what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="milestone-two-requirements">Milestone Two Requirements</h4>
+<ol>
+  <li>Add at least one <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> for <code class="language-c++ highlighter-rouge"><span class="n">maximumWeightMatching</span></code> to <code class="language-c++ highlighter-rouge"><span class="n">Matchmaker</span><span class="p">.</span><span class="n">cpp</span></code>. This is a great way to confirm that you understand what the function you’ll be writing is supposed to do.</li>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">maximumWeightMatching</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">Matchmaker</span><span class="p">.</span><span class="n">cpp</span></code>.</li>
+  <li>Test your code thoroughly. Once you’re confident that it works – and no sooner – pull up our bundled demo application and see what sorts of matchings your code can find! Double-click in blank space to create a new person, and add links between people by hovering over a person, clicking in the blue ring around them, and dragging to the person they can pair with.</li>
+</ol>
+</div>
+
+<p>Some notes and hints on this problem:</p>
+
+<ul>
+  <li>
+    <p>This problem has some similarities to determining whether a perfect matching exists. However, in many ways, it's quite a different problem. Previously, you just needed to see whether there was any way to pair everyone off. Now, you need to look across all possible ways of pairing people off and figure out which is the best. Previously, everyone necessarily had to be paired off. Now, the best solution might leave people unpaired. As a result, <strong><em>we do not recommend copying your code for finding perfect matchings and making edits to it</em></strong>. This problem is sufficiently different that we advise rewriting the code from scratch.</p>
+  </li>
+  <li>
+    <p>If there are multiple matches tied for the maximum weight, you can return any of them.</p>
+  </li>
+  <li>
+    <p>The links in <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span></code> are symmetric: if person <em>A</em> is a possible match for person <em>B</em>, then person <em>B</em> is also a possible match for person <em>A</em>. Moreover, the weights of the match will be the same regardless of whether you look for the weight between <em>A</em> and <em>B</em> or the weight between <em>B</em> and <em>A</em>. You can assume we’ll never call this function on an input where that isn’t the case.</p>
+  </li>
+  <li>
+    <p>No person will ever have a possible link to themselves. Each link really does represent a pair of people.</p>
+  </li>
+  <li>
+    <p>Watch out for map autoinsertion. If you try to read a weight from <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span></code> between two people who aren't linked, you'll see a weight of 0 even though no such link exists. However, there may, independently, be existing links between people of weight 0.</p>
+  </li>
+  <li>
+    <p>It’s possible that there’s a person in <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span></code> who isn’t linked to anyone, meaning that they aren’t comfortable working with anyone.</p>
+  </li>
+  <li>
+    <p>It’s possible that there are negative weights in the <code class="language-c++ highlighter-rouge"><span class="n">possibleLinks</span></code> map, indicating two people that would be actively unhappy to be matched with one another. No maximum-weight matching will ever use a negative-weight edge. Depending on how you approach this problem, you may find that you need to add code to account for this case, or you may not.</p>
+  </li>
+  <li>
+    <p>It’s also possible to have a weight of zero, indicating that two people are essentially indifferent about being matched with one another versus not being matched with one another. You may include these edges in your resulting matching, but you aren’t required to do so, since they don’t change the overall weight of the match.</p>
+  </li>
+  <li>
+    <p>If you need to grab a key out of a <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> and don’t care which key you get, use the function <code class="language-c++ highlighter-rouge"><span class="n">map</span><span class="p">.</span><span class="n">firstKey</span><span class="p">()</span></code>. To grab a key out of a <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code>, use <code class="language-c++ highlighter-rouge"><span class="n">set</span><span class="p">.</span><span class="n">first</span><span class="p">()</span></code>. As before, you may or may not need to use these functions depending on how your solution works.</p>
+  </li>
+  <li>
+    <p>Although the parameters to this function are passed by <code class="language-c++ highlighter-rouge"><span class="k">const</span></code> reference, you’re free to make extra copies of the arguments or to set up whatever auxiliary data structures you’d like. If you find you’re “fighting” your code – an operation that seems simple is taking a lot of lines – it might mean that you need to change your data structures.</p>
+  </li>
+  <li>
+    <p>You might be tempted to solve this problem by repeatedly taking a person with the most possible partners and then assigning them a partner, or taking the person with the fewest possible partners and picking a partner for them, or choosing the highest-weight link and including it, or something like this. Solutions like these are called <strong><em>greedy algorithms</em></strong>, and while greedy algorithms do work well for some problems, this problem is not one of them. To the best of our knowledge, there is no known greedy algorithm for this problem.</p>
+  </li>
+  <li>
+    <p>The very last of the provided tests is a “stress test” designed to check that your algorithmic strategy avoids unnecessary work. Specifically, this test is designed to check whether your code repeatedly generates the same matchings multiple times, or spends time exploring matchings that couldn’t possibly work (say, “matchings” where a person was assigned multiple partners). If this test never finishes running, or it finishes running only after a very long time, it may mean that the strategy you’ve picked for this problem is intrinsically inefficient. If you run into this, take a look over your code. Make sure each matching you generate is generated exactly once and that you don’t, say, try assigning the same pair of people to each other multiple times.</p>
+  </li>
+</ul>
+
+<h3 id="milestone-three-explore-and-evaluate">Milestone Three: Explore and Evaluate</h3>
+
+<p>In a sense, a perfect matching and a maximum-weight matching can both be thought of as "the best possible matching" given different priorities and values. If you consider "the best possible matching" to be one where the most people are paired off, then a perfect matching is "the best possible matching" because no other matching can pair more people. If you consider "the best possible matching" to be one where total quality of the matches is maximized, then a maximum-weight matching is "the best possible matching" because no other matching can produce a higher total quality across all the matches. The fact that each of these types of matching can claim to be "the best possible" given different criteria means that each may be useful in different situations when different values are implicated.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Answer the following questions in <code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code>.</p>
+
+<p><strong>Q1.</strong> Give a concrete, real-world scenario in which you believe it's better to assign matches using a perfect matching than by finding a maximum-weight matching (assuming that a perfect matching exists). In writing your answer, explain why, in your particular scenario, you believe it is preferable to maximize the total number of matches made rather than the quality of those matches. (Your answer should be 2 - 4 sentences in length.)</p>
+
+<p><strong>Q2.</strong> Give a concrete, real-world scenario in which you believe it's better to assign matches using a maximum-weight matching than by finding a perfect matching (assuming that a perfect matching exists). In writing your answer, explain why, in your particular scenario, you believe it is preferable to maximize the quality of the matching than it is to maximize the total number of matches made. (Your answer should be 2 - 4 sentences in length.)</p>
+</div>
+
+<p><br /></p>
+
+<p>Let's now turn to an important nuance that's built into the underlying assumptions of maximum-weight matchings. In a max-weight matching, each weight represents the "goodness" of a match. In doing so, we've quietly made some additional assumptions:</p>
+
+<ul>
+  <li>Weights, and therefore the "goodnesses" of a match, can be meaningfully added together.</li>
+  <li>Two matchings with equal weight have equal "goodness."</li>
+  <li>If one matching has higher weight than another, it is a "better" match.</li>
+</ul>
+
+<p>It's reasonable to debate whether these assumptions hold in practice. For example, consider the following two matchings, each of which are for the same group of people with the same preferences:</p>
+
+<blockquote>
+  <p><img src="img/mm/Comparison.png" alt="!! TODO: Add description" /></p>
+</blockquote>
+
+<p>The matching to the left is a maximum-weight matching with a total weight of 13. People <em>A</em> and <em>B</em> each get an incredibly good match, while the remaining six people each get matchings that aren't their preferred matching. On the right is a matching that isn't a maximum-weight matching (it has weight 12), but more people get their preferred matching. More abstractly, on the left a single pair of people get the match of their dreams while everyone else ends up only modestly happy, while on the right everyone gets a match that's decent, while one pair of star-crossed partners fail to realize their potential.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Answer the following question in <code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code>.</p>
+
+<p><strong>Q3.</strong> Give a concrete, real-world scenario in which you believe it's better to find a matching with a higher total weight at the expense of a less even distribution of match weights. Justify your answer. (Your answer should be 2 - 4 sentences in length.)</p>
+
+<p><strong>Q4.</strong> Give a concrete, real-world scenario in which you believe it's better to find a more even distribution of match weights at the expense of a lower total match weight. Justify your answer. (Your answer should be 2 - 4 sentences in length.)</p>
+</div>
+
+<p><br /></p>
+
+<h2 id="part-three-disaster-planning">Part Three: Disaster Planning</h2>
+
+<p>Disasters – natural and unnatural – are inevitable, and cities need to be prepared to respond to them. The problem is that stockpiling emergency resources can be <a href="https://www.dhs.gov/sites/default/files/publications/FY2017_BIB-MASTER.pdf#page=10">really, really expensive</a>. As a result, it's reasonable to have only a few cities stockpile emergency supplies, with the plan that they'd send those resources from wherever they're stockpiled to where they're needed when an emergency happens. The challenge with doing this is to figure out where to put resources so that (1) we don't spend too much money stockpiling more than we need, and (2) we don't leave any cities too far away from emergency supplies.</p>
+
+<p>Imagine that you have access to a country's major highway networks and know which cities are are right down the highway from others. Below is a fragment of the US Interstate Highway System for the Western US.</p>
+
+<blockquote>
+  <p><img src="img/dp/highwaynetwork.png" alt="Network of cities. Supplies  are  stored in Butte, Sacramento, Las Vegas, and Barstow. Seattle is adjacent to Butte and Portland. Portland is adjacent to Seattle, Sacramento, and Salt Lake City. Sacramento is adjacent to Portland, San Francisco, and Salt Lake City. San Francisco is adjacent to Sacramento. Salt Lake City is adjacent to Butte, Portland, and Monrovia. Monrovia is adjacent to Salt Lake City and Las Vegas. Las Vegas is adjacent to Barstow and Monrovia. Barstow is adjacent to Las Vegas, Los Angeles, and Flagstaff. Flagstaff is adjacent to Barstow and Phoenix. Phoenix is adjacent to Flagstaff, Los Angeles, and Nogales. Nogales is adjacent to Phoenix and San Diego. San Diego is adjacent to Los Angeles and Nogales." /></p>
+</blockquote>
+
+<p>Suppose we put emergency supplies in Sacramento, Butte, Nogales, Las Vegas, and Barstow (shown in gray). In that case, if there's an emergency in any city, that city either already has emergency supplies or is immediately adjacent to a city that does. For example, any emergency in Nogales would be covered, since Nogales already has emergency supplies. San Francisco could be covered by supplies from Sacramento, Salt Lake City is covered by both Sacramento and Butte, and Barstow is covered both by itself and by Las Vegas.</p>
+
+<p>Although it’s possible to drive from Sacramento to San Diego, for the purposes of this problem the emergency supplies stockpiled in Sacramento wouldn’t provide coverage to San Diego, since they aren’t immediately adjacent.</p>
+
+<p>We'll say that a country is <em>disaster-ready</em> if every city either already has emergency supplies or is immediately down the highway from a city that has them. Your task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">canBeMadeDisasterReady</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span> <span class="n">roadNetwork</span><span class="p">,</span>
+                            <span class="kt">int</span> <span class="n">numCities</span><span class="p">,</span>
+                            <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">supplyLocations</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> representing the road network for a region (described below) and the number of cities you can afford to put supplies in, then returns whether it's possible to make the region disaster-ready without placing supplies in more than numCities cities. If so, the function should then populate the argument supplyLocations with all of the cities where supplies should be stored.</p>
+
+<p>In this problem, the road network is represented as a map where each key is a city and each value is a set of cities that are immediately down the highway from them. For example, here's a fragment of the map you'd get from the above transportation network:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"Sacramento":    {"San Francisco", "Portland", "Salt Lake City", "Los Angeles"}
+"San Francisco": {"Sacramento"}
+"Portland":      {"Seattle", "Sacramento", "Salt Lake City"}
+</code></pre></div></div>
+
+<p>As in the first part of this assignment, you can assume that <code class="language-c++ highlighter-rouge"><span class="n">supplyLocations</span></code> is empty when this function is first called, and you can change it however you'd like if the function returns false.</p>
+
+<p>You might be tempted to solve this problem by approaching it as a combinations problem. We need to choose some group of cities, and there’s a limit to how many we can pick, so we could just list all combinations of <code class="language-c++ highlighter-rouge"><span class="n">numCities</span></code> cities and see if any of them provide coverage to the entire network. The problem with this approach is that as the number of cities rises, the number of possible combinations can get way out of hand. For example, in a network with 35 cities, there are 3,247,943,160 possible combinations of 15 cities to choose from. Searching over all of those options can take a very, very long time, and if you were to approach this problem this way, you’d likely find your program grinding to a crawl on many transportation grids.</p>
+
+<p>To speed things up, we’ll need to be a bit more clever about how we approach this problem. There’s a specific insight we’d like you to use that focuses the recursive search more intelligently and, therefore, reduces the overall search time.</p>
+
+<p>Here’s the idea. Suppose you pick some city that currently does not have disaster coverage. You’re ultimately going to need to provide disaster coverage to that city, and there are only two possible ways to do it: you could stockpile supplies in that city itself, or you can stockpile supplies in one of its neighbors. For example, consider this scenario:</p>
+
+<blockquote>
+  <p><img src="img/dp/abcx.png" alt="A, B, C, D are all adjacent to X" /></p>
+</blockquote>
+
+<p>Suppose city <em>X</em> isn’t yet covered, and we want to provide coverage to it. To do so, we’d have to put supplies in either <em>X</em> itself or in one of <em>A</em>, <em>B</em>, <em>C</em>, or <em>D</em>. If we don’t put supplies it at least one of these cities, there’s no way <em>X</em> will be covered.</p>
+
+<p>With that in mind, <strong><em>use the following strategy to solve this problem</em></strong>. Pick an uncovered city, then try out each possible way of supplying that city (either by stockpiling in that city itself or by stockpiling in a neighboring city). If after committing to any of those decisions you’re then able to cover all the remaining cities, fantastic! You’re done. If, however, none of those decisions ultimately leads to total coverage, then there’s no way to supply all the cities.</p>
+
+<p>In summary, here’s what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<h4 id="disaster-planning-requirements">Disaster Planning Requirements</h4>
+
+<ol>
+  <li>
+    <p>Add at least one custom test case to <code class="language-c++ highlighter-rouge"><span class="n">DisasterPlanning</span><span class="p">.</span><span class="n">cpp</span></code>. This is a great way to con- firm that you understand what the function you’ll be writing is supposed to do.</p>
+  </li>
+  <li>
+    <p>Implement the <code class="language-c++ highlighter-rouge"><span class="n">canBeMadeDisasterReady</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">DisasterPlanning</span><span class="p">.</span><span class="n">cpp</span></code> using the recursive strategy outlined above. Specifically, do the following:</p>
+
+    <ul>
+      <li>
+        <p>Choose a city that hasn’t yet been covered.</p>
+      </li>
+      <li>
+        <p>For each way it could be covered – either by stockpiling supplies in that city or by stock- piling in one of its neighbors – try providing coverage that way. If you can then (recursively) cover all cities having made that choice, great! If not, that option didn’t work, so you should pick another one.</p>
+      </li>
+    </ul>
+
+    <p>If <code class="language-c++ highlighter-rouge"><span class="n">numCities</span></code> is negative, your code should use the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error.</p>
+  </li>
+  <li>
+    <p>Test your code thoroughly using our provided test driver. Once you’re certain your code works – and no sooner – run the demo app to see your code in action. (More on that later.)</p>
+  </li>
+</ol>
+</div>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>We recommend proceeding in two steps. First, just focus on getting the return value right – that is, write a function that answers the question “is it possible to cover everything with only this many cities having supplies?” and which ignores the outparameter. Once that’s working – and no sooner – edit the code to then fill in the outparameter with which cities should be chosen.</p>
+  </li>
+  <li>
+    <p>You may be tempted to make changes to the road network when solving this problem, since, after all, it’s common in a recursive function to reduce the size of the input. For this problem in particular, though, we do not recommend doing that. Keep the road network constant, and see if there’s something else whose size you can reduce from call to call.</p>
+  </li>
+  <li>
+    <p>The road network is bidirectional. If there’s a road from city A to city B, then there will always be a road back from city B to city A. Both roads will be present in the parameter roadNetwork. You can rely on this.</p>
+  </li>
+  <li>
+    <p>A common bug to watch out for: when working with sets, the operation <code class="language-c++ highlighter-rouge"><span class="n">set1</span> <span class="o">-=</span> <span class="n">set2</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">set1</span> <span class="o">+=</span> <span class="n">set2</span></code> are <em>not</em> opposites of one another. For example, suppose <code class="language-c++ highlighter-rouge"><span class="n">set1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">set2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">}</span></code>. After writing <code class="language-c++ highlighter-rouge"><span class="n">set1</span> <span class="o">-=</span> <span class="n">set2</span></code>, you'll have <code class="language-c++ highlighter-rouge"><span class="n">set1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">}</span></code>. If you then write <code class="language-c++ highlighter-rouge"><span class="n">set1</span> <span class="o">+=</span> <span class="n">set2</span></code>, you'll have <code class="language-c++ highlighter-rouge"><span class="n">set1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">}</span></code>, which isn't what you began with.</p>
+  </li>
+  <li>
+    <p>Every city appears as a key in the map. Cities can exist that aren’t adjacent to any other cities in the transportation network. If that happens, the city will be represented by a key in the map associated with an empty set of adjacent cities.</p>
+  </li>
+  <li>
+    <p>Feel free to use <em>set</em>.<code class="language-c++ highlighter-rouge"><span class="n">first</span><span class="p">()</span></code> or <em>map</em>.<code class="language-c++ highlighter-rouge"><span class="n">firstKey</span><span class="p">()</span></code> to get a single element or key from a <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>, respectively.</p>
+  </li>
+  <li>
+    <p>The numCities parameter denotes the maximum number of cities you’re allowed to stockpile in. It’s okay if you use fewer than numCities cities to cover everything, but you can’t use more.</p>
+  </li>
+  <li>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">numCities</span></code> parameter may be zero, but should not be negative. If it is negative, call <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code>.</p>
+  </li>
+  <li>
+    <p>Get out a pencil and paper when debugging this one and draw pictures that show what your code is doing as it runs. Step through your code in the debugger to see what your recursion is doing. Make sure that the execution of the code mirrors the high-level algorithm described above. Can you see your code picking an uncovered city? Can you see it trying out all ways of providing coverage to that city?</p>
+  </li>
+  <li>
+    <p><em>Make sure you’re correctly able to tell which cities are and are not covered at each point.</em> One of the most common mistakes we’ve seen people make in solving this problem is to accidentally mark a city as uncovered that actually is covered, usually when backtracking. Use the debugger to inspect which cities are and are not covered at each point in time.</p>
+  </li>
+  <li>
+    <p>There are cases where the best way to cover an uncovered city is to stockpile in a city that’s already covered. In the example shown below, which is modeled after the molecular structure of ethane, the best way to provide coverage to all cities is to pick the two central cities C<sub>1</sub> and C<sub>2</sub>, even though after choosing C<sub>1</sub> you’ll find that C<sub>2</sub> is already covered by C<sub>1</sub>.</p>
+
+    <blockquote>
+      <p><img src="img/dp/ethane.png" alt="C1 is adjacent to H1, H3, H5 and C2. C2 is adjacent to C1, H2, H6, and H4." /></p>
+    </blockquote>
+  </li>
+  <li>
+    <p>You might be tempted to solve this problem by repeatedly taking the city adjacent to the greatest number of uncovered cities and then stock- piling there, repeating until all cities are covered. Surprisingly, this approach will not always work. In the example shown to below here, which we’ve entitled “Don’t be Greedy,” the optimal solution is to stockpile in cities B and F. If, on the other hand, you begin by grabbing city D, which would provide coverage to five of the seven cities, you will need to stockpile in at least two more cities (one of A and B, and one of E and F) to provide coverage to everyone. If you follow the re- cursive strategy outlined above, you won’t need to worry about this, since that solution won’t always grab the city with the greatest number of neighbors first.</p>
+
+    <blockquote>
+      <p><img src="img/dp/greedy.png" alt="A is adjacent to B. B is adjacent to A and D. C is adjacent to B and D. D is adjacent to B, C, G, adn F. E is adjacent to F. F is adjacent to E and D. G is adjacent to F and D." /></p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>Once you’re sure that your code works, choose the “Disaster Planning” option from the main menu. The bundled demo will let you run your code out on some realistic data sets. It makes multiple calls to your recursive function to find the <em>minimum</em> number of cities needed to provide coverage. Play around with the sample transportation grids provided – find anything interesting?</p>
+
+<p>A note: some of the sample files that we’ve included have a <em>lot</em> of cities in them. The samples whose names start with VeryHard are, unsurprisingly, very hard tests that may require some time for your code to solve. It’s okay if your program takes a long time (say, at most two minutes) to answer queries for those transportation grids, though the other samples shouldn’t take very long to complete.</p>
+
+<h2 id="optional-part-four-extensions">(Optional) Part Four: Extensions!</h2>
+
+<p>As always, if you want to go above and beyond what we're asking for here, we'll award extra credit for your efforts. As usual, if you do submit extensions, please submit two versions of your .cpp files: a base version meeting the requirements set out here, plus a second version that contains the extensions (say, in a file with a name like <code class="language-c++ highlighter-rouge"><span class="n">MatchmakerExtended</span><span class="p">.</span><span class="n">cpp</span></code> or something like that).</p>
+
+<p>You can do whatever you'd like as extensions. Here's some suggestions to help you get started:</p>
+
+<ul>
+  <li>
+    <p><strong><em>Matchmaker:</em></strong> In this assignment, you found perfect matchings and maximum-weight matchings. There's a hybrid between the two called a <strong><em>max-cardinality-max-weight matching</em></strong> in which you first prioritize matching as many people as possible, and then, of all the matchings that pair off the maximum number of people, choose the one that has the maximum total weight. Another is the <strong><em>max-cardinality-maximin-matching</em></strong>, in which you first prioritize pairing off as many people as possible, then choose the matching from that group where the weight of the lowest-weight edge in the matching is maximized. Explore implementing these techniques, then run some experiments with them. When would these approaches be preferred over, say, finding a perfect matching or maximum-weight matching? Where would they be less appropriate? And what other strategies for finding "good" matchings can you come up with?</p>
+  </li>
+  <li>
+    <p><strong><em>Disaster Planning</em></strong>: Are there any other maps worth exploring? Feel free to create and submit a map of your own! You can add a new map file into the <code class="language-c++ highlighter-rouge"><span class="n">res</span><span class="o">/</span></code> directory by creating a file with the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">dst</span></code> suffix. Use the existing <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">dst</span></code> files as a reference. We’d love to expand our map collection by adding your creations into future quarters!</p>
+
+    <p>There are a number of underlying assumptions in this problem. We're assuming that there will only be a disaster in a single city at a time, that the road network won't be disrupted, and that there's only a single class of emergency supplies. What happens if those assumptions are violated? For example, what if there's a major earthquake in the <a href="http://www.newyorker.com/magazine/2015/07/20/the-really-big-one">Cascadia Subduction Zone</a>, striking both Portland and Seattle (with some aftereffects in Sacramento) and disrupting I-5 up north? What if you need to stockpile blankets, food, and water separately, and each city can only store one?</p>
+
+    <p>You may have noticed that the <code class="language-c++ highlighter-rouge"><span class="n">VeryHardSouthernUS</span></code> sample takes a long time to solve, and that’s because while the approach we’ve suggested for solving this problem is much better than literally trying all combinations of cities, it still has room for improvement. See if you can speed things up! Here’s a simple idea to get you started: instead of picking an arbitrary uncovered city at each point in the recursion, what if you pick the uncovered city with the fewest neighbors? Those are the hardest cities to cover, so handling them first can really improve performance.</p>
+  </li>
+</ul>
+
+<h2 id="submission-instructions">Submission Instructions</h2>
+<p>Before you call it done, run through our <a href="../../resources/submit_checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>s are crossed and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>s are dotted. Make sure your code follows our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>. Then upload your completed files to Paperless for grading.</p>
+
+<p><strong>Partner Submissions:</strong></p>
+<ul>
+  <li>If you forget to list your partner you can resubmit to add one</li>
+  <li>Either person can list the other, and the submissions (both past and future) will be combined</li>
+  <li>Partners are listed per-assignment</li>
+  <li>You can't change/remove a partner on an individual submission</li>
+</ul>
+
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">DebuggingAnswers</span><span class="p">.</span><span class="n">txt</span></code> <em>(don't forget this one!)</em></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code> <em>(don't forget this one!)</em></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Matchmaker</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">DisasterPlanning</span><span class="p">.</span><span class="n">cpp</span></code></li>
+</ul>
+
+<p>You don't need to submit any of the other files in the project folder.</p>
+
+<blockquote>
+  <p>🏁 <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Submit to Paperless</a></p>
+</blockquote>
+
+<p>If you modified any other files that you modified in the course of coding up your solutions, submit those as well. And that’s it! You’re done!</p>
+
+<blockquote>
+  <p><strong><em>Good luck, and have fun!</em></strong></p>
+</blockquote>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Feb-11
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

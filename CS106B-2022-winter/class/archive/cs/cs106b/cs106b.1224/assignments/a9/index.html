@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Huffman Coding</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../../section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../../section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../../section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../../section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../../section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../../section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../../section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 9. Huffman Coding</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<!-- This boilerplate inserts formatted due date -->
+
+<!--  Boilerplate content for assignment index page -->
+
+<h2 id="due-friday-march-11-at-1030-am">Due Friday, March 11 at 10:30 am</h2>
+
+<ul>
+  <li><small>Submissions received by the due date receive a small <strong>on-time bonus</strong>. </small></li>
+  <li><small>All students are granted a pre-approved extension or "grace period" of 24 hours after the due date. Late submissions are accepted during the grace period with no penalty.</small></li>
+  <li><small>The <strong>grace period expires Sat, Mar 12 at 10:30 am</strong>, after which we cannot accept further late submissions.</small></li>
+  <li><small>All due dates and submission times are expressed in Pacific time.</small></li>
+</ul>
+
+<p><strong><em>You are permitted to work on this assignment in pairs.</em></strong></p>
+
+<hr />
+
+<p>Your final assignment of the quarter is to write a program that uses Huffman coding to compress and decompress files. It pulls together ideas from all over the quarter – recursive exploration, linked structures, trees, and streaming algorithms. Once you’ve finished coding this one up, you’ll have a fairly impressive piece of software that’s powered by a bunch of clever algorithms. We hope this is a fitting capstone to your experience in CS106B!</p>
+
+<p>Here’s our recommended timetable for completing this assignment:</p>
+
+<ul>
+  <li>Aim to complete Part One on Monday.</li>
+  <li>Aim to complete Part Two on Tuesday.</li>
+  <li>Aim to complete Part Three on Wednesday.</li>
+  <li>Aim to complete Part Four on Thursday.</li>
+  <li>Bask in the glory of having completed the last assignment of the quarter, and explore Part Five on Thursday to appreciate the program you’ve just written.</li>
+</ul>
+
+<h2 id="assignment-logistics">Assignment Logistics</h2>
+
+<h3 id="starter-files">Starter Files</h3>
+
+<p>We provide a ZIP of the starter project. Download the zip, extract the files, and double-click the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> file to open the project in Qt Creator.</p>
+
+<blockquote>
+  <p>📦 <a href="Assignment&#32;9.zip">Starter code</a></p>
+</blockquote>
+
+<h3 id="resources">Resources</h3>
+
+<p>Check out our <a href="../../resources/huffman.html" title="Background on huffman coding">Guide to Huffman Coding</a> for more information about how the Huffman coding algorithm works.</p>
+
+<h3 id="getting-help">Getting Help</h3>
+
+<p>Keep an eye on the <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> for an announcement of the Assignment 9 <strong>YEAH</strong> (YEAH = Your Early Assignment Help) group session where our veteran section leaders will answer your questions and share pro tips. We know it can be daunting to sit down and break the barrier of starting on a substantial programming assignment – come to YEAH for advice and confidence to get you on your way!</p>
+
+<p>We also here to help if you get run into issues along the way! The <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> is open 24/7 for general discussion about the assignment, lecture topics, the C++ language, using Qt, and more. Always start by searching first to see if your question has already been asked and answered before making a new post.</p>
+
+<p>To troubleshoot a problem with your specific code, your best bet is to bring it to the <a href="../../lair.html" title="LaIR helper hours">LaIR</a> helper hours or <a href="../../about_staff.html">office hours</a>.</p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="part-one-build-the-huffman-tree">Part One: Build the Huffman Tree</h2>
+
+<p>In this first milestone, you’ll implement this function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="nf">huffmanTreeFor</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function takes as input a piece of text, then builds a Huffman coding tree for that text using the algorithm from class. (It’s the one that makes a priority queue of a bunch of singleton nodes, then repeatedly combines nodes together.)</p>
+
+<p>Before you code this up, take a minute to make sure you understand how Huffman coding works.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Edit the file <code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code> with your answer to the following question:</p>
+
+<p><strong>Q1.</strong> Draw the Huffman coding tree that would be produced for the input string <code class="language-c++ highlighter-rouge"><span class="s">"aabbbbccc"</span></code> by following the algorithm from class. One specific note: when merging trees together, structure your tree so that the first node removed from the priority queue becomes the 0 child of the tree and the second node removed from the priority queue becomes the 1 child of the tree.</p>
+</div>
+
+<p>Now, back to C++. The result of <code class="language-c++ highlighter-rouge"><span class="n">huffmanTreeFor</span></code> is a <code class="language-c++ highlighter-rouge"><span class="n">EncodingTreeNode</span><span class="o">*</span></code> object, where <code class="language-c++ highlighter-rouge"><span class="n">EncodingTreeNode</span></code> is defined as follows:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">EncodingTreeNode</span> <span class="p">{</span>                                     
+    <span class="kt">char</span> <span class="n">ch</span><span class="p">;</span>                <span class="c1">// Which character is stored here.</span>
+    <span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">zero</span><span class="p">;</span> <span class="c1">// Child tree labeled 0.          </span>
+    <span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">one</span><span class="p">;</span>  <span class="c1">// Child tree labeled 1.          </span>
+<span class="p">};</span>               
+</code></pre></div></div>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">ch</span></code> variable here is only meaningful if the <code class="language-c++ highlighter-rouge"><span class="n">EncodingTreeNode</span></code> is a leaf node in the tree (do you see why?), so you should not read or write this variable in a <code class="language-c++ highlighter-rouge"><span class="n">EncodingTreeNode</span></code> unless that node is a leaf.</p>
+
+<p>In the course of coding up this part of the assignment, you’ll need to use a priority queue. You built one of these in Assignment 6, but that <code class="language-c++ highlighter-rouge"><span class="n">HeapPQueue</span></code> type was specifically designed to work with <code class="language-c++ highlighter-rouge"><span class="n">DataPoint</span></code> objects. We’ve provided the "<code class="language-c++ highlighter-rouge"><span class="n">priorityqueue</span><span class="p">.</span><span class="n">h</span></code>" header file, which defines a <code class="language-c++ highlighter-rouge"><span class="n">PriorityQueue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span></code> template that can store objects of any type. Consult the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/" title="Documentation for Stanford-specific C++ libraries">Stanford C++ Library Documentation</a> for more information about how to use this type. In particular, make sure you know how to enqueue and dequeue elements and how to determine the priorities of relevant items.</p>
+
+<p>One little nuance that you’ll need to be aware of: the test cases in the starter files we’ve provided all assume that, when you’re running the Huffman tree construction algorithm, the first node you pull out of the queue will end up as the 0 child of the newly-constructed node, and the second node you pull out of the queue will end up as the 1 child. Make sure to follow this convention in this assignment.</p>
+
+<p>To summarize, here’s what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">huffmanTreeFor</span></code> function in Huffman.cpp.</li>
+  <li>Add at least one custom test case for this function, and test your code thoroughly.</li>
+</ol>
+</div>
+
+<p>Our test coverage here is not as robust as in the previous assignments. You will need to test your code thoroughly. A recommendation: write a test case that creates a Huffman tree from a string of your choosing, then set a breakpoint and run the tests with the debugger on. Using the same techniques from Assignment 8 that you used to map out and escape the labyrinth, poke around in the debugger and draw out the trees that you’re producing. Do they match what you expected to find? If so, great! If not, step through your construction algorithm in the debugger and see what happens.</p>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p><strong><em>Do not edit the <code class="language-c++ highlighter-rouge"><span class="n">EncodingTreeNode</span></code> type</em></strong> when solving this problem. (More generally, don’t edit this type at any point in the assignment.)</p>
+  </li>
+  <li>
+    <p>The tree construction algorithm we provided in class assumes that the input string has at least two different characters in it, and if this isn’t the case, your code should call the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error. (Do you see why the algorithm doesn’t work in these cases?)</p>
+  </li>
+  <li>
+    <p>If multiple characters are tied for having the same weight, or if two or more intermediate trees are tied for having the same weight, you can break ties arbitrarily. Keep in mind that there can be many equally good Huffman trees for a given string, differing only in how the algorithm broke ties. As a result, if you’re writing custom test cases, make sure that your tests don’t assume anything about the specific way that the algorithm breaks ties when they arise.</p>
+  </li>
+  <li>
+    <p>You should completely ignore the <code class="language-c++ highlighter-rouge"><span class="n">ch</span></code> field of <code class="language-c++ highlighter-rouge"><span class="n">EncodingTreeNode</span></code> for all nodes except leaves, the same way that you completely ignored the value field of the <code class="language-c++ highlighter-rouge"><span class="n">LinearProbingHashTable</span><span class="o">::</span><span class="n">Slot</span></code> type when the type field was set to <code class="language-c++ highlighter-rouge"><span class="n">SlotType</span><span class="o">::</span><span class="n">EMPTY</span></code>.</p>
+  </li>
+  <li>
+    <p>You should be able to handle strings made of any characters, not just letters, numbers, etc. In particular, you can’t reserve certain char values to mean “this is an internal node.” Many files on disk – especially files containing non-text data – make use of all possible characters.</p>
+  </li>
+</ul>
+
+<h2 id="part-two-implement-text-encoding-and-decoding">Part Two: Implement Text Encoding and Decoding</h2>
+
+<p>Your next task is to write a pair of functions that are inverses of one another:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">string</span> <span class="nf">decodeText</span><span class="p">(</span><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;&amp;</span> <span class="n">bits</span><span class="p">,</span>  <span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">);</span>
+<span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span> <span class="n">encodeText</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">,</span> <span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> function takes as input a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span></code> representing some data that’s been compressed, along with a pointer to the encoding tree that was used, then returns the decompressed string. The <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code> function takes as input a string and an encoding tree, then returns a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span></code> loaded with the bits formed by encoding that string using that tree.</p>
+
+<p>Before you code this up, though, take a minute to make sure you know how to run the algorithms with a pencil and paper.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Edit the file <code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code> with your answer to the following questions.</p>
+
+<p><strong>Q2.</strong> Decode the string of bits <code class="language-c++ highlighter-rouge"><span class="mi">1100010011000100</span></code> using the encoding tree shown below:</p>
+
+<blockquote>
+  <p><img src="img/milestone_2_encoding_tree.png" alt="A binary tree, where all left children represent a 0 bit and all right children represent a 1 bit. Only the leaf nodes have values, which are characters. The root node has child 0 (left child) A, and non-terminal child 1 (right child). This child has child 0 R, and non-terminal child 1. This child (2 levels down from root, root-1-1) has a non-terminal node at child 0 and child 1 B. Its child 0 (3 levels down from root, root-1-1-0, has child 0 C and child 1 D.)" /></p>
+</blockquote>
+
+<p><strong>Q3.</strong> Encode the string <code class="language-c++ highlighter-rouge"><span class="n">ABRACADABRA</span></code> using the encoding tree from Q2.</p>
+</div>
+
+<p>Returning to C++ Land, you’ll notice that these functions make reference to a <code class="language-c++ highlighter-rouge"><span class="n">Bit</span></code> type, which represents a single bit. The <code class="language-c++ highlighter-rouge"><span class="n">Bit</span></code> type works like a regular integer, though note that if you try assigning a value to a bit that isn’t a 0 or a 1 it’ll report an error. For example:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Bit</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                     
+<span class="n">queue</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>              
+<span class="k">if</span> <span class="p">(</span><span class="n">queue</span><span class="p">.</span><span class="n">dequeue</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can’t perform arithmetic on <code class="language-c++ highlighter-rouge"><span class="n">Bit</span></code>s. But that’s a good thing, because there’s no reason you should need to do that in this assignment. 😃</p>
+
+<p>To summarize, here’s what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>Add a custom test case for the <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">Huffman</span><span class="p">.</span><span class="n">cpp</span></code>.</li>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> function and test thoroughly.</li>
+  <li>Add a custom test case for the <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code> function.</li>
+  <li>Implement <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code> and test thoroughly.</li>
+</ol>
+</div>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>You’re given the input <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code> by reference in <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code>, and your code can modify that <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code> however it feels like. The queue can end up empty, or could contain the original bits, or could contain whatever sequence of 0s and 1s that you’d like.</p>
+  </li>
+  <li>
+    <p>In our initial examples of encoding and decoding text in lecture, we had access to an explicit table that represented the bit patterns associated with each character. It is <em>significantly</em> easier to implement the <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code> function if you build a table like this before writing out the characters. However, having a table like that isn’t necessary for the <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> function – do you see why?</p>
+  </li>
+  <li>
+    <p>You can assume that the input tree is not null and doesn’t consist of just a single node. (These are the two degenerate cases that we said you didn’t need to handle in <code class="language-c++ highlighter-rouge"><span class="n">huffmanTreeFor</span></code>.)</p>
+  </li>
+  <li>
+    <p>The tree given to <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> will always contain leaves holding all the characters that appear in the input string or input queue of bits (respectively), but may also contain other characters. The input tree does not necessarily have to be the optimal Huffman coding tree.</p>
+  </li>
+  <li>
+    <p>You can assume that the bits provided to <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> form the correct encoding of a piece of text that was encoded using the same encoding tree that was provided to you. However, you should be careful about how you use this assumption. Specifically, if there’s a bug in your <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code>, then you may end up passing invalid bits into <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> – oops! – and so we recommend making your <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code> function as “bulletproof” as possible by detecting and handling errors as you find them.</p>
+  </li>
+  <li>
+    <p>In C++ there is a difference between the numbers <code class="language-c++ highlighter-rouge"><span class="mi">0</span></code> and <code class="language-c++ highlighter-rouge"><span class="mi">1</span></code> and the characters <code class="language-c++ highlighter-rouge"><span class="sc">'0'</span></code> and <code class="language-c++ highlighter-rouge"><span class="sc">'1'</span></code>. Be careful not to write something like</p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">Bit</span> <span class="n">zero</span> <span class="o">=</span> <span class="sc">'0'</span><span class="p">;</span> <span class="c1">// Error!</span>
+  <span class="n">Bit</span> <span class="n">one</span>  <span class="o">=</span> <span class="sc">'1'</span><span class="p">;</span> <span class="c1">// Error!</span>
+</code></pre></div>    </div>
+    <p>since this attempts to take the ASCII codes for <code class="language-c++ highlighter-rouge"><span class="sc">'0'</span></code> and <code class="language-c++ highlighter-rouge"><span class="sc">'1'</span></code> (namely, 48 and 49) as values for bits. Instead, use the numbers themselves:</p>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">Bit</span> <span class="n">zero</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Beautiful!      </span>
+  <span class="n">Bit</span> <span class="n">one</span>  <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Pulchritudinous!</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="part-three-implement-tree-encoding-and-decoding">Part Three: Implement Tree Encoding and Decoding</h2>
+
+<p>One of the practical concerns of Huffman coding that we discussed in class is that if you do choose to use Huffman coding, you need to somehow store information about which encoding tree you used. That way, whoever is decoding the information knows which codes corresponding to which characters. This means that we’ll need to devise a pair of functions that allow you to take a tree and encode it in a way that can be stored on disk, plus a way to decode the encoded representation back into the tree.</p>
+
+<p>There are many ways to do this, but one of the most space-efficient ways is the following. We’ll encode each tree as a pair of a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span></code> representing the shape of the tree and a <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span></code> representing which characters are in the leaves of the tree. The shape of the tree is encoded as follows:</p>
+
+<ul>
+  <li>If the tree is a single leaf node, it’s represented by the bit 0.</li>
+  <li>If the tree is not a leaf node, it’s represented by a 1 bit, followed by the encoding of its zero (left)
+subtree, followed by the encoding of its one (right) subtree.</li>
+</ul>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span></code> representing which characters are stored in the leaves of the tree is found by reading the leaves in the pattern you’d get by doing an inorder traversal of the tree. For example, here are several Huffman trees and how they’d be represented as a sequence of bits and a sequence of characters:</p>
+
+<blockquote>
+  <p><img src="img/mil3_1.png" alt="10100 encodes to EWK. The Huffman tree is as follows: From the root node, the 0 path leads to E, and the 1 path leads to another node (without a letter). From that node, the 0 path leads to W and the 1 path leads to K." /></p>
+</blockquote>
+
+<blockquote>
+  <p><img src="img/mil3_2.png" alt="1011000 encodes to ADBN. The Huffman tree is as follows: From the root node, the 0 path leads to A, and the 1 path leads to another node (without a letter). From that node, the 1 path leads to N, and the 0 path leads to another node (without a letter). From that node, the 0 path leads to D and the 1 path leads to B." /></p>
+</blockquote>
+
+<blockquote>
+  <p><img src="img/mil3_3.png" alt="11001100100 encodes to ANIVCE. The Huffman tree is as follows: From the root node: 00 encodes to A, while 01 encodes to N. 100 encodes to I, while 101 encodes to V. 110 encodes to C, while 111 encodes to E." /></p>
+</blockquote>
+
+<p>This is an extremely compact way of writing out a tree: the tree itself is written out with one bit per node, and the contents of the leaves are written out as-is. Most importantly, it’s possible to reverse the encoding back into a tree. Before writing code to compute or process these sequences, grab a pencil and paper and make sure you’re comfortable with how these work.</p>
+
+<p>Edit the file <code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code> with your answers to the following questions.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p><strong>Q4.</strong> Write out the <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span></code> associated with this encoding tree:</p>
+
+<blockquote>
+  <p><img src="img/mil3_4.png" alt="The Huffman tree is as follows: The path 00 leads to O, the path 01 leads to E. 100 leads to oA, 101 lead to P, and 11 leads to H." /></p>
+</blockquote>
+
+<p><strong>Q5.</strong> Decode this <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span></code> into an encoding tree and draw the result:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>111000100
+MDCLV
+</code></pre></div></div>
+</div>
+
+<p>Your task in this part of the assignment is to write a pair of functions</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">encodeTree</span><span class="p">(</span><span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="n">tree</span><span class="p">,</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;&amp;</span> <span class="n">bits</span><span class="p">,</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span> <span class="n">leaves</span><span class="p">);</span>
+<span class="n">EncodingTreeNode</span><span class="o">*</span> <span class="nf">decodeTree</span><span class="p">(</span><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;&amp;</span> <span class="n">bits</span><span class="p">,</span> <span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span> <span class="n">leaves</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This first function takes a tree and produces the two <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>s shown above. The second function takes in the two <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>s and reconstructs the tree they represent.</p>
+
+<p>Specifically, you should do the following:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">encodeTree</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">decodeTree</span></code> functions in <code class="language-c++ highlighter-rouge"><span class="n">Huffman</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span></code></li>
+  <li>Add at least two custom test cases, one for each function, and test your code thoroughly.</li>
+</ol>
+</div>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>There are no requirements about what the <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span></code> should contain after <code class="language-c++ highlighter-rouge"><span class="n">decodeTree</span></code> finishes running. They could be unchanged, or completely empty, or filled with whatever contents you’d like.</p>
+  </li>
+  <li>
+    <p>You can assume the inputs to <code class="language-c++ highlighter-rouge"><span class="n">decodeTree</span></code> are correct, in that the bits and characters are a correct representation of some encoding tree, that there aren’t stray bits in the queue, that you have the exact correct number of characters that you need, etc. However, as with <code class="language-c++ highlighter-rouge"><span class="n">encodeText</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">decodeText</span></code>, a bug in your implementation of <code class="language-c++ highlighter-rouge"><span class="n">encodeTree</span></code> may manifest as errors in <code class="language-c++ highlighter-rouge"><span class="n">decodeTree</span></code>, so we recommend making your <code class="language-c++ highlighter-rouge"><span class="n">decodeTree</span></code> function “robust” and able to identify and flag errors if it finds them.</p>
+  </li>
+  <li>
+    <p>You can assume the tree provided as input to <code class="language-c++ highlighter-rouge"><span class="n">encodeTree</span></code> is a valid coding tree – each internal node will have exactly two children, only the characters in the leaves matter, each character appears in at most one leaf, etc.</p>
+  </li>
+  <li>
+    <p>You can assume the input <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span></code> to <code class="language-c++ highlighter-rouge"><span class="n">encodeTree</span></code> are empty when that function is first called.</p>
+  </li>
+  <li>
+    <p>You don’t need to worry about the edge cases that came up in the first milestone. You can assume the tree exists and contains at least two leaves.</p>
+  </li>
+</ul>
+
+<h2 id="part-four-put-it-all-together">Part Four: Put It All Together</h2>
+
+<p>You now have all the pieces you need to build the final Huffman encoder and decoder. Implement the following pair of functions:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HuffmanResult</span> <span class="nf">compress</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">);</span>
+<span class="n">string</span> <span class="nf">decompress</span><span class="p">(</span><span class="n">HuffmanResult</span><span class="o">&amp;</span> <span class="n">file</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This first function takes as input a string of text and produces a <code class="language-c++ highlighter-rouge"><span class="n">HuffmanResult</span></code> containing all the information necessary to store the compressed contents of that string to disk. The second function takes as input a compressed <code class="language-c++ highlighter-rouge"><span class="n">HuffmanResult</span></code> and returns the string that it encodes. Here, the <code class="language-c++ highlighter-rouge"><span class="n">HuffmanResult</span></code> type represents a combination of the encoded tree and the encoded text:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">HuffmanResult</span> <span class="p">{</span>                        
+    <span class="cm">/* Encoded version of the Huffman tree. */</span>
+    <span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span>  <span class="n">treeBits</span><span class="p">;</span>                     
+    <span class="n">Queue</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">treeLeaves</span><span class="p">;</span>                   
+ 
+    <span class="cm">/* Encoded version of the message. */</span>     
+    <span class="n">Queue</span><span class="o">&lt;</span><span class="n">Bit</span><span class="o">&gt;</span> <span class="n">messageBits</span><span class="p">;</span>                   
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>This section should mostly consist of putting together the different pieces you wrote earlier in the right order. In doing so, you may discover that there were some bugs lurking in your implementation, which you’ll need to then correct to get everything working. (It’s common in software engineering to find that each individual piece of a program passes its tests independently but fails when things come together; it’s usually either due to tests not covering every possible case or to some unexpected interactions between the components). When that happens, use the debugger to isolate where the issue is. Did you build the encoding tree incorrectly? Did you encode the message bits wrong, or is the issue in the decoder?</p>
+
+<p>To summarize, here’s what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">compress</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">decompress</span></code> functions in <code class="language-c++ highlighter-rouge"><span class="n">Huffman</span><span class="p">.</span><span class="n">cpp</span></code>.</li>
+  <li>Add at least one custom test case to ensure that your code works. Take this step seriously – writing good tests here will help you identify and smoke out errors that might be lurking in your code.</li>
+</ol>
+</div>
+
+<p>Testing is key here! We have not provided enough tests with the starter files to poke and prod these functions in all the ways they can be poked and prodded, and you should not consider your implementation to be ready until you’ve written some tests of your own and used the interactive “Compress a File” and “Decompress a File” options to confirm that your code works end-to-end.</p>
+
+<p>Some notes on this part of the assignment:</p>
+
+<ul>
+  <li>
+    <p>Your implementation should call <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> if the input string to compress doesn’t have at least two distinct characters in it.</p>
+  </li>
+  <li>
+    <p>You can assume that the input to <code class="language-c++ highlighter-rouge"><span class="n">decompress</span><span class="p">()</span></code> is a valid compressed file and don’t need to worry about what happens if this isn’t the case. Then again, making this function as robust as possible is a <em>great</em> idea during testing.</p>
+  </li>
+  <li>
+    <p>Our provided starter files contain logic to take a <code class="language-c++ highlighter-rouge"><span class="n">HuffmanResult</span></code> and save it to disk and to take a <code class="language-c++ highlighter-rouge"><span class="n">HuffmanResult</span></code> and load it from disk. The internal logic of how this works is more of a CS107-level topic that involves manipulating individual bits of variables, which is beyond the scope of what we’re going to cover in CS106B. However, if you’re curious to see how this works, you’re welcome to check out <code class="language-c++ highlighter-rouge"><span class="n">Demos</span><span class="o">/</span><span class="n">HuffmanResult</span><span class="p">.</span><span class="n">cpp</span></code> to learn more!</p>
+  </li>
+  <li>
+    <p>Make sure not to leak any memory in your implementations.</p>
+  </li>
+  <li>
+    <p>There are no requirements about what the final contents of the <code class="language-c++ highlighter-rouge"><span class="n">HuffmanResult</span></code> may be after calling decompress. You can leave it unchanged, empty it out, etc.</p>
+  </li>
+</ul>
+
+<h2 id="part-five-enjoy-your-creation">Part Five: Enjoy Your Creation!</h2>
+
+<p>Congratulations! You’ve just built a compression and decompression algorithm! All that’s left to do now is to try it out on a few examples to see how well it does.</p>
+
+<p>We’ve bundled a number of sample files with the assignment, some already compressed (they have the suffix <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">huff</span></code>) and some not yet compressed. Use your program to decompress the compressed files to see what they contain, and then try compressing some of the sample files so that you can see how well those files compress!</p>
+
+<p>Try decompressing the file <code class="language-c++ highlighter-rouge"><span class="n">samples</span><span class="o">/</span><span class="n">Congratulations</span><span class="p">.</span><span class="n">bmp</span><span class="p">.</span><span class="n">huff</span></code>. That file will expand out to one named <code class="language-c++ highlighter-rouge"><span class="n">Congratulations</span><span class="p">.</span><span class="n">bmp</span></code>, which you should definitely take a look at once you’ve finished the assignment. The same is true for the file <code class="language-c++ highlighter-rouge"><span class="n">samples</span><span class="o">/</span><span class="n">Woohoo</span><span class="o">!</span><span class="p">.</span><span class="n">mp4</span><span class="p">.</span><span class="n">huff</span></code>. 😃</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<blockquote>
+  <p>There are no deliverables for this section. Just play around and see what you find!</p>
+</blockquote>
+</div>
+
+<h2 id="optional-part-six-extensions">(Optional) Part Six: Extensions!</h2>
+
+<p>If you enjoyed this assignment and want to run further with it, we’d love to see what you come up with! Here are a few suggestions to help you get started.</p>
+
+<ul>
+  <li>
+    <p><strong><em>Compute Shannon entropy.</em></strong> The <em>Shannon entropy</em> of a piece of text is, intuitively, how "surprised" you should be when you see a character. It gives a way of quantifying the information content of the text, under the assumption that each character is chosen independently of all the others around it. Read up online on the definition of Shannon entropy, then write some code to compute the Shannon entropy of the input text.</p>
+
+    <p>In a sense, the Shannon entropy is the theoretical lower bound on the number of bits required for an "average" character in the text. Specifically, if your text is $n$ characters long and has Shannon entropy $H$, then any compression scheme based on prefix codes must use at least $nH$ bits. Compare how many bits are actually generated by Huffman coding against the theoretical minimum predicted by Shannon entropy. What do you find?</p>
+  </li>
+  <li>
+    <p><strong><em>Implement a more advanced compression algorithm.</em></strong> Huffman coding is a good compression algorithm, but there are better alternatives in many cases. Many modern compression algorithms are based on an algorithm called LZW, named after the initials of its inventors. Other topics to look up include move-to-front coding, run-length encoding, and the Burrows-Wheeler transform.</p>
+  </li>
+</ul>
+
+<h2 id="submission-instructions">Submission Instructions</h2>
+<p>Before you call it done, run through our <a href="../../resources/submit_checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>s are crossed and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>s are dotted. Make sure your code follows our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>. Then upload your completed files to Paperless for grading.</p>
+
+<p><strong>Partner Submissions:</strong></p>
+<ul>
+  <li>If you forget to list your partner you can resubmit to add one</li>
+  <li>Either person can list the other, and the submissions (both past and future) will be combined</li>
+  <li>Partners are listed per-assignment</li>
+  <li>You can't change/remove a partner on an individual submission</li>
+</ul>
+
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Huffman</span><span class="p">.</span><span class="n">cpp</span></code></li>
+</ul>
+
+<p>You don't need to submit any of the other files in the project folder.</p>
+
+<blockquote>
+  <p>🏁 <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Submit to Paperless</a></p>
+</blockquote>
+
+<p>If you modified any other files that you modified in the course of coding up your solutions, submit those as well. And that’s it! You’re done!</p>
+
+<blockquote>
+  <p><strong><em>Good luck, and have fun!</em></strong></p>
+</blockquote>
+
+<div class="pset-bordered" style="background-color: #ddddff;">
+<blockquote>
+  <p><strong><em>Congratulations on finishing the last assignment of the quarter!</em></strong></p>
+
+  <p>We’re extremely impressed with how much progress you’ve made since the start of the quarter. Best of luck going forward!</p>
+</blockquote>
+</div>
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Mar-18
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

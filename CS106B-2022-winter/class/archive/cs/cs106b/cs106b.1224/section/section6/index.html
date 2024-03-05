@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Class Design and Hashing</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 6. Class Design and Hashing</h1>
+
+<hr>
+
+<p class="attribution">
+Section materials curated by Neel Kishnani, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<p>This week’s section exercises explore the ins and outs of content from weeks 6 and 7, focusing on class design and hash functions!</p>
+
+<p>Each week, we will also be releasing a Qt Creator project containing starter code and testing infrastructure for that week's section problems. When a problem name is followed by the name of a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the Qt Creator project. Here is the zip of the section starter code:</p>
+
+<blockquote>
+  <p>📦 <a href="section6_starter.zip">Starter code</a></p>
+</blockquote>
+
+<h2 id="problem-one-shrinking-the-stack">Problem One: Shrinking the Stack</h2>
+<p>In class, we implemented the <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span></code> class, which represents a stack of integers. The class definition is shown here:</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OurStack</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">OurStack</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">OurStack</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">push</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">pop</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">peek</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+<span class="nl">private:</span>
+  <span class="kt">void</span> <span class="n">grow</span><span class="p">();</span>
+
+  <span class="kt">int</span><span class="o">*</span> <span class="n">elems</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">logicalSize</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">allocatedSize</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>The implementation is on the next page, just as a refresher.
+Here’s the .cpp file:</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "OurStack.h"
+#include "error.h"
+</span><span class="k">const</span> <span class="kt">int</span> <span class="n">kInitialSize</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+<span class="n">OurStack</span><span class="o">::</span><span class="n">OurStack</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">elems</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">kInitialSize</span><span class="p">];</span>
+  <span class="n">logicalSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">allocatedSize</span> <span class="o">=</span> <span class="n">kInitialSize</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">OurStack</span><span class="o">::~</span><span class="n">OurStack</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">delete</span><span class="p">[]</span> <span class="n">elems</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">push</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">logicalSize</span> <span class="o">==</span> <span class="n">allocatedSize</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">grow</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="n">elems</span><span class="p">[</span><span class="n">logicalSize</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+  <span class="n">logicalSize</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">peek</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">error</span><span class="p">(</span><span class="s">"What is the sound of one hand clapping?"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">elems</span><span class="p">[</span><span class="n">logicalSize</span> <span class="err">–</span> <span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">pop</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">peek</span><span class="p">();</span>
+  <span class="n">logicalSize</span><span class="o">--</span><span class="p">;</span> <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">logicalSize</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">grow</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">int</span><span class="o">*</span> <span class="n">newArr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">allocatedSize</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">newArr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="k">delete</span><span class="p">[]</span> <span class="n">elems</span><span class="p">;</span>
+  <span class="n">elems</span> <span class="o">=</span> <span class="n">newArr</span><span class="p">;</span>
+  <span class="n">allocatedSize</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This problem consists of some questions about the OurStack type:</p>
+
+<p><strong>i</strong>. What is the meaning of the term “logical size?” How does it compare to the term “allocated
+size?” What’s the relationship between the two?</p>
+
+<div class="showtime" when="2022-02-18T18:00:00-08:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#kupp")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>The logical size of the stack is the actual number of elements stored in the stack, whereas the allocated size is the length of the <code class="language-c++ highlighter-rouge"><span class="n">elems</span></code> array. The logical length can be any number between 0 (inclusive) and <code class="language-c++ highlighter-rouge"><span class="n">allocatedSize</span></code> (exclusive) depending on how many pushes and pops have been made.</p>
+
+
+</div>
+</div>
+<hr />
+
+<p><strong>ii</strong>. What is the <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="p">()</span></code> function? Why is each line in that function necessary?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>This is the constructor. It’s responsible for setting all the variables in the OurStack class to a reasonable set of defaults. The lines here set up the actual memory where the elements will be stored, configure the initial logical length (0 elements stored), and the initial allocated length (which is the default initial size given by the constant.)</p>
+
+
+</div>
+</div>
+<hr />
+
+<p><strong>iii</strong>*. What is the <code class="language-c++ highlighter-rouge"><span class="o">~</span><span class="n">OurStack</span><span class="p">()</span></code> function? Why is each line in that function necessary? Why isn’t there any code in there involving the logicalSize or allocatedSize data members?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>This is the destructor. Its job is to deallocate any extra memory or resources that were allocated by the <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span></code> class and not otherwise automatically reclaimed. Here, we deallocate the memory we allocated earlier by using <code class="language-c++ highlighter-rouge"><span class="k">delete</span><span class="p">[]</span></code>. We don’t need to do anything to <code class="language-c++ highlighter-rouge"><span class="n">logicalSize</span></code> or allocatedSize because there were no dynamic allocations performed to get space for them. Generally speaking, you only need to explicitly clean up resources that you explicitly allocated.</p>
+
+
+</div>
+</div>
+<hr />
+
+<p><strong>iv</strong>. In the <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="o">::</span><span class="n">grow</span><span class="p">()</span></code> function, one of the lines is <code class="language-c++ highlighter-rouge"><span class="k">delete</span><span class="p">[]</span> <span class="n">elems</span></code>, and in the next line we immediately write <code class="language-c++ highlighter-rouge"><span class="n">elems</span> <span class="o">=</span> <span class="n">newArr</span><span class="p">;</span></code>. Why is it safe to do this? Doesn’t deleting <code class="language-c++ highlighter-rouge"><span class="n">elems</span></code> make it unusable?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>The statement <code class="language-c++ highlighter-rouge"><span class="k">delete</span><span class="p">[]</span> <span class="n">elems</span><span class="p">;</span></code> means “destroy the memory <em>pointed at by</em> <code class="language-c++ highlighter-rouge"><span class="n">elems</span></code>” rather than “destroy the <code class="language-c++ highlighter-rouge"><span class="n">elems</span></code> <em>variable</em>.” As a result, after the first line executes, elems is still a perfectly safe variable to reassign.</p>
+
+
+</div>
+</div>
+<hr />
+
+<p><strong>v</strong>. The <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="o">::</span><span class="n">pop</span><span class="p">()</span></code> function doesn’t seem to have any error-checking code in it. What happens if you try to pop off an empty stack?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<p>Notice that <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="o">::</span><span class="n">pop</span></code> calls <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="o">::</span><span class="n">peek</span></code>, which in turn has its own error-checking. As a result, trying to pop off an empty stack will trigger the custom error message from the <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="o">::</span><span class="n">peek</span></code> member function.</p>
+
+
+</div>
+</div>
+<hr />
+
+<p><strong>vi</strong>. What is the significance of placing the <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="o">::</span><span class="n">grow</span></code> function in the private section of the class? What does that mean? Why didn’t we mark it public?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<p>This is a private member function. This is a member function that’s used as a part of the implementation of the class rather than the interface. Any clients of <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span></code> can’t access this function, which is a Good Thing because we don’t want rando’s coming along and increasing our stack’s capacity unnecessarily.</p>
+
+
+</div>
+</div>
+<hr />
+
+<p>Right now, our stack doubles its allocated length whenever it runs out of space and needs to grow. The problem with this setup is that if we push a huge number of elements into our stack and then pop them all off, we’ll still have a ton of memory used because we never shrink the array when it’s mostly unused.</p>
+
+<p><strong>vii</strong>. Explain why it would not be a good idea to cut the array size in half whenever fewer than half the elements are in use.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-7" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-7">
+   
+<p>Imagine we have a stack with logical size <em>n</em> – 1 and allocated size <em>n</em>. If we perform two pushes, we’ll double our stack’s allocated size to 2 <em>n</em>, which takes time O(<em>n</em>), and increase the logical size to <em>n</em>+1. If we now do two pops, we’ll drop the logical size down to <em>n</em>-1, which is less than half the allocated size. If we now shrink the allocated size by half down to n, we’ll have to do O(<em>n</em>) work transferring elements over, ending with a stack with logical size <em>n</em> – 1 and allocated size <em>n</em>. Overall, we’ve done two pushes and two pops, we’re right back where we’ve started, and we’ve done O(<em>n</em>) work. That’s a lot of work for very little payoff!</p>
+
+
+</div>
+</div>
+<hr />
+
+<p><strong>viii</strong>. Update the code for <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span></code> so that whenever the logical length drops below one quarter of the allocated length, the array is reallocated at half its former length. As an edge case, ensure that the allocated length is always at least equal to the initial allocated capacity. This setup maintains the (amortized) <em>O(1)</em> cost of each insertion and deletion and ensures that the memory usage is always <em>O(n)</em>.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-8" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-8">
+   
+<p>There are many ways we can do this. We’re going to do this by replacing the <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="o">::</span><span class="n">grow</span></code> function with a new <code class="language-c++ highlighter-rouge"><span class="n">OurStack</span><span class="o">::</span><span class="n">setCapacity</span></code> function that lets us say what the new allocated size will be. Here’s the updated class definition:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OurStack</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">OurStack</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">OurStack</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">push</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">pop</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">peek</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="nl">private:</span>
+  <span class="kt">void</span> <span class="n">setCapacity</span><span class="p">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="p">);</span>
+
+  <span class="kt">int</span><span class="o">*</span> <span class="n">elems</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">logicalSize</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">allocatedSize</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>Here’s the updated functions from the .cpp file:</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">push</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">logicalSize</span> <span class="o">==</span> <span class="n">allocatedSize</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">setCapacity</span><span class="p">(</span><span class="n">allocatedSize</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">elems</span><span class="p">[</span><span class="n">logicalSize</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+  <span class="n">logicalSize</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">pop</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">peek</span><span class="p">();</span>
+  <span class="n">logicalSize</span><span class="o">--</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">logicalSize</span> <span class="o">&lt;</span> <span class="n">allocatedSize</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">setCapacity</span><span class="p">(</span><span class="n">allocatedSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="n">OurStack</span><span class="o">::</span><span class="n">setCapacity</span><span class="p">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/* If we're asking to reduce our size below the initial starting size, 
+   * instead leave the array at its current size.
+   */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">capacity</span> <span class="o">&lt;</span> <span class="n">kInitialSize</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+  <span class="kt">int</span><span class="o">*</span> <span class="n">newArr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">capacity</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">newArr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">delete</span><span class="p">[]</span> <span class="n">elems</span><span class="p">;</span>
+  <span class="n">elems</span> <span class="o">=</span> <span class="n">newArr</span><span class="p">;</span>
+  <span class="n">allocatedSize</span> <span class="o">=</span> <span class="n">capacity</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-two-hash-functions">Problem Two: Hash Functions</h2>
+<p>In CS106B, we’ll use hash functions without spending too much time talking about their internal workings. (Building a good hash function is a challenging endeavor!) To give you a sense about why this is, we’d like you to investigate four different possible hash functions.</p>
+
+<p>Each of the functions shown below is designed to take as input a string and then output a hash code in the range from 0 to 9, inclusive. For each proposed hash function, tell us whether it’s</p>
+
+<ol>
+  <li>not even a valid hash function;</li>
+  <li>a valid hash function, but not a very good one; or</li>
+  <li>a very good hash function.</li>
+</ol>
+
+<p>Of course, you should be sure to justify your answers.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">hashFunction1</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span> <span class="c1">// a value between 0 and 9, inclusive</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">hashFunction2</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Who cares about str, anyway?</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-9" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-9">
+   
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">hashFunction1</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span> <span class="c1">// a value between 0 and 9, inclusive</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This is not a valid hash function. One of the main requirements for a hash function is that if you hash the same input multiple times, you always get the same output. However, this hash function doesn’t do this, since hashing any string multiple times might produce different answers.</p>
+
+<p>At a more intuitive level – imagine you’re using a hash function to distribute items into drawers. The idea is that you’d compute the hash code for the item, then put the item in the given drawer. The advantage of doing this is that if you want to see whether you have that item, you just need to look in the drawer it hashes to. But if you get different hash codes back each time, you aren’t guaranteed that you’ll be able to find the item when you hash it, since you’ll be sent to a random drawer each time!</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">hashFunction2</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Who cares about str, anyway?</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This hash code passes the first test of a hash function – if you hash the same input many times, you will get the same output. However, it absolutely fails the second test – since everything gets mapped to slot zero, this hash function doesn’t distribute items nicely over the range, and in fact hashes of wildly different strings will always end up the same!
+Returning to the analogy above – this hash function corresponds to the strategy of “put everything in the same drawer.” That’ll work, but your drawer will get really full!</p>
+
+
+</div>
+</div>
+<hr />
+
+<p>These next three functions use the fact that each char has an associated integer value in C++. For example, on most systems the character <code class="language-c++ highlighter-rouge"><span class="sc">'A'</span></code> has value 65, the character <code class="language-c++ highlighter-rouge"><span class="sc">'3'</span></code> has value 51, the character <code class="language-c++ highlighter-rouge"><span class="sc">'!'</span></code> has value 33, and the character <code class="language-c++ highlighter-rouge"><span class="sc">'~'</span></code> has value 126. We can use these numeric values to design hash functions for strings.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">hashFunction3</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">hashFunction4</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">hashFunction5</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">ch</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="n">ch</span><span class="p">;</span> <span class="c1">// Again, uses the numeric value of ch</span>
+  <span class="p">}</span>
+  <span class="cm">/* Numeric values for characters can be positive or negative. */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-10" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-10">
+   
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">hashFunction3</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>There are two problems with this hash function. First, if the input string is empty, it reads off the end of the string – oops! That’s no good. (It turns out that in C++, reading one step off the end of the string is technically a well-defined operation, but I’d wager that most C++ programmers don’t know this and at a bare minimum it’s a weird thing to do.)</p>
+
+<p>But for now, let’s ignore that. This hash function does indeed compute hash codes consistently (if you hash the same string many times, you’ll always get the same result). However, it does not produce hash codes that are guaranteed to be in the range from 0 to 9, since hashing the string "~" would output 12. Therefore, this is not a legal hash function.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">hashFunction4</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Ignoring the issue raised above about how str[0] might be an out-of-bounds read, this hash function is deterministic (hashing the same string many times always produces the same output), and the outputs are always in the range from 0 to 9, inclusive. In fact, taking an integer and modding it by the number n will always give you a value in the range from 0 to n – 1, inclusive.</p>
+
+<p>But is this a <em>good</em> hash function? I’d say no. Good hash functions should have the property that tiny changes to the inputs result in large changes to the output. Here, taking a string and appending a new character to it, or changing any character but the first, or deleting any character but the first will not change the hash code. You’ll get a huge number of collisions with this hash function.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">hashFunction5</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">ch</span><span class="o">:</span> <span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="n">ch</span><span class="p">;</span> <span class="c1">// Again, uses the numeric value of ch</span>
+  <span class="p">}</span>
+  <span class="cm">/* Numeric values for characters can be positive or negative. */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This hash function is deterministic (hashing the same string always produces the same result), and the way it’s structured guarantees that the range of values produced is always between 0 and 9, inclusive. However, there are two major problems with this hash function:</p>
+<ol>
+  <li>The way that this hash function produces values in the range from 0 to 9 is biased toward producing the outputs 0 and 9. Specifically, any string made of purely positive-value characters (basically, most English text) will produce a result greater than 9, which clamps to 9. Similarly, any string made of purely negative-value characters (whether these exist depends on your OS) will clamp to 0. So in that sense, the values aren’t nicely-distributed across the whole range, and you’d expect to get lots of collisions at 0 and 9.</li>
+  <li>The hash function doesn’t care about the order of the characters in the string. The strings "tarragon" and "arrogant" are <em>anagrams</em> of one another – they’re made of the same characters in a different order – and so they’ll have the same hash code. The same is true of “senator,” “treason,” and “atoners.” We’d like it to be the case that if we make small changes to a string (say, swap- ping the order of the letters) that we get wildly different outputs, but that’s not the case here.
+We hope this little foray into the design of hash functions gives you a sense as to why it’s hard to design good hash functions and why this is something we’re going to leave to the experts. 😃</li>
+</ol>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-three-salting-and-hashing">Problem Three: Salting and Hashing</h2>
+<p>In lecture, we talked about how when storing passwords, it’s common to not store the passwords themselves, but rather the hash code of the password using some hash function. This ensures that if someone manages to steal the password database, they can’t immediately read off all the passwords stored in the database.</p>
+
+<p>This approach – storing the hashes of the passwords rather than the passwords themselves – is much better than just storing the passwords themselves, but it’s not what’s done in practice because it doesn’t work well if the users have weak passwords.</p>
+
+<p>Specifically, suppose that you have a list of the 100,000 most commonly used passwords, which isn’t too hard to find with a bit of Googling. You also have, probably nefariously, stolen the password file from a website, which is represented as a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span></code> mapping each user name to the hash of their password. You could then do the following to figure out the passwords for anyone using weak accounts:</p>
+
+<ol>
+  <li>Compute the hash codes for the 100,000 commonly-used passwords that you know of.</li>
+  <li>Look at the <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span></code> mapping website users to the hashes of their passwords. For each hash code that matches one of the hashes you’ve computed above, output their password.</li>
+</ol>
+
+<p>Write a function</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span> <span class="n">breakWeakPasswords</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">stolenPasswordFile</span><span class="p">,</span>
+                                       <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">knownWeakPasswords</span><span class="p">,</span> 
+                                       <span class="n">HashFunction</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">hashFn</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that uses the above approach to figure out the passwords of each user who has a weak password, returning a <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> associating each such user with their password. The final parameter, <code class="language-c++ highlighter-rouge"><span class="n">hashFn</span></code>, represents the hash function used to compute password hashes. Then, answer the following question: if there are <em>n</em> users on the website and there are <em>m</em> weak passwords, what is the runtime of the code that you wrote, assuming hash codes can be computed in time O(1)?</p>
+
+<p>In practice, it’s most common to use a strategy called <strong>salting and hashing</strong>, which works as follows, to prevent people from recovering passwords in the way you just did. We store for each user two pieces of information:</p>
+<ul>
+  <li>a randomly-chosen string called the <strong>salt</strong>, and</li>
+  <li>the hash code of the string <code class="language-c++ highlighter-rouge"><span class="n">salt</span> <span class="o">+</span> <span class="n">password</span></code>, where password is the user’s password.</li>
+</ul>
+
+<p>It’s important that the salt is chosen randomly for each user, rather than having a fixed salt used for all
+passwords.</p>
+
+<p>First, explain why the introduction of a per-user salt means that you can’t break passwords using the code that you wrote above. Then, answer the following question: suppose you had the master password file for a website, including the salted, hashed passwords, and you wanted to find all users who have weak passwords. If there are <em>n</em> users and <em>m</em> weak passwords, how long would it take to find all users who have weak passwords? Represent your answer in big-O notation.</p>
+
+<p>(A note on this problem: we’re not teaching this to you because we want you to do Nefarious Things like this. Rather, we wanted you to see what Roguish Scalawags could do to compromise a password system and to see why we take the protective steps that we take to stop them from doing so.)</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-11" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-11">
+   
+<p>Here’s one possible implementation of the function:</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span>
+<span class="n">breakWeakPasswords</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">stolenPasswordFile</span><span class="p">,</span>
+<span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">knownWeakPasswords</span><span class="p">,</span>
+                   <span class="n">HashFunction</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">hashFn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/* Build a map from hash codes to weak passwords. This takes time O(m). */</span>
+  <span class="n">Map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span> <span class="n">weakHashes</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">password</span><span class="o">:</span> <span class="n">knownWeakPasswords</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">weakHashes</span><span class="p">[</span><span class="n">hashFn</span><span class="p">(</span><span class="n">password</span><span class="p">)]</span> <span class="o">=</span> <span class="n">password</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="cm">/* A user has a bad password if the hash is known. We can very quickly check
+   * this because hash table lookups are so fast. This takes time O(n).
+   */</span>
+   <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+   <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">username</span><span class="o">:</span> <span class="n">stolenPasswordFile</span><span class="p">)</span> <span class="p">{</span>
+     <span class="kt">int</span> <span class="n">hashedPassword</span> <span class="o">=</span> <span class="n">stolenPasswordFile</span><span class="p">[</span><span class="n">username</span><span class="p">];</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">weakHashes</span><span class="p">.</span><span class="n">containsKey</span><span class="p">(</span><span class="n">hashedPassword</span><span class="p">))</span> <span class="p">{</span>
+          <span class="n">result</span><span class="p">[</span><span class="n">username</span><span class="p">]</span> <span class="o">=</span> <span class="n">weakHashes</span><span class="p">[</span><span class="n">hashedPassword</span><span class="p">];</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This code takes time O(<em>m</em> + <em>n</em>), which means that it’s a very efficient way to find everyone with a weak password. Think about how this function scales and what has to happen for its output to double.</p>
+
+<p>The above attack works because we can precompute the hashes of common passwords fairly quickly. If we add in a per-user salt, we can’t do this any more. For example, suppose someone has the very weak password password. If they have a random salt, it’s as though their password really was some long random string of characters followed by password, and the hash code of that string is likely to be completely different than that of the hash code for password itself. We therefore can’t precompute the hash codes of all the weak passwords and then see if anyone has those hash codes, because the hash codes stored per person will be quite different from the hash codes of the raw passwords.</p>
+
+<p>We could still go one person at a time and try hashing all the weak passwords along with the salt to see if that matches the stored hash for the person, but that’s going to be much slower than before. We have to now do O(<em>m</em>) work for each of the O(<em>n</em>) users for a total runtime of O(<em>mn</em>). If <em>m</em> is, say, 100,000 and <em>n</em> is, say, 100,000,000, it’s going to take us a long time to find everyone with weak passwords, long enough for the company to announce that there’s been a breach and urge everyone to change passwords.</p>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Feb-17
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

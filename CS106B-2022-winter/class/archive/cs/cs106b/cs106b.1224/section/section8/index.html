@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Trees</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 8. Trees</h1>
+
+<hr>
+
+<p class="attribution">
+Section materials curated by Neel Kishnani, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<><p>This week’s section exercises are all about trees, particularly binary search trees and common tree idioms and algorithms. Trees are yet another way to organize the way that data is stored, and they are perhaps one of the most powerful paradigms for data storage that we've encountered so far! Their recursive structure makes writing recursive functions very natural, so we will be using lots of recursion when working with trees. After you're done working through this section handout, you'll truly know what it means to party with trees!</p>
+
+<blockquote>
+  <p>📦 <a href="starter_section8.zip">Starter code</a></p>
+</blockquote>
+
+<h2 id="problem-one-binary-search-tree-warmup">Problem One: Binary Search Tree Warmup!</h2>
+<p>Binary search trees have a ton of uses and fun properties. To get you warmed up with them, try working through the following problems.</p>
+
+<p>First, draw three different binary search trees made from the numbers 1, 2, 3, 4, 5, 6, 7, 8, and 9. What are the heights of each of the trees you drew? What’s the tallest BST you can make from those numbers? How do you know it’s as tall as possible? What’s the shortest BST you can make from those numbers? How do you know it’s as short as possible?</p>
+
+<p>Take one of your BSTs. Trace through the logic to insert the number 10 into that tree. Then insert 3½. What do your trees look like?</p>
+
+<div class="showtime" when="2022-03-04T18:00:00-08:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#embiid")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>There are several trees that are tied for the tallest possible binary search tree we can make from these numbers, one of which is shown to the right. It has height eight, since the height measures the number of <em>links</em> in the path from the root to the deepest leaf. We can see that this is the greatest height possible because there’s exactly one node at each level, and the height can only increase by adding in more levels. A fun math question to ponder over: how many differ-ent binary search trees made from these numbers have this height? And what’s the probability that if you choose a random order of the elements 1 through 9 to insert into a binary search tree that you come up with an ordering like this one?</p>
+
+<p>Similarly, there are several trees tied for the shortest possible binary search tree we can make from these numbers, one of which is shown below. It has height three, which is the smallest possible height we can have. One way to see this is to notice that each layer in the tree is, in a sense, as full as it can possibly be; there’s no room to move any of the elements from the deeper layers of the tree any higher up:
+<img src="img/bst1.png" alt="A binary search tree with nodes that have values 1 through 9. 5 is the root node at the top of the tree. 2 and 8 are its children, one level from root. 2 has children 1 and 4, two levels down from root. 4 has a left child 3. 8 (one level from root) has children 7 and 9. 7 has left child 3." /></p>
+
+<p>If we insert 10, we’d get the following:
+<img src="img/bst2.png" alt="A binary search tree with nodes that have values 1 through 10. This tree is identical to the previous one except that 9, which previously had no children, now has a right child of 10." /></p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-two-tree-quality">Problem Two: Tree-quality</h2>
+<p>Write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">areEqual</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">one</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">two</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that take as input pointers to the roots of two binary trees (not necessarily binary <em>search</em> trees), then returns whether the two trees have the exact same shape and contents.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>Let’s use the recursive definition of trees! The empty tree is only equal to the empty tree. A nonempty tree is only equal to another tree if that tree is nonempty, if the roots have the same values, and if the left and right subtrees of those roots are the same. That leads to this recursive algorithm:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">areEqual</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">one</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">two</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base Case: If either tree is empty, they had both better be empty. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">one</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">two</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">one</span> <span class="o">==</span> <span class="n">two</span><span class="p">;</span> <span class="c1">// At least one is null</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* We now know both trees are nonempty. Confirm the root values match and
+     * that the subtrees agree.
+     */</span>
+    <span class="k">return</span> <span class="n">one</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">==</span> <span class="n">two</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&amp;&amp;</span>
+           <span class="n">areEqual</span><span class="p">(</span><span class="n">one</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">two</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="n">areEqual</span><span class="p">(</span><span class="n">one</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">two</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For a Not At All Fun Or Exciting exercise, try writing this one iteratively!</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-three-walking-through-the-trees">Problem Three: Walking Through the Trees</h2>
+<p>Write iterative functions to search a BST for a value and to insert a new value into a BST. Then compare what you wrote to the recursive implementations of those functions. Which ones seem cleaner?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>Here’s an iterative function to search a tree for a value. It works by manually adjusting a pointer to a tree node to move to the left or right as appropriate. This version is written for the string BST we did in class, but it can easily be adjusted to work with nodes of any type.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">contains</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">,</span> <span class="kt">int</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">root</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span>  <span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span>
+        <span class="k">else</span> <span class="cm">/* key &gt; root-&gt;value */</span> <span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Inserting into a BST iteratively is a bit trickier. The reason for this is that once we’ve walked off the tree and found the insertion point, we have to remember where we were most recently in the tree so that we can update that node to point to the newly-inserted value. This is most easily accomplished by keeping track of two pointers, a current pointer and a previous pointer. Here’s some code for this:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">insert</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">root</span><span class="p">,</span> <span class="kt">int</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">root</span><span class="p">;</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="cm">/* Walk the tree to find the insertion point. This is essentially the same
+     * code for a lookup.
+     *
+     * Question to ponder: why did we make a new pointer curr here rather than
+     * using root?
+     */</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// Already present!</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span>  <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span>
+        <span class="k">else</span> <span class="cm">/* key &gt; curr-&gt;value */</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* At this point we’ve walked off the tree. Let’s build up a new node, then
+     * wire it into the tree.
+     */</span>
+    <span class="n">curr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">;</span>
+    <span class="n">curr</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">key</span><span class="p">;</span>
+    <span class="n">curr</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="cm">/* There are two cases to consider here. First, we might have inserted into
+     * an empty tree, in which case prev will be null.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">prev</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">curr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Otherwise, the new value should hang off the tree. We need to see how. */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="n">curr</span><span class="p">;</span>
+        <span class="k">else</span> <span class="cm">/* key &gt; prev-&gt;key */</span> <span class="n">prev</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="n">curr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-four-the-ultimate-and-penultimate-values">Problem Four: The Ultimate and Penultimate Values</h2>
+<p>Write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Node</span><span class="o">*</span> <span class="nf">biggestNodeIn</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that takes as input a pointer to the root of a (nonempty) binary search tree, then returns a pointer to the node containing the largest value in the BST. What is the runtime of your function if the tree is balanced? If it’s imbalanced? Then, write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Node</span><span class="o">*</span> <span class="nf">secondBiggestNodeIn</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that takes as input a pointer to the root of a BST containing at least two nodes, then returns a pointer to the node containing the second-largest value in the BST. Then answer the same runtime questions posed in the first part of this problem.</p>
+
+<p>Fun Fact: This first algorithm is how the <code class="language-c++ highlighter-rouge"><span class="n">Set</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">first</span><span class="p">()</span></code> function works.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>We could solve this problem by writing a function that searches over the entire BST looking for the biggest value, but we can do a lot better than this! It turns out that the biggest value in a BST is always the one that you get to by starting at the root and walking to the right until it’s impossible to go any further. Here’s a recursive solution that shows off why this works:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Node</span><span class="o">*</span> <span class="nf">biggestNodeIn</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Nothing to see here, folks."</span><span class="p">);</span>
+
+    <span class="cm">/* Base case: If the root of the tree has no right child, then the root node
+     * holds the largest value because everything else is smaller than it.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+
+    <span class="cm">/* Otherwise, the largest value in the tree is bigger than the root, so it’s
+     * in the right subtree.
+     */</span>
+    <span class="k">return</span> <span class="n">biggestNodeIn</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And, of course, we should do this iteratively as well, just for funzies:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Node</span><span class="o">*</span> <span class="nf">biggestNodeIn</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Nothing to see here, folks."</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">root</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Getting the second-largest node is a bit trickier simply because there’s more places it can be. The good news is that it’s definitely going to be near the rightmost node – we just need to figure out exactly where.</p>
+
+<p>There are two cases here. First, imagine that the rightmost node does not have a left child. In that case, the second-smallest value must be that node’s parent. Why? Well, its parent has a smaller value, and there are no values between the node and its parent in the tree (do you see why?) That means that the parent holds the second-smallest value. The other option is that the rightmost node <em>does</em> have a left child. The largest value in that subtree is then the second-largest value in the tree, since that’s the largest value smaller than the max. We can use this to write a nice iterative function for this problem that works by walking down the right spine of the tree (that’s the fancy term for the nodes you get by starting at the root and just walking right), tracking the current node and its parent node. Once we get to the largest node, we either go into its left subtree and take the largest value, or we return the parent, whichever is appropriate.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Node</span><span class="o">*</span> <span class="nf">secondBiggestNodeIn</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Nothing to see here, folks."</span><span class="p">);</span>
+
+    <span class="n">Node</span><span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">root</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span><span class="p">;</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="o">?</span> <span class="n">prev</span> <span class="o">:</span> <span class="n">biggestNodeIn</span><span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Notice that all three of these functions work by walking down the tree, doing a constant amount of work at each node. This means that the runtime is O(<em>h</em>), where <em>h</em> is the height of the tree. In a balanced tree that’s O(log <em>n</em>) work, and in an imbalanced tree that’s O(<em>n</em>) work in the worst-case.</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-five-a-problem-of-great-depth-and-complexity">Problem Five: A Problem of Great Depth and Complexity</h2>
+<p>Write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">heightOf</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that returns the height of the given tree. By convention, an empty tree has height -1. Then talk about the big-O time complexity of your solution.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<p>There are many ways to write this function. The easiest one that I know of is to use a nice recursive observation: the height of the empty tree is -1, and the height of a nonempty tree is always one plus the height of the larger of the heights of its two subtrees (do you see why?). To check this, think about what that says about the height of a tree with a single node, the height of a highly degenerate tree, etc. Here’s what this looks like:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">heightOf</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">max</span><span class="p">(</span><span class="n">heightOf</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">),</span> <span class="n">heightOf</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So how efficient is this code? Well, notice that it visits every node in the tree once and exactly once, doing O(1) work at each node. There are O(n) total nodes in the tree, so this does a total of O(n) work.</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-six-order-statistic-trees">Problem Six: Order Statistic Trees</h2>
+<p>An <em>order statistic tree</em> is a binary search tree where each node is augmented with the number of nodes in its left subtree. For example, here is a simple order statistic tree:
+<img src="img/ost1.png" alt="A order statistic tree with root node (13,4). On the second level are nodes (5,2) on the left and (34,1) on the right. On the third level are nodes (2,0), (8,0), (21,0), and (89,1). On the last level, the node (2,0) has child (3,0) and the node (89,1) has child (55,0) " /></p>
+
+<p>Suppose that you have the following struct representing a node in an order statistic tree:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">OSTNode</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">leftSubtreeSize</span><span class="p">;</span>
+  <span class="n">OSTNode</span><span class="o">*</span> <span class="n">left</span><span class="p">;</span>
+  <span class="n">OSTNode</span><span class="o">*</span> <span class="n">right</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>Write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">OSTNode</span><span class="o">*</span> <span class="nf">kthNodeIn</span><span class="p">(</span><span class="n">OSTNode</span><span class="o">*</span> <span class="n">root</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that accepts as input a pointer to the root of the order statistic tree, along with a number <em>k</em>, then returns a pointer to the kth-smallest node in the tree (zero-indexed). If <em>k</em> is negative or at least as large as the number of nodes in the tree, your function should return nullptr as a sentinel. Then, analyze the time complexity of your solution.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<p>The key insight you need to have to solve this problem is the following. Suppose you’re looking for the kth-smallest node in the tree (zero-indexed) and the root node has <em>k</em> nodes in its left subtree. In that case, you know that the root node is the one you’re looking for: it has <em>k</em> nodes smaller than it, so it’s the kth-smallest value. On the other hand, suppose that you’re looking for the kth-smallest node and the root node has more than <em>k</em> nodes in its left subtree. Then you should go look in the left subtree for the kth-smallest node, since you know it must be one of them. Finally, suppose you’re looking for the kth-smallest node and the root node has <em>l</em> nodes in its left subtree, with <em>l</em> &lt; <em>k</em>. That means that the node you’re looking for isn’t in the left subtree, and it isn’t the root node, so it’s got to be in the right subtree. Specifically, it’s going to be the (<em>k</em> – <em>l</em> – 1)st-smallest value in that subtree, since you’ve skipped over <em>l</em> + 1 elements in the course of going there.</p>
+
+<p>The resulting code is surprisingly short. Here’s a recursive implementation:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">OSTNode</span><span class="o">*</span> <span class="nf">kthNodeIn</span><span class="p">(</span><span class="n">OSTNode</span><span class="o">*</span> <span class="n">root</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+<span class="cm">/* Base case: If we walked off the tree, or if we’re looking for an invalid index, we’ve failed.
+*/</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">leftSubtreeSize</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">kthNodeIn</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">leftSubtreeSize</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="cm">/* (k &gt; root-&gt;leftSubtreeSize) */</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">kthNodeIn</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">k</span> <span class="err">–</span> <span class="mi">1</span> <span class="err">–</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">leftSubtreeSize</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This runs in time O(<em>h</em>), since we’re descending from the root downward and doing O(1) work per step.</p>
+
+<p>Order statistics trees are a special type of BST called an <strong>augmented binary search tree</strong>. Augmented BSTs have all sorts of nifty properties and you can use them to solve a bunch of problems much faster than initially seems possible. Take CS161 or CS166 for details!</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-seven-freeing-trees-efficiently">Problem Seven: Freeing Trees Efficiently</h2>
+<p>In lecture, we saw that you can use the following recursive function to deallocate all the memory used by a binary search tree:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">free</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+  <span class="n">free</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+  <span class="n">free</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+  <span class="k">delete</span> <span class="n">root</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>(What kind of tree traversal is this?) The problem with this code is that if you have a highly degenerate tree, say, one that’s essentially a gigantic linked list, the recursive depth can get pretty high, so high in fact that it can cause a stack overflow for a sufficiently large tree.</p>
+
+<p>Here’s another algorithm you can use to free all the nodes in a tree in O(<em>n</em>) time, using no recursion at all. This algorithm, which I first heard from a friend who now works at an autonomous vehicle startup, is based on the idea of tree rotations. A <strong>tree rotation</strong> is a way of reorganizing the nodes in a binary search tree that changes the tree’s shape, but maintains the fact that it’s still a binary search tree. There are two kinds of rotations, left rotations and right rotations, which are illustrated here:</p>
+
+<p><img src="img/treerotate.png" alt="There are 2 trees. The following describes tree 1, which is labeled rotate left: The root node is B, with child node A one the left. Everything to the left of A is less than A, and everything to the right of A is greater than A and less than B. Everything to the right of B is greater than B. The following describes tree 2, which is labeled rotate right: The root node is A, with child node B one the right. Everything to the left of B is greater than A and less than B, and everything to the right of B is greater than B. Everything to the left of A is less than B. " /></p>
+
+<p>Here’s the algorithm for deleting all the nodes in the tree. First, imagine the root node has no left child. In that case, we can just deallocate the root and then proceed to clean up the right subtree. Otherwise, the root has a left child. So let’s do a single right rotation, moving more of the nodes in to the right subtree, and repeat. Eventually, we’ll munch up all of the nodes in the BST, and since there’s no recursion involved here, we use only O(1) auxiliary space. Impressively, this still runs in time O(n).</p>
+
+<p>Implement this algorithm.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-7" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-7">
+   
+<p>Here’s one possible implementation of this algorithm:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">free</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">root</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Case 1: No left child. Delete the node and move right. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+      <span class="cm">/* We run into the same problem we had with deleting all the nodes in
+       * a linked list: we need to free this node and advance to the right.
+       * So steal a page out of that playbook!
+       */</span>
+       <span class="n">Node</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+       <span class="k">delete</span> <span class="n">root</span><span class="p">;</span>
+       <span class="n">root</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+     <span class="p">}</span>
+     <span class="cm">/* Case 2: Has a left child. Then do a rotation! */</span>
+     <span class="k">else</span> <span class="p">{</span>
+       <span class="cm">/* Remember the left node for later – we need to overwrite the pointer
+        * to it in a second.
+        */</span>
+        <span class="n">Node</span><span class="o">*</span> <span class="n">leftChild</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span>
+        <span class="cm">/* Have the root pick up the subtree between it and its left child. */</span>
+        <span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="n">leftChild</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+        <span class="cm">/* The left child now acquires the root as its right child. */</span>
+        <span class="n">leftChild</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="n">root</span><span class="p">;</span>
+        <span class="cm">/* The root now becomes the left child – it’s been hoisted up! */</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">leftChild</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This algorithm is closely related to one called the Day-Stout-Warren algorithm (or DSW) that, given any tree, automatically rebalances it in time O(n) and space O(1). Check it out if you’re curious!</p>
+
+<p>Other cool facts about tree rotations: using tree rotations, it’s always possible to convert any BST for a set of values into any other BST for the same set of values. And if you have a good working implementation of tree rotations going, you can implement all sorts of nice balanced trees. I’d recommend checking out <strong>splay trees</strong> or <strong>treaps</strong> as starting points, as they’re both relatively easy to code up.</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-eight-counting-bsts">Problem Eight: Counting BSTs</h2>
+
+<p>Write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">numBSTsOfSize</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that takes as input a number <em>n</em>, then returns the number of differently-shaped binary search trees you can make out of <em>n</em> elements.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-8" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-8">
+   
+<p>Let’s imagine we have a group of <em>n</em> values and we want to form a BST from them. Let’s suppose we pick the kth-smallest value and put it up at the root. That means that there will be <em>k</em> nodes in the left subtree and (<em>n</em> – <em>k</em> – 1) nodes in the right subtree (do you see why?) If we build any BST we’d like out of the <em>k</em> nodes in the left and the (<em>n</em> – <em>k</em> – 1) nodes in the right subtree, we can combine those trees together with the kth-smallest node as the root to form an overall BST for all the values. Essentially, for each way we can pick</p>
+<ul>
+  <li>which node is at the root,</li>
+  <li>which tree we want to use for the smaller values, and</li>
+  <li>which tree we want to use for the largest values,
+we’ll get back one possible BST we can form, and in fact every BST we could make will fit into this framework. We can therefore use the following beautiful recursive algorithm to solve this problem:</li>
+</ul>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">numBSTsOfSize</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="cm">/* Base case: There’s only one tree of size 0, namely, the empty BST. */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  
+  <span class="cm">/* Recursive case: Imagine all possible ways to choose a root and build the
+   * left and right subtrees.
+  */</span>
+  <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  
+  <span class="cm">/* Put the the nodes at indices 0, 1, 2, ..., n-1 up at the root. */</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Each combination of a BST of i elements and a BST of n - 1 - i elements
+     * can be used to build one BST of n elements. The number of pairs of
+     * trees we can make this way is given by the product of the number of
+     * trees of each type.
+     */</span>
+     <span class="n">result</span> <span class="o">+=</span> <span class="n">numBSTsOfSize</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">numBSTsOfSize</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This problem is just <em>screaming</em> for memoization, since we’ll end up recomputing the same values a <em>lot</em> of times. We’ll leave that as an exercise to the reader. ☺</p>
+
+<p>Fun fact: the exact number of BSTs you can make from <em>n</em> elements is given by the nth Catalan number. Check out the Wikipedia entry: it’s really interesting! There happen to be the same number of BSTs for <em>n</em> elements as, say, the number of ways you can write a string of <em>n</em> open and close parentheses that match one another, or the number of ways you can triangulate an (<em>n</em>+2)-vertex polygon, etc. Oh, and this shows up in a couple crazy cool algorithms. Take CS166 for details!</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-nine-checking-bst-validity">Problem Nine: Checking BST Validity</h2>
+
+<p><img src="img/bst9.png" alt="A binary search tree. The root node is 4, and has child nodes 3 on the left and 9 on the right. The node 3 has children 1 on the left and 2 on the right. " /></p>
+
+<p>You are given a pointer to a <code class="language-c++ highlighter-rouge"><span class="n">Node</span></code> that is the root of some type of binary tree. However, you are not sure whether or not it is a binary <em>search</em> tree. That is, you might get a tree like the one shown to the right, which is a binary tree but not a binary search tree. Write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isBST</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that, given a pointer to the root of a tree, determines whether or not the tree
+is a legal binary search tree. You can assume that what you’re getting as input is actually a tree, so, for example, you won’t have a node that has multiple pointers into it, no node will point at itself, etc.</p>
+
+<p>As a hint, think back to our recursive definition of what a binary search tree is. If you have a node in a binary tree, what properties must be true of its left and right subtrees for the overall tree to be a binary search tree? Consider writing a helper function that hands back all the relevant information you’ll need in order to answer this question.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-9" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-9">
+   
+<p>There are a bunch of different ways that you could write this function. The one that we’ll use is based on recursive definition of a BST from lecture: a BST is either empty, or it’s a node <em>x</em> whose left subtree is a BST of values smaller than <em>x</em> and whose right subtree is a BST of values greater than <em>x</em>.</p>
+
+<p>This solution works by walking down the tree, at each point keeping track of two pointers to nodes that delimit the range of values we need to stay within.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">isBSTRec</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">lowerBound</span><span class="p">,</span> <span class="n">Node</span><span class="o">*</span> <span class="n">upperBound</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/* Base case: The empty tree is always valid.*/</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+  <span class="cm">/* Otherwise, make sure this value is in the proper range. */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">lowerBound</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&lt;=</span> <span class="n">lowerBound</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">upperBound</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">&gt;=</span> <span class="n">upperBound</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+  <span class="cm">/* Okay! We're in range. So now we just need to confirm that the left and
+   * right subtrees are good as well. Notice how the range changes based on the
+   * introduction of this node.
+   */</span>
+   <span class="k">return</span> <span class="n">isBSTRec</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">lowerBound</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+          <span class="n">isBSTRec</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">upperBound</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">isBST</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">isBSTRec</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-ten-deleting-from-a-bst">Problem Ten: Deleting from a BST</h2>
+
+<p>We didn’t talk about how to delete nodes out of a BST, and that’s for a good reason – it’s surprisingly challenging! Let’s suppose you want to delete a node out of a BST. There are three cases to consider:</p>
+
+<ol>
+  <li>The node is a leaf. In that case, it’s really easy to delete, so we just go and delete it.</li>
+  <li>The node has exactly one child. In that case, we delete the node and “replace” it with that one child by updating the node’s parent so that it points directly at the single child.</li>
+  <li>The node has two children. In that case, we do the following. Suppose we want to delete the node containing x. Find the node with the largest value in x’s left subtree. Copy the value from that node and overwrite the value x. Then, go and delete that new node instead of x.</li>
+</ol>
+
+<p><img src="img/bst10.png" alt="A binary search tree. The root node is G, with children E on the left and N on the right. E has a child A on the left, and A has a child C on the right. N has children K on the left and Q on the right. K has children I on the left and M on the right. " /></p>
+
+<p>Trace through this algorithm by hand on the tree above, deleting <em>C</em>, then <em>E</em>, then <em>N</em>, then <em>M</em>. Then, implement a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">removeFrom</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">root</span><span class="p">,</span> <span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that removes the specified value from the given BST, if that value exists. Finally, discuss the runtime of the algorithm you implemented as a function of the height of the tree.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-10" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-10">
+   
+<p><em>C</em> is a leaf node, so we can delete it by just removing it from the tree:</p>
+
+<p><img src="img/10bst1.png" alt="The same binary search tree from before, with the leaf node C removed" /></p>
+
+<p>The node E has only a single child, so we just remove it and replace it with its child to get this tree:</p>
+
+<p><img src="img/10bst2.png" alt="E is removed from the tree and replaced with its child, A. The resulting tree is as follows: root node G, with child A on the left and N on the right. N has children K on the left and Q on the right. K has children I on the left and M on the right." /></p>
+
+<p>The node <em>N</em> has two children. The largest value in its left subtree is <em>M</em>, so we replace <em>M</em> by <em>N</em>, then delete the node <em>N</em>. This is shown here:</p>
+
+<p><img src="img/10bst3.png" alt="The node N is deleted, and replaced with node M. The updated tree: Root node G, with child A on the left and M on the right.M has children K on the left and Q on the right. K has child I on the left." /></p>
+
+<p>The node <em>M</em> now has two children. To delete <em>M</em>, we start by finding the largest value in its left subtree (<em>K</em>) and replacing <em>M</em> by <em>K</em>. We then delete the node that formerly held <em>K</em>. Since that node has exactly one child, we just replace it with its one child. The result is shown here:</p>
+
+<p><img src="img/10bst3.png" alt="The node M is deleted, and replaced with node K. The updated tree: Root node G, with child A on the left and M on the right.M has children I on the left and Q on the right." /></p>
+
+<p>Here’s some code for how to do this deletion.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">removeLargestFrom</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">root</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">performDeletion</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">toRemove</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">removeFrom</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">root</span><span class="p">,</span> <span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/* If the tree is empty, there’s nothing to remove! */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+  <span class="cm">/* If the node to delete is to the left, remove it from there. */</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">&lt;</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">removeFrom</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="cm">/* If the node to delete is to the right, remove from there. */</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">&gt;</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">removeFrom</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="cm">/* Otherwise, we’ve found the node to remove – so go remove it! */</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="n">performDeletion</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="cm">/* Actually does the deletion necessary to remove a node from the tree. */</span>
+<span class="kt">void</span> <span class="nf">performDeletion</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">toRemove</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/* Case 1: The node is a leaf. Then we just delete it. */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">delete</span> <span class="n">toRemove</span><span class="p">;</span>
+    <span class="cm">/* Inform whoever was pointing at us that we no longer exist. */</span>
+    <span class="n">toRemove</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="cm">/* Case 2a: Only have a left child. */</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">replacement</span> <span class="o">=</span> <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span>
+    <span class="k">delete</span> <span class="n">toRemove</span><span class="p">;</span>
+    <span class="n">toRemove</span> <span class="o">=</span> <span class="n">replacement</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="cm">/* Case 2b: Only have a right child. */</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Node</span><span class="o">*</span> <span class="n">replacement</span> <span class="o">=</span> <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span>
+    <span class="k">delete</span> <span class="n">toRemove</span><span class="p">;</span>
+    <span class="n">toRemove</span> <span class="o">=</span> <span class="n">replacement</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="cm">/* Case 3: Replace this node with the largest node in its left subtree. */</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">removeLargestFrom</span><span class="p">(</span><span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* Deletes the largest value from the specified tree, returning that value. */</span>
+<span class="kt">int</span> <span class="nf">removeLargestFrom</span><span class="p">(</span><span class="n">Node</span><span class="o">*&amp;</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+    <span class="n">performDeletion</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">removeLargestFrom</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Mar-04
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

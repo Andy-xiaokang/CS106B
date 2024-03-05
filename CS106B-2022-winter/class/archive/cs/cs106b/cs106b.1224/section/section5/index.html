@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Class Design and Dynamic Memory Allocation</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 5. Class Design and Dynamic Memory Allocation</h1>
+
+<hr>
+
+<p class="attribution">
+Section materials curated by Neel Kishnani, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<h2 id="problem-one-random-bag-grab-bag">Problem One: Random Bag Grab Bag</h2>
+<p>The very first container class we implemented was the <strong>random bag</strong>, which supported two operations:</p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">add</span></code>, which adds an element to the random bag, and</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">removeRandom</span></code>, which chooses a random element from the bag and returns it.</li>
+</ul>
+
+<p>Below is the code for the <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span></code> class. First, <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="p">.</span><span class="n">h</span></code>:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma once
+</span>
+<span class="cp">#include "vector.h"
+</span>
+<span class="k">class</span> <span class="nc">RandomBag</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">removeRandom</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+<span class="nl">private:</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">elems</span><span class="p">;</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p>Next, <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="p">.</span><span class="n">cpp</span></code>:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "RandomBag.h"
+#include "random.h"
+</span>
+<span class="kt">int</span> <span class="n">RandomBag</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">RandomBag</span><span class="o">::</span><span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">RandomBag</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">elems</span> <span class="o">+=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">RandomBag</span><span class="o">::</span><span class="n">removeRandom</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"That which is not cannot be!"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+
+    <span class="n">elems</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Let’s begin by reviewing some aspects of this code.</p>
+
+<p>i. What do the <code class="language-c++ highlighter-rouge"><span class="k">public</span></code> and <code class="language-c++ highlighter-rouge"><span class="k">private</span></code> keywords mean in <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="p">.</span><span class="n">h</span></code>?</p>
+
+<div class="showtime" when="2022-02-11T18:00:00-08:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#week6")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>The <code class="language-c++ highlighter-rouge"><span class="k">public</span> <span class="n">keyword</span></code> indicates that the member functions listed underneath it are publicly accessible by anyone using the <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span></code> class. This essentially means that they form the public in-terface for the class.</p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="k">private</span></code> keyword indicates that the data members listed underneath it are private and only accessible by the class itself. This means that those data members are part of the private implementation of the class and aren’t something that clients should be touching.</p>
+
+
+</div>
+</div>
+<hr />
+
+<p>ii. What does the <code class="language-c++ highlighter-rouge"><span class="o">::</span></code> notation mean in C++?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>It’s the <strong>scope resolution operator</strong>. It’s used to indicate what logical part of the program a given name belongs to. The case we’ll primarily see it used is in the context of defining member func-tions in a .cpp file, where we need to indicate that the functions we’re implementing are actually member functions of a class, not freestanding functions.</p>
+
+
+</div>
+</div>
+<hr />
+
+<p>iii. What does the <code class="language-c++ highlighter-rouge"><span class="k">const</span></code> keyword that appears in the declarations of the <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="o">::</span><span class="n">size</span><span class="p">()</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="o">::</span><span class="n">isEmpty</span><span class="p">()</span></code> member functions mean?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>It indicates that those member functions aren’t allowed to change the data members of the class. Only <code class="language-c++ highlighter-rouge"><span class="k">const</span></code> member functions can be called on an object when in a function that accepts an object of that class by const reference.</p>
+
+
+</div>
+</div>
+<hr />
+
+<p>Now that you’re a bit more acclimated to the syntax, let’s look at this code in a bit more detail.</p>
+
+<p>First, some notes. The <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> type’s <code class="language-c++ highlighter-rouge"><span class="o">+=</span></code> operator takes time O(1) to run. The square brackets on the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> type select a single element out of its underlying array, which takes time O(1) as well.</p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">::</span><span class="n">remove</span><span class="p">()</span></code> function, on the other hand, takes time proportional to the distance between the element being removed and the last element of the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>. The reason for this is that whenever a gap opens up in the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>, it has to shift all the elements after the gap down one spot. As a result, removing from the very end of a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> is quite fast – it runs in time O(1) – but removing from the very front of a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> takes time O(n).</p>
+
+<p>iv. Look at the implementation of our <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="o">::</span><span class="n">removeRandom</span></code> function. What is its worst-case time complexity? How about its best-case time complexity? Its average-case time complexity?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>The worst-case time complexity of an operation is O(n), which happens when we remove the very first element from the Vector. Our best-case complexity is O(1) if we remove from the end of the  Vector. On average, the runtime is O(n), since on average  n/2 elements need to get shifted over.</p>
+
+</div>
+</div>
+<hr />
+
+<p>v. Based on your answer to the previous part of this question, what is the worst-case time complexity of removing all the elements of an n-element <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span></code>? What’s the best-case time complexity? How about its average case?</p>
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<p>The worst-case complexity would be O(n<sup>2</sup>), which would happen if we get very unlucky and always remove the very first element of the Vector, making the total work done roughly equal to(n-1) + (n-2) + (n-3) + … + 2 + 1 = O(n<sup>2</sup>). The best-case complexity would be O(n), which happens if we always remove the last element of the Vector (n × O(1) = O(n). The average-casetime complexity is O(n<sup>2</sup>), since on average each removal does O(n) work and we do it n times.</p>
+
+</div>
+</div>
+<hr />
+
+<p>vi. In the preceding discussion, we mentioned that removing the very last element of a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> is much more efficient that removing an element closer to the middle. Rewrite the member function <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="o">::</span><span class="n">removeRandom</span></code> so that it always runs in worst-case O(1) time.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<p>There a couple of different ways to do this. One option is based on the insight that removing from the very end a Vector is an O(1)-time operation, so if we remove the last element of the Vector at each step we’ll get an O(1) worst-case bound. The problem is that the last element is decidedly not a random element, since it always holds the last thing added. However, we can easily fix this by simply choosing a random element of the array and swapping it with the one at the end. This makes the element at the end randomly-chosen, which we still need to do, but makes deletions run in time O(1). Here’s some code for this.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">RandomBag</span><span class="o">::</span><span class="n">removeRandom</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"That which is not cannot be!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">elems</span><span class="p">[</span><span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]);</span>
+    <span class="n">elems</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<p>vii. The <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code> types each have <code class="language-c++ highlighter-rouge"><span class="n">peek</span></code> member functions that let you see what element would be removed next without actually removing anything. How might you write a member function <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="o">::</span><span class="n">peek</span></code> that works in the same way? Make sure that the answer you give back is actually consistent with what gets removed next and that calling the member function multiple times without any intervening additions always gives the same answer.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-7" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-7">
+   
+<p>Part of the challenge here is that we need to find a way to determine what the next element to be removed is going to be, but we have to do so in way that gives consistent results from call to call.</p>
+
+<p>There are many different ways we can do this. One option, which guarantees a uniformly-random selection of elements from the RandomBag, is to store an extra variable keeping track of the index of the nextelement to remove. Every time we add or remove an element, we’ll update this value to hold a new ran-dom value. Here’s one way we can do this. First, the changes in the header:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">RandomBag</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">removeRandom</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">peek</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span> <span class="c1">// &lt;-- Don't forget to make this const!</span>
+    <span class="kt">int</span> <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="nl">private:</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">elems</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nextIndex</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>Next, the changes to the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">cpp</span></code> file. We’ve moved a lot of the logic out of <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="o">::</span><span class="n">removeRandom</span></code> into <code class="language-c++ highlighter-rouge"><span class="n">RandomBag</span><span class="o">::</span><span class="n">peek</span></code> in order to unify the code paths and avoid duplicating our logic.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">RandomBag</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">elems</span> <span class="o">+=</span> <span class="n">value</span><span class="p">;</span>
+
+    <span class="cm">/* Stage a new element for removal. */</span>
+    <span class="n">nextIndex</span> <span class="o">=</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">RandomBag</span><span class="o">::</span><span class="n">peek</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">"That which is not cannot be!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">elems</span><span class="p">[</span><span class="n">nextIndex</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">RandomBag</span><span class="o">::</span><span class="n">removeRandom</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">peek</span><span class="p">();</span>
+
+    <span class="n">swap</span><span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">nextIndex</span><span class="p">],</span> <span class="n">elems</span><span class="p">[</span><span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]);</span>
+    <span class="n">elems</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="cm">/* Stage a new element for removal. */</span>
+    <span class="n">nextIndex</span> <span class="o">=</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-two-pointed-points-about-pointers">Problem Two: Pointed Points about Pointers</h2>
+<p>Pointers to arrays are different in many ways from Vector or Map in how they interact with pass-by-value and the = operator. To better understand how they work, trace through the following program. What is its output?</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">second</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">": "</span> <span class="o">&lt;&lt;</span> <span class="n">first</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">second</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">transmogrify</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">second</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">first</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">137</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">mutate</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">second</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">second</span><span class="p">;</span>
+    <span class="n">second</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">first</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">change</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">first</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">second</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">first</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">second</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">271</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">one</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">two</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">one</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="n">two</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">i</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">transmogrify</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">);</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">);</span>
+
+    <span class="n">mutate</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">);</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">);</span>
+
+    <span class="n">change</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">);</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">);</span>
+
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">one</span><span class="p">;</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">two</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-8" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-8">
+   
+<p>The output of the program is shown here:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">0</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">0</span> 
+<span class="mi">1</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">10</span>
+<span class="mi">2</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">20</span>
+<span class="mi">3</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">30</span>
+<span class="mi">4</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">40</span>
+<span class="mi">0</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">0</span>
+<span class="mi">1</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">10</span>
+<span class="mi">2</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">20</span>
+<span class="mi">3</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">30</span>
+<span class="mi">4</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">40</span>
+<span class="mi">0</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">0</span>
+<span class="mi">1</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">10</span>
+<span class="mi">2</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">20</span>
+<span class="mi">3</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">30</span>
+<span class="mi">4</span><span class="o">:</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">40</span>
+</code></pre></div></div>
+
+<p>Remember that when passing a pointer to a function, the <strong>pointer is passed by value</strong>! This means that you can change the contents of the array being pointed at, because those elements aren't copied when the function is called. On the other hand, if you change <strong>which</strong> array is pointed at, the change does not persistoutside the function because you have only changed the copy of the pointer, not the original pointer it-self</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-three-cleaning-up-your-messes">Problem Three: Cleaning Up Your Messes</h2>
+<p>Whenever you allocate an array with <code class="language-c++ highlighter-rouge"><span class="k">new</span><span class="p">[]</span></code>, you need to deallocate it using <code class="language-c++ highlighter-rouge"><span class="k">delete</span><span class="p">[]</span></code>. It's important when you do so that you only deallocate the array exactly once – deallocating an array zero times causes a memory leak, and deallocating an array multiple times usually causes the program to crash. (Fun fact – deallocating memory twice is called a double free and can lead to security vulnerabilities in your code! Take CS155 for details.)</p>
+
+<p>Below are three code snippets. Trace through each snippet and determine whether all memory allocated with <code class="language-c++ highlighter-rouge"><span class="k">new</span><span class="p">[]</span></code> is correctly deallocated exactly once. If there are any other errors in the program, make sure to report them as well.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">baratheon</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">targaryen</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+
+    <span class="n">baratheon</span> <span class="o">=</span> <span class="n">targaryen</span><span class="p">;</span>
+    <span class="n">targaryen</span> <span class="o">=</span> <span class="n">baratheon</span><span class="p">;</span>
+
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">baratheon</span><span class="p">;</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">targaryen</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">stark</span>     <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">lannister</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">stark</span><span class="p">;</span>
+    <span class="n">stark</span> <span class="o">=</span> <span class="n">lannister</span><span class="p">;</span>
+
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">stark</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">tyrell</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">137</span><span class="p">];</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">arryn</span>  <span class="o">=</span> <span class="n">tyrell</span><span class="p">;</span>
+
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">tyrell</span><span class="p">;</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">arryn</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-9" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-9">
+   
+<p>The first piece of code has two errors in it. First, the line</p>
+
+<p class="text-center"><code class="language-c++ highlighter-rouge"><span class="n">baratheon</span> <span class="o">=</span> <span class="n">targaryen</span><span class="p">;</span></code></p>
+
+<p>causes a memory leak, because there is no longer a way to deallocate the array of three elements allocated in the first line. Second, since both <code class="language-c++ highlighter-rouge"><span class="n">baratheon</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">targaryen</span></code> point to the same array, the last two lines will cause an error.
+The second piece of code is perfectly fine. Even though we execute</p>
+
+<p class="text-center"><code class="language-c++ highlighter-rouge"><span class="k">delete</span><span class="p">[]</span> <span class="n">stark</span><span class="p">;</span></code></p>
+
+<p>twice, the array referred to each time is different. Remember that you delete <em>arrays</em>, not <em>pointers</em>.</p>
+
+<p>Finally, the last piece of code has a double-delete in it, because the pointers referred to in the last two lines point to the same array.</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-four-creative-destruction">Problem Four: Creative Destruction</h2>
+<p>Constructors and destructors are unusual functions in that they're called automatically in many contexts and usually aren't written explicitly. To help build an intuition for when constructors and destructors are called, trace through the execution of this program and list all times when a constructor or destructor are called.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Prints the elements of a stack from the bottom of the stack up to the top
+ * of the stack. To do this, we transfer the elements from the stack to a
+ * second stack (reversing the order of the elements), then print out the
+ * contents of that stack.
+ */</span>
+<span class="kt">void</span> <span class="nf">printStack</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">toPrint</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">toPrint</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">temp</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">toPrint</span><span class="p">.</span><span class="n">pop</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">temp</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">temp</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">elems</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">elems</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">printStack</span><span class="p">(</span><span class="n">elems</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-10" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-10">
+   
+<p>The ordering is as follows:</p>
+<ul>
+  <li>A constructor is called when <code class="language-c++ highlighter-rouge"><span class="n">elem</span></code> is declared in <code class="language-c++ highlighter-rouge"><span class="n">main</span></code>.</li>
+  <li>A constructor is then called to initialize the <code class="language-c++ highlighter-rouge"><span class="n">temp</span></code> variable in <code class="language-c++ highlighter-rouge"><span class="n">printStack</span></code>.</li>
+  <li>When <code class="language-c++ highlighter-rouge"><span class="n">printStackexits</span></code>, a destructor is called to clean up the <code class="language-c++ highlighter-rouge"><span class="n">temp</span></code> variable.</li>
+  <li>When <code class="language-c++ highlighter-rouge"><span class="n">main</span></code> exits, a destructor is called to clean up the <code class="language-c++ highlighter-rouge"><span class="n">elems</span></code> variable.</li>
+</ul>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Feb-11
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

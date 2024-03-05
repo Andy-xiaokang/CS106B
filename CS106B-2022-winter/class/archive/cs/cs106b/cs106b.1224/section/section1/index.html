@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B C++ fundamentals</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 1. C++ fundamentals</h1>
+
+<hr>
+
+<p class="attribution">
+Section materials curated by Neel Kishnani, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<p>Each week, you’ll meet for about an hour in a small discussion section. Your section leader will help review the material, explore some topics in more depth, and generally answer questions as appropriate. These section problems are designed to give you some extra practice with the course material. You’re not expected to complete these problems before attending section and we won’t be grading them for credit. Instead, think of them as a resource you can use to practice with the material as you see fit. You’re not expected to cover all these problems in section, so feel free to look over the solutions to the problems you didn’t complete.</p>
+
+<blockquote>
+  <p>📦 <a href="section1_starter.zip">Starter code</a></p>
+</blockquote>
+
+<h2 id="1-returning-and-printing">1) Returning and Printing</h2>
+
+<p><em>Topics: Function call and return, return types</em></p>
+
+<p>Below is a series of four <code class="language-c++ highlighter-rouge"><span class="n">printLyrics_v</span><span class="err">#</span></code> functions, each of which has a blank where the return type should be. For each function, determine</p>
+<ul>
+  <li>what the return type of the function should be,</li>
+  <li>what value, if any, is returned, and</li>
+  <li>what output, if any, will be produced if that function is called.</li>
+</ul>
+
+<p>Is it appropriate for each of these functions to be named <code class="language-c++ highlighter-rouge"><span class="n">printLyrics</span></code>? Why or why not?</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_____</span> <span class="nf">printLyrics_v1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Havana ooh na na"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">_____</span> <span class="nf">printLyrics_v2</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s">"Havana ooh na na"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">_____</span> <span class="nf">printLyrics_v3</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s">"H"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">_____</span> <span class="nf">printLyrics_v4</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="sc">'H'</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="showtime" when="2022-01-14T17:00:00-08:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#klayday")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printLyrics_v1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Havana ooh na na"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="nf">printLyrics_v2</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s">"Havana ooh na na"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span> <span class="nf">printLyrics_v3</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s">"H"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">char</span> <span class="nf">printLyrics_v4</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="sc">'H'</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Of these four functions, only <code class="language-c++ highlighter-rouge"><span class="n">printLyrics_v1</span></code> will print anything. Specifically, it prints out the string <code class="language-c++ highlighter-rouge"><span class="s">"Havana ooh na na."</span></code>. The name “<code class="language-c++ highlighter-rouge"><span class="n">printLyrics</span></code>” is inappropriate for the other functions, as those functions don’t actually print anything. 😃</p>
+
+<p>The function <code class="language-c++ highlighter-rouge"><span class="n">printLyrics_v1</span></code> doesn’t return anything – it just sends information to the console. As a result, its return type should be <code class="language-c++ highlighter-rouge"><span class="kt">void</span></code>. The functions <code class="language-c++ highlighter-rouge"><span class="n">printLyrics_v2</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">printLyrics_v3</span></code> each return strings, since C++ treats anything in double-quotes as a string. Finally, <code class="language-c++ highlighter-rouge"><span class="n">printLyrics_v4</span></code> returns a <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code>, since C++ treats anything in single-quotes as a character.</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="2-recursion-tracing">2) Recursion Tracing</h2>
+
+<p><em>Topics: Recursion, strings, recursion tracing</em></p>
+
+<p>In lecture, we wrote the following recursive function to reverse a string:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">reverseOf</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">""</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">reverseOf</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Trace through the execution of <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"stop"</span><span class="p">)</span></code> along the lines of what we did in Wednesday’s lecture, showing stack frames for each call that’s made and how the final value gets computed.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>Our initial call to <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"stop"</span><span class="p">)</span></code> looks like this:</p>
+
+<blockquote>
+  <p><img src="img/trace_1.png" alt="The initial stack frame of reverseOf, with &quot;stop&quot; passed in as s." /></p>
+</blockquote>
+
+<p>This call then fires off a call to <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"top"</span><span class="p">)</span></code>, which looks like this:</p>
+
+<blockquote>
+  <p><img src="img/trace_2.png" alt="The second stack frame of reverseOf, with &quot;top&quot; passed in as s." /></p>
+</blockquote>
+
+<p>This call fires off a call to <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"op"</span><span class="p">)</span></code>:</p>
+
+<blockquote>
+  <p><img src="img/trace_3.png" alt="The third stack frame of reverseOf, with &quot;op&quot; passed in as s." /></p>
+</blockquote>
+
+<p>This in turn calls <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">"p"</span><span class="p">)</span></code>:</p>
+
+<blockquote>
+  <p><img src="img/trace_4.png" alt="The fourth stack frame of reverseOf, with &quot;p&quot; passed in as s." /></p>
+</blockquote>
+
+<p>This in turn calls <code class="language-c++ highlighter-rouge"><span class="n">reverseOf</span><span class="p">(</span><span class="s">""</span><span class="p">)</span></code>:</p>
+
+<blockquote>
+  <p><img src="img/trace_5.png" alt="The fifth stack frame of reverseOf, with the empty string passed in as s." /></p>
+</blockquote>
+
+<p>This triggers the base case and returns the empty string. (Notice that the reverse of the empty string <code class="language-c++ highlighter-rouge"><span class="s">""</span></code> is indeed the empty string <code class="language-c++ highlighter-rouge"><span class="s">""</span></code>):</p>
+
+<blockquote>
+  <p><img src="img/trace_6.png" alt="The base case is hit, so we return the empty string." /></p>
+</blockquote>
+
+<p>We now append <code class="language-c++ highlighter-rouge"><span class="n">p</span></code> to return <code class="language-c++ highlighter-rouge"><span class="s">"p"</span></code>:</p>
+
+<blockquote>
+  <p><img src="img/trace_7.png" alt="&quot;p&quot; is returned back from reverseOf the third stack frame." /></p>
+</blockquote>
+
+<p>We now append <code class="language-c++ highlighter-rouge"><span class="n">o</span></code> to return <code class="language-c++ highlighter-rouge"><span class="s">"po"</span></code>:</p>
+
+<blockquote>
+  <p><img src="img/trace_8.png" alt="&quot;po&quot; is returned back from reverseOf the second stack frame." /></p>
+</blockquote>
+
+<p>We append <code class="language-c++ highlighter-rouge"><span class="n">t</span></code> to return <code class="language-c++ highlighter-rouge"><span class="s">"pot"</span></code>:</p>
+
+<blockquote>
+  <p><img src="img/trace_9.png" alt="&quot;pot&quot; is returned back from reverseOf the first stack frame." /></p>
+</blockquote>
+
+<p>And finally we append <code class="language-c++ highlighter-rouge"><span class="n">s</span></code> to return <code class="language-c++ highlighter-rouge"><span class="s">"pots"</span></code> back to whoever called us. Yay!</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="3-testing-and-debugging">3) Testing and Debugging</h2>
+<p><em>Topics: Testing, loops, types, function call and return</em></p>
+
+<p>Consider the following piece of code:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Watch out! This code contains many bugs! */</span>
+<span class="kt">bool</span> <span class="nf">hasDoubledCharacter</span><span class="p">(</span><span class="n">string</span> <span class="n">text</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">current</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">string</span> <span class="n">previous</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+        <span class="k">return</span> <span class="n">current</span> <span class="o">==</span> <span class="n">previous</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This code attempts to check whether a string contains at least two consecutive copies of the same character. Unfortunately, it has some errors in it.</p>
+
+<ul>
+  <li>Identify and fix all the errors in this code.</li>
+</ul>
+
+<p>We can write test cases to check our work and ensure that the code indeed works as expected. Imagine you’re given the following provided test:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PROVIDED_TEST</span><span class="p">(</span><span class="s">"Detects doubled characters"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"aa"</span><span class="p">));</span> 
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"bb"</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This test checks some cases, but leaves others unchecked. As a result, even if these tests pass, it might still be the case that the function is incorrect.</p>
+
+<ul>
+  <li>Identify three types of strings not tested by the above test case. For each of those types of strings, write a <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> that covers that type of string.</li>
+</ul>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>Here’s a list of the errors in the code:</p>
+
+<ol>
+  <li>
+    <p>It uses the <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> type instead of the <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> type when representing individual characters in the string. This will cause the code to not compile.</p>
+  </li>
+  <li>
+    <p>On the first iteration of the loop, we will try to look at the -1 st character of the string, which will probably cause a crash and definitely is wrong.</p>
+  </li>
+  <li>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> statement inside the for loop means that we’ll never look at more than one pair of characters; the function will exit as soon as the return statement is executed, so we can’t progress from one iteration to the next.</p>
+  </li>
+  <li>
+    <p>If the string doesn’t contain any doubled characters, the function never returns a value.</p>
+  </li>
+</ol>
+
+<p>We can fix all of these errors by rewriting the code like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">hasDoubledCharacter</span><span class="p">(</span><span class="n">string</span> <span class="n">text</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">char</span> <span class="n">current</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="kt">char</span> <span class="n">previous</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">current</span> <span class="o">==</span> <span class="n">previous</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>To make things cleaner, we could remove the <code class="language-c++ highlighter-rouge"><span class="n">current</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">previous</span></code> variables:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">hasDoubledCharacter</span><span class="p">(</span><span class="n">string</span> <span class="n">text</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Although we hadn't talked about pass-by-<code class="language-c++ highlighter-rouge"><span class="k">const</span></code> reference in the first week of class, we really should use the pass-by-<code class="language-c++ highlighter-rouge"><span class="k">const</span></code> reference here because we are reading but not modifying the <code class="language-c++ highlighter-rouge"><span class="n">text</span></code> parameter.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">hasDoubledCharacter</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, let’s talk testing. Notice that the test cases we have are purely for</p>
+
+<ul>
+  <li>
+    <p>strings that have doubled characters,</p>
+  </li>
+  <li>
+    <p>where the doubled letters are at the beginning,</p>
+  </li>
+  <li>
+    <p>where there are no undoubled characters,</p>
+  </li>
+  <li>
+    <p>where the doubled characters are lower-case letters, and</p>
+  </li>
+  <li>
+    <p>that have length exactly two.</p>
+  </li>
+</ul>
+
+<p>To find some classes of strings that don’t have these properties, we can simply break all of the above rules and see what we find! So let’s write tests for each of the following types of strings:</p>
+
+<ul>
+  <li>
+    <p>strings that don’t have doubled letters;</p>
+  </li>
+  <li>
+    <p>strings that have doubled letters, but not at the beginning;</p>
+  </li>
+  <li>
+    <p>strings that have doubled letters, but also some non-doubled letters;</p>
+  </li>
+  <li>
+    <p>strings that have doubled non-letter characters; and</p>
+  </li>
+  <li>
+    <p>strings whose lengths aren’t two (maybe shorter strings or longer strings).</p>
+  </li>
+</ul>
+
+<p>Here’s some sample tests we could write:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Strings without doubled characters"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"abcd"</span><span class="p">));</span> <span class="c1">// Nothing doubled </span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"aba"</span><span class="p">));</span> <span class="c1">// a appears twice, but not consecutively </span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"Aa"</span><span class="p">));</span> <span class="c1">// Not technically the same character</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Strings with doubled characters not at the front"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"abb"</span><span class="p">));</span> <span class="c1">// Back </span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"abcddabc"</span><span class="p">));</span> <span class="c1">// Middle</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Strings with doubled non-letter characters"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"**"</span><span class="p">));</span> <span class="c1">// Symbols </span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">" "</span><span class="p">));</span> <span class="c1">// Spaces </span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"00"</span><span class="p">));</span> <span class="c1">// Numbers </span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"!!"</span><span class="p">));</span> <span class="c1">// Punctuation</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"Short strings"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">""</span><span class="p">));</span> <span class="c1">// Too short </span>
+    <span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">"a"</span><span class="p">));</span> <span class="c1">// Too short</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="4-human-pyramids">4) Human Pyramids</h2>
+
+<p><em>Topics: Recursion</em></p>
+
+<p>A <strong><em>human pyramid</em></strong> is a triangular stack of a bunch of people where each person (except the person at the top) supports their weight on the two people below them. A sample human pyramid is shown below.</p>
+
+<blockquote>
+  <p><img src="img/human_pyramid.png" alt="A picture of a human pyramid, with one person at the top, two people in the middle, and three people at the bottom level." /></p>
+</blockquote>
+
+<p>Your task is to write a function</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">peopleInPyramidOfHeight</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input the height of the human pyramid (the number of layers; the pyramid to the right has height three) and returns the number of people in that pyramid. Your function should be completely recursive and should not involve any loops of any sort. As a hint, think about what happens if you take the bottom layer off of a human pyramid.</p>
+
+<p>Once you’ve written your solution, trace through the execution of <code class="language-c++ highlighter-rouge"><span class="n">peopleInPyramidOfHeight</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span></code> similarly to how we traced through <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></code> in class, showing each function call and how values get returned.</p>
+
+<p>As a note, there’s a closed-form solution to this problem (you can directly compute how many people are in the pyramid just from the height through a simple formula). It’s described in the solutions.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>The key recursive insight here is that a human pyramid of height 0 is a pyramid of no people, and that a human pyramid of height <em>n</em> is a group of <em>n</em> people supporting a human pyramid of <em>n-1</em> people. Using that idea, we can write this function:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">peopleInPyramidOfHeight</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="n">peopleInPyramidOfHeight</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>As a note, you can directly evaluate <code class="language-c++ highlighter-rouge"><span class="n">peopleInPyramidOfHeight</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></code> by computing <code class="language-c++ highlighter-rouge"><span class="n">n</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></code>. We’ll see a really cool intuition for this later in the quarter!</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="5-random-shuffling">5) Random Shuffling</h2>
+<p>How might the computer shuffle a deck of cards? This problem is a bit more complex than it might seem, and while it's easy to come up with algorithms that randomize the order of the cards, only a few algorithms will do so in a way that ends up generating a uniformly-random reordering of the cards.</p>
+
+<p>One simple algorithm for shuffling a deck of cards is based on the following idea:</p>
+
+<ul>
+  <li>Choose a random card from the deck and remove it.</li>
+  <li>Shuffle the rest of the deck.</li>
+  <li>Place the randomly-chosen card on top of the deck.
+Assuming that we choose the card that we put on top uniformly at random from the deck, this ends up producing a random shuffle of the deck.</li>
+</ul>
+
+<p>Write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="n">randomShuffle</span><span class="p">(</span><span class="n">string</span> <span class="n">input</span><span class="p">)</span>
+</code></pre></div></div>
+<p>that accepts as input a string, then returns a random permutation of the elements of the string using the above algorithm. Your algorithm should be recursive and not use any loops (<code class="language-c++ highlighter-rouge"><span class="k">for</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">while</span></code>, etc.).</p>
+
+<p>The header file <code class="language-c++ highlighter-rouge"><span class="s">"random.h"</span></code> includes a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">randomInteger</span><span class="p">(</span><span class="kt">int</span> <span class="n">low</span><span class="p">,</span> <span class="kt">int</span> <span class="n">high</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that takes as input a pair of integers low and high, then returns an integer greater than or equal to low and less than or equal to high. Feel free to use that here.</p>
+
+<p>Interesting note: This shuffling algorithm is a variant of the Fisher-Yates Shuffle. For more information on why it works correctly, take CS109!</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<p>Here is one possible solution:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">randomShuffle</span><span class="p">(</span><span class="n">string</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base case: There is only one possible permutation of a string
+    * with no characters in it.
+    */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="cm">/* Choose a random index in the string. */</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">input</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="cm">/* Pull that character to the front, then permute the rest of
+        * the string.
+        */</span>
+        <span class="k">return</span> <span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">randomShuffle</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This function is based on the recursive observation that there is only one possible random shuffle of the empty string (namely, itself), and then using the algorithm specified in the handout for the recursive step.</p>
+
+<p>Here is another possible solution (using a modified function header) which shows how to implement this function using references and no return value. Shoutout to one of our awesome SLs, Rachel Gardner, for this alternate solution!</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">randomShuffle</span><span class="p">(</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">input</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">rand</span> <span class="o">=</span> <span class="n">randomInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">input</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="kt">char</span> <span class="n">chosen</span> <span class="o">=</span> <span class="n">input</span><span class="p">[</span><span class="n">rand</span><span class="p">];</span>
+    <span class="n">input</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">rand</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">randomShuffle</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+    <span class="n">input</span> <span class="o">=</span> <span class="n">chosen</span> <span class="o">+</span> <span class="n">input</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="6-computing-statistics">6) Computing Statistics</h2>
+
+<p><em>Topics: Structures, file reading, loops</em></p>
+
+<p>Imagine you have a file containing a list of real numbers, one per line (perhaps they’re exam scores, or blood pressure numbers, etc.) Your task is to write a function</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Statistics</span> <span class="nf">documentStatisticsFor</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a reference to an input stream pointed at the contents of a file, then returns a <code class="language-c++ highlighter-rouge"><span class="n">Statistics</span></code> object (described below) containing statistics about that document. You can assume that the file is properly formatted and contains at least one number.</p>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">Statistics</span></code> type used here is a struct that’s defined as follows:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Statistics</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">min</span><span class="p">;</span>     <span class="c1">// Smallest value in the file</span>
+    <span class="kt">double</span> <span class="n">max</span><span class="p">;</span>     <span class="c1">// Largest value in the file</span>
+    <span class="kt">double</span> <span class="n">average</span><span class="p">;</span> <span class="c1">// Average value in the file</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As a reminder, you can read a single value from a file by writing</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="n">val</span><span class="p">;</span>
+<span class="n">input</span> <span class="o">&gt;&gt;</span> <span class="n">val</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>and read all the values left in a file by writing</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">double</span> <span class="n">val</span><span class="p">;</span> <span class="n">input</span> <span class="o">&gt;&gt;</span> <span class="n">val</span><span class="p">;)</span> <span class="p">{</span>
+    <span class="c1">// Do something with val</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<p>There are many ways to write this function. Here's one:</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Statistics</span> <span class="nf">documentStatisticsFor</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="cm">/* Read an initial value out of the file. We're going to use this to seed 
+     * the minimum and maximum values.
+     */</span>
+    <span class="kt">double</span> <span class="n">val</span><span class="p">;</span>
+    <span class="n">input</span> <span class="o">&gt;&gt;</span> <span class="n">val</span><span class="p">;</span> <span class="c1">// Should do error-checking, but we'll skip that here.</span>
+
+    <span class="cm">/* Create a Statistics object and initialize its min and max values. */</span> 
+    <span class="n">Statistics</span> <span class="n">info</span><span class="p">;</span> 
+    <span class="n">info</span><span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span> 
+    <span class="n">info</span><span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>
+
+    <span class="cm">/* Keep track of the sum of the values and the number of values so that we
+     * can report back the average value. Initially, the sum is whatever value 
+     * we just read, and the number of values read is 1.
+     */</span> 
+    <span class="kt">double</span> <span class="n">total</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span> 
+    <span class="kt">int</span> <span class="n">numValues</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="cm">/* Read the rest of the file, updating the min/max as we go along with the 
+    * sum and number of values.
+    */</span> 
+    <span class="k">while</span> <span class="p">(</span><span class="n">input</span> <span class="o">&gt;&gt;</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">numValues</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">val</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">&gt;</span> <span class="n">info</span><span class="p">.</span><span class="n">max</span><span class="p">)</span> <span class="n">info</span><span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span> 
+        <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="n">info</span><span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Compute the average. */</span> 
+    <span class="n">info</span><span class="p">.</span><span class="n">average</span> <span class="o">=</span> <span class="n">total</span> <span class="o">/</span> <span class="n">numValues</span><span class="p">;</span> 
+    <span class="k">return</span> <span class="n">info</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="7-haiku-detection">7) Haiku Detection</h2>
+
+<p><em>Topics: <code class="language-c++ highlighter-rouge"><span class="n">TokenScanner</span></code>, procedural decomposition</em></p>
+
+<p>A <strong><em>haiku</em></strong> is a three-line poem where the first line has five syllables, the second has seven syllables, and the final line has five syllables. For example, this poem is a haiku:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">An</span> <span class="n">observation</span><span class="o">:</span>
+<span class="n">Haikus</span> <span class="n">are</span> <span class="n">concise</span><span class="p">,</span> <span class="n">but</span> <span class="n">they</span> 
+<span class="n">Don</span><span class="err">'</span><span class="n">t</span> <span class="n">always</span> <span class="n">say</span> <span class="n">much</span><span class="p">.</span>
+</code></pre></div></div>
+
+<p>This poem is not a haiku, because the last line has six syllables.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">One</span> <span class="n">two</span> <span class="n">three</span> <span class="n">four</span> <span class="n">five</span> 
+<span class="n">Six</span> <span class="n">seven</span> <span class="n">eight</span> <span class="n">nine</span> <span class="n">ten</span><span class="p">,</span> <span class="n">then</span> 
+<span class="n">eleven</span><span class="p">,</span> <span class="n">twelve</span><span class="p">,</span> <span class="n">thirteen</span><span class="o">!</span>
+</code></pre></div></div>
+
+<p>Your job is to write a program that reads three lines of text from the user, then checks whether those lines form a haiku. You can assume that you have access to a function</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">syllablesIn</span><span class="p">(</span><span class="n">string</span> <span class="n">word</span><span class="p">);</span> 
+</code></pre></div></div>
+
+<p>which returns the total number of syllables in a word. You can assume that the input text consists solely of words, spaces, and punctuation marks (e.g. commas and exclamation points). You may want to use the <code class="language-c++ highlighter-rouge"><span class="n">TokenScanner</span></code> type here. You can use <code class="language-c++ highlighter-rouge"><span class="n">TokenScanner</span></code> to break a string apart into individual units as follows:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "tokenscanner.h" // At the top of your program
+</span>
+<span class="n">TokenScanner</span> <span class="nf">scanner</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+<span class="n">scanner</span><span class="p">.</span><span class="n">ignoreWhitespace</span><span class="p">();</span>
+
+<span class="k">while</span><span class="p">(</span><span class="n">scanner</span><span class="p">.</span><span class="n">hasMoreTokens</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">token</span> <span class="o">=</span> <span class="n">scanner</span><span class="p">.</span><span class="n">nextToken</span><span class="p">();</span>
+    <span class="c1">// Do something with token</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Note: we are not providing a starter file for this one; we encourage you to think about how 
+you want to decompose it and discuss with your section leader and section-mates!</strong></p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-7" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-7">
+   
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="cm">/* We will assume that 
+ * this function works. It's fun to 
+ * implement. Try it!
+ */</span> 
+<span class="kt">int</span> <span class="nf">syllablesIn</span><span class="p">(</span><span class="n">string</span> <span class="n">word</span><span class="p">);</span>
+
+<span class="cm">/* These are prototypes.
+ * They let us call these functions
+ * Before they're defined.
+ */</span> 
+<span class="kt">bool</span> <span class="nf">isHaiku</span><span class="p">(</span><span class="n">string</span> <span class="n">line1</span><span class="p">,</span> <span class="n">string</span> <span class="n">line2</span><span class="p">,</span> <span class="n">string</span> <span class="n">line3</span><span class="p">);</span> 
+<span class="kt">int</span> <span class="nf">syllablesInLine</span><span class="p">(</span><span class="n">string</span> <span class="n">line</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">line1</span> <span class="o">=</span> <span class="n">getLine</span><span class="p">(</span><span class="s">"Enter the first line: "</span><span class="p">);</span> 
+    <span class="n">string</span> <span class="n">line2</span> <span class="o">=</span> <span class="n">getLine</span><span class="p">(</span><span class="s">"Now, enter the second line: "</span><span class="p">);</span> 
+    <span class="n">string</span> <span class="n">line3</span> <span class="o">=</span> <span class="n">getLine</span><span class="p">(</span><span class="s">"Enter the third line: "</span><span class="p">);</span>
+
+    <span class="cm">/* Given these three lines, 
+     * check whether they're a haiku, 
+     * then show the result.
+     */</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">isHaiku</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">line3</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"The text you entered"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Goes 5 - 7 - 5, so it"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"is a haiku. Yay!"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Though you have tried hard,"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"The three lines you entered are"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Not a haiku. Awww."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Given a poem 
+ * of three lines, returns whether
+ * it is a haiku.
+ */</span> 
+<span class="kt">bool</span> <span class="nf">isHaiku</span><span class="p">(</span><span class="n">string</span> <span class="n">line1</span><span class="p">,</span> <span class="n">string</span> <span class="n">line2</span><span class="p">,</span> <span class="n">string</span> <span class="n">line3</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">return</span> <span class="n">syllablesInLine</span><span class="p">(</span><span class="n">line1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span> <span class="o">&amp;&amp;</span> 
+           <span class="n">syllablesInLine</span><span class="p">(</span><span class="n">line2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span> <span class="o">&amp;&amp;</span> 
+           <span class="n">syllablesInLine</span><span class="p">(</span><span class="n">line3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">;</span> 
+<span class="p">}</span>
+
+<span class="cm">/* Counts the number of 
+ * syllables in a line of 
+ * text, then returns it.
+ */</span> 
+<span class="kt">int</span> <span class="nf">syllablesInLine</span><span class="p">(</span><span class="n">string</span> <span class="n">text</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="cm">/* To split apart the 
+     * text, make a TokenScanner 
+     * and configure it.
+     */</span> 
+    <span class="n">TokenScanner</span> <span class="n">scanner</span><span class="p">(</span><span class="n">text</span><span class="p">);</span> 
+    <span class="n">scanner</span><span class="p">.</span><span class="n">ignoreWhitespace</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">numSyllables</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
+    <span class="k">while</span> <span class="p">(</span><span class="n">scanner</span><span class="p">.</span><span class="n">hasMoreTokens</span><span class="p">())</span> <span class="p">{</span> 
+        <span class="cm">/* If this token is 
+         * a word, count its syllables 
+         * and update total.
+         */</span> 
+        <span class="n">string</span> <span class="n">token</span> <span class="o">=</span> <span class="n">scanner</span><span class="p">.</span><span class="n">nextToken</span><span class="p">();</span> 
+        <span class="k">if</span> <span class="p">(</span><span class="n">scanner</span><span class="p">.</span><span class="n">getTokenType</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">==</span> <span class="n">TokenScanner</span><span class="o">::</span><span class="n">TokenType</span><span class="o">::</span><span class="n">WORD</span><span class="p">)</span> <span class="p">{</span> 
+            <span class="n">numSyllables</span> <span class="o">+=</span> <span class="n">syllablesIn</span><span class="p">(</span><span class="n">token</span><span class="p">);</span> 
+        <span class="p">}</span> 
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">numSyllables</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Did you notice that
+ * all the comments are haikus? 
+ * Same with the output!
+ */</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Mar-09
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Containers</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 2. Containers</h1>
+
+<hr>
+
+<p class="attribution">
+Section materials curated by Neel Kishnani. These problems are a joint effort by a number of different lecturers.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<p>This week in section you'll be practicing with collection types and reference parameters. These problems will get you some good practice with topics that you'll see in assignment 2 and beyond. There's a starter package linked below. Have fun!</p>
+
+<blockquote>
+  <p>📦 <a href="section2_starter.zip">Starter code</a></p>
+</blockquote>
+
+<h2 id="problem-one-iteration-station">Problem One: Iteration Station</h2>
+
+<p><em>Topics: Vectors, sets, stacks, range-based for loops, for loops, parameter passing</em></p>
+
+<p>Below are a bunch of functions that attempt to iterate over a container of some type. For each function, determine whether</p>
+
+<ul>
+  <li>the function works correctly</li>
+  <li>the function compiles, but doesn't correctly iterate over the elements, or</li>
+  <li>the function won't even compile</li>
+</ul>
+
+<p>In each case make sure you can explain why!</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterateVec1</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">vals</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vals</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterateVec2</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">vals</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">vals</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterateVec3</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">vals</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">vals</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterateSet1</span><span class="p">(</span><span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">vals</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vals</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterateSet2</span><span class="p">(</span><span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">vals</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">vals</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterateStack1</span><span class="p">(</span><span class="k">const</span> <span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterateStack2</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">iterateStack3</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="showtime" when="2022-01-21T17:00:00-08:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#niners")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">iterateVec1</span></code>: This one works just fine!</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">iterateVec2</span></code>: This code will likely crash at runtime. The variable <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> refers to a <em>value</em> in the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>, not an <em>index</em> in the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>, so using it as an index will jump to a spot that wasn't designed to be an index.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">iterateVec3</span></code>: This code works just fine!</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">iterateSet1</span></code>: This code won’t compile. You can’t get individual elements of a <code class="language-c++ highlighter-rouge"><span class="n">Set</span></code> by index using the square bracket operator.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">iterateSet2</span></code>: This code works just fine!</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">iterateStack1</span></code>: This code won’t compile. The <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code> here is passed in by <code class="language-c++ highlighter-rouge"><span class="k">const</span></code> reference, which means that it can’t be modified. However, calling <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pop</span><span class="p">()</span></code> modifies the stack.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">iterateStack2</span></code>: This one fails for a subtle reason. Each iteration of the loop decreases <code class="language-c++ highlighter-rouge"><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">()</span></code> by one. Coupled with the fact that <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> is increasing by one at each point, this will only look at the first half of the stack.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">iterateStack3</span></code>: This code works just fine! It does make a copy of the <code class="language-c++ highlighter-rouge"><span class="n">Stack</span></code>, but that’s okay given that the only way to see everything in a stack is to destructively modify it.</li>
+</ul>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-two-debugging-deduplicating">Problem Two: Debugging Deduplicating</h2>
+
+<p><em>Topics: Vectors, strings, debugging</em></p>
+
+<p>Consider the following <strong><em>incorrect</em></strong> C++ function, which accepts as input a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> and tries to modify it by removing adjacent duplicate elements:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">deduplicate</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">vec</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">vec</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The intent behind this function is that we could do something like this:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">hiddenFigures</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"Katherine Johnson"</span><span class="p">,</span>
+    <span class="s">"Katherine Johnson"</span><span class="p">,</span>
+    <span class="s">"Katherine Johnson"</span><span class="p">,</span>
+    <span class="s">"Mary Jackson"</span><span class="p">,</span>
+    <span class="s">"Dorothy Vaughan"</span><span class="p">,</span>
+    <span class="s">"Dorothy Vaughan"</span>
+<span class="p">};</span>
+
+<span class="n">deduplicate</span><span class="p">(</span><span class="n">hiddenFigures</span><span class="p">);</span>
+<span class="c1">// hiddenFigures = ["Katherine Johnson", "Mary Jackson", "Dorothy Vaughan"]?</span>
+</code></pre></div></div>
+
+<p>The problem is that the above implementation of <code class="language-c++ highlighter-rouge"><span class="n">deduplicate</span></code> does not work correctly. In particular, it contains three bugs. Find those bugs, explain what the problems are, then fix those errors.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>There are three errors here:</p>
+
+<ol>
+  <li>
+    <p>Calling <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">remove</span><span class="p">()</span></code> on the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> while iterating over it doesn't work particularly nicely. Specifically, if you remove the element at index <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> and then increment <code class="language-c++ highlighter-rouge"><span class="n">i</span></code> in the <code class="language-c++ highlighter-rouge"><span class="k">for</span></code>loop, you'll skip over the element that shifted into the position you were previously in.</p>
+  </li>
+  <li>
+    <p>There's an off-by-one-error here: when <code class="language-c++ highlighter-rouge"><span class="n">i</span> <span class="o">=</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span></code>, the indexing <code class="language-c++ highlighter-rouge"><span class="n">vec</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span></code> reads off the end of the <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code></p>
+  </li>
+  <li>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code> is passed in by value, not by reference, so none of the changes made to it will persist to the caller.</p>
+  </li>
+</ol>
+
+<p>Here's a corrected version of the code:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">deduplicate</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Notice that we omitted the traditional i++ here
+     * in the for loop, we don't necessarily want to 
+     * i++ on each iteration of the for loop. 
+     */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">vec</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">vec</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-three-references-available-upon-request">Problem Three: References Available Upon Request</h2>
+<p><em>Topic: Reference parameters, range-based for loops</em></p>
+
+<p>Reference parameters are an important part of C++ programming, but can take some getting used to if you’re not familiar with them. Trace through the following code. What does it print?</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printVector</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="o">:</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">elem</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">maui</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">values</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1258</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">moana</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="o">:</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">elem</span> <span class="o">*=</span> <span class="mi">137</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">heihei</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span> <span class="n">elem</span><span class="o">:</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">elem</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">teFiti</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">elem</span><span class="o">:</span> <span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="p">(</span><span class="n">elem</span> <span class="o">*</span> <span class="mi">137</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span> <span class="p">};</span>
+    <span class="n">maui</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">moana</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">heihei</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">teFiti</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>Here’s the output from the program:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span> <span class="mi">3</span> <span class="mi">7</span>
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">7</span>
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span>
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span>
+</code></pre></div></div>
+<p>Here’s a breakdown of where this comes from:</p>
+<ul>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">maui</span></code> function takes its argument by value, so it’s making changes to a copy of the original vector, not the vector itself. That means that the values are unchanged back in main.</li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">moana</span></code> function uses a range-based for loop to access the elements of the vector. This makes a copy of each element of the vector, so the changes made in the loop only change the temporary copy and not the elements of the vector. That makes that the values are unchanged back in main.</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">heihei</span></code>, on the other hand, uses <code class="language-c++ highlighter-rouge"><span class="kt">int</span><span class="o">&amp;</span></code> as its type for the range-based for loop, so in a sense it’s really iterating over the elements of the underlying vector. Therefore, its changes stick.</li>
+  <li>The <code class="language-c++ highlighter-rouge"><span class="n">teFiti</span></code> function creates and returns a new vector with a bunch of updated values, but the return value isn’t captured back in main.</li>
+</ul>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-four-another-way-to-find-the-maximum">Problem Four: Another Way to Find the Maximum</h2>
+
+<p><em>Topics: Vectors, recursion</em></p>
+
+<p>In lecture, we wrote a recursive function that found the maximum value in a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span></code>. In an appendix to that slide deck, there’s code for a second, alternative recursive function to find the maximum value in a list. And now, here’s a third algorithm for finding the maximum element:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">maxOf</span><span class="p">(</span><span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">elems</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">elems</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">winners</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">elems</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">winners</span> <span class="o">+=</span> <span class="n">elems</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">winners</span> <span class="o">+=</span> <span class="n">max</span><span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">elems</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">maxOf</span><span class="p">(</span><span class="n">winners</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Find a simple, intuitive explanation of how this code works. Then, mechanically trace through the execution of this function on the input</p>
+
+<blockquote>
+  <p><code class="language-c++ highlighter-rouge"><span class="p">{</span> <span class="mi">271</span><span class="p">,</span> <span class="mi">828</span><span class="p">,</span> <span class="mi">182</span><span class="p">,</span> <span class="mi">845</span><span class="p">,</span> <span class="mi">904</span><span class="p">,</span> <span class="mi">523</span> <span class="p">}</span></code></p>
+</blockquote>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>You can think of what’s being done here as staging an elimination tournament. We pair off all the elements of the original vector against one another, eliminating the smaller of the two elements. The elements of the <code class="language-c++ highlighter-rouge"><span class="n">winners</span></code> vector are the elements that “won” their game. To find the maximum element of that vector, we then recursively use <code class="language-c++ highlighter-rouge"><span class="n">maxOf</span></code> to find the biggest value.</p>
+
+<p>There’s an edge case that’s handled in the for loop that accounts for the case where there’s an odd number of elements in the vector. In that case, the last element is always promoted to the next round. (I guess it got a bye in the tournament?)</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-five-the-new-org-chart">Problem Five: The New Org Chart</h2>
+
+<p><em>Topics: Maps, strings</em></p>
+
+<p>Suppose you have the organizational hierarchies of various companies showing who reports to who. For example, across three different companies, you might have this hierarchy information:</p>
+
+<blockquote>
+  <p><img src="img/5.png" alt="3 examples of who reports to who in a company." /></p>
+</blockquote>
+
+<p>In this diagram, person <em>e</em> reports directly to person <em>b</em>, who reports directly to person <em>a</em>, who is the CEO of her company and therefore doesn't report to anyone.</p>
+
+<p>This hierarchical information can be represented as a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span></code> associating each person with their direct superior (that is, the person one level above them in the hierarchy). As an exception, the heads of each organization are not present in the <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>, since they don't report to anyone. For example, in the above picture, the key <em>h</em> would have value <em>g</em>, the key <em>g</em> would have value <em>d</em>, the key <em>d</em> would have value <em>a</em>, and <em>a</em> would not be a key in the map. Since person <em>u</em> is at the top of her own company, the letter <em>u</em> would not be a key in the map either.</p>
+
+<p>Given two people, you can tell whether they work for the same company by tracing from those people all the way up to their companies' CEOs, then seeing whether those CEOs are the same person. For example, in the above diagram, person <em>e</em> and person <em>j</em> work at the same company because both of them report (indirectly) to <em>a</em>. Similarly, person <em>n</em> and person <em>k</em> are in the same organization, as are person <em>c</em> and person <em>d</em>. However, person <em>j</em> and person <em>m</em> are not in the same company, since person <em>j</em>'s company is headed by person <em>a</em> and person <em>m</em>'s company is headed by person <em>k</em>. Along similar lines, person <em>u</em> and person <em>b</em> are in different companies, since person <em>u</em> runs her own company (she doesn't report to anyone) and person <em>b</em> works at a company headed by person <em>a</em>.</p>
+
+<p>Your job is to write a method:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">areAtSameCompany</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">p1</span><span class="p">,</span>
+                      <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">p2</span><span class="p">,</span>
+                      <span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">bosses</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that accepts as input two people’s names and and a <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> associating each person with their boss, then reports whether <code class="language-c++ highlighter-rouge"><span class="n">p1</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">p2</span></code> work at the same company. You can assume the following:</p>
+
+<ul>
+  <li>
+    <p>For simplicity, assume that each person has just one boss, that each company has just one CEO, and that no person works at two or more companies.</p>
+  </li>
+  <li>
+    <p>Everyone, except for the heads of companies, appear as keys in the <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>. Therefore, if someone doesn't appear in the <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>, you can assume that they are the head of a company.</p>
+  </li>
+  <li>
+    <p>Names are case-sensitive, so “Katherine” and “KATHERINE” are considered different people.</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">p1</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">p2</span></code> may be the same person.</p>
+  </li>
+  <li>
+    <p>There can be any number of levels of management between <code class="language-c++ highlighter-rouge"><span class="n">p1</span></code> and her CEO and between <code class="language-c++ highlighter-rouge"><span class="n">p2</span></code> and his CEO, including 0, and that number of levels doesn't have to be the same.</p>
+  </li>
+</ul>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<p>One possible solution:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Given a person and the map of bosses, returns the CEO of the company
+ * that the indicated person works for
+ *
+ * We've taken in person by value rather than by reference here because
+ * inside the body of the function we need to change its value, but we 
+ * don't want to change the value back in the caller.
+ */</span>
+<span class="n">string</span> <span class="nf">ceoOf</span><span class="p">(</span><span class="n">string</span> <span class="n">person</span><span class="p">,</span> <span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">bosses</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">bosses</span><span class="p">.</span><span class="n">containsKey</span><span class="p">(</span><span class="n">person</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">person</span> <span class="o">=</span> <span class="n">bosses</span><span class="p">[</span><span class="n">person</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">person</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">areAtSameCompany</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">p1</span><span class="p">,</span>
+                      <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">p2</span><span class="p">,</span>
+                      <span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">bosses</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">ceoOf</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">bosses</span><span class="p">)</span> <span class="o">==</span> <span class="n">ceoOf</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">bosses</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-six-xzibit-words">Problem Six: Xzibit Words</h2>
+
+<p><em>Topics: Strings, lexicons</em></p>
+
+<p>Some words contain other words as substrings. For example, the word "pirates" contains a huge number of words as substrings:</p>
+
+<div style="columns:3">
+<ul>
+  <li>a</li>
+  <li>at</li>
+  <li>ate</li>
+  <li>ates</li>
+  <li>es</li>
+  <li>i</li>
+  <li>irate</li>
+  <li>pi</li>
+  <li>pirate</li>
+  <li>pirates</li>
+  <li>rat</li>
+  <li>rate</li>
+  <li>rates</li>
+</ul>
+</div>
+
+<p>Note that “pirates” is a substring of itself. The word “pat” is not considered a substring of “pirates,” since even though all the letters of “pat” are present in “pirate” in the right order, they aren't adjacent to one another.</p>
+
+<p>Write a function</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">mostXzibitWord</span><span class="p">(</span><span class="k">const</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">words</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that accepts as input a Lexicon of all words in English, then returns the word with the largest number of words contained as substrings.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<p>One possible solution:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">mostXzibitWord</span><span class="p">(</span><span class="k">const</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">words</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="cm">/* Track the best string we've found so far and how many subwords it has. */</span> 
+    <span class="n">string</span> <span class="n">result</span><span class="p">;</span> 
+    <span class="kt">int</span> <span class="n">numSubwords</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">word</span><span class="o">:</span> <span class="n">words</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Store all the subwords we find. To avoid double-counting 
+         * words, we'll hold this in a Lexicon.
+         */</span> 
+        <span class="n">Lexicon</span> <span class="n">ourSubwords</span><span class="p">;</span>
+
+        <span class="cm">/* Consider all possible start positions. */</span> 
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">word</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">start</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/* Consider all possible end positions. Note that we include 
+             * the string length itself, since that way we can consider 
+             * substrings that terminate at the end of the string.
+             */</span> 
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">stop</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span> <span class="n">stop</span> <span class="o">&lt;=</span> <span class="n">word</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">stop</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="cm">/* Note the C++ way of getting a substring. */</span>
+                <span class="n">string</span> <span class="n">candidate</span> <span class="o">=</span> <span class="n">word</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">);</span>
+
+                <span class="cm">/* As an optimization, if this isn't a prefix of any legal 
+                 * word, then there's no point in continuing to extend this 
+                 * substring.
+                 */</span> 
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">words</span><span class="p">.</span><span class="n">containsPrefix</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span> <span class="k">break</span><span class="p">;</span>
+
+                <span class="cm">/* If this is a word, then record it as a subword. */</span> 
+                <span class="k">if</span> <span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span> <span class="p">{</span> 
+                    <span class="n">ourSubwords</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">candidate</span><span class="p">);</span> 
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Having found all subwords, see if this is better than our 
+         * best guess so far.
+         */</span> 
+        <span class="k">if</span> <span class="p">(</span><span class="n">numSubwords</span> <span class="o">&lt;</span> <span class="n">ourSubwords</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">word</span><span class="p">;</span>
+            <span class="n">numSubwords</span> <span class="o">=</span> <span class="n">ourSubwords</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> 
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In case you're curious, the most Xzibit word is “foreshadowers,” with 34 subwords!</p>
+
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-seven-jaccard-similarity">Problem Seven: Jaccard Similarity</h2>
+
+<p><em>Topics: Set, file reading, queues, strings</em></p>
+
+<p>Let’s suppose that you have two text files – say, web pages, inscriptions on pottery shards, political speeches, etc. – and you want to determine how “similar” those text files are. For example, you might be a search engine (like Google) and want to recommend pages similar to another one, or you might be trying to determine the author of an pseudonymous essay or piece of text. How might you go about doing this?</p>
+
+<p>In this exercise, we’re going to treat a text document not as a single piece of text, but as a <em>bag of words</em>. Instead of representing a piece of text as a linear sequence of words, we’ll treat it as an unordered set of words. For example, Yogi Berra’s famous quote:</p>
+
+<blockquote>
+  <p>"I didn't say all the things I said"</p>
+</blockquote>
+
+<p>would be treated as the set:</p>
+
+<blockquote>
+  <p><code class="language-c++ highlighter-rouge"><span class="p">{</span> <span class="s">"all"</span><span class="p">,</span> <span class="s">"didn't"</span><span class="p">,</span> <span class="s">"I"</span><span class="p">,</span> <span class="s">"said"</span><span class="p">,</span> <span class="s">"say"</span><span class="p">,</span> <span class="s">"the"</span><span class="p">,</span> <span class="s">"things"</span> <span class="p">}</span></code></p>
+</blockquote>
+
+<p>with the elements in no particular order and duplicate words removed.</p>
+
+<p>The advantage of this approach is that we can approximate the similarity of two documents by using a measure called the <strong><em>Jaccard similarity</em></strong>. Given two sets <em>S</em> and <em>T</em>, the Jaccard similarity of those sets, denoted <em>J(S, T)</em>, is defined as follows:</p>
+
+<blockquote>
+  <p><img src="img/jaccard.png" alt="Jaccard similarity written mathematically" /></p>
+</blockquote>
+
+<p>Here, <code class="language-c++ highlighter-rouge"><span class="o">|</span><span class="n">S</span> <span class="err">∩</span> <span class="n">T</span><span class="o">|</span></code> denotes the number of words in common to <em>S</em> and <em>T</em> (that is, the <em>cardinality</em> of their <em>intersection</em>), and <code class="language-c++ highlighter-rouge"><span class="o">|</span><span class="n">S</span> <span class="err">∪</span> <span class="n">T</span><span class="o">|</span></code> denotes the number of words that appear in at least one of <em>S</em> and <em>T</em> (that is, the cardinality of their union). If the sets <em>S</em> and <em>T</em> are completely identical, then <em>J(S, T) = 1</em> (do you see why?), and if <em>S</em> and <em>T</em> have absolutely nothing in common, then <em>J(S, T) = 0</em> (again, do you see why?) As the overlap between <em>S</em> and <em>T</em> increases, <em>J(S, T)</em> starts to increase.</p>
+
+<p>The advantage of Jaccard similarity is that two documents that have a lot of common words and phrases are likely to have a very large Jaccard similarity, while two documents that have very little in common are likely to have a low Jaccard similarity.</p>
+
+<p>Write a function</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">wordsIn</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input an input stream, then returns a set of all the tokens in that input stream. Using this function, write a program that prompts the user for the names of two files, then computes their Jaccard similarity.</p>
+
+<p>If you finish this one early, consider this variant on the problem. A <strong><em>k-gram</em></strong> is a sequence of <em>k</em> consecutive words or tokens out of a file, so given Yogi Berra’s above quote, the 2-grams would be as follows:</p>
+
+<blockquote>
+  <p><code class="language-c++ highlighter-rouge"><span class="s">"I didn't"</span><span class="p">,</span> <span class="s">"didn't say"</span><span class="p">,</span> <span class="s">"say all"</span><span class="p">,</span> <span class="s">"all the"</span><span class="p">,</span> <span class="s">"the things"</span><span class="p">,</span> <span class="s">"things I"</span><span class="p">,</span> <span class="s">"I said"</span></code></p>
+</blockquote>
+
+<p>Jaccard similarity on documents tends to give much better answers when you compute it on 2-grams, 3grams, or 4-grams from the documents. Update your code so that it works with <em>k</em>-grams rather than individual tokens. This is similar to what you'll be doing on assignment 2!</p>
+
+<p><strong>Note: we won't be providing a fleshed out starter file for this problem, as it'll be good practice for you to write the entire program here!</strong></p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-7" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-7">
+   
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Given a Queue&lt;string&gt;, produced a string representing the k-grams it 
+ * contains. We take our parameter by value because the only way to read 
+ * a queue is to destructively modify it. 
+ */</span>
+<span class="n">string</span> <span class="nf">queueToString</span><span class="p">(</span><span class="n">Queue</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">kGram</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">resultl</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">kGram</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="cm">/* If we already had something before us, add a space. */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">!=</span> <span class="s">" "</span><span class="p">)</span> <span class="n">result</span> <span class="o">+=</span> <span class="s">" "</span><span class="p">;</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">kGram</span><span class="p">.</span><span class="n">dequeue</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Returns a set of all the k-grams in the given input stream, represented
+ * as strings. 
+ */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">kGramsIn</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Validate the input. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"k must be positive"</span><span class="p">);</span>
+
+    <span class="n">TokenScanner</span> <span class="n">scanner</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+    <span class="n">scanner</span><span class="p">.</span><span class="n">addWordCharacters</span><span class="p">(</span><span class="s">"'"</span><span class="p">);</span>
+
+    <span class="cm">/* We're going to store the last k word tokens read in this queue.
+     * This makes it easy to shify in and shift out new words into our
+     * k-gram.
+     */</span>
+
+    <span class="n">Queue</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">kGram</span><span class="p">;</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">scanner</span><span class="p">.</span><span class="n">hasMoreTokens</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">token</span> <span class="o">=</span> <span class="n">scanner</span><span class="p">.</span><span class="n">nextToken</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">scanner</span><span class="p">.</span><span class="n">getTokenType</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">==</span> <span class="n">TokenScanner</span><span class="o">::</span><span class="n">TokenType</span><span class="o">::</span><span class="n">WORD</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">kGram</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">token</span><span class="p">);</span>
+
+            <span class="cm">/* If this brough us up to size k, output what we have, then
+             * kick out the oldest element so that we're down to size 
+             * k - 1. The next word token we find will then refresh us 
+             * to capacity.
+             */</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">kGram</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">result</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">queueToString</span><span class="p">(</span><span class="n">kGram</span><span class="p">));</span>
+                <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">kGram</span><span class="p">.</span><span class="n">dequeue</span><span class="p">();</span> <span class="c1">// Ignore return value, (void) makes the compiler warning go away</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* The set of all the words in the stream is just the set of 1-grams. Nifty! */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">wordsIn</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">kGramsIn</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* Prompts the user for the size of a k-gram to use. */</span>
+<span class="kt">int</span> <span class="nf">chooseKGramSize</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getInteger</span><span class="p">(</span><span class="s">"Enter k: "</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Please enter a positive integer"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* Prompts the user for a filename, then returns the k-grams in that file. */</span> 
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">contentsOfUserFileChoice</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ifstream</span> <span class="n">input</span><span class="p">;</span>
+    <span class="n">promptUserForFilename</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="s">"Enter filename: "</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">kGramsIn</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span> 
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span> 
+    <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">chooseKGramSize</span><span class="p">();</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">contentsOfUserFileChoice</span><span class="p">(</span><span class="n">k</span><span class="p">);</span>
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">contentsOfUserFileChoise</span><span class="p">(</span><span class="n">k</span><span class="p">);</span>
+
+    <span class="cm">/* Compute |S1 n S2| and |S1 u S2| using the overloaded * and + operators. */</span> 
+    <span class="kt">double</span> <span class="n">intersectSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">*</span> <span class="n">s2</span><span class="p">).</span><span class="n">size</span><span class="p">();</span> 
+    <span class="kt">double</span> <span class="n">unionSize</span>     <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span><span class="p">).</span><span class="n">size</span><span class="p">();</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Jaccard similarity: "</span> <span class="o">&lt;&lt;</span> <span class="n">intersectSize</span> <span class="o">/</span> <span class="n">unionSize</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Mar-09
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

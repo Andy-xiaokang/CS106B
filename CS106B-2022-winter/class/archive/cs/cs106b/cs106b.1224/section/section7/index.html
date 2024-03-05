@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Linked Lists</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../../assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Section 7. Linked Lists</h1>
+
+<hr>
+
+<p class="attribution">
+Section materials curated by Neel Kishnani, drawing upon materials from previous quarters.
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<p>Grab a pencil and paper, or a whiteboard, or a reed and papyrus when you’re reading over these solutions. The pointer juggling here is intricate but beautiful, like a delicate flower. If you work through everything one line at a time, you’ll get a much deeper sense for what’s going on here. Simply reading over this code and trying to keep track of everything in your head is not likely to work out very well.</p>
+
+<blockquote>
+  <p>📦 <a href="section7_starter.zip">Starter code</a></p>
+</blockquote>
+
+<h2 id="problem-one-linked-list-mechanics">Problem One: Linked List Mechanics</h2>
+<p>This section handout is almost exclusively about linked lists, so before we jump into some of their applications, let’s start off by reviewing some of the basic mechanics about how they work!</p>
+
+<p>To begin with, let’s imagine we have a linked list of integers. Go and define a <code class="language-c++ highlighter-rouge"><span class="n">Cell</span></code> struct representing a single cell in the linked list. Then, write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">sumOfElementsIn</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that adds up the values of all the elements in the linked list. Write this function two ways – first, do it iteratively; then, do it recursively. Which one did you think was easier to write? Why?</p>
+
+<p>Next, write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Cell</span><span class="o">*</span> <span class="nf">lastElementOf</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that returns a pointer to the last element of a linked list (and reports an error if the list is empty). Again, write this function two ways, iteratively and recursively. Which one did you think was easier to write?</p>
+
+<div class="showtime" when="2022-02-25T18:00:00-08:00"></div>
+<style>
+  div.solution { display: none; }
+  .solution pre { background-color: inherit; border: none; }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var now = new Date();
+        var gate = new Date($("div.showtime").attr("when"));
+        if (now >= gate || window.location.href.endsWith("#16threes")) {$("div.solution").show()}
+ });
+</script>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-1" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-1">
+   
+<p>First, we need a Cell structure! Here’s one possibility:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Cell</span> <span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+<span class="p">};</span>             
+</code></pre></div></div>
+
+<p>Most linked list cells look more or less the same – they have some data and a pointer to the next element in the list. Here’s two version of the code to sum up the elements of one of these lists:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Iterative version */</span>
+<span class="kt">int</span> <span class="nf">sumOfElementsIn</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span> <span class="n">curr</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Recursive version. */</span>
+<span class="kt">int</span> <span class="nf">sumOfElementsIn</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* The sum of the elements in an empty list is zero. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="cm">/* The sum of the elements in a nonempty list is the sum of the elements in
+     * the first cell plus the sum of the remaining elements.
+     */</span>
+    <span class="k">return</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">+</span> <span class="n">sumOfElementsIn</span><span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And two versions of a function to get the last element of a linked list.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Iterative version */</span>
+<span class="n">Cell</span><span class="o">*</span> <span class="nf">lastElementOf</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Empty lists have no last element."</span><span class="p">);</span>
+
+    <span class="cm">/* Loop forward until the current cell’s next pointer is null. That’s the
+     * point where the list ends.
+     */</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">result</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">result</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Recursive version. */</span>
+<span class="n">Cell</span><span class="o">*</span> <span class="nf">lastElementOf</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base Case 1: The empty list has no last element. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="n">error</span><span class="p">(</span><span class="s">"Nothing can come from nothing."</span><span class="p">);</span>
+
+    <span class="cm">/* Base Case 2: The only element of a one-element list is the last element. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+
+    <span class="cm">/* Recursive Case: There’s at least two cells in this list. The last element
+     * of the overall list is the last element of the list you get when you drop
+     * off the first element.
+     */</span>
+    <span class="k">return</span> <span class="n">lastElementOf</span><span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-two-tail-pointers">Problem Two: Tail Pointers</h2>
+<p>In lecture, we wrote a function to read a list of values from the user and return a linked list containing those values (and we wrote it two different ways, too!) The iterative version of that function had the odd property that it returned the elements that were read in reverse order, which was a consequence of the fact that we kept adding elements at the front of the list that we’d made.</p>
+
+<p>Write an <em>iterative</em> function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Cell</span><span class="o">*</span> <span class="nf">readList</span><span class="p">();</span>
+</code></pre></div></div>
+<p>that reads a list of values from the user. It should return a linked list containing those values in the order in which they were entered. To make it run in time O(n), where n is the number of elements read, maintain a tail pointer keep track of the very last element in the list.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-2" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-2">
+   
+<p>Here’s one option, which is closely related to our logic to get the queue to work in worst-case O(1) time. I’m assuming the list holds strings, but really this’ll work for any type as long as there’s a sentinel value:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Cell</span><span class="o">*</span> <span class="nf">readList</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">head</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">tail</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="c1">// There is no last element... at least, not yet. :-)</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">line</span> <span class="o">=</span> <span class="n">getLine</span><span class="p">(</span><span class="s">"Next entry: "</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">line</span> <span class="o">==</span> <span class="s">""</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+
+        <span class="cm">/* Get the cell basics set up. It always goes on the end, so its next
+         * pointer is always null.
+         */</span>
+        <span class="n">Cell</span><span class="o">*</span> <span class="n">cell</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">Cell</span><span class="p">;</span>
+        <span class="n">cell</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="p">;</span>
+        <span class="n">cell</span><span class="o">-&gt;</span><span class="n">next</span>  <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+        <span class="cm">/* If the list is empty, this is now both the head and the tail. */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">cell</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="cm">/* Otherwise, splice this element in right after the tail. */</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">cell</span><span class="p">;</span>
+            <span class="n">tail</span> <span class="o">=</span> <span class="n">cell</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-three-pointers-by-reference">Problem Three: Pointers by Reference</h2>
+<p>One of the trickier nuances of linked lists comes up when we start passing around pointers as parameters by reference. To better understand exactly what that’s all about, trace through the following code and show what it prints out. Also, identify any memory leaks that occur in the program.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">confuse</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="mi">137</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">befuddle</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cell</span><span class="p">;</span>
+   <span class="n">list</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+   <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">confound</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cell</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="mi">2718</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">bamboozle</span><span class="p">(</span><span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">mystify</span><span class="p">(</span><span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cell</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="mi">161</span><span class="p">;</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">list</span> <span class="o">=</span> <span class="cm">/* some logic to make the list 1 → 3 → 5 → null */</span>
+
+    <span class="n">confuse</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span> <span class="c1">// from lecture</span>
+
+    <span class="n">befuddle</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+
+    <span class="n">confound</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+
+    <span class="n">bamboozle</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+
+    <span class="n">mystify</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">printList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+
+    <span class="n">freeList</span><span class="p">(</span><span class="n">list</span><span class="p">);</span> <span class="c1">// from lecture</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-3" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-3">
+   
+<p>Let’s go through this one step at a time.</p>
+<ul>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">confuse</span></code> updates the first element of the list to store 137, so the call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> will print out 137, 3, 5.</li>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">befuddle</span></code> takes its argument by value. That means it’s working with a <em>copy</em> of the pointer to the first element of the list, so when we set list to be a new cell, it doesn’t change where the list variable back in main is pointing. The cell created here is leaked, and the next call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> will print out 137, 3, 5.</li>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">confound</span></code> takes its argument by value. However, when it writes to <code class="language-c++ highlighter-rouge"><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span></code>, it’s following the pointer to the first element of the linked list and changing the actual linked list cell it finds there. This means that the list is modified by dropping off the 3 and the 5 (that memory gets leaked) and replacing it with a cell containing 2718. Therefore, the next call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> will print out 137, 2718.</li>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">bamboozle</span></code> takes its argument by reference, but notice that it never actually reassigns the next pointer. However, it <em>does</em> change the memory in the cell at the front of the list to hold 42, so the next call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> will print 42, 2718.</li>
+  <li>The call to <code class="language-c++ highlighter-rouge"><span class="n">mystify</span></code> takes its argument by reference and therefore when it reassigns list it really is changing where list back in main is pointing. This leaks the memory for the cells containing 42 and 2718. The variable list back in main is changed to point at a new cell containing 161, so the final call to <code class="language-c++ highlighter-rouge"><span class="n">printList</span></code> prints 161.</li>
+  <li>Finally, we free that one-element list. Overall, we’ve leaked a lot of memory!</li>
+</ul>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-four-concatenating-linked-lists">Problem Four: Concatenating Linked Lists</h2>
+<p>Write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Cell</span><span class="o">*</span> <span class="nf">concat</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">one</span><span class="p">,</span> <span class="n">Cell</span><span class="o">*</span> <span class="n">two</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that takes as input two linked lists, then concatenates the second list onto the back of the first linked list. Your function should return a pointer to the first element in the resulting list.</p>
+
+<p>Then, update the function so that it has this signature:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">concat</span><span class="p">(</span><span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">one</span><span class="p">,</span> <span class="n">Cell</span><span class="o">*</span> <span class="n">two</span><span class="p">);</span>
+</code></pre></div></div>
+<p>This function should proceed as before, except that instead of returning the new head of the linked list, it changes the pointer given as a first parameter so that it holds the new head of the combined list. Then, answer this question: why didn’t we make two a reference parameter as well?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-4" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-4">
+   
+<p>Here’s one possible solution using that nice and handy function we wrote in Problem One of this section handout! It’s a great exercise to do this from first principles as well.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Cell</span><span class="o">*</span> <span class="nf">concat</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">one</span><span class="p">,</span> <span class="n">Cell</span><span class="o">*</span> <span class="n">two</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* If the first list is empty, then the result is just the second list. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">one</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="n">two</span><span class="p">;</span>
+
+    <span class="cm">/* Otherwise, take the last element of the first list and have it point to
+     * the first element of the second list. The first element overall is
+     * unchanged.
+     */</span>
+    <span class="n">lastElementOf</span><span class="p">(</span><span class="n">one</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">two</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">one</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If we opt to use reference parameters, the core logic is the same, but the execution is a bit different:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">concat</span><span class="p">(</span><span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">one</span><span class="p">,</span> <span class="n">Cell</span><span class="o">*</span> <span class="n">two</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">one</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+       <span class="n">one</span> <span class="o">=</span> <span class="n">two</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+       <span class="n">lastElementOf</span><span class="p">(</span><span class="n">one</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">two</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-five-the-classic-interview-question">Problem Five: The Classic Interview Question</h2>
+<p>Here’s a classic interview question that’s so overused that it’s almost an in-joke among software engineers: write a function that reverses a linked list. Do it both iteratively and recursively, and aim to get your code to run in time O(n).</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-5" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-5">
+   
+<p>Here’s an iterative version of the function. It’s remarkably similar to the code we came up with to read in the contents of a linked list from the user, except that the elements that we read get pulled off of the main linked list.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">reverse</span><span class="p">(</span><span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">head</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="c1">// New pointer to the head of the linked list.</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">list</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Store the next element of the list in an auxiliary pointer so we don’t
+         * lose it in the next step.
+         */</span>
+        <span class="n">Cell</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+
+        <span class="cm">/* Move this cell onto the front of the new list we’re building. */</span>
+        <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+
+        <span class="cm">/* Move to the new front of the old linked list. */</span>
+        <span class="n">list</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">list</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Recursively, the idea is to pull the first element off the list, recursively reverse the rest of the list, then tack the new element onto the end of the list. To make things run quickly, we’ll have the recursive logic return a pointer to the very last element of the reversed list so that we can put the cell that used to be at the front of the list into its proper place.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Reverses a linked list and returns a pointer to its last element. */</span>
+<span class="n">Cell</span><span class="o">*</span> <span class="nf">reverseRec</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Base Case 1: An empty or single-element list is its own reverse. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+
+    <span class="cm">/* Recursive Case: Pull this element off the list and reverse what’s left. */</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">last</span> <span class="o">=</span> <span class="n">reverseRec</span><span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+
+    <span class="cm">/* We know that last is non-null, because this list has at least two elements.
+     * So tack this element onto the back.
+     */</span>
+    <span class="n">last</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+
+    <span class="cm">/* Finally, remember that we’re now at the back. */</span>
+    <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">list</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">reverse</span><span class="p">(</span><span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Store the last element for later use – we’ll need to update the list head
+     * pointer at the end.
+     */</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">result</span> <span class="o">=</span> <span class="n">lastElementOf</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">reverseRec</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">list</span> <span class="o">=</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-six-doubly-linked-lists">Problem Six: Doubly-Linked Lists</h2>
+<p>The linked lists we talked about in lecture are called <strong>singly-linked lists</strong> because each cell just stores a single link pointer, namely, one to the next element in the list. A common variant on linked lists is the <strong>doubly-linked list</strong>, where each cell stores two pointers – a pointer to the next element in the list (as before) and a pointer to the previous element in the list. Here’s what a cell in a doubly-linked list might look like:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">DoublyLinkedCell</span> <span class="p">{</span>                                          
+    <span class="n">string</span> <span class="n">value</span><span class="p">;</span> <span class="c1">// Or whatever type of data goes here</span>
+    <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>                                        
+    <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">prev</span><span class="p">;</span>                                        
+<span class="p">};</span>                                                     
+</code></pre></div></div>
+
+<p>Doubly-linked lists have one really nice property: it is <em>really</em> easy to splice a new element into or out of a doubly-linked list. Write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">insertBefore</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*&amp;</span> <span class="n">head</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">beforeMe</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">newCell</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that takes as input a pointer to the first element in a doubly-linked list, a pointer to a cell somewhere in the linked list (<code class="language-c++ highlighter-rouge"><span class="n">beforeMe</span></code>), and a newly-allocated Cell object, then splices the new cell into the doubly-linked list right before the cell <code class="language-c++ highlighter-rouge"><span class="n">beforeMe</span></code>. Your function should update head so that when the function returns, it still points at the first cell in the linked list. (Why is it necessary to pass in the head of the list?) You can assume that <code class="language-c++ highlighter-rouge"><span class="n">beforeMe</span></code> is not null.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-6" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-6">
+   
+<p>To splice something into the list right before some point, we need to juggle the pointers so that whatever comes before us knows to route into us and whatever comes after us knows to step backwards into us. Here’s what that looks like:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">insertBefore</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*&amp;</span> <span class="n">head</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">beforeMe</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">newCell</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* If we’re inserting before the head, there is no preceding cell, so we need
+     * to special-case the logic.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">beforeMe</span> <span class="o">==</span> <span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">newCell</span><span class="p">;</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">newCell</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Otherwise, four pointers need to change: our own next/previous pointers so
+     * so that this cell fits nicely into the list, plus the next field of the
+     * cell before us and the prev field of the cell after us. We have to be
+     * careful with the order in which we do this, though!
+     */</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">beforeMe</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">;</span>
+        <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">beforeMe</span><span class="p">;</span>
+        <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">newCell</span><span class="p">;</span>
+        <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">newCell</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-seven-dummy-nodes">Problem Seven: Dummy Nodes</h2>
+<p>When working with linked lists, it’s common to encounter some weird edge cases when growing a zero-element list into a one-element list or shrinking a one-element list to a zero-element list, since in those cases you typically need to modify some external head and tail pointers. One technique that simplifies the logic in these cases is to add <strong>dummy nodes</strong> to the linked list. A dummy node is a node that’s <em>technically</em> a part of a linked list, but is specifically intended to signify “the start of the list” or “the end of the list.”</p>
+
+<p>For example, let’s imagine we have a doubly-linked list. We might insert dummy nodes before the first element of the list and after the last element of the list, as shown here:
+ <img src="img/e133bda323de7839c8806b09c7a35fe7.png" alt="A doubly linked list: [dummy head] &lt;-&gt; [first element] &lt;-&gt; [second element] &lt;-&gt; [third element] &lt;-&gt; [dummy tail]" /></p>
+
+<p>First, write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="nf">makeEmptyList</span><span class="p">();</span>
+</code></pre></div></div>
+<p>that creates a new doubly-linked list with a dummy head and tail, then returns a pointer to the head.</p>
+
+<p>Now, write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printList</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">tail</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that prints out the contents of a doubly-linked list whose dummy first and last elements are pointed at by the head and tail parameters. Next, write a pair of functions</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">insertBefore</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">newCell</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">beforeMe</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">insertAfter</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">newCell</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">afterMe</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that take as inputs a newly-allocated cell to insert into the list and a cell that comes right after or right before the cell to insert, then splices the new cell into the list. You can assume that no one will try to insert anything before the head or after the tail, though they could do something like insert before the tail or after the head to append or prepend a new cell to the list.</p>
+
+<p>Next, write a pair of functions</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">append</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">tail</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">newCell</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">prepend</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">newCell</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that insert the specified element at the beginning or end of the linked list. Then, write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">toRemove</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that removes an element from a doubly-linked list with a dummy head and tail and deallocates the cell. Finally, write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">freeList</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">head</span><span class="p">);</span>
+</code></pre></div></div>
+<p>that frees the list whose first element is head.</p>
+
+<p>How did that compare with the regular doubly-linked list from before?</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-7" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-7">
+   
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">makeEmptyList</span></code> function is rather easy to write, since we just make two nodes and wire them together.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="nf">makeEmptyList</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">head</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DoublyLinkedCell</span><span class="p">;</span>
+    <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">tail</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DoublyLinkedCell</span><span class="p">;</span>
+    <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">tail</span><span class="p">;</span>
+    <span class="n">tail</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To print out the list, we start one step past the head and stop as soon as we get to the tail. Here’s both an iterative and a recursive version of this code, just for funzies:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* * * * * Iteratively * * * * */</span>
+
+<span class="kt">void</span> <span class="nf">printList</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">tail</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span> <span class="n">curr</span> <span class="o">!=</span> <span class="n">tail</span><span class="p">;</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* * * * * Recursively * * * * */</span>
+
+<span class="kt">void</span> <span class="nf">printRec</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">curr</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">tail</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">curr</span> <span class="o">==</span> <span class="n">tail</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">printRec</span><span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">,</span> <span class="n">tail</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">printList</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">tail</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printRec</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">,</span> <span class="n">tail</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">insertBefore</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">insertAfter</span></code> functions are dramatically easier to write than what we saw in the previous problem simply because we can eliminate the edge case of having to change the head pointer (it <em>always</em> points to the dummy node regardless of what the <em>logically</em> first element of the list is) or tail pointer. Notice that we don’t even need to know what the head or tail are! Maybe we’re inserting right before or right after them – we don’t know, and we don’t need to care!</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">insertBefore</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">newCell</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">beforeMe</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">beforeMe</span><span class="p">;</span>
+    <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">beforeMe</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">;</span>
+    <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">newCell</span><span class="p">;</span>
+    <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">newCell</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">insertAfter</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">newCell</span><span class="p">,</span> <span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">afterMe</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">afterMe</span><span class="p">;</span>
+    <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">afterMe</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">newCell</span><span class="p">;</span>
+    <span class="n">newCell</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">newCell</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The nifty part is that we can easily use the above code to implement append and prepend. Look at this!</p>
+<pre><code class="language-c++*">void append(DoublyLinkedCell* tail, DoublyLinkedCell* newCell) {
+    insertBefore(newCell, tail);
+}
+
+void prepend(DoublyLinkedCell* head, DoublyLinkedCell* newCell) {
+    insertAfter(newCell, head);
+}
+</code></pre>
+
+<p>And how do we remove something? Well, we know that there will <em>always</em> be a node right before or right after us, so we can just splice around the node to remove!</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">remove</span><span class="p">(</span><span class="n">DoublyLinkedCell</span><span class="o">*</span> <span class="n">toRemove</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">;</span>
+    <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="k">delete</span> <span class="n">toRemove</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>The best part is that deleting one of these linked lists is <em>exactly the same</em> as deleting a regular linked list – the dummy nodes are nodes just like any other node, so we just iterate across them and free them. In fact,  since it’s <em>literally</em> the same code as in the regular case, I’m not going to include any code here for it, since that would just be duplicating the code from lecture. ☺</p>
+
+<p>Linked lists with dummy nodes are used extensively in systems programming. If you take CS140, for example, you’ll use them to represent different processes running in the operating system moving between different states.</p>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-eight-double-ended-queues">Problem Eight: Double-Ended Queues</h2>
+<p>This problem concerns a data structure called a <strong>double-ended queue</strong>, or <strong>deque</strong> for short (it’s pronounced “deck,” as in a deck of cards). A deque is similar to a stack or queue in that it represents a sequence of elements, except that elements can be added or removed from both ends of the deque. Here is one possible interface for a <code class="language-c++ highlighter-rouge"><span class="n">Deque</span></code> class:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Deque</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Deque</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">Deque</span><span class="p">();</span>
+
+    <span class="cm">/* Seems like all containers have the next two functions. :-) */</span>
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span>  <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="cm">/* Adds a value to the front or the back of the deque. */</span>
+    <span class="kt">void</span> <span class="n">pushFront</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">pushBack</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+
+    <span class="cm">/* Looks at, but does not remove, the first/last element of the deque. */</span>
+    <span class="kt">int</span> <span class="n">peekFront</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">peekBack</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="cm">/* Returns and removes the first or last element of the deque. */</span>
+    <span class="kt">int</span> <span class="n">popFront</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">popBack</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>One efficient way of implementing a deque is as a doubly-linked list. The deque stores pointers to the head and the tail of the list to support fast access to both ends. Design the private section of the Deque class, then implement the above member functions using a doubly-linked list. As a hint, this is way easier to do using dummy nodes!</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-8" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-8">
+   
+<p>If you think about it, the logic from the previous problem really nicely lets us build a deque – we have the ability to splice things in anywhere we want and splice things out anywhere we want, which is precisely what we’d need to do here.</p>
+
+<p>This solution uses a doubly-linked list with a dummy head and tail node, as described in Problem Eight.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Deque</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">Deque</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">Deque</span><span class="p">();</span>
+
+    <span class="cm">/* Seems like all containers have the next two functions. :-) */</span>
+    <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span>  <span class="n">size</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="cm">/* Adds a value to the front or the back of the deque. */</span>
+    <span class="kt">void</span> <span class="n">pushFront</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">pushBack</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+
+    <span class="cm">/* Looks at, but does not remove, the first/last element of the deque. */</span>
+    <span class="kt">int</span> <span class="n">peekFront</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">peekBack</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="cm">/* Returns and removes the first or last element of the deque. */</span>
+    <span class="kt">int</span> <span class="n">popFront</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">popBack</span><span class="p">();</span>
+
+<span class="nl">private:</span>
+    <span class="k">struct</span> <span class="nc">Cell</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+        <span class="n">Cell</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+        <span class="n">Cell</span><span class="o">*</span> <span class="n">prev</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">tail</span><span class="p">;</span>
+    <span class="kt">int</span>   <span class="n">numElems</span><span class="p">;</span> <span class="c1">// Cache for efficiency; makes size() run in time O(1).</span>
+
+    <span class="cm">/* Creates a new cell initialized to a given value, but whose next and prev
+     * pointers are uninitialized. This cell is intended to be used inside the
+     * linked list, and therefore the size field is adjusted appropriately.
+     */</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">makeCell</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">);</span>
+
+    <span class="cm">/* Destroys the given cell, which is presumed to be in the linked list. */</span>
+    <span class="kt">void</span> <span class="n">destroy</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">toRemove</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Now, the .cpp file:</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "error.h" // Because bad things happen.
+</span>
+<span class="n">Deque</span><span class="o">::</span><span class="n">Deque</span><span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/* Set up the empty dummied, doubly-linked list. */</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cell</span><span class="p">;</span>
+    <span class="n">tail</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cell</span><span class="p">;</span>
+    <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">tail</span><span class="p">;</span>
+    <span class="n">tail</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="n">numElems</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Deque</span><span class="o">::~</span><span class="n">Deque</span><span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/* Delete all cells in the list, including the head and tail. */</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">head</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Cell</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="k">delete</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* Because we’ve cached the size, we don’t need to scan through the list when
+ * we want to determine how many elements there are.
+ */</span>
+<span class="kt">int</span> <span class="n">Deque</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">numElems</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Good programming exercise: suppose that we didn’t cache the number of elements
+ * in the list and that size() had to scan over the entire list in time O(n). How
+ * would you implement isEmpty() given that we have a head and tail pointer?
+ */</span>
+<span class="kt">bool</span> <span class="n">Deque</span><span class="o">::</span><span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Our helper function that makes a cell. We could have alternatively defined a
+ * constructor on the Cell type (yes, you can do that!), but I chose to do things
+ * this way to show off Yet Another Memorable Piece of C++ Syntax. Since the
+ * Cell type is nested inside Deque, the return type of this function has to be
+ * Deque::Cell*, indicating that Cell is defined inside of Deque.
+ */</span>
+<span class="n">Deque</span><span class="o">::</span><span class="n">Cell</span><span class="o">*</span> <span class="n">Deque</span><span class="o">::</span><span class="n">makeCell</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cell</span><span class="p">;</span>
+    <span class="n">result</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+
+    <span class="n">numElems</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cm">/* * * * * Continued on the next page * * * * */</span>
+
+
+<span class="cm">/* pushFront is essentially insertAfter with the head pointer. */</span>
+<span class="kt">void</span> <span class="n">Deque</span><span class="o">::</span><span class="n">pushFront</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">cell</span> <span class="o">=</span> <span class="n">makeCell</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="n">cell</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">cell</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="n">cell</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">cell</span><span class="p">;</span>
+    <span class="n">cell</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">cell</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* pushBack is essentially insertBefore with the tail pointer. */</span>
+<span class="kt">void</span> <span class="n">Deque</span><span class="o">::</span><span class="n">pushBack</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">cell</span> <span class="o">=</span> <span class="n">makeCell</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="n">cell</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">tail</span><span class="p">;</span>
+    <span class="n">cell</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">tail</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">;</span>
+    <span class="n">cell</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">cell</span><span class="p">;</span>
+    <span class="n">cell</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">cell</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* To look at the front or back, we have to skip over the head or tail nodes,
+ * since they’re dummies and don’t actually have any data in them.
+ */</span>
+<span class="kt">int</span> <span class="n">Deque</span><span class="o">::</span><span class="n">peekFront</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="n">error</span><span class="p">(</span><span class="s">"This is why we can’t have nice things."</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">Deque</span><span class="o">::</span><span class="n">peekBack</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isEmpty</span><span class="p">())</span> <span class="n">error</span><span class="p">(</span><span class="s">"Thanks, Obama."</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">tail</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* The destroy operation is essentially our remove function from earlier.
+ * Notice that we do not need to use the full name Deque::Cell here because Cell
+ * is an argument to a member function that’s part of the Deque type.
+ */</span>
+<span class="kt">void</span> <span class="n">Deque</span><span class="o">::</span><span class="n">destroy</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">toRemove</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">;</span>
+    <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">toRemove</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+
+    <span class="cm">/* At this point it’s spliced out of the list. */</span>
+    <span class="k">delete</span> <span class="n">toRemove</span><span class="p">;</span>
+    <span class="n">numElems</span><span class="o">--</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* popFront and popBack are essentially just wrapped splice-outs. */</span>
+<span class="kt">int</span> <span class="n">Deque</span><span class="o">::</span><span class="n">popFront</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">peekFront</span><span class="p">();</span>
+    <span class="n">destroy</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">Deque</span><span class="o">::</span><span class="n">popBack</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">peekBack</span><span class="p">();</span>
+    <span class="n">destroy</span><span class="p">(</span><span class="n">tail</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+<h2 id="problem-nine-quicksort">Problem Nine: Quicksort</h2>
+<p>The <strong>quicksort</strong> algorithm is a sorting algorithm that, in practice, tends to be one of the fastest sorts available. It’s a recursive algorithm that works as follows. If the list of values has at most one element in it, it’s already sorted and there’s nothing to do. Otherwise:</p>
+<ul>
+  <li>Choose a <strong>pivot element</strong>, typically the first element of the list.</li>
+  <li>Split the elements in the list into three groups – elements less than the pivot, elements equal to the pivot, and elements greater than the pivot.</li>
+  <li>Recursively sort the first and last of these groups.</li>
+  <li>Concatenate the three lists together.</li>
+</ul>
+
+<p>Write a function</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">quicksort</span><span class="p">(</span><span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">);</span>
+</code></pre></div></div>
+<p>That accepts as input a pointer to the first cell in a singly-linked list of integers, then uses quicksort to sort the linked list into ascending order. The function should change the pointer it receives as an argument so that it points to the first cell of the new linked list. <strong>This is a fairly large piece of code</strong>, so make sure that you pick a good decomposition. With the right decomp, this code is quite easy to read.</p>
+
+<div class="solution">
+<div class="text-center">
+<a class="btn btn-primary" data-toggle="collapse" href="index.html#solution-collapse-9" role="button">Solution</a>
+</div>
+<div class="collapse alert alert-success" id="solution-collapse-9">
+   
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">quicksort</span><span class="p">(</span><span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Determine the length of the list.  If it's length 0 or 1, we're done. */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">list</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+    <span class="cm">/* Remove the first element as the pivot element. */</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">pivot</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+
+    <span class="cm">/* Remove the pivot element from the list. */</span>
+    <span class="n">pivot</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="cm">/* Distribute the elements into the three lists based on  whether they are
+     * smaller than, equal to, or greater than the pivot.
+     */</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">smaller</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">Cell</span><span class="o">*</span> <span class="n">bigger</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">partitionList</span><span class="p">(</span><span class="n">rest</span><span class="p">,</span> <span class="n">smaller</span><span class="p">,</span> <span class="n">pivot</span><span class="p">,</span> <span class="n">bigger</span><span class="p">);</span>
+
+    <span class="cm">/* Recursively sort the two smaller regions. */</span>
+    <span class="n">quicksort</span><span class="p">(</span><span class="n">smaller</span><span class="p">);</span>
+    <span class="n">quicksort</span><span class="p">(</span><span class="n">bigger</span><span class="p">);</span>
+
+    <span class="cm">/* Concatenate everything together using our concatenation functions from
+     * before! For efficiency’s sake, we concatenate the “equal” and “greater”
+     * lists, then tack those onto the end of the “smaller” list. (Why?)
+     */</span>
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">concat</span><span class="p">(</span><span class="n">pivot</span><span class="p">,</span> <span class="n">bigger</span><span class="p">);</span>
+    <span class="n">smaller</span> <span class="o">=</span> <span class="n">concat</span><span class="p">(</span><span class="n">smaller</span><span class="p">,</span> <span class="n">pivot</span><span class="p">);</span>
+    <span class="n">list</span> <span class="o">=</span> <span class="n">smaller</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Prepends the given single cell to the given list, updating the pointer to
+ * the first element of that linked list.
+ */</span>
+<span class="kt">void</span> <span class="nf">prependCell</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">toPrepend</span><span class="p">,</span> <span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">toPrepend</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="n">list</span> <span class="o">=</span> <span class="n">toPrepend</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">partitionList</span><span class="p">(</span><span class="n">Cell</span><span class="o">*</span> <span class="n">list</span><span class="p">,</span> <span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">smaller</span><span class="p">,</span> <span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">pivot</span><span class="p">,</span> <span class="n">Cell</span><span class="o">*&amp;</span> <span class="n">bigger</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Distribute cells in the list into the three groups. */</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">list</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Remember the next pointer, because we're going to remove this
+         * element from the list it is currently in.
+         */</span>
+        <span class="n">Cell</span><span class="o">*</span> <span class="n">next</span> <span class="o">=</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+
+        <span class="cm">/* Determine which list this element belongs to. */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">==</span> <span class="n">pivot</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">prependCell</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="n">pivot</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">list</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;</span> <span class="n">pivot</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">prependCell</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="n">smaller</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">prependCell</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="n">bigger</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">list</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+</div>
+</div>
+<hr />
+
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Mar-02
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

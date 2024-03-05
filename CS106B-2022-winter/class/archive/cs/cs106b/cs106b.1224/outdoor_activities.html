@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Outdoor Activites in the Bay Area</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="outdoor_activities.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="outdoor_activities.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="outdoor_activities.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="outdoor_activities.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="assignments/a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="assignments/a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="assignments/a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="assignments/a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="assignments/a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="assignments/a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="assignments/a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="assignments/a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="assignments/a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="assignments/a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="outdoor_activities.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="outdoor_activities.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Outdoor Activites in the Bay Area</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+
+<div id="content"><p>Here are my recommendations for places to visit in the Bay Area for sightseeing, hiking, walking, and biking. I hope you get a chance to experience them during your time at Stanford! As a note</p>
+
+<h2 id="afternoon-trips-from-campus">Afternoon Trips from Campus:</h2>
+
+<p>Places you can reasonably go to and come back from in an afternoon.</p>
+
+<ul>
+  <li><a href="https://www.openspace.org/preserves/rancho-san-antonio">Rancho San Antonio</a>: Big county park with lots of hiking trails, beautifully shaded canyons, exposed ridges, and a farm with cute animals. Pick fresh bay leaves off the bay trees there. Great place to see wild deer and wild turkeys. If you're very lucky, you might see a tarantula.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=538">Castle Rock State Park</a>: Incredible nature - seafloor rocks hoisted up to form mountains - popular with climbers. Has a beautiful and extensive trail network. Near a bunch of other great places, including the Saratoga Gap Trail.</li>
+  <li><a href="https://www.openspace.org/preserves/windy-hill">Windy Hill Open Space Preserve</a>: Excellent trail network near campus with great views. Lots of California poppies in the springtime. You can bike here from campus, but be aware that it's a bit of a climb!</li>
+  <li><a href="https://parks.smcgov.org/crystal-springs-regional-trail">Crystal Springs Reservoir</a>: Two reservoirs supplying water for San Francisco. Excellent place to go biking. The drive from Stanford to the reservoirs along I-280 is beautiful. You can also do a (slightly lengthy) bike ride to and from the reservior from campus.</li>
+  <li><a href="https://www.mountainview.gov/depts/cs/shoreline/default.asp">Shoreline Park</a>: Recreation area featuring a huge array of shorebirds and biking trails. Great place to go birdwatching - bring binoculars if you can.</li>
+  <li><a href="https://www.ucolick.org/main/visit/info.html">Lick Observatory</a>: Built on the highest peak near San Jose, this active research station has stellar views of the Santa Clara Valley. There's an old telescope there that is sometimes open to the public in the evening. Spectacular sunsets. The domed buildings on the summit are clearly visible from the valley floor on a clear day.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=539">Portola Redwoods State Park</a>: If you've never seen the redwoods, make a point to do so. They're incredible. This state park has a bunch of hiking trails you can check out and isn't too far from campus.</li>
+  <li><a href="https://www.californiabeaches.com/beach/mussel-rock-park-beach/">Mussel Rock Park</a>: Coastal trails that are always cool yearround; a great place to beat the heat.</li>
+  <li><a href="https://www.ebparks.org/parks/coyote_hills/">Coyote Hills Park</a>: Nice hiking trails across the bay from Stanford with great views of the bay.</li>
+  <li><a href="https://www.nps.gov/goga/sweeney.htm">Sweeny Ridge Trail</a>: Trail that starts on the east side of the Santa Cruz Mountains and ends up on the west side. You can take this all the way to Mori Point on the coast, and there are some interesting historic sites along the way.</li>
+  <li><a href="https://www.openspace.org/mount-umunhum-sierra-azul">Mt. Umunhum</a>: Iconic mountain home to a former radar defense installation. Clearly visible once you know what it looks like. Great views and good hiking trails. You can either drive to the top and walk around, or drive halfway up and hike the rest.</li>
+  <li><a href="https://www.half-moon-bay.ca.us/">Half Moon Bay</a>: City with iconic, beautiful beaches near a swanky downtown area. The area is a bitupscale, so you might want to pack your own lunch/dinner. Check out the tide pools.</li>
+  <li><a href="https://www.openspace.org/preserves/fremont-older">Fremont Older Open Space Preserve</a>: Park located in the hills near Cupertino. Popular with horseback riders, hikers, and mountain bikers. You can get some great views of the area from the peaks, or just enjoy the wind over the ridge.</li>
+  <li><a href="https://www.cityofpacifica.org/">Pacifica</a>: Nice town right on the coast. Has a beach located right next to a Taco Bell. The drive to and from there is beautiful.</li>
+  <li><a href="https://www.openspace.org/preserves/monte-bello">Monte Bello Open Space Preserve</a>: Chaparral, small canyons, and incredible views. Includes the summit of Black Mountain, the local high point in the mountains near campus. Once you know which peak this is, you can easily spot it from campus.</li>
+</ul>
+
+<h2 id="day-trips-from-campus">Day Trips from Campus:</h2>
+
+<p>Places that are best appreciated with a full day, or which take over 90 minutes each way.</p>
+
+<ul>
+  <li><a href="https://www.parks.ca.gov/?page_id=533">Pigeon Point Lighthouse</a>: Lighthouse on the coast. The drive to, from, and near there will take you over the Santa Cruz Mountains and along the coast on CA-1, passing a bunch of great beaches and nature areas. This is a great place to punch into a GPS if you're looking to see the California Coast over a day and just wander from point to point.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=561">Henry Coe State Park</a>: Massive state park with wild elevation changes and a range of trail options. Stunning in the spring when wildflowers bloom everywhere. Just be prepared for hikes with a <em>lot</em> of elevation gain.</li>
+  <li><a href="https://www.nps.gov/pinn/index.htm">Pinnacles National Park</a>: Eroded volcano that was dragged halfway up the state by plate tectonics. Amazing terrain, great trails, and home to most of the remaining California Condors, whose 10-foot wingspans is one of the biggest in North America. You can also climb through caves formed by fallen boulders, unless the caves are closed and converted into bat habitats.</li>
+  <li><a href="https://www.nps.gov/goga/marin-headlands.htm">Marin Headlands</a>: Park complex located across the Golden Gate Bridge from San Francisco. Lots of trails and beautiful views. Most of the iconic shots of the Golden Gate Bridge are taken from one of the peaks here. Popular getaway location for the SF locals.</li>
+  <li><a href="https://www.nps.gov/pore/index.htm">Point Reyes National Seashore</a>: Park north of San Francisco with tule elk, incredible hiking trails, and great beaches. One of the best hikes in the Bay Area is here, going to Alamere Falls. <em>Just make sure you've done your homework about how to do the Alamere Falls hike before driving there!</em> Lots of people get stranded on beaches as the tide rolls in.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=517">Mount Diablo State Park</a>: A prominent 3,700" mountain with stellar views of the whole area. The peak is clearly visible from the hills near campus if you know where to look. The best time to go is when there's a cloud layer halfway up - standing on the peak and looking down at a sea of clouds in bright blue sky is quite the experience.</li>
+  <li><a href="https://www.ebparks.org/parks/redwood/">Redwood Regional Park</a>: Beautiful hikes through the East Bay hills through redwood trees. Connects to a bunch of other trails in the area.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=523">Año Nuevo State Park</a>: Fantastic beaches, and home to the largest elephant seal colony in California. In the winter, you can get guided tours to see these amazing multiton animals.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=571">Point Lobos State Nature Reserve</a>: Glorious coastline, amazing trees, lots of great walking trails. Extremely popular with tourists, and for a good reason.</li>
+  <li><a href="https://goldengatepark.com/">Golden Gate Park</a>: Park in the middle of San Francisco that features lots of nice walking/biking paths, a rose garden, two museums, and more. A great place to just sit and read, or stroll around taking in the sights, or as a launching point to explore more of San Francisco.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=532">Montara Beach State Park</a>: Right on the coast near Pacifica, featuring trails that go alongside the water as well as a steep hike up to Montara Mountain, a small peak that overlooks the peninsula.</li>
+  <li><a href="https://www.nps.gov/goga/stbe.htm">Stinson Beach</a>: Take the Matt Davis / Steep Ravine trail to go from the coast, up into a slot canyon in the mountains, and beautiful switchbacks down through chaparral. This is one of the best hikes in the entire Bay Area. It's famous for a 12' ladder you have to climb at one point.</li>
+  <li><a href="https://www.ebparks.org/parks/sibley/">Sibley Volcanic Regional Preserve</a>: Hiking trails near Oakland and Berkeley that include the remains of an extinct volcano. Usually, someone's put together a rock labyrinth in the caldera.</li>
+  <li><a href="https://www.ebparks.org/parks/sunol/">Sunol Regional Wilderness</a>: Park with beautiful hills and the "Little Yosemite Area," a canyon with huge boulders and lots of natural swimming spots. Gorgeous in the spring.</li>
+  <li><a href="https://www.elkhornslough.org/">Elkhorn Slough</a>: Home to lots of adorable sea otters. See if you can get a kayaking tour, especially when there's bioluminescent algae in the water.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=544">Sunset State Beach</a>: One of the many state beaches on the coast. Great place to relax, unwind, and look for sand dollars. It's just south of the very crowded beaches in Santa Cruz.</li>
+  <li><a href="https://en.wikipedia.org/wiki/Monticello_Dam">Monticello Dam</a>. This dam in Napa has an unusual feature. If the water level gets too high, the excess flows down a vertical pipe located a ways out in the water. The effect, when the water is high, is that there's a lake with an enormous hole in it. If the water level is high enough, be sure to check it out! If the water level isn't, well… maybe give it a pass.</li>
+</ul>
+
+<h2 id="weekend-trips-from-campus">Weekend Trips from Campus:</h2>
+
+<p>These locations are a pretty significant drive and you'll need to plan to stay overnight in order to do them. Check conditions before you go - many of these places have been impacted by recent fires or require snow driving in the winter.</p>
+
+<ul>
+  <li><a href="https://www.nps.gov/lavo/index.htm">Lassen Volcanic National Park</a>. Did you know that there are active volcanoes in California? Lassen Peak last erupted in 1915. This national park includes Bumpass Hell, a hydrothermal area where boiling, mineral-rich water pools at the surface. It's also got exceptional hiking trails, and all four types of volcanoes (shield, lava dome, composite, and cinder cone). It's really a sight to behold. Unfortunately, Lassen has been severely impacted by the Dixie fire this year (2021), so you may need to wait a bit to go. But seriously, go check it out. You won't regret it.</li>
+  <li><a href="https://www.nps.gov/labe/index.htm">Lava Beds National Monument</a>. This remote national monument (it's basically in the upper-right corner of California) has an extensive system of lava tubes, caves that formed when the outer part of a lava flow solidified and the inside drained out. You can borrow flashlights from the ranger station and go climbing around. If you've never done this before - and I assume most of you haven't - it's really something. No caving experience is needed - you just need to be comfortable scrambling around a bit. Also check out Schonchin Butte, a small volcano there with great views.</li>
+  <li><a href="https://en.wikipedia.org/wiki/Mount_Shasta">Mount Shasta</a>. An enormous dormant volcano near the northern border of California. The mountain itself is over 14,000 feet tall and can be seen from the Central Valley over 100 miles away on a clear day. It has an iconic double-peak formed from successive eruptions. In the spring, when the peak is covered in snow, it's really a sight to behold. There are many great nearby hikes (Black Butte, a smaller volcano, right at the base is worth a hike; Mt. Eddy in the nearby Trinity Alps range is great as well). If you're an experienced mountaineer, you can hike to the summit of Mt. Shasta when conditions are good.</li>
+  <li><a href="https://www.alltrails.com/trail/us/california/mt-tallac-trail">Mount Tallac</a>. This hiking trail next to Lake Tahoe takes you up to a local high point. You'll get sweeping views of the lake and the nearby Desolation Wilderness. It's a nontrivial day hike (about 10-12 miles with over 3,000 feet of elevation gain), but the views from the top and the nature throughout are incredible. Stay overnight near Tahoe for the full experience.</li>
+  <li><a href="https://www.nps.gov/yose/index.htm">Yosemite National Park</a>. There's a reason this park is so famous - it's jaw-droppingly beautiful and there really is nothing else like it. Stand at the base of the valley and look at the towering granite cliffs all around you. Take in the waterfalls. Hike mountain peaks. And if you're properly trained, do some rock climbing.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=514">Mono Lake</a>. Mono Lake is a hypersaline lake up in the Sierra near Yosemite. As gasses bubble up into it they deposit to form fossilized vents called tufa. The area near Mono Lake includes Mammoth Lakes, a popular ski resort, and the Long Valley Caldera, a massive dormant volcano that has geothermally heated creeks and great hiking trails.</li>
+  <li><a href="https://www.nps.gov/deva/index.htm">Death Valley National Park</a>. The lowest point in North America, Badwater Basin, can be found here at a bit under 200 feet below sea level. The geology of the area is stunning - you'll see enormous salt flats, fields of boulders covered in sharp salt crystals, and much more. Just be aware that it's dangerously hot here in the summer. Some of the highest temperatures ever recorded were logged here - 134.1°F / 57.8°C. As a result, you might want to consider trekking here in the winter or early spring.</li>
+  <li><a href="https://www.nps.gov/jotr/index.htm">Joshua Tree National Park</a>. This desert landscape is home to the Joshua Tree, a tree-like plant that grows extensively here. It also has a bunch of huge boulders to climb over and explore. Joshua Tree is near Mt. San Jacinto, a 10,000 foot mountain whose base is in the desert and whose summit is an alpine forest that often receives snow. You can combine both of them into a single trip.</li>
+  <li><a href="https://www.nps.gov/chis/index.htm">Channel Islands National Park</a>. There are a few large islands right off the coast of California, about halfway between Stanford and San Diego. For a free, the park service will drop you off on these islands, which have almost no facilities, so you can camp overnight and explore. Drive down US-101 to get there - the views are incredible.</li>
+  <li><a href="https://www.nps.gov/seki/index.htm">Sequoia and Kings Canyon National Parks</a>. These parks are home to giant sequoias, trees that are so massive you probably will just stand there stunned taking them in for a bit. They're also home to Mount Whitney, the highest peak in the continental United States. Unfortunately, the parks have been heavily impacted by fires in 2021, so you may want to visit these once they're reopened and the fires are out.</li>
+  <li><a href="https://www.parks.ca.gov/?page_id=551">Calaveras Big Trees State Park</a>. A state park housing a grove of giant sequoias. It's absolutely worth checking these trees out while you're in California. They only grow here and are the most massive trees on planet earth.</li>
+  <li><a href="https://www.fs.usda.gov/detail/inyo/specialplaces/?cid=stelprdb5129900">Ancient Bristlecone Pine Forest</a>. This area contains what we think are the oldest living organisms on the planet. One of them is over 5,000 years old. Admire the trees and reflect on how much has happened since they first grew from seedlings!</li>
+  <li><a href="https://www.usbr.gov/mp/ncao/shasta-dam.html">Shasta Dam</a>. Shasta Dam isn't nearly as famous as some of the other massive dams that went up in the early 20th century (Hoover Dam, Grand Coulee Dam, etc.). However, it's absolutely massive (over six hundred feet tall) and impounds Shasta Lake, one of the biggest reservoirs in the state. If you can get a tour, go down to the base and look up. Right on the other side of you is more water than you can comprehend.</li>
+  <li><a href="https://en.wikipedia.org/wiki/Oroville_Dam">Oroville Dam</a>. This dam, the tallest in the US, was in the news in 2017 when its main spillway failed and forced a huge evacuation downstream. It's since been repaired and is worth checking out just to appreciate the scale of the construction project.</li>
+</ul>
+
+<h2 id="restaurants-worth-trying">Restaurants Worth Trying:</h2>
+
+<p>These are my personal recommendations. Bay Area restaurant prices can be high, and I've done my best to recommend places that (at least, as of when I last checked) are somewhat reasonably-priced.</p>
+
+<p>To the best of my knowledge all of these places are open for take-out, and many may have outdoor seating. However, I'd recommend checking before you arrive.</p>
+
+<ul>
+  <li><a href="https://www.falafelstop.com/">Falafel Stop</a>: Authentic falafel and shwarma joint with a low-key vibe. Popular with locals. Reasonably good prices and fantastic flavors. Best appreciated by eating it right when it's ready.</li>
+  <li><a href="https://roseinternationalmarket.com/#!/">Rose Market</a>: Iranian grocery store with one of the best take-out menus in the area. Nearest one to campus is in Mountain View. The koobideh is apparently really good. Ask at the deli counter for a kookoo sabzi sandwich and you won't be disappointed.</li>
+  <li><a href="https://www.mehakofindia.com/">Mehak of India</a>: Stellar Punjabi place located in an unassuming storefront in San Jose. It's a bit of a drive to get here, but in my opinion it's well worth the trip. The prices are eminently reasonable considering the quantity and quality you get.</li>
+  <li><a href="http://www.madrascafe.us/">Madras Cafe</a>: South Indian restaurant that's hugely popular with expats. Stop by to get dosas, idlies, and the like.</li>
+  <li><a href="https://paloaltotofuhouse.wordpress.com/">SGD Tofu House</a>: This Korean restaurant in Palo Alto is always full and a great place to check out on a weeknight.</li>
+  <li><a href="https://www.billscafe.com/">Bill's Cafe</a>: Local breakfast chain that's famous for its pancakes. The one in Palo Alto is next to a local coffee shop chain (Philz Coffee) that's hugely popular with tech workers.</li>
+  <li><a href="https://guide.michelin.com/us/en/california/san-jose/restaurant/zeni">Zeni</a>: This Ethiopian restaurant run out of a storefront in San Jose is a local favorite and popular with expats. In pre-pandemic times, you'd often wait 30-45 minutes for a table.</li>
+  <li><a href="https://hobees.com/locations/palo-alto/">Hobee's</a>: A local chain that specializes in American-style breakfasts with a California vibe. Get their coffee cake.</li>
+  <li><a href="https://www.zareensrestaurant.com/">Zareen's</a>: Pakistani/Indian place with a wide selection of good options. There are several locations. The one in Mountain View is popular with the Google crowd and has a wonderful vibe.</li>
+</ul>
+</div>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Feb-18
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

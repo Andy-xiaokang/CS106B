@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Fun with Collections</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="../a1/index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../../section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../../section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../../section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../../section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../../section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../../section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../../section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 2. Fun with Collections</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<!-- This boilerplate inserts formatted due date -->
+
+<!--  Boilerplate content for assignment index page -->
+
+<h2 id="due-friday-january-21-at-1030-am">Due Friday, January 21 at 10:30 am</h2>
+
+<ul>
+  <li><small>Submissions received by the due date receive a small <strong>on-time bonus</strong>. </small></li>
+  <li><small>All students are granted a pre-approved extension or "grace period" of 24 hours after the due date. Late submissions are accepted during the grace period with no penalty.</small></li>
+  <li><small>The <strong>grace period expires Sat, Jan 22 at 10:30 am</strong>, after which we cannot accept further late submissions.</small></li>
+  <li><small>All due dates and submission times are expressed in Pacific time.</small></li>
+</ul>
+
+<p><strong><em>This assignment must be completed individually. Working in groups is not permitted.</em></strong></p>
+
+<hr />
+
+<p>This assignment is all about the amazing things you can do with collections. It’s a two-parter. The first exercise is a program that can guess the language a piece of text is written in. The second is a program that models rising sea levels on a sampler of realistic terrains. By the time you've completed this assignment, you'll have a much better handle on the container classes and how to use different types like queues, maps, vectors, and sets to model and solve problems. Plus, you'll have some things we think you'd love to share with your friends and family.</p>
+
+<p>This assignment has two parts. It will be quite a lot to do if you start this assignment the night before it’s due, but if you make slow and steady progress on this assignment each day you should be in great shape. Here’s our recommended timetable:</p>
+
+<ul>
+  <li>Aim to complete Rosetta Stone within four days of the assignment going out.</li>
+  <li>Aim to complete Rising Tides within seven days of this assignment going out.</li>
+</ul>
+
+<p>As always, feel free to reach out to us if you have questions. Feel free to contact us on <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">EdStem</a>, to email your section leader, or to stop by the <a href="../../lair.html" title="LaIR helper hours">LaIR</a>.</p>
+
+<h2 id="assignment-logistics">Assignment Logistics</h2>
+
+<h3 id="starter-files">Starter Files</h3>
+
+<p>We provide a ZIP of the starter project. Download the zip, extract the files, and double-click the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> file to open the project in Qt Creator.</p>
+
+<blockquote>
+  <p>📦 <a href="Assignment&#32;2.zip">Starter code</a></p>
+</blockquote>
+
+<h3 id="resources">Resources</h3>
+
+<p>Feel free to check out our <a href="../../resources/python_to_cpp.html" title="Python to C++ Guide">Python-to-C++ guide</a> if you're moving from Python to C++. Also, check out our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>, <a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">guide to testing</a>, and <a href="../../resources/debugging_guide.html" title="Debugging Your Code">debugging guide</a>.</p>
+
+<h3 id="getting-help">Getting Help</h3>
+
+<p>Keep an eye on the <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> for an announcement of the Assignment 2 <strong>YEAH</strong> (YEAH = Your Early Assignment Help) group session where our veteran section leaders will answer your questions and share pro tips. We know it can be daunting to sit down and break the barrier of starting on a substantial programming assignment – come to YEAH for advice and confidence to get you on your way!</p>
+
+<p>We also here to help if you get run into issues along the way! The <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> is open 24/7 for general discussion about the assignment, lecture topics, the C++ language, using Qt, and more. Always start by searching first to see if your question has already been asked and answered before making a new post.</p>
+
+<p>To troubleshoot a problem with your specific code, your best bet is to bring it to the <a href="../../lair.html" title="LaIR helper hours">LaIR</a> helper hours or <a href="../../about_staff.html">office hours</a>.</p>
+
+<h2 id="part-one-rosetta-stone">Part One: Rosetta Stone</h2>
+
+<p><sub><em>Rosetta Stone is a joint project with Katie Creel, our Embedded Ethics Extraordinaire. Thanks to Richard Lin, Patricia Wei, Jin-Hee Lee, Neha Chetry, Nuhu Osman Attah, and Rose Novick for providing sample texts.</em></sub></p>
+
+<p>Have you ever navigated your web browser to a site not written in your native language? If so, you might have seen something like this in the corner:</p>
+
+<blockquote>
+  <p><img src="rs/TranslateThisPage.png" alt="A message from Google Chrome that indicates the page being visited is written in Haitian Creole and offering to translate it to English." /></p>
+</blockquote>
+
+<p>The browser has automatically detected that the website I visited is written in Haitian Creole, while the browser itself is set to English.</p>
+
+<p>How does the browser know what language a webpage is written in? This is the <strong><em>language identification</em></strong> problem, which has been studied extensively for at least the last thirty years. In this part of the assignment, you’ll implement a simple but effective language identification algorithm, gaining experience working with the <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> container type in the process.</p>
+
+<h3 id="background-trigrams">Background: Trigrams</h3>
+
+<p>The approach we’ll be using for language identification is based on <strong><em>trigram profiles</em></strong>. To understand what a trigram profile is, let’s do an example. Suppose we have this (admittedly silly) piece of text:</p>
+
+<blockquote>
+  <p><code class="language-c++ highlighter-rouge"><span class="n">A</span> <span class="n">BANANA</span> <span class="n">BANDANA</span></code></p>
+</blockquote>
+
+<p>The trigram profile for this string is a collection of all its length-three subtrings, along with the number of times that length-three substring appears. Specifically, it’s this group:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ANA"</span><span class="o">:</span> <span class="mi">3</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" BA"</span><span class="o">:</span> <span class="mi">2</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"A B"</span><span class="o">:</span> <span class="mi">2</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"BAN"</span><span class="o">:</span> <span class="mi">2</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"AND"</span><span class="o">:</span> <span class="mi">1</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"DAN"</span><span class="o">:</span> <span class="mi">1</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"NA "</span><span class="o">:</span> <span class="mi">1</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"NAN"</span><span class="o">:</span> <span class="mi">1</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"NDA"</span><span class="o">:</span> <span class="mi">1</span></code></li>
+</ul>
+</div>
+
+<p>That is, the pattern <code class="language-c++ highlighter-rouge"><span class="n">ANA</span></code> appears three times, the pattern <code class="language-c++ highlighter-rouge"><span class="n">BAN</span></code> appears twice, and the pattern <code class="language-c++ highlighter-rouge"><span class="n">NDA</span></code> appears exactly once. These substrings are called trigrams. (More generally, the <strong><em>k-grams</em></strong> of a text are all of the substrings of that text that have length exactly <em>k</em>.)</p>
+
+<p>Trigram profiles are useful for language identification because the patterns of trigrams that appear in a long piece of text often heavily reflects the language that text was written in. For example, here’s the top trigrams from a profile of an English text (specifically, the Wikipedia article “Human”):</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mi">667</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mi">616</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mi">533</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" an"</span><span class="o">:</span> <span class="mi">497</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mi">492</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mi">470</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ion"</span><span class="o">:</span> <span class="mi">423</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mi">376</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" in"</span><span class="o">:</span> <span class="mi">375</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"of "</span><span class="o">:</span> <span class="mi">363</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"tio"</span><span class="o">:</span> <span class="mi">333</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mi">320</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mi">318</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"man"</span><span class="o">:</span> <span class="mi">289</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mi">288</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>That top entry, <code class="language-c++ highlighter-rouge"><span class="s">" th"</span></code>, indicates that the text has a lot of words that start with <code class="language-c++ highlighter-rouge"><span class="n">th</span></code>. You can see that the word <code class="language-c++ highlighter-rouge"><span class="s">"the"</span></code> is extremely common, as are the suffixes <code class="language-c++ highlighter-rouge"><span class="s">"ing"</span></code> and <code class="language-c++ highlighter-rouge"><span class="s">"ion"</span></code>.</p>
+
+<p>Contrast this with a set of trigrams taken from a piece written in Malay:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"an "</span><span class="o">:</span> <span class="mi">184</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ang"</span><span class="o">:</span> <span class="mi">82</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" da"</span><span class="o">:</span> <span class="mi">73</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" me"</span><span class="o">:</span> <span class="mi">71</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mi">71</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"dan"</span><span class="o">:</span> <span class="mi">52</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"kan"</span><span class="o">:</span> <span class="mi">52</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"sia"</span><span class="o">:</span> <span class="mi">52</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ia "</span><span class="o">:</span> <span class="mi">47</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"men"</span><span class="o">:</span> <span class="mi">42</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" be"</span><span class="o">:</span> <span class="mi">40</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" pe"</span><span class="o">:</span> <span class="mi">39</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" ya"</span><span class="o">:</span> <span class="mi">39</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"yan"</span><span class="o">:</span> <span class="mi">39</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" ma"</span><span class="o">:</span> <span class="mi">38</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>Or this set of trigrams from a piece written in Spanish:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" de"</span><span class="o">:</span> <span class="mi">531</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"os "</span><span class="o">:</span> <span class="mi">396</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"de "</span><span class="o">:</span> <span class="mi">374</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ent"</span><span class="o">:</span> <span class="mi">298</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" la"</span><span class="o">:</span> <span class="mi">293</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"es "</span><span class="o">:</span> <span class="mi">277</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"la "</span><span class="o">:</span> <span class="mi">239</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"el "</span><span class="o">:</span> <span class="mi">232</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" co"</span><span class="o">:</span> <span class="mi">217</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" es"</span><span class="o">:</span> <span class="mi">208</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"en "</span><span class="o">:</span> <span class="mi">198</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ien"</span><span class="o">:</span> <span class="mi">198</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nte"</span><span class="o">:</span> <span class="mi">196</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"as "</span><span class="o">:</span> <span class="mi">193</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" en"</span><span class="o">:</span> <span class="mi">185</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>Or this piece written in Slovene:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"je "</span><span class="o">:</span> <span class="mi">82</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" po"</span><span class="o">:</span> <span class="mi">65</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" pr"</span><span class="o">:</span> <span class="mi">45</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ih "</span><span class="o">:</span> <span class="mi">45</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"anj"</span><span class="o">:</span> <span class="mi">43</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nos"</span><span class="o">:</span> <span class="mi">43</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" na"</span><span class="o">:</span> <span class="mi">39</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ost"</span><span class="o">:</span> <span class="mi">39</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ove"</span><span class="o">:</span> <span class="mi">37</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"lov"</span><span class="o">:</span> <span class="mi">36</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" je"</span><span class="o">:</span> <span class="mi">34</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" ra"</span><span class="o">:</span> <span class="mi">33</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"raz"</span><span class="o">:</span> <span class="mi">33</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"in "</span><span class="o">:</span> <span class="mi">32</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"sti"</span><span class="o">:</span> <span class="mi">32</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>Or this one in Hausa:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ar "</span><span class="o">:</span> <span class="mi">93</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"an "</span><span class="o">:</span> <span class="mi">85</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" da"</span><span class="o">:</span> <span class="mi">72</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"in "</span><span class="o">:</span> <span class="mi">69</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"da "</span><span class="o">:</span> <span class="mi">58</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"iya"</span><span class="o">:</span> <span class="mi">42</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" a "</span><span class="o">:</span> <span class="mi">39</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" ka"</span><span class="o">:</span> <span class="mi">38</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" ta"</span><span class="o">:</span> <span class="mi">38</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ara"</span><span class="o">:</span> <span class="mi">38</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" sh"</span><span class="o">:</span> <span class="mi">35</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" wa"</span><span class="o">:</span> <span class="mi">35</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"a s"</span><span class="o">:</span> <span class="mi">35</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ana"</span><span class="o">:</span> <span class="mi">33</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"na "</span><span class="o">:</span> <span class="mi">33</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>As you can see, the relative frequencies of the trigrams in the text are markedly different from one another. This makes it possible to guess a text’s language by computing its trigram profile and then finding which language that profile most resembles.</p>
+
+<h3 id="background-utf-8">Background: UTF-8</h3>
+
+<p>Before we dive into the actual coding part, we have to address an issue you’ll encounter almost immediately when working on this assignment.</p>
+
+<p>Here’s what happens if we gram trigrams from a piece of text written in Vietnamese:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mi">591</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"h</span><span class="se">\341\273</span><span class="s">"</span><span class="o">:</span> <span class="mi">442</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" </span><span class="se">\304\221</span><span class="s">"</span><span class="o">:</span> <span class="mi">371</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\260\341\273</span><span class="s">"</span><span class="o">:</span> <span class="mi">311</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\306\260\341</span><span class="s">"</span><span class="o">:</span> <span class="mi">311</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mi">307</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" nh"</span><span class="o">:</span> <span class="mi">276</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" ng"</span><span class="o">:</span> <span class="mi">251</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\303\240</span><span class="s"> "</span><span class="o">:</span> <span class="mi">231</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" tr"</span><span class="o">:</span> <span class="mi">229</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\341\273\235</span><span class="s">"</span><span class="o">:</span> <span class="mi">219</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\304\221\341</span><span class="s">"</span><span class="o">:</span> <span class="mi">211</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nh "</span><span class="o">:</span> <span class="mi">205</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"i</span><span class="se">\341\273</span><span class="s">"</span><span class="o">:</span> <span class="mi">200</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>And here’s some trigrams from Bulgarian text:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\275\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">835</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\321\202\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">701</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\276\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">607</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\260</span><span class="s"> "</span><span class="o">:</span> <span class="mi">551</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\321\200\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">517</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\265\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">491</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\260\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">450</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\270\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">438</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\262\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">433</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\270\321</span><span class="s">"</span><span class="o">:</span> <span class="mi">395</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\260</span><span class="s"> </span><span class="se">\320</span><span class="s">"</span><span class="o">:</span> <span class="mi">356</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\270</span><span class="s"> "</span><span class="o">:</span> <span class="mi">349</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\276\321</span><span class="s">"</span><span class="o">:</span> <span class="mi">348</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\320\260\321</span><span class="s">"</span><span class="o">:</span> <span class="mi">321</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>And here's some from Farsi:</p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\330\247\331</span><span class="s">"</span><span class="o">:</span> <span class="mi">562</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\330\247\330</span><span class="s">"</span><span class="o">:</span> <span class="mi">529</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\247\331\206</span><span class="s">"</span><span class="o">:</span> <span class="mi">391</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\331\206\330</span><span class="s">"</span><span class="o">:</span> <span class="mi">361</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\330\263\330</span><span class="s">"</span><span class="o">:</span> <span class="mi">320</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" </span><span class="se">\330\247</span><span class="s">"</span><span class="o">:</span> <span class="mi">306</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\333\214</span><span class="s"> "</span><span class="o">:</span> <span class="mi">287</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\331\210\330</span><span class="s">"</span><span class="o">:</span> <span class="mi">281</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\333\214\330</span><span class="s">"</span><span class="o">:</span> <span class="mi">256</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" </span><span class="se">\330\250</span><span class="s">"</span><span class="o">:</span> <span class="mi">241</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\331\207</span><span class="s"> "</span><span class="o">:</span> <span class="mi">240</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\331\206</span><span class="s"> "</span><span class="o">:</span> <span class="mi">235</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\330\257\330</span><span class="s">"</span><span class="o">:</span> <span class="mi">231</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"</span><span class="se">\330\261\330</span><span class="s">"</span><span class="o">:</span> <span class="mi">230</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>What’s going on here? Why are we seeing lots of numbers and slashes rather than actual characters?</p>
+
+<p>The reason has to do with two historical artifacts of C++ colliding with contemporary realities. C++ is an older language (it dates back to the 1980s), at a time where computer networks were small and memory was scarce. To save space, most C++ implementations only allowed for 256 different values for the <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> type. And that was fine, since computers were often used in contexts where the English alphabet (plus a few added characters for other languages) was all that was needed. You could easily get away with having only 256 possible different characters, and the space savings were key at a time where even a 1GB hard drive would be considered a luxury.</p>
+
+<p>But now that memory is <em>much</em> cheaper and people all over the world are connecting and sharing text in their native languages, this restriction on the <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> type is more of a liability than an asset. Restricting the char type to only have 256 possible values means that there are more Chinese characters than there are possible <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> values – not to mention more emojis than <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code>s.</p>
+
+<p>To address this, a compromise was reached – while (for backwards compatibility) English letters would take up just one char value, glyphs from other languages would be encoded as a sequence of multiple consecutive chars representing a single glyph. And, as a strange side-effect, the individual chars making up those glyphs can’t easily be displayed in isolation. They are often displayed as <code class="language-c++ highlighter-rouge"><span class="err">\</span><span class="n">NNN</span></code>. For example, the sequence <code class="language-c++ highlighter-rouge"><span class="err">\</span><span class="mi">331</span><span class="err">\</span><span class="mi">206</span></code> corresponds to the Arabic character <code class="language-c++ highlighter-rouge"><span class="err">ن</span></code>, while <code class="language-c++ highlighter-rouge"><span class="err">\</span><span class="mi">320</span><span class="err">\</span><span class="mi">270</span></code> corresponds to the Cyrillic letter <code class="language-c++ highlighter-rouge"><span class="err">и</span></code>. This system is called <strong><em>UTF-8</em></strong>.</p>
+
+<p>In the context of this assignment, this means that a “trigram” formed from a piece of text might actually consist of a fractional character. For example, the ancient Phoenician character <code class="language-c++ highlighter-rouge"><span class="err">𐤄</span></code> is encoded as a sequence of four <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> values, so trigrams from Phoenician text would often contain quarters or halves of individual Phoenician letters. While in general it is not okay to subdivide characters this way (many systems will display error characters if you try printing out a partial glyph), <strong><em>for the purposes of this assignment you should always form trigrams from a group of three <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> values</em></strong>, regardless of what fraction of a glyph those three <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code>s represent.</p>
+
+<p>To summarize:</p>
+
+<ol>
+  <li>
+    <p>Don’t be surprised if you see sequences like <code class="language-c++ highlighter-rouge"><span class="err">\</span><span class="mi">302</span></code> or <code class="language-c++ highlighter-rouge"><span class="err">\</span><span class="mi">225</span></code> appearing in your trigrams. That’s a consequence of using characters that 1980s Americans wouldn’t have expected to see on their computers. It’s a complete historical artifact, but one we have to live with today.</p>
+  </li>
+  <li>
+    <p>For the purposes of this assignment, it is perfectly okay – and in fact, expected – that when forming trigrams, you should always form groups of three <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> values, rather than trying to segment text at the actual boundaries between glyphs. Surprisingly, this still works well in practice.</p>
+  </li>
+  <li>
+    <p>Outside of the context of CS106B, be aware that <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> does not mean “a character in any language.” Some glyphs require multiple characters to encode. The “correct” way to handle these sorts of strings is to use a library that properly breaks text apart into its individual units.</p>
+  </li>
+</ol>
+
+<h3 id="milestone-one-form-k-grams">Milestone One: Form k-Grams</h3>
+
+<p>Your first task in this problem is to implement a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">kGramsIn</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+                             <span class="kt">int</span> <span class="n">kGramLength</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a string, then returns a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span></code> containing the frequencies of all the <em>k</em>-grams of length <code class="language-c++ highlighter-rouge"><span class="n">kGramLength</span></code>. Each key should be a <em>k</em>-gram (a substring of length <code class="language-c++ highlighter-rouge"><span class="n">kGramLength</span></code>), and each value should be the number of times that this <em>k</em>-gram appears in the string. For convenience, any <em>k</em>-gram that doesn’t appear in the text should not be present in the map, not even with value zero.</p>
+
+<p>You can assume that the <code class="language-c++ highlighter-rouge"><span class="n">kGramLength</span></code> parameter is positive (for example, it shouldn’t be 0 or -137). If the <code class="language-c++ highlighter-rouge"><span class="n">kGramLength</span></code> parameter is not positive (that is, it's zero or negative), you should call the <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> function to report an error, using whatever custom error string you think is most appropriate.</p>
+
+<p>The input string might be shorter than <code class="language-c++ highlighter-rouge"><span class="n">kGramLength</span></code>. If that happens, there are no <em>k</em>-grams, and you should return an empty <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p><strong><em>Milestone One</em></strong></p>
+
+<ol>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">kGramsIn</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">RosettaStone</span><span class="p">.</span><span class="n">cpp</span></code>.</li>
+  <li>Use the provided tests to confirm that your code works correctly.</li>
+  <li>Optionally, but not required: use <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> to add a test case or two of your own!</li>
+</ol>
+</div>
+
+<p>You might be wondering why we’re having you return a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span></code> here rather than a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span></code>. After all, the frequencies here are all integers, and int seems like a more appropriate type. There are two reasons why we’re having you do this:</p>
+
+<ol>
+  <li>In a later step, you will be dividing all the entries of this map to make them between 0 and 1, inclusive. Working with a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span></code> here makes that step a bit easier.</li>
+  <li>Later on, you’ll be doing a calculation involving multiplying each of the terms in the map by themselves. The <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code> type is (usually) limited to a range from roughly negative two billion to roughly positive two billion, and some of the entries in the map, when squared, exceed that range. On the other hand, <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code>s can comfortably handle values outside this range.</li>
+</ol>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>There's an Endearing C++ Quirk you may encounter in this part of the assignment. The <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">length</span><span class="p">()</span></code> and <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">size</span><span class="p">()</span></code> functions on a string return what's called an <em>unsigned integer.</em> These are integer values that are not permitted to be negative, which means that they can have unusual interactions with subtraction. For example, if you have a string of length 2 and compute <code class="language-c++ highlighter-rouge"><span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">3</span></code>, instead of getting -1, you'll get a gigantic positive number (this is called <em>integer overflow</em> - take CS107 for details!). As a result, <strong><em>avoid subtraction</em></strong> when working with <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">length</span><span class="p">()</span></code> and <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">size</span><span class="p">()</span></code>. If you're tempted to subtract something from the length of a string, instead see if you can add something to another quantity.</li>
+  <li>Just to make sure the notion of a <em>k</em>-gram is clear, the 3-grams of the string <code class="language-c++ highlighter-rouge"><span class="s">"ABCDEF"</span></code> are <code class="language-c++ highlighter-rouge"><span class="s">"ABC"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"BCD"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"CDE"</span></code>, and <code class="language-c++ highlighter-rouge"><span class="s">"DEF"</span></code>; the only 6-gram of <code class="language-c++ highlighter-rouge"><span class="s">"ABCDEF"</span></code> is <code class="language-c++ highlighter-rouge"><span class="s">"ABCDEF"</span></code>; the six 1-grams of <code class="language-c++ highlighter-rouge"><span class="s">"ABCDEF"</span></code> are <code class="language-c++ highlighter-rouge"><span class="s">"A"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"B"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"C"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"D"</span></code>, <code class="language-c++ highlighter-rouge"><span class="s">"E"</span></code>, and <code class="language-c++ highlighter-rouge"><span class="s">"F"</span></code>; and there are no 137-grams of the string <code class="language-c++ highlighter-rouge"><span class="s">"ABCDEF"</span></code>.</li>
+  <li>You should call the <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> function if the <em>k</em>-gram length is zero or negative, because there's no meaningful way to define a 0-gram or a -137-gram. However, if the <em>k</em>-gram length is greater than the length of the input string, you should return an empty <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code>, since in general large <em>k</em>-grams are a meaningful thing to talk about and there just don't happen to be any for a shorter string.</li>
+</ul>
+
+<h3 id="milestone-two-normalize-frequencies">Milestone Two: Normalize Frequencies</h3>
+
+<p>We now have a <code class="language-c++ highlighter-rouge"><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span></code> representing the trigrams in the original text. Once we have these frequencies, we can guess the text’s language by seeing which language’s trigram distribution it’s most similar to. There are many ways to define what “most similar to” means, but one of the most common ways to do this uses something called the <strong><em>cosine similarity</em></strong>, which is described below.</p>
+
+<p>First, an observation. Here are the trigram distributions for three pieces of text, each of which are written in English:</p>
+
+<p><strong><em>Distribution 1</em></strong></p>
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mi">219</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mi">171</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mi">113</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mi">79</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mi">76</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mi">76</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"of "</span><span class="o">:</span> <span class="mi">69</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mi">62</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"at "</span><span class="o">:</span> <span class="mi">60</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mi">60</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"acc"</span><span class="o">:</span> <span class="mi">58</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"cin"</span><span class="o">:</span> <span class="mi">58</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"cci"</span><span class="o">:</span> <span class="mi">57</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mi">57</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mi">54</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"re "</span><span class="o">:</span> <span class="mi">54</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" be"</span><span class="o">:</span> <span class="mi">53</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" in"</span><span class="o">:</span> <span class="mi">53</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"e t"</span><span class="o">:</span> <span class="mi">53</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p><strong><em>Distribution 2</em></strong></p>
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mi">495</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mi">388</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mi">351</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mi">231</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mi">194</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mi">193</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" a "</span><span class="o">:</span> <span class="mi">159</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mi">158</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mi">157</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" I "</span><span class="o">:</span> <span class="mi">154</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" an"</span><span class="o">:</span> <span class="mi">153</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mi">152</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mi">146</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"her"</span><span class="o">:</span> <span class="mi">134</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"er "</span><span class="o">:</span> <span class="mi">128</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"e t"</span><span class="o">:</span> <span class="mi">126</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"re "</span><span class="o">:</span> <span class="mi">124</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"is "</span><span class="o">:</span> <span class="mi">121</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mi">117</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p><strong><em>Distribution 3</em></strong></p>
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mi">510</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mi">371</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mi">339</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mi">269</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mi">257</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" an"</span><span class="o">:</span> <span class="mi">222</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mi">217</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mi">208</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mi">205</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mi">196</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mi">195</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" in"</span><span class="o">:</span> <span class="mi">187</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"at "</span><span class="o">:</span> <span class="mi">175</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"hat"</span><span class="o">:</span> <span class="mi">174</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" a "</span><span class="o">:</span> <span class="mi">171</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mi">159</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"is "</span><span class="o">:</span> <span class="mi">158</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"as "</span><span class="o">:</span> <span class="mi">154</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"tha"</span><span class="o">:</span> <span class="mi">154</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>In each case, we can see that the very most common trigrams are pretty much the same across the three texts (though the ordering is a bit different). However, notice that the numbers are generally increasing as we move from the first document to the third. The reason for that is simple – these were computed from progressively longer texts.</p>
+
+<p>To make the trigram frequencies more consistent across texts of different lengths, you will need to <strong><em>normalize</em></strong> the scores. Borrowing a technique from linear algebra, we’ll normalize scores as follows:</p>
+
+<ul>
+  <li>Add up the squares of all the frequencies in the map.</li>
+  <li>Divide each frequency by the square root of this number.</li>
+</ul>
+
+<p>As a very simplified example, suppose we have these trigrams:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"aaa"</span><span class="o">:</span> <span class="mi">3</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"baa"</span><span class="o">:</span> <span class="mi">1</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"aab"</span><span class="o">:</span> <span class="mi">1</span></code></li>
+</ul>
+
+<p>We’d compute the number 3<sup>2</sup> + 1<sup>2</sup> + 1<sup>2</sup> = 11, then divide each number by the square root of eleven to get these new frequencies:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"aaa"</span><span class="o">:</span> <span class="mf">0.904534</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"baa"</span><span class="o">:</span> <span class="mf">0.301511</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"aab"</span><span class="o">:</span> <span class="mf">0.301511</span></code></li>
+</ul>
+
+<p>Applying this same approach to the three distributions from above (including the frequencies of the less frequent <em>k</em>-grams that we didn’t show) gives the following:</p>
+
+<p><strong><em>Distribution 1</em></strong></p>
+
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mf">0.40398</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mf">0.31503</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mf">0.20755</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mf">0.14639</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mf">0.14083</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mf">0.14083</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"of "</span><span class="o">:</span> <span class="mf">0.12786</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mf">0.11489</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"at "</span><span class="o">:</span> <span class="mf">0.11118</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mf">0.11118</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"acc"</span><span class="o">:</span> <span class="mf">0.10562</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"cin"</span><span class="o">:</span> <span class="mf">0.10562</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mf">0.10562</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"cci"</span><span class="o">:</span> <span class="mf">0.10377</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mf">0.10007</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"re "</span><span class="o">:</span> <span class="mf">0.10007</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" be"</span><span class="o">:</span> <span class="mf">0.09821</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"e t"</span><span class="o">:</span> <span class="mf">0.09821</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mf">0.09821</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p><strong><em>Distribution 2</em></strong></p>
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mf">0.37585</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mf">0.29460</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mf">0.26651</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mf">0.17539</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mf">0.14730</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mf">0.14654</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" a "</span><span class="o">:</span> <span class="mf">0.12072</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mf">0.11997</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mf">0.11921</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" I "</span><span class="o">:</span> <span class="mf">0.11693</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" an"</span><span class="o">:</span> <span class="mf">0.11617</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mf">0.11541</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mf">0.11085</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"her"</span><span class="o">:</span> <span class="mf">0.10174</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"er "</span><span class="o">:</span> <span class="mf">0.09719</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"e t"</span><span class="o">:</span> <span class="mf">0.09567</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"re "</span><span class="o">:</span> <span class="mf">0.09415</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"is "</span><span class="o">:</span> <span class="mf">0.09187</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mf">0.08883</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p><strong><em>Distribution 3</em></strong></p>
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mf">0.33214</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mf">0.24161</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mf">0.22077</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mf">0.17518</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mf">0.16737</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" an"</span><span class="o">:</span> <span class="mf">0.14458</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mf">0.14132</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mf">0.13546</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mf">0.13350</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mf">0.12764</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mf">0.12699</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" in"</span><span class="o">:</span> <span class="mf">0.12178</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"at "</span><span class="o">:</span> <span class="mf">0.11397</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"hat"</span><span class="o">:</span> <span class="mf">0.11331</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" a "</span><span class="o">:</span> <span class="mf">0.11136</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mf">0.10355</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"is "</span><span class="o">:</span> <span class="mf">0.10289</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"as "</span><span class="o">:</span> <span class="mf">0.10029</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"tha"</span><span class="o">:</span> <span class="mf">0.10029</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p>With the scores normalized, these numbers are much closer to one another, indicating that they’re using fairly similar distributions of trigrams.</p>
+
+<p>Your next task is to implement a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">normalize</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">profile</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a trigram profile, then returns an normalized version of the profile.</p>
+
+<p>There is an important edge case you need to handle. If the input <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> is empty or does not contain any nonzero values, then the calculation we’ve instructed you to do above would divide by zero. (Do you see why?) To address this, if the map doesn’t contain at least one nonzero value, you should use the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p><strong><em>Milestone Two</em></strong></p>
+
+<ol>
+  <li>
+    <p>Implement the <code class="language-c++ highlighter-rouge"><span class="n">normalize</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">RosettaStone</span><span class="p">.</span><span class="n">cpp</span></code>.</p>
+  </li>
+  <li>
+    <p>Use the provided tests to confirm that your code works correctly.</p>
+  </li>
+  <li>
+    <p>Optionally, but not required: use <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> to add a test case or two of your own!</p>
+  </li>
+</ol>
+</div>
+
+<p>Some notes on this problem:</p>
+<ul>
+  <li>There are no restrictions on what the keys in the map can be. Although you’ll ultimately be using this function in the context of trigrams, you should not assume that the keys will necessarily be strings of length three, nor that the keys could be a set of trigrams for a piece of text. Similarly, while it’s never possible to have a negative number of copies of a given trigram, your code should be able to handle negative values. In each case, sum up the squares of all the values, then divide each of the values by the square root of that sum.</li>
+  <li>The keys in the resulting map should be the same as the keys in the input map. In other words, you should not add or remove keys.</li>
+  <li>For those of you coming from Python: C++ doesn’t have a built-in exponentiation operator like <code class="language-c++ highlighter-rouge"><span class="o">**</span></code>. Instead, to compute powers or square roots, include the header <code class="language-c++ highlighter-rouge"><span class="o">&lt;</span><span class="n">cmath</span><span class="o">&gt;</span></code> and use the <code class="language-c++ highlighter-rouge"><span class="n">pow</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">sqrt</span></code> functions.</li>
+</ul>
+
+<h3 id="milestone-three-filter-out-uncommon-trigrams">Milestone Three: Filter Out Uncommon Trigrams</h3>
+
+<p>While all texts written in a particular language will show a strong degree of similarity between their most frequent trigrams, the infrequent trigrams in two pieces of text written in the same language often differ greatly. For example, these infrequent trigrams often reflect uncommon words that appear a few times in a text.</p>
+
+<p>To address this, we’re going to ask you to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">topKGramsIn</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">profile</span><span class="p">,</span>
+                                <span class="kt">int</span> <span class="n">numToKeep</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a <em>k</em>-gram profile and a maximum number of <em>k</em>-grams to keep, then returns a <code class="language-c++ highlighter-rouge"><span class="n">Map</span></code> containing only the <code class="language-c++ highlighter-rouge"><span class="n">numToKeep</span></code> most frequent <em>k</em>-grams in the profile. If <code class="language-c++ highlighter-rouge"><span class="n">numToKeep</span></code> is bigger than the number of <em>k</em>-grams in the profile, you should return all the original <em>k</em>-grams. And if <code class="language-c++ highlighter-rouge"><span class="n">numToKeep</span></code> is negative, you should report an <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code>, since that’s not feasible. (If <code class="language-c++ highlighter-rouge"><span class="n">numToKeep</span></code> is zero, you should just return an empty map.)</p>
+
+<p>To do this, you’ll need some way to work with <em>k</em>-grams sorted by frequency. For that, we’ll introduce a new, useful container type that you’ll see later on in the quarter: a <strong><em>priority queue</em></strong>. If you include the header file <code class="language-c++ highlighter-rouge"><span class="s">"priorityqueue.h"</span></code>, you’ll get access to the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/PriorityQueue"><code class="language-c++ highlighter-rouge"><span class="n">PriorityQueue</span></code></a> container type.</p>
+
+<p>Like a regular queue, the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/PriorityQueue"><code class="language-c++ highlighter-rouge"><span class="n">PriorityQueue</span></code></a> supports the <code class="language-c++ highlighter-rouge"><span class="n">enqueue</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">peek</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">size</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">isEmpty</span></code> operations. The difference between a priority queue and a regular queue is the order in which the elements are dequeued. In a regular <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>, elements are lined up in sequential order, and calling <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span><span class="p">()</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">peek</span><span class="p">()</span></code> gives back the element added the longest time ago. In the <code class="language-c++ highlighter-rouge"><span class="n">PriortyQueue</span></code>, each time you enqueue an element, you associate it with a number called its <strong><em>weight</em></strong>. The element that’s returned by <code class="language-c++ highlighter-rouge"><span class="n">dequeue</span><span class="p">()</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">peek</span><span class="p">()</span></code> is the element that has the <strong><em>lowest weight</em></strong>. For example, let’s imagine we set up a <code class="language-c++ highlighter-rouge"><span class="n">PriorityQueue</span></code> like this, holding a collection of past CS TAs:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PriorityQueue</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">pq</span><span class="p">;</span> 
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">"Amy"</span><span class="p">,</span>    <span class="mi">103</span><span class="p">);</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">"Ashley"</span><span class="p">,</span> <span class="mi">101</span><span class="p">);</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">"Anna"</span><span class="p">,</span>   <span class="mi">110</span><span class="p">);</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">"Luna"</span><span class="p">,</span>   <span class="mi">161</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>If we write</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">pq</span><span class="p">.</span><span class="n">dequeue</span><span class="p">();</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">elem</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>      
+</code></pre></div></div>
+
+<p>then the string printed out will be <code class="language-c++ highlighter-rouge"><span class="s">"Ashley"</span></code>, since of the four elements enqueued, the weight associated with <code class="language-c++ highlighter-rouge"><span class="n">Ashley</span></code> (101) was the lowest. Calling <code class="language-c++ highlighter-rouge"><span class="n">pq</span><span class="p">.</span><span class="n">dequeue</span><span class="p">()</span></code> again will return <code class="language-c++ highlighter-rouge"><span class="s">"Amy"</span></code>, since her associated weight (103) was the lowest of what remains. Calling <code class="language-c++ highlighter-rouge"><span class="n">pq</span><span class="p">.</span><span class="n">dequeue</span><span class="p">()</span></code> a third time would return <code class="language-c++ highlighter-rouge"><span class="s">"Anna"</span></code>.</p>
+
+<p>Let’s insert more values. If we call <code class="language-c++ highlighter-rouge"><span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">"Chioma"</span><span class="p">,</span> <span class="mi">103</span><span class="p">)</span></code> and then <code class="language-c++ highlighter-rouge"><span class="n">pq</span><span class="p">.</span><span class="n">dequeue</span><span class="p">()</span></code>, the return value would be the newly-added <code class="language-c++ highlighter-rouge"><span class="s">"Chioma"</span></code>, because her associated weight is lower than all others. And note that <code class="language-c++ highlighter-rouge"><span class="n">Chioma</span></code> was the most-recently-added TA here; just goes to show you that this is quite different from a regular <code class="language-c++ highlighter-rouge"><span class="n">Queue</span></code>!</p>
+
+<p>We’re going to leave it to you to determine how to use the <code class="language-c++ highlighter-rouge"><span class="n">PriorityQueue</span></code> type to find the most frequent <em>k</em>‑grams. There are many strategies you can use to do this. Something to think about: <code class="language-c++ highlighter-rouge"><span class="n">PriorityQueue</span></code>s are great at removing items with <em>low</em> weight, and you want to find items of <em>high</em> weight.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p><strong><em>Milestone Three</em></strong></p>
+
+<ol>
+  <li>Implement the topKGramsIn function in RosettaStone.cpp.</li>
+  <li>Use the provided tests to confirm that your code works correctly.</li>
+  <li>Optionally, but not required: use STUDENT_TEST to add a test case or two of your own!</li>
+</ol>
+</div>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>Your solution needs to make use of the <code class="language-c++ highlighter-rouge"><span class="n">PriorityQueue</span></code> type. While there are other ways to sort things in C++, for the purposes of this problem we'd prefer if you avoid them.</li>
+  <li>If multiple <em>k</em>-grams are tied for having the same weight, you can break ties however you’d like.</li>
+  <li>The input frequencies may or may not be normalized.</li>
+  <li>Although this wouldn’t be possible in a <em>k</em>-grams setting, this function should work just fine even if some of the values in the map are zero or negative.</li>
+</ul>
+
+<h3 id="milestone-four-implement-cosine-similarity">Milestone Four: Implement Cosine Similarity</h3>
+
+<p>At the end of the previous milestone, we saw this trio of trigram profiles for English texts:</p>
+
+<p><strong><em>Distribution 1</em></strong></p>
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mf">0.40398</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mf">0.31503</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mf">0.20755</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mf">0.14639</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mf">0.14083</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mf">0.14083</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"of "</span><span class="o">:</span> <span class="mf">0.12786</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mf">0.11489</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"at "</span><span class="o">:</span> <span class="mf">0.11118</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mf">0.11118</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"acc"</span><span class="o">:</span> <span class="mf">0.10562</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"cin"</span><span class="o">:</span> <span class="mf">0.10562</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mf">0.10562</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"cci"</span><span class="o">:</span> <span class="mf">0.10377</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mf">0.10007</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"re "</span><span class="o">:</span> <span class="mf">0.10007</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" be"</span><span class="o">:</span> <span class="mf">0.09821</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"e t"</span><span class="o">:</span> <span class="mf">0.09821</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mf">0.09821</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p><br />
+<strong><em>Distribution 2</em></strong></p>
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mf">0.37585</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mf">0.29460</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mf">0.26651</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mf">0.17539</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mf">0.14730</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mf">0.14654</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" a "</span><span class="o">:</span> <span class="mf">0.12072</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mf">0.11997</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mf">0.11921</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" I "</span><span class="o">:</span> <span class="mf">0.11693</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" an"</span><span class="o">:</span> <span class="mf">0.11617</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mf">0.11541</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mf">0.11085</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"her"</span><span class="o">:</span> <span class="mf">0.10174</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"er "</span><span class="o">:</span> <span class="mf">0.09719</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"e t"</span><span class="o">:</span> <span class="mf">0.09567</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"re "</span><span class="o">:</span> <span class="mf">0.09415</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"is "</span><span class="o">:</span> <span class="mf">0.09187</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mf">0.08883</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p><br />
+<strong><em>Distribution 3</em></strong></p>
+<div style="columns:3">
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" th"</span><span class="o">:</span> <span class="mf">0.33214</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"he "</span><span class="o">:</span> <span class="mf">0.24161</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"the"</span><span class="o">:</span> <span class="mf">0.22077</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ed "</span><span class="o">:</span> <span class="mf">0.17518</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" to"</span><span class="o">:</span> <span class="mf">0.16737</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" an"</span><span class="o">:</span> <span class="mf">0.14458</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"to "</span><span class="o">:</span> <span class="mf">0.14132</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ing"</span><span class="o">:</span> <span class="mf">0.13546</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"nd "</span><span class="o">:</span> <span class="mf">0.13350</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ng "</span><span class="o">:</span> <span class="mf">0.12764</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"and"</span><span class="o">:</span> <span class="mf">0.12699</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" in"</span><span class="o">:</span> <span class="mf">0.12178</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"at "</span><span class="o">:</span> <span class="mf">0.11397</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"hat"</span><span class="o">:</span> <span class="mf">0.11331</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" a "</span><span class="o">:</span> <span class="mf">0.11136</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">" of"</span><span class="o">:</span> <span class="mf">0.10355</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"is "</span><span class="o">:</span> <span class="mf">0.10289</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"as "</span><span class="o">:</span> <span class="mf">0.10029</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"tha"</span><span class="o">:</span> <span class="mf">0.10029</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="err">…</span></code></li>
+</ul>
+</div>
+
+<p><br /></p>
+
+<p>We as humans can look at these numbers and say “yep, they’re pretty close,” but how could a computer do this? Suppose we have two trigram profiles <em>P</em>₁ and <em>P</em>₂ that have already been normalized. One measure we can use to determine how similar they are is to compute their <strong><em>cosine similarity</em></strong>, which can be computed as follows: for each trigram that appears in both <em>P</em>₁ and <em>P</em>₂, multiply the frequency of that trigram in <em>P</em>₁ and <em>P</em>₂, then add up all the numbers you found this way.</p>
+
+<p>As an example, consider these two (highly contrived, not actually real) trigram profiles:</p>
+
+<p><strong><em>Profile 1</em></strong></p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"aaa"</span><span class="o">:</span> <span class="mf">0.333</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"bbb"</span><span class="o">:</span> <span class="mf">0.667</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ccc"</span><span class="o">:</span> <span class="mf">0.667</span></code></li>
+</ul>
+
+<p><strong><em>Profile 2</em></strong></p>
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"bbb"</span><span class="o">:</span> <span class="mf">0.333</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ccc"</span><span class="o">:</span> <span class="mf">0.667</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="s">"ddd"</span><span class="o">:</span> <span class="mf">0.667</span></code></li>
+</ul>
+
+<p>These two trigram sets have the trigrams "bbb" and "ccc" in common. We’d therefore find their cosine similarity by computing</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      (product of "bbb" frequencies) + (product of "ccc" frequencies)
+    = (0.667 × 0.333) + (0.667 × 0.667)
+    = 0.667
+</code></pre></div></div>
+
+<p>The frequencies of <code class="language-c++ highlighter-rouge"><span class="s">"aaa"</span></code> and <code class="language-c++ highlighter-rouge"><span class="s">"ddd"</span></code> aren’t relevant here, since those trigrams appear in only one of the two trigram sets.</p>
+
+<p>In the context of trigrams, cosine similarities range from 0 (the two documents have no trigrams in common) to 1 (the two documents have identical relative trigram frequencies).</p>
+
+<p>Your next task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="nf">cosineSimilarityOf</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">lhs</span><span class="p">,</span> 
+                          <span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">rhs</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input two sets of normalized scores, then returns their cosine similarity using the formula given above.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p><strong><em>Milestone Four</em></strong></p>
+
+<ol>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">cosineSimilarityOf</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">RosettaStone</span><span class="p">.</span><span class="n">cpp</span></code>.</li>
+  <li>Use the provided tests to confirm that your code works correctly.</li>
+  <li>Optionally, but not required: use <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> to add a test case or two of your own!</li>
+</ol>
+</div>
+
+<p>Some notes:</p>
+<ul>
+  <li>Although you’ll ultimately be applying this function to trigram profiles, your function should work in the case where the keys in the two maps are arbitrary strings. In other words, you shouldn’t assume that you’re just working with maps whose keys are all length-three strings.</li>
+  <li>You can assume that the two sets of input scores are normalized and don’t need to handle the case where this isn’t true.</li>
+</ul>
+
+<h3 id="milestone-five-guess-a-texts-language">Milestone Five: Guess a Text’s Language</h3>
+
+<p>At this point, you have the ability to take a text, extract its trigrams, and normalize its profile. You have the ability to take two normalized profiles and compare their scores against one another. All that’s left to do now is put everything together to guess the language of a text.</p>
+
+<p>Here’s how. Before releasing this assignment to you, we went online and got lots and lots of texts written in different languages. Each of the texts associated with a given language is called a <strong><em>corpus</em></strong> (plural <strong><em>corpora</em></strong>) and is designed to be large and diverse enough to give a representative sample of what that language looks like in practice. We then computed trigram profiles for each of those languages, giving a trigram profile for the language as a whole.</p>
+
+<p>To make an educated guess about what language a piece of text is written in, you can simply compute the similarity of that text’s profile against the profiles of all the different languages. Whichever language has the highest similarity to your text then gives the best guess of what language the text was written in.</p>
+
+<p>Your final task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">guessLanguageOf</span><span class="p">(</span><span class="k">const</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">textProfile</span><span class="p">,</span>
+                       <span class="k">const</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Corpus</span><span class="o">&gt;&amp;</span> <span class="n">corpora</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a text’s <em>k</em>-gram profile (which has been normalized and then trimmed to store only the most frequent <em>k</em>-grams) and a set of corpora for different languages. This function then returns the name of the language that has the highest cosine similarity to the text. As an edge case, if the set of corpora is empty, you should call <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> to report an error, since in that case there aren’t any languages to pick from.</p>
+
+<p>You may have noticed that the last parameter to this function is a <code class="language-c++ highlighter-rouge"><span class="n">Set</span><span class="o">&lt;</span><span class="n">Corpus</span><span class="o">&gt;</span></code> representing the text corpora. Here, <code class="language-c++ highlighter-rouge"><span class="n">Corpus</span></code> is a custom struct type we defined in <code class="language-c++ highlighter-rouge"><span class="n">RosettaStone</span><span class="p">.</span><span class="n">h</span></code>:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">Corpus</span> <span class="p">{</span>                                           
+    <span class="n">string</span> <span class="n">name</span><span class="p">;</span>                 <span class="c1">// Name of the language  </span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">profile</span><span class="p">;</span> <span class="c1">// Normalized and trimmed</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Here, <code class="language-c++ highlighter-rouge"><span class="n">name</span></code> represents the name of the language, and <code class="language-c++ highlighter-rouge"><span class="n">profile</span></code> represents its normalized profile, which will already have been trimmed to the appropriate number of trigrams.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p><strong><em>Milestone Five:</em></strong></p>
+<ol>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">guessLanguageOf</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">RosettaStone</span><span class="p">.</span><span class="n">cpp</span></code>.</li>
+  <li>Use the provided tests to confirm that your code works correctly.</li>
+  <li>Optionally, but not required: use <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> to add a test case or two of your own!</li>
+</ol>
+</div>
+
+<p>Some notes on this part of the problem:</p>
+
+<ul>
+  <li>You can assume that whoever is calling this function will already have normalized the frequencies of all the <em>k</em>-grams in the profile and each corpus and then filtered them down to just the most common <em>k</em>-grams. You do not need to - and should not - repeat these steps, since doing so will slow down your function.</li>
+  <li>If there is a tie between two or more languages being the most similar, you can break the tie in whatever way you’d like.</li>
+</ul>
+
+<h3 id="milestone-six-explore-and-evaluate">Milestone Six: Explore and Evaluate</h3>
+
+<p>You’ve just implemented a system to guess the languages of various pieces of texts. It’s now time to ask: how well does it work? When does it give good guesses? When does it do poorly? Questions like these are important, especially given the cultural and political significance of languages.
+Let’s begin with some cases where your program does a great job identifying languages. The following texts will all have their languages correctly identified.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Run the “Rosetta Stone” demo from the top-level menu and use it to answer each of the following questions. Write your answers in the file <code class="language-c++ highlighter-rouge"><span class="n">LanguageIdentification</span><span class="p">.</span><span class="n">txt</span></code>. As a note, assuming you've coded everything up correctly, the answers your program produces should be correct.</p>
+
+<ol>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Намрын бороо зөөлөн шиврэхэд аав минь дуртай
+Насыг нь зөөж буцсаар л байгаа шувуудад хайртай
+Өөрөө өтлөвч, орчлонд үлдэнэ гэж надад хайртай
+Өдрөөс өдөрт холдсоор л байгаа аавдаа би хайртай
+Шар наран улам алслаад л
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>아리랑, 아리랑, 아라리요…
+아리랑 고개로 넘어간다.
+나를 버리고 가시는 님은
+십리도 못가서 발병난다.
+청천하늘엔 잔별도 많고,
+우리네 가슴엔 희망도 많다.
+저기 저 산이 백두산이라지,
+동지 섣달에도 꽃만 핀다.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Penei ka manao ana o kekahi poe. I ke kaua ana o kekahi aina
+me kekahi aina, o ka poe i hee, makau lakou o lukuia mai a holo
+wale lakou ma ka moana, a loaa kahi aina, a noho iho la malaila,
+a pela hou no, a hiki no na kanaka ma na moku a pau. I ka manao
+o kekahi poe, ua pupuhi wale ia na waa i holo ma ka moana a pae
+wale aku i kekahi aina. Ua manao wale ia keia mau mea, aole i
+maopopo.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Negema wangu binti, mchachefu wa sanati upulike wasiati asa
+ukanzingatia. Maradhi yamenshika hatta yametimu mwaka sikupata
+kutamka neno lema kukwambia. Ndoo mbee ujilisi na wino na
+qaratasi moyoni nina hadithi nimependa kukwambia.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>床前明月光
+疑是地上霜
+举头望明月
+低头思故乡
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>გულისფანცქალით მივდიოდით მხარეში, საიდანაც ვიწყებდით ძველი
+წელთაღრიცხვის საიდუმლოებებით მოცულ მიწისზედა თუ მიწისქვეშა
+ტალანებსა და გამოქვაბულებში ძრომა-ხეტიალს.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ᎤᎵᏍᏔᏴᏗ ᎦᎵᏙᏗ ᏭᎷᏤᎢ, ᎤᏗᏔᎮ ᎦᏁᎲ, ᎤᏲᏏᏍᎩ ᎤᏗᏔᎮ ᎤᏅᏗ ᏃᎴ ᎤᎩᏍᏙᎡ
+ᏑᎾᎴ ᎠᎩᏍᏗ ᎤᏂᏑᎸᏓ. ᎣᏍᏓ ᏄᎵᏍᏔᏁᎮ ᎤᏩᏌ ᎤᏪᏅᏒ ᎡᏙᎲ. ᎦᏅᏆᎶᏍᏗ ᏭᏴᎮ
+ᏣᏄᏏ ᏃᎴ ᏣᏁᎳ ᎠᏂᏎᏂᏏ ᏴᎩ, ᎣᏍᏓ ᏄᏩᏁᎴ ᎠᏦᏴ.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>يُعتقد بأن ضابطة في الجيش البريطاني تدعى بريت تشاندي أصبحت أول
+امرأة من أصول آسيوية تُكملُ رحلة استكشافية فردية عبر
+القارة القطبية الجنوبية.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Akyinkyinakyinkyin ama mahu nneɛma,
+Asante Bonwire Kente nwene deɛ,
+Manhu bi da o,
+Kwame nim adeɛ yɔ
+Ne kente nwono na abɔ me gye
+Ne nsa; ne nan, n’asadua saa nie.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What language is this written in?</p>
+
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ਤੁਹਾਡੇ ਲਈ ਸ਼ੁਭ ਫਲ ਦੇਣ ਵਾਲਾ ਹੈ। ਆਪਣੀ ਮਿੱਠੀ ਬਾਣੀ ਨਾਲ ਕਿਸੇ ਦਾ ਵੀ ਦਿਲ ਤੁਸੀਂ ਜਿੱਤ
+ਸਕਦੇ ਹੋ। ਤੁਹਾਡੇ ਕੰਮਾਂ ਦੀ ਪੂਰਤੀ ਹੋ ਸਕਦੀ ਹੈ। ਪਰਿਵਾਰ ਵਿੱਚ ਆਨੰਦ ਦਾ ਮਾਹੌਲ
+ਰਹੇਗਾ। ਰਿਸ਼ਤੇਦਾਰਾਂ ਦੇ ਨਾਲ ਸੁਖ ਨਾਲ ਸਮਾਂ ਗੁਜ਼ਰੇਗਾ। ਆਰਥਿਕ ਲਾਭ ਹੋਣ ਦੀ ਸੰਭਾਵਨਾ
+ਹੈ। ਬੌਧਿਕ ਚਰਚਾ ਵਿੱਚ ਹਿੱਸਾ ਲਓਗੇ। ਆਯਾਤ – ਨਿਰਯਾਤ ਨਾਲ ਸਬੰਧਿਤ ਵਿਸ਼ਿਆਂ
+ਵਿੱਚ ਸਫਲਤਾ ਪ੍ਰਾਪਤ ਹੋਵੇਗੀ।
+</code></pre></div>    </div>
+  </li>
+</ol>
+</div>
+
+<p>It would be great if your program always correctly identified the language a text is written in. However, your tool isn’t perfect, and it will sometimes get languages wrong. This can happen for a variety of reasons. Your next task is to explore where this can happen.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Run the “Rosetta Stone” demo from the top-level menu. Answer each of the following questions in the file <code class="language-c++ highlighter-rouge"><span class="n">LanguageIdentification</span><span class="p">.</span><span class="n">txt</span><span class="o">:</span></code></p>
+
+<p><strong>11.</strong> This text by Robert Burns is written in Scots. What language does your program say it’s written in? (Sometimes, the trigrams from a text in one language will closely match the trigrams from a related language.)</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>And there's a hand, my trusty fiere! and gie's a hand o' thine! And we'll
+tak' a right gude-willie waught, for auld lang syne.
+</code></pre></div></div>
+
+<p><strong>12.</strong> This text is written in English. What language does your program say it’s written in? (Short texts can have trigrams that do not match the general trigram distribution for texts in that language.)</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>San Jose is in Santa Clara County, California.
+</code></pre></div></div>
+
+<p><strong>13.</strong> This text is written in English. What language does your program say it’s written in? (Trigrams are case-sensitive. We derived the English trigrams from texts that were written in formal English, in which it’s very unusual to see long strings of capitalized letters. As a result, this text will be a low match against English.)</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IT WAS THE BEST OF TIMES, IT WAS THE WORST OF TIMES, IT WAS THE AGE OF
+WISDOM, IT WAS THE AGE OF FOOLISHNESS, IT WAS THE EPOCH OF BELIEF, IT
+WAS THE EPOCH OF INCREDULITY, IT WAS THE SEASON OF LIGHT, IT WAS THE
+SEASON OF DARKNESS, IT WAS THE SPRING OF HOPE, IT WAS THE WINTER OF
+DESPAIR, WE HAD EVERYTHING BEFORE US, WE HAD NOTHING BEFORE US, WE WERE
+ALL GOING DIRECT TO HEAVEN, WE WERE ALL GOING DIRECT THE OTHER WAY – IN
+SHORT, THE PERIOD WAS SO FAR LIKE THE PRESENT PERIOD, THAT SOME OF ITS
+NOISIEST AUTHORITIES INSISTED ON ITS BEING RECEIVED, FOR GOOD OR FOR
+EVIL, IN THE SUPERLATIVE DEGREE OF COMPARISON ONLY.
+</code></pre></div></div>
+
+<p><strong>14.</strong> This song is written in Nepali. What language does your program say it’s written in? (Nepali is traditionally written with Devanagari script, and we used those texts to get our trigrams. In this example, it’s transliterated using a Latin-derived alphabet. Therefore, this will have a low match with Nepali.)</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Rātō ṭikā nidhārmā ṭalakkai ṭalkiyō
+ḍhākā ṭōpī śiraimā ḍhalakkai ḍhalkiyō
+rātō ṭikā nidhārmā ṭalakka ṭalkiyō
+chāti bhitra māyākō āgō salkiyō
+ē bijulikō tār tār tār tār
+phursad bha'ē ē hajur bhēṭauṅ śanivār
+phursad bha'ē ē hajur bhēṭauṅ śanivār
+ḍhākā ṭōpī śiraimā ḍhalakka ḍhalkiyō
+māyā khēlnē khēlāḍī jhulukkai jhulkiyō
+ē bijulikō tār tār tār tār
+phursad chaina ē hajur ā'uṅdō śanivār
+phursad chaina ē hajur ā'uṅdō śanivār
+</code></pre></div></div>
+</div>
+
+<p>As you’ve just seen, as is often the case with software systems that interface with real-world data, your tool is accurate in some cases but not in others.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Answer the following question in the file <code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span><span class="o">:</span></code></p>
+
+<p><strong>Q1.</strong> In the context of a programming assignment, it’s not a big deal if your tool misclassifies the language of a text. However, if you were to release this tool as a commercial software product or as part of a government service, language misidentification could have larger consequences. Give an example of a situation where misidentifying the language of a piece of text could have an impact on people. (Your answer should be 2 – 4 sentences in length.)</p>
+</div>
+
+<p>In an ideal world, it would be easy to test how well your tool performs by running it on huge numbers of texts written in different languages and identifying cases where the answer reported by the tool matches the language the text is written in. However, for a number of reasons, this is harder than it might initially seem:</p>
+
+<ul>
+  <li>
+    <p>Some texts that purport to be in one language actually aren't written in that language. As an example, we originally used the Scots Wikipedia as our source for the Scots language trigrams, but we had to replace it with a different Scots work because <a href="https://www.theguardian.com/uk-news/2020/aug/26/shock-an-aw-us-teenager-wrote-huge-slice-of-scots-wikipedia">much of the Scots Wikipedia was written by someone who didn’t speak Scots</a>. This means that sourcing texts to test on requires a degree of familiarity with the language in question.</p>
+  </li>
+  <li>
+    <p>Social and political forces can make it difficult to determine the "correct" label for a piece of text. For example, people in Moldova may label a single piece of writing in the language they speak as either "<a href="https://en.wikipedia.org/wiki/Moldovan_language">Moldovan</a>" or "<a href="https://en.wikipedia.org/wiki/Romanian_language">Romanian</a>." Similarly, while <a href="https://en.wikipedia.org/wiki/Cantonese">Cantonese</a>, <a href="https://en.wikipedia.org/wiki/Shanghainese">Shanghainese</a>, <a href="https://en.wikipedia.org/wiki/Hokkien">Hokkien</a>, and <a href="https://en.wikipedia.org/wiki/Standard_Chinese">Mandarin</a> are sometimes considered dialects of "Chinese," the four are sufficiently different from one another that a speaker of one might not be able to understand any of the others.</p>
+  </li>
+  <li>
+    <p>For some languages (<a href="https://en.wikipedia.org/wiki/Kazakh_language">Kazakh</a>, <a href="https://en.wikipedia.org/wiki/Bengali_language">Bengali</a>, etc.), it's easy to find large amounts of contemporary text in that language through a quick Google search. For others (<a href="https://en.wikipedia.org/wiki/Greenlandic_language">Kalaallisut</a>, <a href="https://en.wikipedia.org/wiki/Izon_language">Izon</a>, etc.), this is much harder. These disparities often reflect larger political or historical trends.</p>
+  </li>
+  <li>
+    <p>There are around 8,000 extant human languages, and your tool has trigrams for around 200 of them. As a result, any individual person testing the tool cannot be a native or secondary speaker of all the languages that need to be tested. Similarly, any one tester won't know of all the political, historical, and social concerns surrounding each of these languages.</p>
+  </li>
+</ul>
+
+<p>As a result, testing your tool and assessing its strengths and weaknesses is challenging.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Answer the following questions in the file <code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code>:</p>
+
+<p><strong>Q2.</strong> Sketch two plausible but different testing plans to determine your tool's reliability given the above constraints.  (Your answer should be 2 – 4 sentences in length.)</p>
+
+<p><strong>Q3.</strong> For each testing plan, give one advantage it has over the other. (Your answer should be 2 – 4 sentences in length.)</p>
+
+<p><strong>Q4.</strong> If you had to choose between your two testing plans, which would you pick and why?  (Your answer should be 1 – 2 sentences in length.)</p>
+
+<p><strong>Q5.</strong> Given the strengths and weaknesses of the tool itself and of your testing plan, how would you decide whether it was appropriate to release your program to a mass audience? If you did release the tool, how would you responsibly communicate its capacities and limitations to the users? (Your answer should be 3 – 6 sentences in length.)</p>
+</div>
+
+<p><br />
+<br /></p>
+
+<h2 id="part-two-rising-tides">Part Two: Rising Tides</h2>
+
+<h3 id="background-our-model">Background: Our Model</h3>
+
+<p>Global sea levels have been rising, and the most recent data suggest that the rate at which sea levels are rising is increasing. This means that city planners in coastal areas need to start designing developments so that an extra meter of water doesn’t flood people out of their homes.</p>
+
+<p>Your task in this part of the assignment is to build a tool that models flooding due to sea level rise. To do so, we’re going to model terrains as grids of doubles, where each double represents the altitude of a particular square region on Earth. Higher values indicate higher elevations, while lower values indicate lower elevations. For example, take a look at the three grids to the right. Before moving on, take a minute to think over the following questions, which you don’t need to submit. Which picture represents a small hill? Which one represents a long, sloping incline? Which one represents a lowland area surrounded by levees?</p>
+
+<blockquote>
+  <p><img src="rt/SampleGrids.png" alt="Three sample grids. Each is a 7x7 grid of numbers. The first one reads as follows, from top-to-bottom, left-to-right, with slashes denoting moving from one line to the next: 0,1,2,3,4,2,1/1,2,3,4,5,4,2/3,4,5,6,6,5,4/2,4,5,7,5,3,2/1,2,4,5,3,2,1/0,1,2,3,1,1,1/0,0,1,2,1,1,1. The second reads: -1,0,0,4,0,0,1/0,0,4,0,-1,-1,0/0,4,0,0,0,0,0/4,0,-1,-1,0,0,3/0,-1,-2,-1,0,3,0/0,0,-1,0,3,0,0/0,0,0,3,0,0,-1. The third one reads: 0,1,2,3,4,5,6/0,1,2,3,4,5,5/0,1,2,3,3,4,4/0,0,1,2,3,3,3/0,0,1,1,2,2,2/-1,-1,0,0,1,1,1/-2,-1,0,0,0,0,0" /></p>
+</blockquote>
+
+<p>We can model the flow of water as follows. We’ll imagine that there’s a water source somewhere in the world and that we have a known height for the water. Water will then flow anywhere it can reach by moving in the four cardinal directions (up/down/left/right) without moving to a location at a higher elevation than the initial water height. For example, suppose that the upper-left corner of each of the three above worlds is the water source. Here’s what would be underwater given several different water heights:</p>
+
+<blockquote>
+  <p><img src="rt/Flooding1.png" alt="Those three sample grids with different levels of water flooding them, in each case with the water emanating from the top-left corner of the world. To denote what is and is not under water, we will write numbers under water with parentheses around them. So, for example, (-1), (0), 2 / 2, (0), 2 / 2, 2, 2 would denote a 3x3 grid where the top-left, top-center, and center squares are all under water. The first grid is the one from above. With no water it looks like this: 0,1,2,3,4,2,1/1,2,3,4,5,4,2/3,4,5,6,6,5,4/2,4,5,7,5,3,2/1,2,4,5,3,2,1/0,1,2,3,1,1,1/0,0,1,2,1,1,1. With the water height at 0m it looks like this: (0),1,2,3,4,2,1/1,2,3,4,5,4,2/3,4,5,6,6,5,4/2,4,5,7,5,3,2/1,2,4,5,3,2,1/0,1,2,3,1,1,1/0,0,1,2,1,1,1. With the water height at 1m it looks like this: (0),(1),2,3,4,2,1/(1),2,3,4,5,4,2/3,4,5,6,6,5,4/2,4,5,7,5,3,2/1,2,4,5,3,2,1/0,1,2,3,1,1,1/0,0,1,2,1,1,1. With the water height at 2m it looks like this: (0),(1),(2),3,4,2,1/(1),(2),3,4,5,4,2/3,4,5,6,6,5,4/2,4,5,7,5,3,2/1,2,4,5,3,2,1/0,1,2,3,1,1,1/0,0,1,2,1,1,1. The second grid is shown here: -1,0,0,4,0,0,1.0,0,4,0,-1,-1,0/0,4,0,0,0,0,0/4,0,-1,-1,0,0,3/0,-1,-2,-1,0,3,0/0,0,-1,0,3,0,0/0,0,0,3,0,0,-1. With the water at 0m, 1m, or 2m it looks like this: (-1),(0),(0),4,0,0,1/(0),(0),4,0,-1,-1,0/(0),4,0,0,0,0,0/4,0,-1,-1,0,0,3/0,-1,-2,-1,0,3,0/0,0,-1,0,3,0,0/0,0,0,3,0,0,-1. The third grid initially looks like this: 0,1,2,3,4,5,6/0,1,2,3,4,5,5/0,1,2,3,3,4,4/0,0,1,2,3,3,3/0,0,1,1,2,2,2/-1,-1,0,0,1,1,1/-2,-1,0,0,0,0,0. With the water at 0m it looks like this: (0),1,2,3,4,5,6/(0),1,2,3,4,5,5/(0),1,2,3,3,4,4/(0),(0),1,2,3,3,3/(0),(0),1,1,2,2,2/(-1),(-1),(0),(0),1,1,1/(-2),(-1),(0),(0),(0),(0),(0). With the water at 1m it looks like this: (0),(1),2,3,4,5,6/(0),(1),2,3,4,5,5/(0),(1),2,3,3,4,4/(0),(0),(1),2,3,3,3/(0),(0),(1),(1),2,2,2/(-1),(-1),(0),(0),(1),(1),(1)/(-2),(-1),(0),(0),(0),(0),(0). With the water at 2m it looks like this: (0),(1),(2),3,4,5,6/(0),(1),(2),3,4,5,5/(0),(1),(2),3,3,4,4/(0),(0),(1),(2),3,3,3/(0),(0),(1),(1),(2),(2),(2)/(-1),(-1),(0),(0),(1),(1),(1)/(-2),(-1),(0),(0),(0),(0),(0)" /></p>
+</blockquote>
+
+<p>A few things to notice here. First, notice that the water height is independent of the height of the terrain at its starting point. For example, in the bottom row, the water height is always two meters, even though the terrain height of the upper-left corner is either 0m or -1m, depending on the world. Second, in the terrain used in the middle column, notice that the water stays above the upper diagonal line of 4’s, since we assume water can only move up, down, left, and right and therefore can’t move diagonally through the gaps. Although there’s a lot of terrain below the water height, it doesn’t end up under water until the height reaches that of the barrier.</p>
+
+<p>It’s possible for a grid to have multiple water sources. This might happen, for example, if we were looking at a zoomed-in region of the San Francisco Peninsula, we might have water to both the east and west of the region of land in the middle, and so we’d need to account for the possibility that the water level is rising on both sides. Here’s another set of images, this time showing where the water would be in the sample worlds above assume that both the top-left and bottom-right corner are water sources. (We’ll assume each water source has the same height.)</p>
+
+<blockquote>
+  <p><img src="rt/Flooding2.png" alt="Those three sample grids with different levels of water flooding them, in each case with the water emanating from the top-left corner and bottom-right corner of the world. To denote what is and is not under water, we will write numbers under water with parentheses around them. So, for example, (-1), (0), 2 / 2, (0), 2 / 2, 2, 2 would denote a 3x3 grid where the top-left, top-center, and center squares are all under water. The first grid is the one from above. With no water it looks like this: 0,1,2,3,4,2,1/1,2,3,4,5,4,2/3,4,5,6,6,5,4/2,4,5,7,5,3,2/1,2,4,5,3,2,1/0,1,2,3,1,1,1/0,0,1,2,1,1,1. With the water height at 0m it looks like this: (0),1,2,3,4,2,1/1,2,3,4,5,4,2/3,4,5,6,6,5,4/2,4,5,7,5,3,2/1,2,4,5,3,2,1/0,1,2,3,1,1,1/0,0,1,2,1,1,1. With the water height at 1m it looks like this: (0),(1),2,3,4,2,1/(1),2,3,4,5,4,2/3,4,5,6,6,5,4/2,4,5,7,5,3,2/1,2,4,5,3,2,1/0,1,2,3,(1),(1),(1)/0,0,1,2,(1),(1),(1). With the water height at 2m it looks like this: (0),(1),(2),3,4,2,1/(1),(2),3,4,5,4,2/3,4,5,6,6,5,4/(2),4,5,7,5,3,(2)/(1),(2),4,5,3,(2),(1)/(0),(1),(2),3,(1),(1),(1)/(0),(0),(1),(2),(1),(1),(1). With the water height at 3m it looks like this: (0),(1),(2),(3),4,2,1/(1),(2),(3),4,5,4,2/(3),4,5,6,6,5,4/(2),4,5,7,5,3,(2)/(1),(2),4,5,(3),(2),(1)/(0),(1),(2),(3),(1),(1),(1)/(0),(0),(1),(2),(1),(1),(1). The second grid is shown here: -1,0,0,4,0,0,1.0,0,4,0,-1,-1,0/0,4,0,0,0,0,0/4,0,-1,-1,0,0,3/0,-1,-2,-1,0,3,0/0,0,-1,0,3,0,0/0,0,0,3,0,0,-1. With the water at 0m, 1m, or 2m it looks like this: (-1),(0),(0),4,0,0,1/(0),(0),4,0,-1,-1,0/(0),4,0,0,0,0,0/4,0,-1,-1,0,0,3/0,-1,-2,-1,0,3,(0)/0,0,-1,0,3,(0),(0)/0,0,0,3,(0),(0),(-1). With the water level at 3m it looks like this:  The third grid initially looks like this: (-1),(0),(0),4,(0),(0),(1)/(0),(0),4,(0),(-1),(-1),(0)/(0),4,(0),(0),(0),(0),(0)/4,(0),(-1),(-1),(0),(0),(3)/(0),(-1),(-2),(-1),(0),(3),(0)/(0),(0),(-1),(0),(3),(0),(0)/(0),(0),(0),(3),(0),(0),(-1). The third grid initially looks like this: 0,1,2,3,4,5,6/0,1,2,3,4,5,5/0,1,2,3,3,4,4/0,0,1,2,3,3,3/0,0,1,1,2,2,2/-1,-1,0,0,1,1,1/-2,-1,0,0,0,0,0. With the water at 0m it looks like this: (0),1,2,3,4,5,6/(0),1,2,3,4,5,5/(0),1,2,3,3,4,4/(0),(0),1,2,3,3,3/(0),(0),1,1,2,2,2/(-1),(-1),(0),(0),1,1,1/(-2),(-1),(0),(0),(0),(0),(0). With the water at 1m it looks like this: (0),(1),2,3,4,5,6/(0),(1),2,3,4,5,5/(0),(1),2,3,3,4,4/(0),(0),(1),2,3,3,3/(0),(0),(1),(1),2,2,2/(-1),(-1),(0),(0),(1),(1),(1)/(-2),(-1),(0),(0),(0),(0),(0). With the water at 2m it looks like this: (0),(1),(2),3,4,5,6/(0),(1),(2),3,4,5,5/(0),(1),(2),3,3,4,4/(0),(0),(1),(2),3,3,3/(0),(0),(1),(1),(2),(2),(2)/(-1),(-1),(0),(0),(1),(1),(1)/(-2),(-1),(0),(0),(0),(0),(0). With the water at 4m it looks like this: (0),(1),(2),(3),(4),5,6/(0),(1),(2),(3),(4),5,5/(0),(1),(2),(3),(3),(4),(4)/(0),(0),(1),(2),(3),(3),(3)/(0),(0),(1),(1),(2),(2),(2)/(-1),(-1),(0),(0),(1),(1),(1)/(-2),(-1),(0),(0),(0),(0),(0)" /></p>
+</blockquote>
+
+<p>Notice that the water overtops the levees in the central world, completely flooding the area, as soon as the water height reaches three meters. The water line never changes, regardless of the current elevation. As such, water will never flood across cells at a higher elevation than the water line, but will flood across cells at the same height or below the water line</p>
+
+<p>Your task is to implement a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">floodedRegionsIn</span><span class="p">(</span><span class="k">const</span> <span class="n">Grid</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span> <span class="n">terrain</span><span class="p">,</span>        
+                            <span class="k">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&amp;</span> <span class="n">sources</span><span class="p">,</span>
+                            <span class="kt">double</span> <span class="n">height</span><span class="p">);</span>                     
+</code></pre></div></div>
+
+<p>that takes as input a terrain (given as a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span></code>), a list of locations of water sources (represented as a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;</span></code>; more on GridLocation later), and the height of the water level, then returns a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span></code> indicating, for each spot in the terrain, whether it’s under water (<code class="language-c++ highlighter-rouge"><span class="nb">true</span></code>) or above the water (<code class="language-c++ highlighter-rouge"><span class="nb">false</span></code>).</p>
+
+<p>You may have noticed that we’re making use of the <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code> type. This is a type representing a position in a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code>. You can create a <code class="language-c++ highlighter-rouge"><span class="n">GridLocation</span></code> and access its row and column using this syntax:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">GridLocation</span> <span class="n">location</span><span class="p">;</span>
+    <span class="n">location</span><span class="p">.</span><span class="n">row</span> <span class="o">=</span> <span class="mi">137</span><span class="p">;</span>
+    <span class="n">location</span><span class="p">.</span><span class="n">col</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+
+    <span class="n">GridLocation</span> <span class="n">otherLocation</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">103</span> <span class="p">};</span> <span class="c1">// Row 106, column 103</span>
+    <span class="n">otherLocation</span><span class="p">.</span><span class="n">row</span><span class="o">++</span><span class="p">;</span> <span class="c1">// Increment the row.</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">otherLocation</span><span class="p">.</span><span class="n">col</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// Prints 103</span>
+</code></pre></div></div>
+
+<h3 id="background-breadth-first-search">Background: Breadth-First Search</h3>
+
+<p>Now that we’ve talked about the types involved here, let’s address how to solve this problem. How, exactly, do you determine what’s going to be underwater? Doing so requires you to determine which grid locations are both (1) below the water level and (2) places water can flow to from one of the sources.</p>
+
+<p>Fortunately, there’s a beautiful algorithm you can use to solve this problem called <strong><em>breadth-first search</em></strong>. The idea is to simulate having the water flow out from each of the sources at greater and greater distances. First, you consider the water sources themselves. Then, you visit each location one step away from the water sources. Then, you visit each location two steps away from the water sources, then three steps, four steps, etc. In that way, the algorithm ends up eventually finding all places the water can flow to, and it does so fairly quickly!</p>
+
+<p>Breadth-first search is typically implemented by using a <strong><em>queue</em></strong> that will process every flooded location. The idea is the following: we begin by enqueuing each water source, or at least the sources that aren’t above the water line. That means that the queue ends up holding all the flooded locations zero steps away from the sources. We’ll then enqueue a next group of elements, corresponding to all the flooded locations one step away from the sources. Then we’ll enqueue all flooded locations two steps away from the sources, then three steps away, etc. Eventually, this process will end up visiting every flooded location in the map.</p>
+
+<p>Let’s make this a bit more concrete. To get the process started, you add to the queue each of the individual water sources that happen to be at least as high as the grid cell they’re located in. From then on, the algorithm operates by dequeuing a location from the front of the queue. Once you have that location, you look at each of the location’s neighbors in the four cardinal directions. For each of those neighbors, if that neighbor is already flooded, you don’t need to do anything because the search has already considered that square. Similarly, if that neighbor is above the water line, there’s nothing to do because that square shouldn’t end up under water. However, if neither of those conditions hold, you then add the neighbor to the queue, meaning “I’m going to process this one later on.” By delaying processing that neighbor, you get to incrementally explore at greater and greater distances from the water sources. The process stops once the queue is empty; when that happens, every location that needs to be considered will have been visited.</p>
+
+<p>At each step in this process, you’re removing the location from the queue that’s been sitting there the longest. Take a minute to convince yourself that this means that you’ll first visit everything zero steps from a water source, then one step from a water source, then two steps, etc.</p>
+
+<p>To spell out the individual steps of the algorithm, here’s some <strong><em>pseudocode</em></strong> for breadth-first search:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    create an empty queue;
+    for (each water source at or below the water level) {
+        flood that square;
+        add that square to the queue;
+    }
+
+    while (the queue is not empty) {
+       dequeue a position from the front of the queue;
+
+       for (each square adjacent to the position in a cardinal direction) {
+          if (that square is at or below the water level and isn't yet flooded) {
+             flood that square;
+             add that square to the queue;
+          }
+       }
+    }
+</code></pre></div></div>
+
+<p>As is generally the case with pseudocode, several of the operations that are expressed in English need to be fleshed out a bit. For example, the loop that reads</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    for (each square adjacent to the position in a cardinal direction)
+</code></pre></div></div>
+
+<p>is a conceptual description of the code that belongs there. It’s up to you to determine how to code this up; this might be a loop, or it might be several loops, or it may be something totally different. The basic idea, however, should still make sense. What you need to do is iterate over all the locations that are one position away from the current position. How you do that is up to you.</p>
+
+<p>It’s important to ensure that the code you write works correctly here, and to help you with that we’ve provided a suite of test cases with the starter files. These test cases look at a few examples, but they aren’t exhaustive. You’ll need to add at least one custom test case – and, preferably, more than one – using the handy <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> macro that you saw in the first programming assignment. We don’t recommend copying one of the test cases from the handout, since (1) that’s really tedious and time-consuming and (2) it’s better to more directly test particular tricky behaviors with smaller, more focused examples.</p>
+
+<h3 id="your-task">Your Task</h3>
+
+<p>To summarize, here’s what you need to do for this assignment:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>Implement the <code class="language-c++ highlighter-rouge"><span class="n">floodedRegionsIn</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">RisingTides</span><span class="p">.</span><span class="n">cpp</span></code>. Your code should use the breadth-first search algorithm outlined above in pseudocode to determine which regions are under water. Water flows up, down, left, and right and will submerge any region whose height is less than or equal to the global water level passed in as a parameter. Test as you go.</li>
+  <li>Add in at least one custom test case into <code class="language-c++ highlighter-rouge"><span class="n">RisingTides</span><span class="p">.</span><span class="n">cpp</span></code> – preferably, not one of the ones we listed above – and if necessary revisit your code to correct any errors you find.</li>
+</ol>
+</div>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>Need a refresher on <code class="language-c++ highlighter-rouge"><span class="n">Grid</span></code> type? Check the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford C++ Library Documentation</a>.</p>
+  </li>
+  <li>
+    <p>The initial height of the water at a source may be below the level of the terrain there. If that happens, that water source doesn’t flood anything, including its initial terrain cell. (This is an edge case where both the “flood it” and “don’t flood it” options end up being weird, and for consistency we decided to tiebreak in the “don’t flood it” direction.)</p>
+  </li>
+  <li>
+    <p>The heights of adjacent cells in the grid may have no relation to one another. For example, if you have the topography of <a href="https://en.wikipedia.org/wiki/Preikestolen">Preikestolen</a> in Norway, you might have a cell of altitude 0m immediately adjacent to a cell of altitude 604m. If you have a low-resolution scan of <a href="https://en.wikipedia.org/wiki/Mount_Whitney">Mount Whitney</a> and <a href="https://en.wikipedia.org/wiki/Death_Valley">Death Valley</a>, you might have a cell of altitude 4,421m next to a cell of altitude -85m.</p>
+  </li>
+  <li>
+    <p>Curious about an edge case? Check the examples above.</p>
+  </li>
+  <li>
+    <p>Make sure, when passing large objects around, to do so by reference (or <code class="language-c++ highlighter-rouge"><span class="k">const</span></code> reference, if appropriate) rather than by value. Copying large grids can take a very long time and make your code slow down appreciably.</p>
+  </li>
+</ul>
+
+<p>Once you’re passing all the tests, click the “Rising Tides” option to see your code in action! This demo uses your code to flood-fill the sample world you’ve chosen. Some of these sample worlds are large, and it might take a while for that flood-fill to finish. However, it should probably take no more than 30 seconds for the program to finish running your code.</p>
+
+<p>The demo app we’ve included will let you simulate changes to the sea levels for several geographical regions of the United States. The data here is mostly taken from the National Oceanographic and Atmospheric Administration (NOAA), which provides detailed topological maps for the US. Play around with the data sets – what do you find?</p>
+
+<p>We also have some maps from Mars, supplied by a former CS106B student as an extension to their assignment! The Martian terrain includes many regions way above and way below 0 elevation, so try out some large positive and large negative altitudes to get the full experience here.</p>
+
+<h2 id="part-three-optional-extensions">Part Three: (Optional) Extensions</h2>
+
+<p>If you'd like to run wild with these assignments, go for it! Here are some suggestions for additional features to add.</p>
+
+<ul>
+  <li>
+    <p><strong><em>Rosetta Stone:</em></strong> The starter files for this assignment include trigrams for over 200 languages. We made a reasonable effort to make sure those trigram files were reflective of how those languages are actually written, but there may be some trigram files derived from corpora that don’t adequately represent the language. Investigate the quality of the trigrams files for other languages and, if they seem off, find a new corpus and create a better trigrams file. Let us know how you did it so we can update our attributions file.</p>
+
+    <p>We know for a fact that our list of languages is incomplete. Do you speak any languages that aren’t represented here? Build a corpus for it and send it our way, along with a description of how you came up with it.</p>
+
+    <p>As you saw, the tool sometimes guesses the wrong language. When it does, is that because it's completely and totally fooled, or because it thought two or more languages were a good match? Try changing the function that guesses languages to return a set of the top <em>n</em> matches for some value of <em>n</em> (say, the top five matches) along with its confidence in each. Tell us if you find anything interesting when you do!</p>
+  </li>
+  <li>
+    <p><strong><em>Rising Tides:</em></strong> The sample terrains here have their data taken from the NOAA, which is specific to the United States, but we’d love to see what other data sets you can find. Get some topographical data from other sources, modify it to fit our file format, and load it into the program. (You can find information about the file format in the <code class="language-c++ highlighter-rouge"><span class="n">res</span><span class="o">/</span><span class="n">CreatingYourOwnTerrains</span><span class="p">.</span><span class="n">txt</span></code> file.) What information – either for good or for ill – does that forecast?</p>
+
+    <p>Or, consider the following question: suppose you have a terrain map of your area and know your home’s position within that area. Can you determine how much higher the water can rise without flooding your home?</p>
+  </li>
+</ul>
+
+<h2 id="submission-instructions">Submission Instructions</h2>
+
+<p>Before you call it done, run through our <a href="../../resources/submit_checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>s are crossed and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>s are dotted. Make sure your code follows our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>. Then upload your completed files to Paperless for grading.</p>
+
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">RosettaStone</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">LanguageIdentifications</span><span class="p">.</span><span class="n">txt</span></code> <em>(don't forget this one!)</em></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">ShortAnswers</span><span class="p">.</span><span class="n">txt</span></code> <em>(don't forget this one!)</em></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">RisingTides</span><span class="p">.</span><span class="n">cpp</span></code></li>
+</ul>
+
+<p>You don't need to submit any of the other files in the project folder.</p>
+
+<blockquote>
+  <p>🏁 <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Submit to Paperless</a></p>
+</blockquote>
+
+<p><strong>If you're submitting with a partner, you'll need to specify that on Paperless.</strong></p>
+<ul>
+  <li>If you forget to list your partner, you can re-submit and add one.</li>
+  <li>Either partner can list the other, and the submissions (both past and future) will be combined.</li>
+  <li>Partners are listed per-assignment.</li>
+  <li>You can't change or remove a partner once you've listed one for an assignment.</li>
+</ul>
+
+<p>If you modified any other files that you modified in the course of coding up your solutions, submit those as well. And that’s it! You’re done!</p>
+
+<blockquote>
+  <p><strong><em>Good luck, and have fun!</em></strong></p>
+</blockquote>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Feb-21
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>

@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="../../_assets/style/site.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <title>  CS106B Welcome to C++!</title>
+    
+    
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/cancel', '[tex]/braket']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$']
+                ],
+                packages: {
+                    '[+]': ['cancel', 'braket', 'marvosym']
+                },
+                macros: {
+                    blank:    "{\\underline{\\phantom{\\_\\_\\_\\_\\_}}}",
+                    floor:    ["{\\left\\lfloor {#1} \\right\\rfloor}", 1],
+                    ceil:     [ "{\\left\\lceil {#1} \\right\\rceil}", 1],
+                    abs:      [ "{\\left\\vert {#1} \\right\\vert}", 1],
+                    powerset: [ "{\\wp\\left( {#1} \\right)}", 1],
+                    suchthat: "{\\ \\vert \\ }",
+                    cfgor:    "{\\ \\vert \\ }",
+                    naturals: "{\\mathbb{N}}",
+                    integers: "{\\mathbb{Z}}",
+                    reals:    "{\\mathbb{R}}",
+                    qed:      "{\\blacksquare}",
+                    phibar:   "{\\overline{\\varphi}}",
+                    accepts:  "{\\text{ accepts }}",
+                    rejects:  "{\\text{ rejects }}",
+                    loopson:  "{\\text{ loops on }}",
+                    haltson:  "{\\text{ halts on }}",
+                    encoded:  [ "{\\left\\langle {#1} \\right\\rangle}", 1],
+                    rlangs:   "\\mathbf{R}",
+                    relangs:  "\\mathbf{RE}",
+                    corelangs:"\\text{co-}\\mathbf{RE}",
+                    plangs:   "\\mathbf{P}",
+                    nplangs:  "\\mathbf{NP}"
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+
+  <!-- fill to height of viewport, flex col, footer will be mt-auto -->
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+  <a class="navbar-brand" href="../../index.html">🏠CS106B </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse"  id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Course Admin </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../syllabus.html">Syllabus</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../course_placement.html">Course Placement Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../honor_code.html">Honor Code</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_staff.html">Teaching Team</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Resources </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../lair.html">LaIR</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../about_partners.html">Guide to Partners</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://edstem.org/us/courses/16604/discussion/">Ed Discussion Forum</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/paperless">Paperless</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/qt/">Qt Installation Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="http://en.cppreference.com/">C++ Reference</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/">Stanford Library Documentation</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://docs.google.com/document/d/12cXSV84N9lhU-4tsdEmNJRlSBcwwDpsaAePWP15RUjU/">String Reference Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/style_guide.html">Style Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/testing_guide.html">Testing Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/debugging_guide.html">Debugging Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/resources/bigo_guide.html">Guide to Big-O Notation</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/python_to_cpp.html">Python to C++ Guide</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../resources/submit_checklist.html">Submission Checklist</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://web.stanford.edu/dept/cs_edu/resources/textbook/">Textbook</a>
+            
+            
+            
+              <a class="dropdown-item" href="../../how_to_improve.html">How to Improve</a>
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Lectures </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_lectures.html">About Lectures</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../lectures/00-welcome/index.html">  0.  1/3 Introduction </a>
+                
+                  <a class="dropdown-item" href="../../lectures/01-functions/index.html">  1.  1/5 Functions in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/02-strings/index.html">  2.  1/7 Strings in C++ </a>
+                
+                  <a class="dropdown-item" href="../../lectures/03-collections-1/index.html">  3.  1/10 Containers, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/04-collections-2/index.html">  4.  1/12 Containers, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/05-collections-3/index.html">  5.  1/14 Containers, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/06-recursion-1/index.html">  6.  1/19 Thinking Recursively, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/07-recursion-2/index.html">  7.  1/21 Thinking Recursively, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/08-recursion-3/index.html">  8.  1/24 Thinking Recursively, Part III </a>
+                
+                  <a class="dropdown-item" href="../../lectures/09-recursion-4/index.html">  9.  1/26 Thinking Recursively, Part IV </a>
+                
+                  <a class="dropdown-item" href="../../lectures/10-recursion-5/index.html">  10.  1/28 Thinking Recursively, Part V </a>
+                
+                  <a class="dropdown-item" href="../../lectures/11-big-o/index.html">  11.  1/31 Big-O Notation </a>
+                
+                  <a class="dropdown-item" href="../../lectures/12-searching-sorting-1/index.html">  12.  2/2 Searching and Sorting, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/13-searching-sorting-2/index.html">  13.  2/4 Searching and Sorting, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/14-designing-abstractions/index.html">  14.  2/7 Designing Abstractions </a>
+                
+                  <a class="dropdown-item" href="../../lectures/15-implementing-abstractions-1/index.html">  15.  2/9 Implementing Abstractions, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/16-implementing-abstractions-2/index.html">  16.  2/11 Implementing Abstractions, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/17-hashing-1/index.html">  17.  2/14 Hashing, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/18-ethics/index.html">  18.  2/16 Applied Ethics </a>
+                
+                  <a class="dropdown-item" href="../../lectures/19-hashing-2/index.html">  19.  2/18 Hashing, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/20-linked-lists-1/index.html">  20.  2/23 Linked Lists, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/21-linked-lists-2/index.html">  21.  2/25 Linked Lists, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/22-bsts-1/index.html">  22.  2/28 Binary Search Trees, Part I </a>
+                
+                  <a class="dropdown-item" href="../../lectures/23-bsts-2/index.html">  23.  3/2 Binary Search Trees, Part II </a>
+                
+                  <a class="dropdown-item" href="../../lectures/24-beyond-data-structures/index.html">  24.  3/4 Beyond Data Structures </a>
+                
+                  <a class="dropdown-item" href="../../lectures/25-graphs.html">  25.  3/7 Graphs </a>
+                
+                  <a class="dropdown-item" href="../../lectures/26-msts.html">  26.  3/9 Minimum Spanning Trees </a>
+                
+                  <a class="dropdown-item" href="../../lectures/27-where-to-go-from-here/index.html">  27.  3/11 Where to Go From Here </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Assignments </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_assignments.html">About Assignments</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../a0/index.html">  0.   Welcome to CS106B! </a>
+                
+                  <a class="dropdown-item" href="index.html">  1.   Welcome to C++! </a>
+                
+                  <a class="dropdown-item" href="../a2/index.html">  2.   Fun with Collections </a>
+                
+                  <a class="dropdown-item" href="../a3/index.html">  3.   Recursion! </a>
+                
+                  <a class="dropdown-item" href="../a4/index.html">  4.   Recursion to the Rescue! </a>
+                
+                  <a class="dropdown-item" href="../a5/index.html">  5.   Bag'O Big-O </a>
+                
+                  <a class="dropdown-item" href="../a6/index.html">  6.   Data Sagas </a>
+                
+                  <a class="dropdown-item" href="../a7/index.html">  7.   The Great Stanford Hash-Off </a>
+                
+                  <a class="dropdown-item" href="../a8/index.html">  8.   The Adventures of Links </a>
+                
+                  <a class="dropdown-item" href="../a9/index.html">  9.   Huffman Coding </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Sections </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../about_section.html">About Sections</a>
+            
+            
+            
+              <a class="dropdown-item" href="https://cs198.stanford.edu/cs198/auth/default.aspx">Section Portal</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../section/section1/index.html">  1.   C++ fundamentals </a>
+                
+                  <a class="dropdown-item" href="../../section/section2/index.html">  2.   Containers </a>
+                
+                  <a class="dropdown-item" href="../../section/section3/index.html">  3.   Recursion Etudes </a>
+                
+                  <a class="dropdown-item" href="../../section/section4/index.html">  4.   Recursive Backtracking </a>
+                
+                  <a class="dropdown-item" href="../../section/section5/index.html">  5.   Class Design and Dynamic Memory Allocation </a>
+                
+                  <a class="dropdown-item" href="../../section/section6/index.html">  6.   Class Design and Hashing </a>
+                
+                  <a class="dropdown-item" href="../../section/section7/index.html">  7.   Linked Lists </a>
+                
+                  <a class="dropdown-item" href="../../section/section8/index.html">  8.   Trees </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" href="index.html#"aria-haspopup="true" aria-expanded="false"> Exams </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            
+            
+              <a class="dropdown-item" href="../../midterm_logistics.html">Midterm Logistics</a>
+            
+            
+             <div class="dropdown-divider"></div>
+            
+            
+             
+                
+                  <a class="dropdown-item" href="../../exams/1-midterm/index.html">  1.   Midterm Exam </a>
+                
+                  <a class="dropdown-item" href="../../exams/2-final/index.html">  2.   Final Exam </a>
+                
+            
+            
+          </div>
+          </li>
+        
+      
+        
+          <li class="nav-item"><a class="nav-link" href="../../schedule.html">🗓Schedule</a></li>
+        
+      
+    </ul>
+    <!---
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" id="search-text" name="query" placeholder="🔍 Search CS106B..." aria-label="Search" action="search">
+    </form>
+    --->
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    margin-bottom: 2rem;
+  }
+  .navbar-dark {
+    background-color: #444;
+  }
+ .nav-item > a {
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    font-size: small;
+    color: #bbb !important;
+  }
+  .nav-item > a:hover {
+    color: white !important;
+  }
+</style>
+    <div class="alert alert-warning text-center mx-auto p-2">
+    <big>⚠️ This page is not current. It is an archive from Winter Quarter 2022.</big>
+</div>
+
+    <main class="main container-fluid" role="main"><div class="body-container container-fluid" data-spy="scroll" data-target="#toc">
+
+<h1 class="title">Assignment 1. Welcome to C++!</h1>
+
+<hr>
+
+<p class="attribution">
+
+</p>
+
+
+    <div class="row">
+        <div class="col-xs-12 col-md-10" id="content"<>
+<!-- This boilerplate inserts formatted due date -->
+
+<!--  Boilerplate content for assignment index page -->
+
+<h2 id="due-friday-january-14-at-1030-am">Due Friday, January 14 at 10:30 am</h2>
+
+<ul>
+  <li><small>Submissions received by the due date receive a small <strong>on-time bonus</strong>. </small></li>
+  <li><small>All students are granted a pre-approved extension or "grace period" of 24 hours after the due date. Late submissions are accepted during the grace period with no penalty.</small></li>
+  <li><small>The <strong>grace period expires Sat, Jan 15 at 10:30 am</strong>, after which we cannot accept further late submissions.</small></li>
+  <li><small>All due dates and submission times are expressed in Pacific time.</small></li>
+</ul>
+
+<p><strong><em>This assignment must be completed individually. Working in groups is not permitted.</em></strong></p>
+
+<hr />
+
+<p>Here it is – the first programming assignment of the quarter! This assignment is designed to get you comfortable designing and building software in C++. It consists of five problems that collectively play around with control structures, string processing, recursion, and problem decomposition in C++. By the time you've completed this assignment, you'll be a lot more comfortable working in C++ and will be ready to start building larger projects.</p>
+
+<p>This assignment consists of five parts, of which four require writing code. This will be a lot to do if you start this assignment the night before it’s due, but if you make slow and steady progress on this assignment each day you should be in great shape. Here’s our recommended timetable:</p>
+
+<ul>
+  <li>
+    <p>Aim to complete Stack Overflows the day this assignment is released. You don’t need to write any code for it; it’s just about working the debugger, something you practiced in Assignment Zero.</p>
+  </li>
+  <li>
+    <p>Aim to complete the three recursion problems within five days of this assignment being released. We recommend that you spend a day each on Only Connect, Playing Fair, and Sandpiles, leaving the rest as buffer time. Recursion as a concept can take a bit of time to adjust to, and that’s perfectly normal. Allocating some extra buffer time here will give you a chance to tinker around and ask for help if you need it.</p>
+  </li>
+  <li>
+    <p>Aim to complete Plotter within seven days of this assignment being released. This part of the assignment doesn’t involve recursion and is more about learning to break down larger problems into smaller pieces and getting comfortable in C++.</p>
+  </li>
+</ul>
+
+<h2 id="assignment-logistics">Assignment Logistics</h2>
+
+<h3 id="starter-files">Starter Files</h3>
+
+<p>We provide a ZIP of the starter project. Download the zip, extract the files, and double-click the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">pro</span></code> file to open the project in Qt Creator.</p>
+
+<blockquote>
+  <p>📦 <a href="Assignment&#32;1.zip">Starter code</a></p>
+</blockquote>
+
+<h3 id="resources">Resources</h3>
+
+<p>Feel free to check out our <a href="../../resources/python_to_cpp.html" title="Python to C++ Guide">Python-to-C++ guide</a> if you're moving from Python to C++. Also, check out our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>, <a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">guide to testing</a>, and <a href="../../resources/debugging_guide.html" title="Debugging Your Code">debugging guide</a>.</p>
+
+<h3 id="getting-help">Getting Help</h3>
+
+<p>Keep an eye on the <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> for an announcement of the Assignment 1 <strong>YEAH</strong> (YEAH = Your Early Assignment Help) group session where our veteran section leaders will answer your questions and share pro tips. We know it can be daunting to sit down and break the barrier of starting on a substantial programming assignment – come to YEAH for advice and confidence to get you on your way!</p>
+
+<p>We also here to help if you get run into issues along the way! The <a href="https://edstem.org/us/courses/16604/discussion/" title="Ed Discussion Forum">Ed forum</a> is open 24/7 for general discussion about the assignment, lecture topics, the C++ language, using Qt, and more. Always start by searching first to see if your question has already been asked and answered before making a new post.</p>
+
+<p>To troubleshoot a problem with your specific code, your best bet is to bring it to the <a href="../../lair.html" title="LaIR helper hours">LaIR</a> helper hours or <a href="../../about_staff.html">office hours</a>.</p>
+
+<h2 id="part-one-stack-overflows">Part One: Stack Overflows</h2>
+
+<p>Whenever a program calls a function, the computer sets aside memory called a <strong><em>stack frame</em></strong> for that function call in a region called the <strong><em>call stack</em></strong>. Whenever a function is called, it creates a new stack frame, and whenever a function returns the space for that stack frame is recycled.</p>
+
+<p>As you saw on Wednesday, whenever a recursive function makes a recursive call, it creates a new stack frame, which in turn might make more stack frames, which in turn might make even more stack frames, etc. For example, when we computed <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></code>, we ended up creating a net of six stack frames: one for each of <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></code>. They were automatically cleaned up as soon as those functions returned.</p>
+
+<p>But what would happen if you called <code class="language-c++ highlighter-rouge"><span class="n">factorial</span></code> on a very large number, say, <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">7897987</span><span class="p">)</span></code>? This would create a lot of stack frames; specifically, it will make 7,897,988 of them (one for <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">7987987</span><span class="p">)</span></code>, one for <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">7987986</span><span class="p">)</span></code>, …, and one for <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></code>). This is such a large number of stack frames that the call stack might not have space to store them. When too many stack frames need to be created at the same time, the result is a <strong><em>stack overflow</em></strong> and the program will crash.</p>
+
+<p>In the case of <code class="language-c++ highlighter-rouge"><span class="n">factorial</span><span class="p">(</span><span class="mi">7987987</span><span class="p">)</span></code>, a stack overflow occurs because we need a large but finite number of stack frames. In other cases, stack overflows arise due to programming errors. For example, consider the following (buggy!) implementation of the digitalRootOf function from Friday’s lecture:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* This code is incorrect! Do not use it as a reference. */</span>
+<span class="kt">int</span> <span class="nf">digitalRootOf</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">digitalRootOf</span><span class="p">(</span><span class="n">sumOfDigitsOf</span><span class="p">(</span><span class="n">n</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Let’s imagine that you try calling <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="mi">7897987</span><span class="p">)</span></code>. The initial stack frame looks like this:</p>
+
+<blockquote>
+  <p><img src="so/digital-root-1.png" alt="A stack frame for `digitalRootOf` with `n = 7897987`" /></p>
+</blockquote>
+
+<p>This stack frame calls <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="n">sumOfDigitsOf</span><span class="p">(</span><span class="mi">7897987</span><span class="p">))</span></code>. The sum of the digits in the number is 7 + 8 + 9 + 7 + 9 + 8 + 7 = 55, so this fires off a call to <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="mi">55</span><span class="p">)</span></code>, as shown here:</p>
+
+<blockquote>
+  <p><img src="so/digital-root-2.png" alt="A new stack frame has been added on top of the previous one. This one has `n = 55`. There are two stack frames in total at this point." /></p>
+</blockquote>
+
+<p>This now calls <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="n">sumOfDigitsOf</span><span class="p">(</span><span class="mi">55</span><span class="p">))</span></code>, which ends up calling <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></code>:</p>
+
+<blockquote>
+  <p><img src="so/digital-root-3.png" alt="A new stack frame has been added on top of the previous one. This one has `n = 10`. There are three stack frames in total at this point." /></p>
+</blockquote>
+
+<p>This now calls <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="n">sumOfDigitsOf</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span></code>, which ends up calling <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code>:</p>
+
+<blockquote>
+  <p><img src="so/digital-root-4.png" alt="A new stack frame has been added on top of the previous one. This one has `n = 1`. There are four stack frames in total at this point." /></p>
+</blockquote>
+
+<p>This now calls <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="n">sumOfDigitsOf</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span></code>, which ends up calling <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> again, as shown here:</p>
+
+<blockquote>
+  <p><img src="so/digital-root-5.png" alt="A new stack frame has been added on top of the previous one. This one has `n = 1`. There are five stack frames in total at this point." /></p>
+</blockquote>
+
+<p>This call makes yet another call to <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code> for the same reason:</p>
+
+<blockquote>
+  <p><img src="so/digital-root-6.png" alt="A new stack frame has been added on top of the previous one. This one has `n = 1`. There are six stack frames in total at this point." /></p>
+</blockquote>
+
+<p>And <em>that</em> call makes yet <em>another</em> call to <code class="language-c++ highlighter-rouge"><span class="n">digitalRootOf</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code>:</p>
+
+<blockquote>
+  <p><img src="so/digital-root-7.png" alt="A new stack frame has been added on top of the previous one. This one has `n = 1`. There are seven stack frames in total at this point." /></p>
+</blockquote>
+
+<p>As you can see, this recursion is off to the races. It’s like an infinite loop, but with function calls. This code will trigger a stack overflow because at some point it will exhaust the memory in the call stack.</p>
+
+<p>Another place you’ll see stack overflows is when you have a recursive function that, for some reason, misses or skips over its base case. For example, let’s suppose you want to write a function <code class="language-c++ highlighter-rouge"><span class="n">isEven</span></code> that takes as input a number <em>n</em> and returns whether it’s an even number. You note that 0 is even (trust us, it is; take CS103 for details!) and, more generally, a number <em>n</em> is even precisely if <em>n</em> – 2 is even. For example, 2 is even because 2 – 2 = 0 is even, 4 is even because 4 – 2 = 2 is even, and 6 is even because 6 – 2 = 4 is even, etc. Based on this (correct) insight, you decide to write this (incorrect) recursive function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* This code is incorrect! Do not use it as a reference. */</span>
+<span class="kt">bool</span> <span class="nf">isEven</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">isEven</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, what happens if you call <code class="language-c++ highlighter-rouge"><span class="n">isEven</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></code>? This initially looks like this:</p>
+
+<blockquote>
+  <p><img src="so/is-even-1.png" alt="A stack frame for `isEven` with `n = 5`" /></p>
+</blockquote>
+
+<p>This call will call <code class="language-c++ highlighter-rouge"><span class="n">isEven</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span></code>, as shown here:</p>
+
+<blockquote>
+  <p><img src="so/is-even-2.png" alt="A new stack frame has been added on top of the previous one. This one has `n = 3`. There are two stack frames in total at this point." /></p>
+</blockquote>
+
+<p>And that call then calls <code class="language-c++ highlighter-rouge"><span class="n">isEven</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code>:</p>
+
+<blockquote>
+  <p><img src="so/is-even-3.png" alt="A new stack frame has been added on top of the previous one. This one has `n = 1`. There are three stack frames in total at this point." /></p>
+</blockquote>
+
+<p>And here’s where things go wrong. This function now calls <code class="language-c++ highlighter-rouge"><span class="n">isEven</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></code>, skipping over the base case:</p>
+
+<blockquote>
+  <p><img src="so/is-even-4.png" alt="A new stack frame has been added on top of the previous one. This one has `n = -1`. There are four stack frames in total at this point." /></p>
+</blockquote>
+
+<p>This call then calls <code class="language-c++ highlighter-rouge"><span class="n">isEven</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span></code>:</p>
+
+<blockquote>
+  <p><img src="so/is-even-5.png" alt="A new stack frame has been added on top of the previous one. This one has `n = -3`. There are five stack frames in total at this point." /></p>
+</blockquote>
+
+<p>And we’re off to the Stack Overflow Races – <em>n</em> will keep getting more negative until we’re out of space.</p>
+
+<h3 id="step-one-see-a-stack-overflow">Step One: See a Stack Overflow</h3>
+
+<p>There are two different ways that you can run a C++ program through Qt Creator. The first is to run the program normally, which you can do by clicking the large green triangle "run" button. The second is to run the program with the debugger engaged, which you saw how to do in Assignment 0. The behavior of a program that triggers a stack overflow is different based on whether it's running with the debugger on or off.</p>
+
+<p>To see this, run the provided starter files without the debugger engaged (that is, with the green triangle run button). Click the "Stack Overflows" option. You'll see a message and a button at the bottom of the window that will trigger a stack overflow. Click that button and watch what happens. This is what it looks like when a C++ program crashes. What you see will depend on what operating system you're using. <strong><em>Write down a description of what you saw happen in the file comments of <code class="language-c++ highlighter-rouge"><span class="n">StackOverflow</span><span class="p">.</span><span class="n">cpp</span></code>, up at the top of the file.</em></strong> Now, if you see similar behavior in the future, you'll be able to say "oh yeah, that probably means my program crashed."</p>
+
+<p>Next, run the program again, but this time with the debugger turned on. Follow the same steps as above to trigger the stack overflow. This time, you should see the debugger pop up and point at a line in the program where the stack overflow occurred. You'll also see the call stack, which should be filled with lots and lots of calls to the same function. Now that you've got the debugger engaged, you can investigate which function triggered the stack overflow and, ideally, to work out what went wrong. You don't need to write anything down just yet. For now, hit the red "stop" button to close the program.</p>
+
+<p>Going forward, as you're writing your first recursive functions, keep what you just saw in mind. If you see something that looks like your program crashed with a stack overflow, turn on the debugger and run it again. You'll then be taken to the exact spot where the stack overflow occurred, and from there you can walk the call stack to see what's up. Do you see multiple calls to a recursive function with the same parameters? Or a sequence of negative values getting more negative? That might indicate what's going on.</p>
+
+<h3 id="step-two-trace-a-stack-overflow">Step Two: Trace a Stack Overflow</h3>
+
+<p>In this part of the assignment, we’ve included a recursive function that looks like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">triggerStackOverflow</span><span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">triggerStackOverflow</span><span class="p">(</span><span class="n">kGotoTable</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here, <code class="language-c++ highlighter-rouge"><span class="n">kGotoTable</span></code> is a giant (1024-element) array of the numbers 0 through 1023 that have been randomly permuted. This function looks up its argument in the table, then makes a recursive call using that argument. As a result, the series of recursive calls made is extremely hard to predict by hand, and since the recursion never stops (do you see why?) this code will always trigger a stack overflow.</p>
+
+<p>Our starter code includes the option to call this function passing in 137 as an initial value. Run the provided starter code in debug mode (you learned how to do that in Assignment 0!) and trigger the stack overflow. You’ll get an error message that depends on your OS (it could be something like “segmentation fault,” “access violation,” “stack overflow,” etc.) and the debugger should pop up. Walk up and down the call stack and inspect the sequence of values passed in as parameters to <code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span></code>.</p>
+
+<p>We’ve specifically crafted the numbers in <code class="language-c++ highlighter-rouge"><span class="n">kGotoTable</span></code> so that the calls in <code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span></code> form a cycle. Specifically, <code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">137</span><span class="p">)</span></code> calls <code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code> for some number <em>x</em>, and that calls <code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="n">y</span><span class="p">)</span></code> for some number <em>y</em>, and that calls <code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></code> for some number <em>z</em>, etc. until eventually there’s some number <em>w</em> where <code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="n">w</span><span class="p">)</span></code> calls <code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">137</span><span class="p">)</span></code>, starting the cycle anew.</p>
+
+<p>Your task in this part of the assignment is to tell us the sequence of the numbers in the cycle. For example, if the sequence was</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">137</span><span class="p">)</span></code> calls</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">106</span><span class="p">)</span></code>, which calls</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">271</span><span class="p">)</span></code>, which calls</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">137</span><span class="p">)</span></code>, which calls</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">106</span><span class="p">)</span></code>, which calls</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">271</span><span class="p">)</span></code>, which calls</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">137</span><span class="p">)</span></code>, which calls</li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="mi">106</span><span class="p">)</span></code>, which calls</li>
+</ul>
+
+<p>Then you would give us the cycle 137, 106, 271, 137.</p>
+
+<h3 id="your-task">Your Task</h3>
+
+<p>Below is a quick summary of the deliverables for this part of the assignment. See the above sections for more details.</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>
+    <p>Run the provided program without the debugger engaged and trigger a stack overflow using the menu. Update the file comments at the top of <code class="language-c++ highlighter-rouge"><span class="n">StackOverflow</span><span class="p">.</span><span class="n">cpp</span></code> to describe what you saw happen when the stack overflow occurred.</p>
+  </li>
+  <li>
+    <p>Run the provided program a second time with the debugger engaged and trigger a stack overflow using the menu. Walk up and down the call stack in the debugger, inspecting the arguments to the recursive call, to determine what the cycle of recursive calls is. Then, update the file comments at the top of <code class="language-c++ highlighter-rouge"><span class="n">StackOverflow</span><span class="p">.</span><span class="n">cpp</span></code> to list the cycle of recursive calls.</p>
+  </li>
+</ol>
+
+</div>
+
+<p><br /></p>
+
+<h3 id="notes">Notes</h3>
+
+<p>Some notes on this part of the assignment:</p>
+
+<ul>
+  <li>
+    <p>The topmost entry on the call stack might be corrupted and either not show a value or show the wrong number. Don’t worry if that’s the case – just move down an entry in the stack.</p>
+  </li>
+  <li>
+    <p>Remember that if function <em>A</em> calls function <em>B</em>, then function <em>B</em> will appear higher on the call stack than function <em>A</em> because function <em>B</em> was called more recently than function <em>A</em>. Make sure you don’t report the cycle in reverse order!</p>
+  </li>
+  <li>
+    <p>When you run the program in Debug mode, Qt Creator will switch to Debug View, which has a bunch of windows and side panels to view information about the running program. That’s great when you’re debugging, and not so great when you’re just trying to write code. You can switch back to the regular code-writing view by clicking the “Edit” button in the left side pane.</p>
+  </li>
+  <li>
+    <p>You shouldn’t need to edit <code class="language-c++ highlighter-rouge"><span class="n">StackOverflow</span><span class="p">.</span><span class="n">h</span></code> in the course of solving this problem.</p>
+  </li>
+</ul>
+
+<h2 id="part-two-only-connect">Part Two: Only Connect</h2>
+
+<p>The last round of the British quiz show <em>Only Connect</em> consists of puzzles of the following form: can you identify these movie titles, given that all characters except consonants have been deleted?</p>
+
+<blockquote>
+  <p><code class="language-c++ highlighter-rouge"><span class="n">BTYNDTHBST</span></code>      <code class="language-c++ highlighter-rouge"><span class="n">MN</span></code>      <code class="language-c++ highlighter-rouge"><span class="n">CTCHMFYCN</span></code>      <code class="language-c++ highlighter-rouge"><span class="n">SRSMN</span></code></p>
+</blockquote>
+
+<p>The first is "<strong>B</strong>eau<strong>ty</strong> a<strong>nd</strong> <strong>th</strong> <strong>B</strong>ea<strong>st</strong>," the second is "<strong>M</strong>oa<strong>n</strong>a," the third is "<strong>C</strong>a<strong>tch</strong> <strong>M</strong>e I<strong>f</strong> <strong>Y</strong>ou <strong>C</strong>a<strong>n</strong>," and we'll leave the last one as a mystery for you to work out if you're so inclined.</p>
+
+<p>To form a puzzle string like this, you simply delete all characters from the original word or phrase except for consonants, then convert the remaining letters to ALL-CAPS.</p>
+
+<p>Your task is to write a <strong><em>recursive</em></strong> function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">onlyConnectize</span><span class="p">(</span><span class="n">string</span> <span class="n">phrase</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a string, then transforms it into an <em>Only Connect</em> puzzle. For example:</p>
+
+<ul>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span><span class="p">(</span><span class="s">"Elena Kagan"</span><span class="p">)</span></code> returns <code class="language-c++ highlighter-rouge"><span class="s">"LNKGN"</span></code>,</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span><span class="p">(</span><span class="s">"Antonin Scalia"</span><span class="p">)</span></code> returns <code class="language-c++ highlighter-rouge"><span class="s">"NTNNSCL"</span></code>,</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span><span class="p">(</span><span class="s">"EE 364A"</span><span class="p">)</span></code> returns <code class="language-c++ highlighter-rouge"><span class="s">""</span></code>,</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span><span class="p">(</span><span class="s">"For sale: baby shoes, never worn."</span><span class="p">)</span></code> returns <code class="language-c++ highlighter-rouge"><span class="s">"FRSLBBYSHSNVRWRN"</span></code>,</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span><span class="p">(</span><span class="s">"I'm the bad guy. (Duh!)"</span><span class="p">)</span></code> returns <code class="language-c++ highlighter-rouge"><span class="s">"MTHBDGYDH"</span></code>, and</p>
+  </li>
+  <li>
+    <p><code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span><span class="p">(</span><span class="s">"Annie Mae, My Sea Anemone Enemy!"</span><span class="p">)</span></code> returns <code class="language-c++ highlighter-rouge"><span class="s">"NNMMYSNMNNMY"</span></code>.</p>
+  </li>
+</ul>
+
+<p>Notice that the letter Y isn’t removed from these strings. While you could argue that Y counts as a vowel in English, the actual BBC show leaves the letter Y in.</p>
+
+<p>The starter code that we’ve provided contains code to test your function on certain inputs. These tests check a few sample strings and are not designed to be comprehensive. In addition to implementing the <code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span></code> function, you will need to add in at least one new test of your own using the <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> macro. To do so, use this syntax:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">"description of the test"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Put your testing code here. */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Take a look at the other tests provided to get a sense of how to write a test case. The <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_EQUAL</span></code> macro takes in two expressions. If those expressions are equal, great! Nothing happens. Otherwise, <code class="language-c++ highlighter-rouge"><span class="n">EXPECT</span></code> reports an error. You can run the tests by choosing the “Run Tests” button from the demo app. You can read more about how these tests work through our <a href="../../resources/testing_guide.html" title="Testing and the SimpleTest framework">Guide to Testing</a>.</p>
+
+<p>Be strategic about the tests you add. What are some tricky cases you might want to confirm work correctly? Are there any edge cases (small cases, unusual cases, etc.) that would be worth testing?</p>
+
+<p>Once you have everything working, run our demo program to play around with your code interactively. Then, leave an <em>Only Connect</em> puzzle of your own choosing for your section leader! To do so, edit the file comments at the top of the file with the consonant string, along with a hint.</p>
+
+<h3 id="your-task-1">Your Task</h3>
+
+<p>To summarize, here’s what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>
+    <p>Implement the <code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">OnlyConnect</span><span class="p">.</span><span class="n">cpp</span></code>. This function must be implemented recursively. It takes as input a string. The output should be that same string, in upper case, with all characters except consonants deleted. Feel free to write helper functions if you’d like. As you go, test your code by using the “Run Tests” button in the provided program.</p>
+  </li>
+  <li>
+    <p>Add at least one test case using the <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> macro. Your test should go in the file <code class="language-c++ highlighter-rouge"><span class="n">OnlyConnect</span><span class="p">.</span><span class="n">cpp</span></code>, preferably with all the other test cases. For full credit, your test case should check some style of input that wasn’t previously addressed by the provided tests.</p>
+  </li>
+  <li>
+    <p>Leave an Only Connect puzzle for your section leader in the comments at the top of the file.</p>
+  </li>
+</ol>
+
+</div>
+
+<p>As you’re writing up your solution to this problem, remember that coding style is important. We have a <a href="../../resources/style_guide.html" title="Style Guide">style guide</a> available on the CS106B website. Take a few minutes to read over it, then review your code to make sure it conforms to those style expectations. In particular, <em>make sure to indent your code!</em> On Qt Creator, you can automatically indent your code by pressing Command-I or CTRL-I. We recommend that you indent early and indent often to make sure that your code is structured the way you think it is.</p>
+
+<h3 id="notes-1">Notes</h3>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>All C++ programs begin inside the <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code> function, and we’ve already written this function for you in one of the starter files. You just need to implement <code class="language-c++ highlighter-rouge"><span class="n">onlyConnectize</span></code> and are not responsible for writing <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code>. (In fact, if you did try to write your own <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code> function here, you’d get an error because there would be two different versions of <code class="language-c++ highlighter-rouge"><span class="n">main</span><span class="p">()</span></code> and C++ wouldn’t know which one to pick!)</p>
+  </li>
+  <li>
+    <p>If one of the test cases crashes with a stack overflow, it will cause the entire program to crash. But not to worry! You've seen how to recognize stack overflows in the first part of this assignment. If you think you're seeing a stack overflow, run the program in debug mode, find where the stack overflow is, and explore the call stack and local variables window to isolate what's going on.</p>
+  </li>
+  <li>
+    <p>Your solution must be recursive. You may not use loops (<code class="language-c++ highlighter-rouge"><span class="k">while</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">for</span></code>, <code class="language-c++ highlighter-rouge"><span class="k">do</span><span class="err">…</span><span class="k">while</span></code>, or <code class="language-c++ highlighter-rouge"><span class="k">goto</span></code>).</p>
+  </li>
+  <li>
+    <p>Make sure that you’re always returning a value from your recursive function. It’s easy to accidentally forget to do this when you’re getting started with recursion.</p>
+  </li>
+  <li>
+    <p>You can use <code class="language-c++ highlighter-rouge"><span class="n">toUpperCase</span></code> from the <code class="language-c++ highlighter-rouge"><span class="s">"strlib.h"</span></code> header to convert a single character to upper case. It takes in a <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code>, then returns the upper-case version of that letter. If you call <code class="language-c++ highlighter-rouge"><span class="n">toUpperCase</span></code> on a non-letter character like <code class="language-c++ highlighter-rouge"><span class="sc">'$'</span></code> or <code class="language-c++ highlighter-rouge"><span class="sc">'*'</span></code>, it will return the original character unmodified.</p>
+  </li>
+  <li>
+    <p>The <code class="language-c++ highlighter-rouge"><span class="n">isalpha</span></code> function from the <code class="language-c++ highlighter-rouge"><span class="o">&lt;</span><span class="n">cctype</span><span class="o">&gt;</span></code> header takes in a character and returns whether it’s a letter. There is no library function that checks if a letter is a consonant or vowel, though.</p>
+  </li>
+  <li>
+    <p>You should delete all characters that aren't consonants, including spaces, numbers, digits, etc.</p>
+  </li>
+  <li>
+    <p>If you’re coming from Python, note that C++ doesn’t have an in operator like the one in Python and that the and and or operators are denoted by <code class="language-c++ highlighter-rouge"><span class="o">&amp;&amp;</span></code> and <code class="language-c++ highlighter-rouge"><span class="o">||</span></code>, respectively. Check out the <a href="../../resources/python_to_cpp.html" title="Python to C++ Guide">guide to transitioning from Python to C++</a> on the course website for more information.</p>
+  </li>
+  <li>
+    <p>Remember that C++ treats individual characters differently than strings. Individual characters have type <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code>. To talk about a specific single character, you must use single quotes (e.g. <code class="language-c++ highlighter-rouge"><span class="sc">'a'</span></code>rather than <code class="language-c++ highlighter-rouge"><span class="s">"a"</span></code>). Strings have type <code class="language-c++ highlighter-rouge"><span class="n">string</span></code>. To talk about a specific string, you <em>must</em> use doublequotes (e.g. <code class="language-c++ highlighter-rouge"><span class="s">"hello"</span></code> rather than <code class="language-c++ highlighter-rouge"><span class="err">'</span><span class="n">hello</span><span class="err">'</span></code>).</p>
+  </li>
+  <li>
+    <p>You can convert a <code class="language-c++ highlighter-rouge"><span class="kt">char</span></code> to a <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> by using the <code class="language-c++ highlighter-rouge"><span class="n">charToString</span></code> function from <code class="language-c++ highlighter-rouge"><span class="s">"strlib.h"</span></code>.</p>
+  </li>
+  <li>
+    <p>You are welcome to add your own helper functions when solving this problem. Those functions must obey the same rules as the main function (e.g. no loops).</p>
+  </li>
+  <li>
+    <p>Just to make sure you didn’t miss this, we are <strong><em>not</em></strong> treating the letter <code class="language-c++ highlighter-rouge"><span class="n">y</span></code> as a vowel. This is in line with what the actual BBC show does.</p>
+  </li>
+  <li>
+    <p>You shouldn’t need to edit <code class="language-c++ highlighter-rouge"><span class="n">OnlyConnect</span><span class="p">.</span><span class="n">h</span></code> in the course of solving this problem.</p>
+  </li>
+</ul>
+
+<h2 id="part-three-playing-fair">Part Three: Playing Fair</h2>
+
+<p>Consider the following scenarios:</p>
+
+<ul>
+  <li>
+    <p>Ten people want to play pick-up basketball. They select one person to captain team A and one to captain team B. The two captains then take turns choosing players for their team. One option would be to alternate between captains A and B, but that would give the team that picked first a noticeable advantage over the other. In what order should the captains pick players?</p>
+  </li>
+  <li>
+    <p>The World Chess Championship is a multi-game chess match held every two years between the reigning world champion and a challenger. In chess, white has a slight advantage over black, so both players should have an equal number of games as white and as black. However, if one player gets too many games as white early on, they might accumulate a score advantage early on that puts pressure on the other player. In what order should the players play as white and black?</p>
+  </li>
+  <li>
+    <p>In old-school NFL rules, if a postseason football game went to overtime, one team would get possession of the ball and be given a chance to score. If they scored, they’d instantly win the game. If they didn’t, the other team would get possession and a chance to score. If they didn’t, the first team would get another try, etc. This gives an advantage to whoever gets possession first. What’s a better way to decide which team gets a chance to score to make this as fair as possible?</p>
+  </li>
+</ul>
+
+<p>These scenarios all have a core setup in common. There are two parties (we’ll call them A and B) who take turns at an activity that confers an advantage to whoever performs it first. The goal is to determine the order in which A and B should perform that activity so as to make it as close to fair as possible.</p>
+
+<p>There’s a clever recursive technique for addressing this problem that keeps the advantage of going first to a minimum. We’re going to consider two kinds of sequences: <strong><em>A-sequences</em></strong> and <strong><em>B-sequences</em></strong>, which each give a slight advantage to players A and B, respectively.</p>
+
+<p>There are different A-sequences and B-sequences of different lengths. Each sequence is given a number called its <strong><em>order</em></strong>. The higher the order of the sequence, the more games are played. For example, here are the A and B sequences of orders 0, 1, 2, 3, and 4:</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+
+<table class="tg" align="center">
+<thead>
+  <tr>
+    <th class="tg-0pky"></th>
+    <th class="tg-0pky">Order 0</th>
+    <th class="tg-0pky">Order 1</th>
+    <th class="tg-0pky">Order 2</th>
+    <th class="tg-0pky">Order 3</th>
+    <th class="tg-0pky">Order 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">A-sequence</td>
+    <td class="tg-c3ow" style="color: blue;">A</td>
+    <td class="tg-c3ow" style="color: blue;">AB</td>
+    <td class="tg-c3ow" style="color: blue;">ABBA</td>
+    <td class="tg-c3ow" style="color: blue;">ABBABAAB</td>
+    <td class="tg-c3ow" style="color: blue;">ABBABAABBAABABBA</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">B-sequence</td>
+    <td class="tg-c3ow" style="color: red;">B</td>
+    <td class="tg-c3ow" style="color: red;">BA</td>
+    <td class="tg-c3ow" style="color: red;">BAAB</td>
+    <td class="tg-c3ow" style="color: red;">BAABABBA</td>
+    <td class="tg-c3ow" style="color: red;">BAABABBAABBABAAB</td>
+  </tr>
+</tbody>
+</table>
+
+<p>We can interpret these sequences as instructions of who gets to play when. For example, the A-sequence of order 2, ABBA, can be thought of as saying “A plays first, then B, then B again, then A again.” There’s a slight advantage to A going first, but it’s mitigated because B gets two turns in a row. The B-sequence of order three, BAABABBA, means “B takes a turn, then A, then A again, then B, then A, then B, then B again, then A.” If you think about what this looks like in practice, it means that B has a little advantage from going first, but the other alternations ensure that A gets to recoup some of that disadvantage later on.</p>
+
+<p>Right now these sequences might look mysterious, but there’s a nice pattern. Take the A-sequence of order 4, <code class="language-c++ highlighter-rouge"><span class="n">ABBABAABBAABABBA</span></code>, and split it in half down the middle, as shown to the right. That gives back the two sequences <span style="color:blue">ABBABAAB</span> and <span style="color:red">BAABABBA</span>. If we look in the table shown above, we can see that this first sequence is the A-sequence of order 3, and the second sequence is the B-sequence of order 3. Interesting!</p>
+
+<p>More generally, the pattern looks like this: if you take an A-sequence of order <em>n</em> (where <em>n</em> &gt; 0) and split it in half, you get back an A-sequence of order <em>n</em> – 1 followed by a B-sequence of order <em>n</em> – 1. Similarly, if you take a B-sequence of order <em>n</em> (with <em>n</em> &gt; 0) and split it in half, you get a B-sequence of order <em>n</em> – 1 followed by an A-sequence of order <em>n</em> – 1. This process stops when you need to form the A-sequence or B-sequence of order 0, which are just <code class="language-c++ highlighter-rouge"><span class="n">A</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">B</span></code>, respectively.</p>
+
+<p>Using these observations, implement a pair of functions</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="nf">aSequenceOfOrder</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+<span class="n">string</span> <span class="nf">bSequenceOfOrder</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that take as input a number <em>n</em> ≥ 0, then return the A-sequence and B-sequence of order <em>n</em>, respectively. As with the Only Connect problem, these functions must be recursive and must not use loops.</p>
+
+<p>If someone calls either function passing in a negative value of <em>n</em>, you should use the <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> function from the header <code class="language-c++ highlighter-rouge"><span class="s">"error.h"</span></code> to report an error. You call this function by writing</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">error</span><span class="p">(</span><span class="s">"a string containing your error message"</span><span class="p">)</span>
+</code></pre></div></div>
+<p>The <code class="language-c++ highlighter-rouge"><span class="n">error</span></code> function immediately jumps out of the function to say that something terrible has happened. You can think of it as an "emergency abort" that will leave the current function in a panic. In that sense, it's kind of like a <code class="language-c++ highlighter-rouge"><span class="k">return</span></code> statement - it means the function has finished running.</p>
+
+<p>We’ve included some tests you can use to check your solution, but they aren’t exhaustive. You’ll need to add at least one custom test case, and ideally more. You might notice that we’ve used the <code class="language-c++ highlighter-rouge"><span class="n">EXPECT_ERROR</span></code> macro in one of our test cases. This macro evaluates the expression and sees whether it calls the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error. If so, great! It makes a note that an error was indeed generated. If not, it causes the test to fail and reports that the expression failed to trigger an error.</p>
+
+<p>The starter code contains a demo of another property of these sequences. Imagine you’re in an open field. You then read the characters of an A-sequence from left to right. Whenever you read an A, you take a step forward, then rotate 60°. Every time you read a B, you turn around without moving. Repeating this process gives an intricate and complex result. Once your code is working, run our demo app to see what it is! The slider at the bottom controls the order of the sequence.</p>
+
+<h3 id="your-task-2">Your Task</h3>
+
+<p>To summarize, here’s what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>
+    <p>Implement the <code class="language-c++ highlighter-rouge"><span class="n">aSequenceOfOrder</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">bSequenceOfOrder</span></code> functions in the file <code class="language-c++ highlighter-rouge"><span class="n">PlayingFair</span><span class="p">.</span><span class="n">cpp</span></code>. These functions should return an A-sequence and B-sequence of order <em>n</em>, respectively. These functions must be implemented recursively. If either function receives a negative number as an input, they should use the <code class="language-c++ highlighter-rouge"><span class="n">error</span><span class="p">()</span></code> function to report an error. As you go, test your code by using the “Run Tests” button in the provided program.</p>
+  </li>
+  <li>
+    <p>Add at least one test case using the <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> macro. Your test should go in the file <code class="language-c++ highlighter-rouge"><span class="n">PlayingFair</span><span class="p">.</span><span class="n">cpp</span></code>, preferably with all the other test cases. For full credit, your test case should try to check some case that wasn’t previously addressed by the bundled tests.</p>
+  </li>
+  <li>
+    <p>Once everything works, click the “Playing Fair” button in the demo program to see a cool visualization of the sequences you’ve generated.</p>
+  </li>
+</ol>
+
+</div>
+
+<p><br /></p>
+
+<h3 id="notes-2">Notes</h3>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>As with most recursive functions, you probably shouldn’t need to write much total code here. If you’ve written thirty or more lines of code and are struggling to get things working, you may be missing a easier solution route and might want to check in with your section leader for advice.</p>
+  </li>
+  <li>
+    <p>If your code triggers a stack overflow, even in a test case, it will cause the entire program to crash. In the first part of this assignment you learned what a stack overflow looks like, so if you see something that resembles a stack overflow, run your program in debug mode so that you can see where the crash is occurring and try to sort out why it's happening.</p>
+  </li>
+  <li>
+    <p>An A-sequence of order <em>n</em> has length 2<sup><em>n</em></sup> , which means that the lengths of these sequences grow extremely rapidly as a function of <em>n</em>. For reference, an order-30 A-sequence will be over a billion characters long, and an order-300 A-sequence has more characters than there are atoms in the observable universe. Don’t worry about generating sequences of those sorts of orders; stick with loworder sequences, say, with <em>n</em> ≤ 20.</p>
+  </li>
+  <li>
+    <p>If your code isn’t working, step through it in the debugger! You saw how to step through recursive code in Part One of this assignment and in Assignment Zero.</p>
+  </li>
+  <li>
+    <p>Testing is key here. The tests we’ve provided aren’t sufficient to cover all the cases that might come up. You’re required to add at least one test case, and really do take that seriously. If you’re trying to test something recursive, what sorts of cases might be good to check?</p>
+  </li>
+  <li>
+    <p>You shouldn’t need to edit <code class="language-c++ highlighter-rouge"><span class="n">PlayingFair</span><span class="p">.</span><span class="n">h</span></code> in the course of solving this problem.</p>
+  </li>
+</ul>
+
+<h2 id="part-four-sandpiles">Part Four: Sandpiles</h2>
+
+<p>One of the most beautiful ideas in computer science is that <em>simple rules give rise to complex behavior</em>. You can have straightforward principles governing a system, yet discover that repeated applications of those rules gives intricate and surprising patterns. The best way to appreciate this is to see it for yourself.</p>
+
+<p>This problem concerns a mathematical model of a sandpile called the <strong><em>Bak-Tang-Wiesenfeld</em></strong> model after the three physicists who first devised it. They modeled a pile of sand as follows. We begin with a two-dimensional grid subdivided into units called <em>cells</em>. Each cell is initially empty. We then pick a cell and start dropping grains of sand into it. Each cell is allowed to hold between 0 and 3 grains of sand. So, for example, if we had a 5 × 5 grid and started dropping sand into the center square, the first few steps would look like this:</p>
+
+<blockquote>
+  <p><img src="sp/sandpiles-1.png" alt="An empty 5x5 grid. After dropping a sand grain into the center, the center square has 1 sand grain. After dropping a second sand grain into the center, the center square has 2 sand grains. After dropping a third sand grain into the center, the center square has 3 sand grains" /></p>
+</blockquote>
+
+<p>Now, what happens when we drop a fourth grain of sand in the center? As we mentioned earlier, each cell can hold between 0 and 3 grains of sand, so we can’t have four grains of sand there. In this case, the cell <strong><em>topples</em></strong>, sending one grain of sand to each of its four neighbors in the cardinal directions (up, down, left, and right), ending up empty. This is shown here:</p>
+
+<blockquote>
+  <p><img src="sp/sandpiles-2.png" alt="We begin with 3 grains of sand in a square. After dropping one more sand grain, the square has 4 sand grains. It then topples. The cells to the north, south, east, and west now have one sand grain each, and the center square has no sand grains." /></p>
+</blockquote>
+
+<p>That might be the end of the story, or it might just be the beginning. Imagine, for example, that there are two adjacent cells, each of which contains three grains of sand. What happens when a grain of sand is dropped into one of those full cells? That initial cell topples, sending one grain of sand in each direction. One of those grains lands inside another cell holding three grains, boosting it up to four grains, causing <em>that</em> cell to topple. This is illustrated below:</p>
+
+<blockquote>
+  <p><img src="sp/sandpiles-3.png" alt="In this figure, we see a 5x5 grid. To describe it, let's use a coordinate system where (1, 1) is the top-left corner, (1, 2) is the square to the right of the top-left square, (2, 1) is the square just below the top-left corner, and (5, 5) is the square in the bottom-right corner. We begin with all cells empty except for (3, 3) and (3, 4), which have 3 sand grains each. We drop a sand grain into square (3, 3). Now, square (3, 3) has four sand grains and square (3, 4) has three. Square (3, 3) topples, sending one sand grain to each neighboring location. Now, squares (2, 3), (3, 2), and (4, 3) have one grain of sand, and square (3, 4) has four (three from before, plus one more). Square (3, 4) now topples, sending one sand grain in each direction. The net result is that squares (2, 3), (2, 4), (3, 2), (3, 3), (3, 5), (4, 3), and (4, 4) have one sand grain each." /></p>
+</blockquote>
+
+<p>A single grain of sand can cause a large cascade. For example, here’s what happens if five full cells in a plus shape are disturbed by one sand grain:</p>
+
+<blockquote>
+  <p><img src="sp/sandpiles-4.png" alt="We follow the same coordinate system as before. Initially, squares (2, 3), (3, 2), (3, 3), (3, 4), and (4, 3) have three sand grains each. We drop a sand grain into the center. Now, squares (2, 3), (3, 2), (3, 4), and (4, 3) have three sand grains each, and square (3, 3) has four sand grains. Square (3, 3) topples. Now, squares (2, 3), (3, 2), (3, 4), and (4, 3) have four sand grains each. They all topple. Now, squares (1, 3), (3, 1), (3, 5), and (5, 3) have one sand grain in them; squares (2, 2), (2, 4), (4, 2), and (4, 4) have two sand grains in them; and square (3, 3) has four sand grains in it. Square (3, 3) topples. In the final state, squares (1, 3), (2, 3), (3, 1), (3, 2), (3, 4), (3, 5), (4, 3), and (5, 3) have on grain of sand each and squares (2, 2), (2, 4), (4, 2), and (4, 4) have two grains of sand each." /></p>
+</blockquote>
+
+<p>There’s one additional case to consider, and that’s what happens at the border of the world. We can think of the cells in our grid as the surface of a table. If sand were to fall outside of the the boundaries of the world, it just falls off the table and is never seen again. For example, here’s what happens if a cell in the corner were to topple:</p>
+
+<blockquote>
+  <p><img src="sp/sandpiles-5.png" alt="We follow the same coordinate system as before. Initially, squares (1, 1), (1, 2), and (2, 1) have three grains of sand each. We drop a grain of sand into square (1, 1). Now, square (1, 1) has four grains of sand and squares (1, 2) and (2, 1) have three grains of sand each. Square (1, 1) topples. Now, squares (2, 1) and (1, 2) have four grains of sand each. They topple. The result is that squares (1, 3) and (3, 1) have one grain of sand in them and squares (1, 1) and (2, 2) have two grains of sand each." /></p>
+</blockquote>
+
+<p>If you start with an empty world and repeatedly drop grains of sand into the center square, the resulting sand patterns are <em>extremely</em>surprising. But that’s something that you’ll need to see for yourself. 😃</p>
+
+<p>Before moving on, we recommend that you take a few minutes to answer the following question: what will the world below look like if we drop a single grain of sand onto the center square? The chain reaction here is quite interesting – work this out with a pencil and paper! (You don’t need to submit your answer to this question; it’s purely for your own edification.)</p>
+
+<blockquote>
+  <p><img src="sp/sandpiles-6.png" alt="We follow the same coordinate system as before. Squares (1, 3), (2, 1), and (3, 2) have two grains of sand each. Squares (1, 1), (1, 2), (2, 2), (2, 3), and (3, 3) have three grains of sand each." /></p>
+</blockquote>
+
+<p>Your job is to implement a <strong><em>recursive</em></strong> function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">dropSandOn</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">world</span><span class="p">,</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that takes as input a row and a column index, along with a reference to <code class="language-c++ highlighter-rouge"><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span></code> representing the number of grains of sand in each cell (more on this later on), then adds a single grain of sand to the specified location. As a reminder, here’s what happens when you drop sand on a cell:</p>
+
+<ul>
+  <li>
+    <p>If the cell ends up with three or fewer grains of sand in it, you’re done.</p>
+  </li>
+  <li>
+    <p>Otherwise, empty that cell, then drop one grain of sand on each of the four neighbors.</p>
+  </li>
+</ul>
+
+<p>You might have noticed that the first argument is a <code class="language-c++ highlighter-rouge"><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span></code>, a type we haven’t encountered before. This is a type representing a fixed-size, two-dimensional grid of integers, like the grids that we showed on the previous pages. You can access and manipulate the individual cells using statements like these:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">world</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">137</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">world</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Row and column indices start at zero, and row 0, column 0 is in the upper-left corner of the screen. The rows increase from top to bottom and columns increase from left to right.</p>
+
+<p>You may be given coordinates in <code class="language-c++ highlighter-rouge"><span class="n">dropSandOn</span></code> that are outside the boundaries of the grid, either because whoever is giving you the coordinates just wants to drop sand on the floor or because something toppled off the edge. If that happens, <code class="language-c++ highlighter-rouge"><span class="n">dropSandOn</span></code> should have no effect and should leave the grid unmodified. You can test whether a coordinate is in bound by using the grid’s <code class="language-c++ highlighter-rouge"><span class="n">inBounds</span><span class="p">()</span></code> member function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">world</span><span class="p">.</span><span class="n">inBounds</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Make sure not to read or write to a grid in an out-of-bounds location. Doing so will cause the program to crash with an error message.</p>
+
+<h3 id="your-task-3">Your Task</h3>
+
+<p>To summarize, here’s what you’re expected to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<ol>
+  <li>
+    <p>Implement the <code class="language-c++ highlighter-rouge"><span class="n">dropSandOn</span></code> function in <code class="language-c++ highlighter-rouge"><span class="n">Sandpiles</span><span class="p">.</span><span class="n">cpp</span></code>. This function should simulate dropping a grain of sand onto the world, toppling as necessary. This function must be implemented recursively. As you go, test your code by using the “Run Tests” button in the provided program.</p>
+  </li>
+  <li>
+    <p>Add at least one test case using the <code class="language-c++ highlighter-rouge"><span class="n">STUDENT_TEST</span></code> macro. Your test should go in the file <code class="language-c++ highlighter-rouge"><span class="n">Sandpiles</span><span class="p">.</span><span class="n">cpp</span></code>, preferably with all the other test cases. For full credit, your test case should try to check some case that wasn’t previously addressed by the bundled tests.</p>
+  </li>
+  <li>
+    <p>Once everything is working, click the “Sandpiles” option in the sample program and take a look at the beautiful patterns that result. Isn’t that something? It’s amazing that rules that push sand grains in the four cardinal directions give rise to circles with nested triangular structures.</p>
+  </li>
+</ol>
+
+</div>
+
+<p><br /></p>
+<h3 id="notes-3">Notes</h3>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p>As before, your solution should be purely recursive and should not involve any loops.</p>
+  </li>
+  <li>
+    <p>We advise against writing any helper functions here. It’s actually easiest to write this as a single function that drops a grain of sand and handles toppling rather than splitting those bits apart.</p>
+  </li>
+  <li>
+    <p>When a cell topples, make sure to empty that cell out before you start dropping grains of sand on other squares. Otherwise, weird things can happen when sand falls back into that cell.</p>
+  </li>
+  <li>
+    <p>It actually doesn’t matter what order you visit the neighbors of a toppling cell when that cell topples. The result is always the same. (This isn’t supposed to be obvious, by the way; it’s something that requires a creative mathematical proof.)</p>
+  </li>
+  <li>
+    <p>You shouldn’t need to edit <code class="language-c++ highlighter-rouge"><span class="n">Sandpiles</span><span class="p">.</span><span class="n">h</span></code> in the course of solving this problem.</p>
+  </li>
+  <li>
+    <p>The world parameter is passed by reference (that’s what the &amp; after the type name means). For more on reference parameters, read Chapter 2.5 of the textbook.</p>
+  </li>
+</ul>
+
+<p>As before, you are required to also add in some of your own test cases. Take this seriously! It can be hard to tell whether you’ve gotten your solution working purely by looking at the output because the system evolves in such amazing and complex ways. Writing your own targeted, focused tests is a great way to make sure that what you <em>think</em> is going to happen matches what <em>actually</em> happens.</p>
+
+<p>All the code you need to write for this part of the assignment goes in the <code class="language-c++ highlighter-rouge"><span class="n">Sandpiles</span><span class="p">.</span><span class="n">cpp</span></code> file.</p>
+
+<h2 id="part-five-plotter">Part Five: Plotter</h2>
+
+<p>Before going over the code specifics, we should start off by noting that</p>
+
+<blockquote>
+  <p>☞        <strong><em>you don’t need to use recursion for this part of the assignment,</em></strong>        ☜</p>
+</blockquote>
+
+<p>since we expect that the previous four problems will have gotten you used to thinking recursively.</p>
+
+<h3 id="what-is-a-plotter">What is a Plotter?</h3>
+
+<p>A <strong><em>plotter</em></strong> is a physical device that makes two-dimensional images. Intuitively, you can think of a plotter as a device that holds a sheet of paper and then moves a pen around that paper using a robot arm. You issue commands to the plotter to move the pen around, and as the pen drags around the paper it draws an image. The pen moves around a standard Cartesian coordinate system, where (0, 0) is the origin. The <em>x</em> and <em>y</em> coordinates range between -1 and +1 (inclusive), so the coordinate (+1, +1) is in the upper-right corner of the paper and (-1, -1) is the lower-left corner of the paper. <strong><em>Initially, the pen begins at the origin, which is at the center of the page.</em></strong></p>
+
+<p>The plotter’s pen can be in one of two different states: up (raised above the page) or down (pressed onto the page). If the pen is up, then as the plotter moves the pen nothing will be drawn because the pen isn’t in contact with the page. If the pen is down, then as the plotter moves the pen the pen will draw on the paper. <strong><em>Initially, the pen begins up.</em></strong></p>
+
+<p>Some fancier plotting machines will have different inks they can put into the pen, or different tips they can use to make the pen draw narrower or wider lines. <strong><em>Initially, the pen is black and has width 1</em></strong>.</p>
+
+<p>To get the plotter to draw an image, you give the plotter a script that tells it how to move the pen. Here’s an example of a simple script you could give to a plotter, along with the output.</p>
+
+<blockquote>
+  <p><img src="pl/plotter-1.png" alt="The plotter script is as follows. Line 1 is &quot;MoveAbs -0.8 0.8&quot; (without the quotes). Line 2 is &quot;PenDown&quot;. Line 3 is &quot;MoveAbs 0.8 0.8&quot;. Line 4 is &quot;MoveAbs -0.8 -0.8&quot;. Line 5 is &quot;MoveAbs 0.8 -0.8&quot;. This draws a large letter Z." /></p>
+</blockquote>
+
+<p>Each line of the script represents a single command to the plotter. The first word on each line is the command, and, if there are any arguments needed for that command, they’re listed afterward, separated by spaces. Here’s how this script is interpreted:</p>
+
+<ul>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span> <span class="o">-</span><span class="mf">0.8</span> <span class="mf">0.8</span></code></strong>: The MoveAbs command means “move, absolute” and tells the plotter to move the pen to the given position. The next two arguments are the <em>x</em> and <em>y</em> coordinates to move to, so this places the pen at position (-0.8, 0.8). At this point, nothing will have been drawn because the pen hasn’t yet been lowered onto the page.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">PenDown</span></code></strong>: As the name suggests, this lowers the pen onto the page.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span> <span class="mf">0.8</span> <span class="mf">0.8</span></code></strong>: This means “move the pen to position (0.8, 0.8),” near the upper-right corner of the paper. The pen then moves there, drawing a line from its previous location of (-0.8, 0.8) to its new position of (0.8, 0.8). This is the horizontal line you see on top of the image.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span> <span class="o">-</span><span class="mf">0.8</span> <span class="o">-</span><span class="mf">0.8</span></code></strong>: This moves the pen to near the lower-left corner of the paper, drawing a diagonal line from the upper-right corner to the lower-left corner of the image.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span> <span class="mf">0.8</span> <span class="o">-</span><span class="mf">0.8</span></code></strong>: Move the pen near the lower-right corner, drawing the bottom line in the image.</p>
+  </li>
+</ul>
+
+<p>Here’s a different script that draws an exclamation point – or at least, a rough approximation of one:</p>
+
+<blockquote>
+  <p><img src="pl/plotter-2.png" alt="The plotter script is as follows. Line 1 is &quot;MoveAbs 0 1&quot; (without the quotes). Line 2 is &quot;PenDown&quot;. Line 3 is &quot;MoveRel 0 -1.2&quot;. Line 4 is &quot;PenUp&quot;. Line 5 is &quot;MoveRel 0 -0.3&quot;. Line 6 is &quot;MoveAbs 0 1&quot;. This draws a long vertical line with a smaller vertical line immediately below it." /></p>
+</blockquote>
+
+<p>Let’s trace through this script one line at a time.</p>
+
+<ul>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span> <span class="mi">0</span> <span class="mi">1</span></code></strong>: Moves the pen to (0, 1), the top-center of the paper, without drawing any lines because the pen begins up.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">PenDown</span></code></strong>: Lowers the pen so that we’re ready to draw.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveRel</span> <span class="mi">0</span> <span class="o">-</span><span class="mf">1.2</span></code></strong>: The <code class="language-c++ highlighter-rouge"><span class="n">MoveRel</span></code> command is short for “move, relative.” Like <code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span></code>, this moves the pen. However, whereas MoveAbs <em>x</em> <em>y</em> means “move the pen to position (<em>x</em>, <em>y</em>),” the command <code class="language-c++ highlighter-rouge"><span class="n">MoveRel</span></code> <em>dx</em> <em>dy</em> means “move the pen <em>dx</em> units over horizontally and <em>dy</em> units vertically.” In our case, <code class="language-c++ highlighter-rouge"><span class="n">MoveRel</span> <span class="mi">0</span> <span class="o">-</span><span class="mf">1.2</span></code> means “add 0 to the <em>x</em> position and -1.2 to the <em>y</em> position,” taking our pen to position (0, -0.2) and drawing the top line.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">PenUp</span></code></strong>: Picks the pen up. This means that we can reposition the pen without drawing anything.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveRel</span> <span class="mi">0</span> <span class="o">-</span><span class="mf">0.3</span></code></strong>: This adds 0 to our <em>x</em> coordinate and -0.3 to our <em>y</em> coordinate. Our pen is now in position (0, -0.5).</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">PenDown</span></code></strong>: Lower the pen for drawing.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span></code></strong>: Moves the pen to (0, -1), drawing the bottom stroke and completing the image.</p>
+  </li>
+</ul>
+
+<h3 id="our-provided-code">Our Provided Code</h3>
+
+<p>Now that you’ve gotten a better handle on what a plotter script looks like, let’s talk about what you need to do. We’ve provided you a working implementation of the following function:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">drawLine</span><span class="p">(</span><span class="kt">double</span> <span class="n">x0</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y0</span>
+              <span class="kt">double</span> <span class="n">x1</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y1</span><span class="p">,</span> 
+              <span class="n">PenStyle</span> <span class="n">info</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This function takes as input two x, y coordinates and draws a line between them. The last argument to this function is a <code class="language-c++ highlighter-rouge"><span class="n">PenStyle</span></code>. What exactly is this? In the <code class="language-c++ highlighter-rouge"><span class="n">Plotter</span><span class="p">.</span><span class="n">h</span></code> header file (look at <code class="language-c++ highlighter-rouge"><span class="n">Headers</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">Plotter</span><span class="p">.</span><span class="n">h</span></code>), you'll see that it's defined like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="nc">PenStyle</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">width</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">color</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>This is a structure, a type representing a bunch of different objects all packaged together as one. This structure type groups a <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code>named <code class="language-c++ highlighter-rouge"><span class="n">width</span></code> and a <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> named <code class="language-c++ highlighter-rouge"><span class="n">color</span></code>. The name <code class="language-c++ highlighter-rouge"><span class="n">PenStyle</span></code> refers to a type, just like <code class="language-c++ highlighter-rouge"><span class="kt">int</span></code> or <code class="language-c++ highlighter-rouge"><span class="n">string</span></code>. You can create variables of type <code class="language-c++ highlighter-rouge"><span class="n">PenStyle</span></code> just as you can variables of any other type. For example, you could declare a variable of type <code class="language-c++ highlighter-rouge"><span class="n">PenStyle</span></code> named <code class="language-c++ highlighter-rouge"><span class="n">style</span></code> like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PenStyle</span> <span class="n">style</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>One you have a variable of type <code class="language-c++ highlighter-rouge"><span class="n">PenStyle</span></code>, you can access the constituent elements of the <code class="language-c++ highlighter-rouge"><span class="k">struct</span></code> by using the dot operator. For example, you can write code like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PenStyle</span> <span class="n">style</span><span class="p">;</span>
+<span class="n">style</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">2.71828</span><span class="p">;</span>
+<span class="n">style</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="s">"orange"</span><span class="p">;</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">style</span><span class="p">.</span><span class="n">color</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>As a note, just as regular <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code> variables in C++ hold garbage values if you don't specify otherwise (see Chapter 1.5 for details), the <code class="language-c++ highlighter-rouge"><span class="kt">double</span></code> variables inside of a <code class="language-c++ highlighter-rouge"><span class="n">PenStyle</span></code> will be set to garbage if you don't initialize them. Therefore, you might want to initialize your variables like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PenStyle</span> <span class="n">style</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"black"</span> <span class="p">};</span> <span class="c1">// Everything is initialized</span>
+</code></pre></div></div>
+
+<h3 id="your-task-4">Your Task</h3>
+
+<p>With that introduction to <code class="language-c++ highlighter-rouge"><span class="k">struct</span></code>s done, let's discuss what you need to do for this part of the assignment. Your task is to write a function</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">runPlotterScript</span><span class="p">(</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">script</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>that reads a plotter script and draws whatever image it contains by making appropriate calls to the <code class="language-c++ highlighter-rouge"><span class="n">drawLine</span></code> function. The <code class="language-c++ highlighter-rouge"><span class="n">runPlotterScript</span></code> function takes in an <code class="language-c++ highlighter-rouge"><span class="n">istream</span><span class="o">&amp;</span></code>, a reference to a stream. Streams are C++’s way of getting data from an external source (the keyboard, a file, the network, etc.), and in this case lets you read the contents of a file. As a reminder, you can read all the lines of a file, one at a time, using this syntax:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">line</span><span class="p">;</span> <span class="n">getline</span><span class="p">(</span><span class="n">name</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">stream</span><span class="p">,</span> <span class="n">line</span><span class="p">);</span> <span class="p">)</span> <span class="p">{</span> 
+    <span class="cm">/* ... do something with line ... */</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Here’s a list of all the commands you might encounter:</p>
+
+<ul>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">PenDown</span></code></strong>: Lowers the pen. Has no effect if the pen is already down.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">PenUp</span></code></strong>: Raises the pen. Has no effect if the pen is already up.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span> <span class="n">x</span> <span class="n">y</span></code></strong>: Moves the pen to position (<code class="language-c++ highlighter-rouge"><span class="n">x</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">y</span></code>), drawing a line if the pen was down. The values of <code class="language-c++ highlighter-rouge"><span class="n">x</span></code> and <code class="language-c++ highlighter-rouge"><span class="n">y</span></code> can be any real numbers and might not fit within the bounds of the paper. If that’s the case, just move the pen off the page. Our <code class="language-c++ highlighter-rouge"><span class="n">drawLine</span></code> function is smart enough to only draw the part of the line that happens to be on the page.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">MoveRel</span> <span class="n">dx</span> <span class="n">dy</span></code></strong>: Adds <code class="language-c++ highlighter-rouge"><span class="n">dx</span></code> to the pen’s <em>x</em> coordinate and <code class="language-c++ highlighter-rouge"><span class="n">dy</span></code> to the pen’s <em>y</em> coordinate, drawing a line if the pen was down. As above, <em>dx</em> and <em>dy</em> can be any real numbers and might take the pen off the page.</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">PenColor</span> <span class="n">color</span></code></strong>: Changes the color of the pen to the string given by <code class="language-c++ highlighter-rouge"><span class="n">color</span></code>. (The <code class="language-c++ highlighter-rouge"><span class="n">drawLine</span></code> function supports basic color names like <code class="language-c++ highlighter-rouge"><span class="n">red</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">orange</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">yellow</span></code>, etc., along with HTML colors like <code class="language-c++ highlighter-rouge"><span class="cp">#c41e3a</span></code>. If you haven’t seen HTML colors before, check out <a href="https://www.w3schools.com/colors/colors_picker.asp">this link</a> for some examples.)</p>
+  </li>
+  <li>
+    <p><strong><code class="language-c++ highlighter-rouge"><span class="n">PenWidth</span> <span class="n">width</span></code></strong>: Changes the width of the pen to the number given by <code class="language-c++ highlighter-rouge"><span class="n">width</span></code>, which can be any positive real number. Larger widths draw thicker lines.</p>
+  </li>
+</ul>
+
+<p>You can assume that all lines from the file are properly formatted, so you don’t have to worry about what to do if there are too many or too few arguments.</p>
+
+<p>If you’re coming from Python, you’re probably used to splitting strings. The C++ <code class="language-c++ highlighter-rouge"><span class="n">string</span></code> type doesn’t have any built-in functionality to split a string, but you can include the header file <code class="language-c++ highlighter-rouge"><span class="s">"strlib.h"</span></code>, which contains the <code class="language-c++ highlighter-rouge"><span class="n">stringSplit</span></code> function. You can use <code class="language-c++ highlighter-rouge"><span class="n">stringSplit</span></code> as follows:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">name</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">result</span> <span class="o">=</span> <span class="n">stringSplit</span><span class="p">(</span><span class="n">string</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">split</span><span class="p">,</span> <span class="n">what</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">split</span><span class="o">-</span><span class="n">on</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The type <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> represents a list of strings and works similarly to Python lists. You can take a <code class="language-c++ highlighter-rouge"><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span></code> and use the <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">size</span><span class="p">()</span></code> function to see how many pieces there are, and select individual items out of it using square brackets (e.g. the item at the first position would be selected with <code class="language-c++ highlighter-rouge"><span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code>, the item at the second position would be selected with <code class="language-c++ highlighter-rouge"><span class="n">vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></code>, etc.).</p>
+
+<p>Depending on your approach, you might also want to check out the startsWith function from <code class="language-c++ highlighter-rouge"><span class="s">"strlib.h"</span></code>. We did not cover how to use the <code class="language-c++ highlighter-rouge"><span class="n">startsWith</span></code> function in lecture. However, we've provided documentation on <code class="language-c++ highlighter-rouge"><span class="n">startsWith</span></code> on the <a href="https://web.stanford.edu/dept/cs_edu/resources/cslib_docs/" title="Documentation for Stanford-specific C++ libraries">Stanford C++ Library Documentation</a> page. Learning to read documentation is an important skill as a programmer, since you'll often find yourself working with new libraries!</p>
+
+<p>To recap, here's what you need to do:</p>
+
+<div class="pset-bordered" style="background-color: white;">
+<p>Implement the <code class="language-c++ highlighter-rouge"><span class="n">runPlotterScript</span></code> function. It should do the following:</p>
+
+<ol>
+  <li>
+    <p>Initialize the plotter. The pen begins at position (0, 0) with in the “up” position, using the color <code class="language-c++ highlighter-rouge"><span class="n">black</span></code> and having width one.</p>
+  </li>
+  <li>
+    <p>Read each line of the input file. Based on the line, determine which of the <code class="language-c++ highlighter-rouge"><span class="n">PenUp</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">PenDown</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">MoveAbs</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">MoveRel</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">PenWidth</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">PenColor</span></code> commands to execute. Based on the command, make appropriate calls to <code class="language-c++ highlighter-rouge"><span class="n">drawLine</span></code>, passing in the appropriate arguments.</p>
+  </li>
+</ol>
+
+</div>
+
+<p>Our provided starter files will let you select which plotter script you’d like to run, then run your <code class="language-c++ highlighter-rouge"><span class="n">runPlotterScript</span></code> function on that script. Feel free to write your own plotter scripts to test out your plotter in a bunch of different cases.</p>
+
+<h3 id="notes-4">Notes</h3>
+
+<p>Some notes on this problem:</p>
+
+<ul>
+  <li>
+    <p><strong><em>Commands are case-insensitive</em></strong>. The commands <code class="language-c++ highlighter-rouge"><span class="n">penup</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">PeNuP</span></code>, <code class="language-c++ highlighter-rouge"><span class="n">PENUP</span></code>, and <code class="language-c++ highlighter-rouge"><span class="n">PenUp</span></code> are all equivalent. You may find the <code class="language-c++ highlighter-rouge"><span class="n">toLowerCase</span></code> function from <code class="language-c++ highlighter-rouge"><span class="s">"strlib.h"</span></code> handy here.</p>
+  </li>
+  <li>
+    <p>The only function we’re providing you is <code class="language-c++ highlighter-rouge"><span class="n">drawLine</span></code>. All the other steps here – keeping track of where the pen is, what color it is, interpreting what commands to execute, etc. – are for you to take care of.</p>
+  </li>
+  <li>
+    <p>You will likely want to use the <code class="language-c++ highlighter-rouge"><span class="n">stringToReal</span></code> function from <code class="language-c++ highlighter-rouge"><span class="s">"strlib.h"</span></code>, which takes as input a string representation of a real number and returns that real number. (It’s like the <code class="language-c++ highlighter-rouge"><span class="kt">float</span><span class="p">()</span></code> command from Python and the <code class="language-c++ highlighter-rouge"><span class="n">Double</span><span class="p">.</span><span class="n">parseDouble</span></code> method from Java)</p>
+  </li>
+  <li>
+    <p>You can assume each line of the input file is properly formatted: it’ll start with a command and have the appropriate number of arguments, each of which has the right type. You don’t need to handle the case where there are typos or errors in the file.</p>
+  </li>
+  <li>
+    <p>If you’re asked to move the pen out of the bounds of the paper (say, to position (-1, -2)), just move the pen there even though that’s not in bounds. The <code class="language-c++ highlighter-rouge"><span class="n">drawLine</span></code> function will only draw the portion of the line that’s visible within the bounds of the paper, so you don’t need to do any fancy math to determine which part of the line needs to be drawn.</p>
+  </li>
+  <li>
+    <p>If you try drawing right on the border of the paper (say, drawing a line from (-1, -1) to (+1, -1)), then the line might not be fully visible. Think about what would happen if you tried this in the real world – if you take a felt marker and draw a line right on the border between the paper and the writing surface, only part of that line might show up.</p>
+  </li>
+  <li>
+    <p>You may find reference parameters helpful here. Check out Chapter 2.5 of the textbook for more information about reference parameters.</p>
+  </li>
+  <li>
+    <p>You shouldn’t need to edit <code class="language-c++ highlighter-rouge"><span class="n">Plotter</span><span class="p">.</span><span class="n">h</span></code> in the course of solving this problem.</p>
+  </li>
+  <li>
+    <p>You might be tempted to simulate moving the pen up by changing the pen color to white so that, as the pen moves around, it doesn’t draw anything on the page. This, unfortunately, doesn’t work, because changing the pen color to white may draw unexpected white lines on the page as the pen moves. Instead, if the pen is up, just don’t call the <code class="language-c++ highlighter-rouge"><span class="n">drawLine</span></code> function when the pen moves.</p>
+  </li>
+  <li>
+    <p>Feel free to write helper functions to split the work up into multiple smaller pieces.</p>
+  </li>
+</ul>
+
+<p>You may have noticed that we didn’t bundle any test cases with this part of the assignment, and that’s because the plotter’s output is purely graphical. To test this part of the assignment, you’ll need to run the provided sample files and make sure the output matches what you expect. That might entail getting out a pencil and paper to draw out what you think you should see with those files. And feel free to create a couple of plot files of your own to test things out!</p>
+
+<h2 id="optional-part-six-extensions">(Optional) Part Six: Extensions!</h2>
+
+<p>You are welcome to add extensions to your programs beyond what's required for the assignment, and if you do, we're happy to give extra credit! If you do, please submit two sets of source files – a set of originals meeting the specifications we've set, plus a set of modified files with whatever changes you'd like. We recommend doing that by downloading two versions of the starter files, one where you'll do the base assignment and one where you'll put your extensions.</p>
+
+<p>Here are some ideas to help get you started:</p>
+
+<ul>
+  <li>
+    <p><strong><em>Only Connect:</em></strong> The puzzles given in the show Only Connect are made even more difficult because the show’s creators don’t just delete non-consonants; they also insert spaces into the result that may or may not align with the original phrase. For example, the string “O say, can you see?” might be rendered as <code class="language-c++ highlighter-rouge"><span class="s">"SYC NYS"</span></code>, giving the illusion that it’s only two words rather than the five from the original. Write a recursive function that inserts spaces in random places into your resulting string.</p>
+
+    <p>Another option: find a data set online containing a bunch of related phrases (for example, a list of movies, or historical figures, or geographic locations) and try building this into a legit trivia game. We’re curious to see what you choose to do here!</p>
+  </li>
+  <li>
+    <p><strong><em>Playing Fair:</em></strong> Once you have an A-sequence or B-sequence, you could ask exactly how fair it is under various assumptions. For example, in the NFL overtime example, what would happen if you knew that one team had a 15% chance of scoring on each possession and the other had a 13% chance? What’s the likelihood of each team winning as you take longer and longer sequences? Alternatively, suppose you have <em>three</em> people, A, B, and C, who need to choose players for three teams. Could you find a way to generalize these sequences to find fair systems for those scenarios? Or what about sequences whose lengths aren’t powers of two?</p>
+
+    <p>These sequences are related to a mathematical object called the <em>Thue-Morse sequence</em>, which has a ton of other properties. Consider reading up on the Thue-Morse sequence and seeing whether there are any other interesting things you can do with it.</p>
+
+    <p>The two interrelated recursive functions you wrote in this section are an example of <em>mutual recursion</em>, which has applications in linguistics and game theory. Consider implementing another set of mutually recursive functions. For some fun leads about places to look for this, search for <em>probabilistic context-free grammar</em>, which can be used to synthesize text, and <em>minimax</em>, an algorithm that can be used to play certain games perfectly.</p>
+  </li>
+  <li>
+    <p><strong><em>Sandpiles:</em></strong> There are many ways you could change up the behavior of this system. What happens if you decide to shift sand grains around when a cell topples not equally to each neighbor, but instead putting one sand grain into two randomly-chosen neighbors and two sand grains into a third? Or what happens if you allow cells to hold four grains of sand stably, then topple only at five? There are many variations you could explore here – try them out and see what you find!</p>
+
+    <p>The sandpile model you implemented is sometimes called the <em>Abelian sandpile</em> and is an example of a <em>chip-firing game</em>. Consider reading more about these systems and their properties. What cool things can you do with them that we didn’t think of?</p>
+  </li>
+  <li>
+    <p><strong><em>Plotter:</em></strong> Make your own images to plot! You could do that by hand, or perhaps you could write a program that generates a <code class="language-c++ highlighter-rouge"><span class="p">.</span><span class="n">plot</span></code> file containing some more complex image. We’d love to see what you come up with!</p>
+  </li>
+</ul>
+
+<h2 id="submission-instructions">Submission Instructions</h2>
+
+<p>Before you call it done, run through our <a href="../../resources/submit_checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="language-c++ highlighter-rouge"><span class="n">t</span></code>s are crossed and <code class="language-c++ highlighter-rouge"><span class="n">i</span></code>s are dotted. Make sure your code follows our <a href="../../resources/style_guide.html" title="Style Guide">style guide</a>. Then upload your completed files to Paperless for grading.</p>
+
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+
+<ul>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">StackOverflow</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">OnlyConnect</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">PlayingFair</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Sandpiles</span><span class="p">.</span><span class="n">cpp</span></code></li>
+  <li><code class="language-c++ highlighter-rouge"><span class="n">Plotter</span><span class="p">.</span><span class="n">cpp</span></code></li>
+</ul>
+
+<p>You don't need to submit any of the other files in the project folder.</p>
+
+<blockquote>
+  <p>🏁 <a href="https://cs198.stanford.edu/paperless" title="Go to Paperless site">Submit to Paperless</a></p>
+</blockquote>
+
+<p>While you’re on Paperless, take a minute to fill out some more information about yourself, such as your preferred pronouns. This will help both your section leader and the other SLs you chat with at the LaIR.</p>
+
+<p>And that’s it! You’re done!</p>
+
+<blockquote>
+  <p><strong><em>Good luck, and have fun!</em></strong></p>
+</blockquote>
+</div>
+        <div class="col-xs-hidden col-md-2"><nav class="fixed-top-right toc" id="toc"></nav></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
+
+    <script>
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '#toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '#content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h2, h3, h4',
+      });
+    </script>
+
+
+
+</div>
+
+<style>
+    p.attribution {
+        font-style: italic;
+        font-size: 80%;
+        text-align: right;
+    }
+    .body-container {
+        margin: 0 10%;
+        max-width: 55em;
+        width: 80%;
+    }
+    a.toc-link {
+      color: #aaa !important;
+      font-size: 90%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .fixed-top-right {
+        position: fixed;
+        margin-top: 0;
+        margin-left: 0;
+    }
+</style>
+
+</main>
+    <style>
+#footer {
+    font-size: 70%;
+    color:green;
+    text-align: center;
+    font-style: italic;
+    padding: 5px;
+}
+</style>
+<div id="footer" class="mt-auto">
+    All course materials © Stanford University 2021 </br>
+    Website programming by Julie Zelenski &bull; Styles adapted from Chris Piech &bull;
+    This page last updated 2022-Jan-19
+</div>
+
+
+  </body>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>
