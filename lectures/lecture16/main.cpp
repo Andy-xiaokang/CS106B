@@ -52,6 +52,6 @@ int main() {
     }
     // v.insert(50, 50);
     // v.get(50);
-    v.remove(50);
+    // v.remove(50);
     return 0;
 }
