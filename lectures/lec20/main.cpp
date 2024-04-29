@@ -4,6 +4,8 @@ using namespace std;
 
 int main() {
     linkedqueue queue;
+    cout << sizeof(linkedqueue) << endl;
+    // cout << &queue << &queue._head << &queue._tail << &queue._size << endl;
     queue.enqueue('x');
     queue.enqueue('i');
     queue.enqueue('a');
@@ -15,8 +17,8 @@ int main() {
         cout << queue.dequeue() << endl;
     }
     cout << "is empty: " << queue.isEmpty() << endl;
-    cout << "queue size" << queue.size() << endl;
-    cout << "queue's peek: " << queue.peek() << endl;
+    cout << "queue's size: " << queue.size() << endl;
+    // cout << "queue's peek: " << queue.peek() << endl;
     return 0;
 }
 

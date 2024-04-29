@@ -30,6 +30,7 @@ void linkedqueue::enqueue(char data) {
     _size++;
 }
 
+
 char linkedqueue::dequeue() {
     if (_head == nullptr) {
         error("can't dequeue from empty linked list");
