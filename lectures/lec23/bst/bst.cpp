@@ -18,7 +18,7 @@ using namespace std;
 
 struct Node
 {
-    // TRACK_ALLOCATIONS_OF(Node);
+    TRACK_ALLOCATIONS_OF(Node);
 	int data;
 	Node *left;
 	Node *right;
