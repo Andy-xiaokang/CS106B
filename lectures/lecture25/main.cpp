@@ -24,6 +24,7 @@ int main()
     table.put("Xander");
     table.put("Anjali");
     table.put("Rushank");
+    table.put("cat");
     cout << table;
     return 0;
 }
