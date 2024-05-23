@@ -1,0 +1,9 @@
+Dinosaur.plot was created by Tyler Yep.
+
+Cubes.plot was created by Jillian Tang.
+
+Star18.plot was created by Cathy Zhang.
+
+Cat.plot was a created by former CS106B student Jocelyn Thai.
+
+All other .plot files were hastily thrown together by Keith Schwarz.
