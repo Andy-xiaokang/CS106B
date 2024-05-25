@@ -1,0 +1,347 @@
+Many of the trigrams are taken from Projekt Deutscher Wortschatz from Universität Leipzig. They
+have asked us to include the following:
+
+========== Begin Notice ===========
+Any data provided by Projekt Deutscher Wortschatz are subject to copyright. Permission for use is granted free of charge solely for non-commercial personal and scientific purposes licensed under the Creative Commons License CC BY-NC. Any use that exceeds the means of query provided by the WWW-Interface, any automated queries (except using our RESTful Webservices) and any commercial use of the data obtained is forbidden without explicit written permission by the copyright owner.
+All corpora provided for download are licensed under CC BY. If you are interested in larger data sets, please contact us.
+
+Please include the following copyright notice:
+© 2021 Abteilung Automatische Sprachverarbeitung, Universität Leipzig.
+========== End Notice ===========
+
+Many of these trigrams were derived from translated versions of the bible using
+corpora and tools available at
+
+   https://github.com/christos-c/bible-corpus.
+   
+   
+Inuktitut trigrams were derived from the Nunavut Hansard Inuktitut-English Parallel Corpus 3.0.
+Per its terms, here are the contents of the README and LICENSE files:
+
+========== Begin README ==========
+                     Nunavut Hansard Inuktitut-English
+                           Parallel Corpus 3.0.1
+
+These files are provided courtesy of the Legislative Assembly of Nunavut, the
+original supplier of the data, and of the National Research Council of Canada,
+which edited them into a format that makes the data usable for natural language
+researchers.
+
+This corpus was processed in 2019 by Eric Joanis (Eric.Joanis@cnrc-nrc.gc.ca),
+with the assistance of Rebecca Knowles, Roland Kuhn, Samuel Larkin, Patrick
+Littell, Chi-kiu Lo and Darlene Stewart, National Research Council Canada, and
+Jeffrey Micher, US Army Research Laboratory.
+
+The data in this corpus is publicly available on the Legislative Assembly of
+Nunavut web site: https://www.assembly.nu.ca/
+
+Please read the accompanying LICENSE file for the Copyright and terms that
+apply to this work.
+
+An earlier pre-release of the aligned Nunavut Hansard Corpus 3.0 was made
+available to the JSALT 2019 workshop and its participants for research on
+Inuktitut-English machine translation.
+
+Any work using this corpus should cite the following paper:
+   Eric Joanis, Rebecca Knowles, Roland Kuhn, Samuel Larkin, Patrick
+   Littell, Chi-kiu Lo, Darlene Stewart and Jeffrey Micher. The Nunavut
+   Hansard Inuktitut-English Parallel Corpus 3.0 with Preliminary Machine
+   Translation Results. Submitted to LREC 2020.
+
+
+                              Release History
+
+3.0.1           2020-01-27 Patch normalize-iu-spelling.pl for long vowels
+3.0             2020-01-22 Official NH 3.0 release on NRC's Digital Repository
+3.0-prerelease3 2019-12-02 Nearly final version, for LREC paper reviewers
+3.0-prerelease2 2019-05-23 With corpus split for MT, also for JSALT workshop
+3.0-prerelease  2019-05-13 Corpus with baseline alignment, for JSALT workshop
+
+
+                         Corpus Information Sheet
+
+This corpus is collected from the Nunavut Hansard between 1999 and 2017,
+representing 16 sessions over 4 assemblies, and 687 days of debates in the
+Legislative Assembly of Nunavut.
+
+Characterization of the data and potential biases:
+ - The Nunavut Hansard consists of legislative assembly debates, and as such it
+   very different from normal speech or written language.
+ - As described in more details in the paper, in the early years the
+   transcription process was done in English first: the English speeches and
+   the live English interpretation of Inuktitut speeches constituted the
+   English version. The Inuktitut version was then a translation of the English
+   version. Starting around 2005-2006, the Hansard was produced in both
+   languages by transcribing the original speeches or their live interpretation
+   directly.
+
+File format
+ - All text files are in utf-8
+ - Inuktitut text is in syllabics, unlike previous versions of the Nunavut
+   Hansard corpus. If needed, conversion to ICI transliteration can be done
+   using the uniconv tool included with the open-source editor yudit:
+      uniconv -decode utf-8 -encode Inuktitut-ICI < syllabics-in.txt > ICI-out.txt
+   Caveat: that command outputs iso-8859-1 text, which needs to be converted
+   back to utf-8 for further processing:
+      uniconv -decode iso-8859-1 -encode utf-8 < ICI-out.txt > ICI-utf8.txt
+   Caveat 2: uniconv leaves input characters it does not know how to handle in
+   this escape sequence format: \u2219, which should be replaced back by their
+   utf-8 characters. The provided script scripts/normalize-apos-romanized.pl
+   can help post-process these as well as applying other character
+   standardization rules.
+ - NunavutHansard.en, NunavutHansard.iu and NunavutHansard.id are line aligned
+   files with the nth line in each file forming the nth sentence pair with its
+   provenance information. See below for more details.
+
+Data processing
+ - Extraction of the sentences from the Word documents:
+    - Assembly 1, Sessions 1-5, Inuktitut: these Word documents use the
+      Prosyl/Tunngavik font to encode syllabic characters. Paragraphs were
+      extracted and converted to utf8 in a font-aware way using the IUTools
+      toolkit from Inuktitut Computing (Benoît Farley).
+    - All other files: the rest of the Word documents use normal UTF8.
+      Paragraphs were extracted using AlignFactory by Terminotix.
+
+ - Some manual clean-up was done to remove parts of the files that were not
+   actually parallel. Such parts were mostly in the appendices, which were not
+   always present in both languages.
+
+ - The rest of the pipeline was processed using tools from the Portage machine
+   translation toolkit developed at the NRC: sentence splitting, tokenization,
+   sentence alignment, etc.
+
+ - Sentence alignment was done in a multi-step process similar to Bob Moore's
+   aligner (Robert C. Moore, Association-based bilingual word alignment, 2005)
+   using ssal, the NRC's reimplementation of that algorithm:
+    - Align paragraphs à la Gale&Church, then align sentences within
+      paragraphs, again à la Gale&Church.
+    - Build an IBM model using the resulting corpus, applying tokenization and
+      lowercasing. In the JSALT pre-release, no segmentation of the words
+      themselves was used. In this release BPE 10K was used. See the paper for
+      full details of this segmentation and others we experimented with.
+    - Re-align paragraphs using the IBM model à la Moore, then align sentences
+      within paragraphs, again using the IBM model.
+
+ - The final output is the original text (not tokenized or segmented), in
+   parallel plain text files, containing typically one sentence per line.
+    - Original paragraph boundaries that were not collapsed in paragraph
+      alignment are preserved as lines that are blank on both sides, but can be
+      trivially filtered out for applications that need only sentence pairs.
+    - 0-1 and 1-0 alignments were preserved and should also be filtered for
+      sentence-pair oriented processing.
+    - The Hansard.id file contains the normalized filename and line number each
+      sentence pair came from, e.g., Hansard_19990401 65 is the 65th line,
+      after alignment, from the 1999-04-01 debates.
+    - No filtering was performed post alignment: taking either side of the
+      corpus for a given day of debate, one has the entire transcript from that
+      day, in the same order as in the original Word file, with paragraph
+      boundaries that were not collapsed represented by typically 2, sometimes
+      1, blank lines.
+
+Original documents in plain text
+ - We include a copy of the corpus as extracted from the Word documents and
+   cleaned up, in plain text, with one paragraph per line. The intent of this
+   version is to enable research on improving sentence alignment.
+
+Standard split into train, dev, devtest and test
+ - In order to facilitate standardized MT evaluations, NH 3.0 provides a
+   standard split of the corpus, with a target of having a dev, devtest and
+   test set each with more or less 3000 unique sentence pairs.
+
+   To enable capturing topic drift and whole document phenomena, these sets are
+   the last files in the corpus, chronologically, rather than being sampled
+   randomly. With each corpus file corresponding to one day of debate, the last
+   three days constitute the test set: 2017-06-06, 07, 08; the three previous
+   ones, the devtest set: 2017-06-01, 02, 05; and the three before that, the
+   dev set: 2017-03-14, 05-30, 05-31. Everything else is train: 678 debate days
+   from 1999-04-01 to 2017-03-13.
+
+   Two versions of the dev, devtest and test files are provided: the first
+   version has whole documents, with blank lines marking paragraphs as
+   described above, while the -dedup versions were processed as follows to
+   facilitate sentence-oriented MT evaluation:
+    - For each of the last nine corpus days/files, remove sentence pairs where
+      either side is empty, and remove sentence pairs that exist identically
+      (using whole string equality) in any earlier day in the corpus.
+      As a result, a sentence pair in train cannot exist in any deduped held
+      out set, but also, a sentence pair in dev is not in devtest-dedup or
+      test-dedup, and a sentence pair in devtest is not in test-dedup.
+
+ - File sizes, according to wc (lines, words, characters, bytes - note that
+   lines are not sentences since paragraphs are marked by one or two blank
+   lines):
+   2585641  17330271 107111278 NunavutHansard.en.al
+   2585641   5171282  56134057 NunavutHansard.id
+   2585641   8068978 183349452 NunavutHansard.iu.al
+
+   2550682  17119119 105758164 split/train.en
+   2550682   5101364  55374922 split/train.id
+   2550682   7962320 180945667 split/train.iu
+
+     11685     63850    412154 split/dev.en
+     11685     23370    253749 split/dev.id
+     11685     33407    733856 split/dev.iu
+      3028     53766    333137 split/dev-dedup.en
+      3028      6056     65786 split/dev-dedup.id
+      3028     26872    609070 split/dev-dedup.iu
+
+     10192     64457    408981 split/devtest.en
+     10192     20384    220903 split/devtest.id
+     10192     31120    703786 split/devtest.iu
+      2674     53819    327207 split/devtest-dedup.en
+      2674      5348     57962 split/devtest-dedup.id
+      2674     24243    572148 split/devtest-dedup.iu
+
+     13082     82845    531979 split/test.en
+     13082     26164    284483 split/test.id
+     13082     42131    966143 split/test.iu
+      3602     71919    446940 split/test-dedup.en
+      3602      7204     78415 split/test-dedup.id
+      3602     34894    825907 split/test-dedup.iu
+
+Clean-up scripts
+ - We include sample scripts that we have used in our machine translation
+   experiments to clean-up the data. These perform transliteration and several
+   automated clean-up steps for various issues we observed in the data. These
+   scripts are in no way a definitive recommendation on how to process or
+   transliterate the data, we simply provide them to help other researchers
+   benefit from the work we've already put into pre-processing this data for
+   MT.
+
+ - No attempt at spelling standardization was performed on the corpus. You will
+   find character combinations that are non-standard, syllabic characters from
+   other Canadian Indigenous languages that are not part of the Inuktitut
+   alphabet, spelling variations, conversion errors, etc. The corpus is
+   published as the text is found in the official Hansard. However, we provide
+   a script for basic spelling normalization that you may use:
+   scripts/normalize-iu-spelling.pl. This script systematically applies the
+   rules of spelling from Inuktut Tusaalanga (https://tusaalanga.ca/node/2506)
+   that are reliable and unambiguous. See scripts/normalize-iu-spelling.readme
+   for a lot more details on the topic.
+
+Gold standard
+ - We include our gold standard annotations in the XML format used by InterText
+   Editor (https://wanthalf.saga.cz/intertext).
+ - The annotations in annotator1/ and annotator2/ were independently hand
+   aligned by two bilingual native speakers of Inuktitut using InterText
+   Editor.
+ - The annotations in annotator1-consensus and annotator2-consensus are the
+   result of consensus surveys completed by the annotators on all differences
+   between their alignments.
+   Whenever they agreed to that only one or the other alignment block in their
+   first pass annotations was correct, the consensus annotation reflects that
+   alignment, but cases where they thought both options were OK or in need of
+   fixing, their original annotations were left as is. Most cases left as is
+   are due to incomplete translations making the alignment task ill defined.
+
+Acknowledgements
+ - The NRC would like to acknowledge the invaluable contribution of Riel Gallant
+   and John Quirke of the Legislative Assembly of Nunavut for providing the
+   original Word files for this corpus.
+ - We would like to acknowledge the work of Gavin Nesbitt, Amanda Kuluguqtuq,
+   and Liz Aapak Fowler of Pirurvik Centre for creating the gold standard
+   annotations.
+ - We would like to acknowledge Benoît Farley for updating his Prosyl/Tunngavik
+   text extractor to meet the needs of this project, and for his role in
+   setting up and maintaining for several years, at his own expense, a site
+   with valuable resources related to the Inuktut languages:
+   http://www.inuktitutcomputing.ca
+ - We would like to thank the 2019 Annual Jelinek Memorial Workshop on Speech
+   and Language Technology (JSALT) for providing a venue for experiments and
+   feedback on a pre-release version of this corpus.
+========== End README   ==========
+
+========= Begin LICENSE ==========
+                     Nunavut Hansard Inuktitut-English
+                            Parallel Corpus 3.0
+
+                           Copyright and license
+
+For the text of this corpus:
+   Copyright (C) 1999-2020, Legislative Assembly of Nunavut.
+For the scripts and documentation accompanying this corpus:
+   Copyright (C) 2020, Her Majesty in Right of Canada
+The alignment of the corpus and the accompanying documentation and scripts were
+produced by the National Research Council of Canada.
+
+DISCLAIMER: This corpus and any derivative work created from it do not
+constitute an official transcript or translation of the debates of the
+Legislative Assembly of Nunavut, and cannot be construed as evidence of what
+its members have said.
+To consult the official transcripts, please visit https://www.assembly.nu.ca/.
+
+This work is licensed under the Creative Commons Attribution 4.0 International
+License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by/4.0/ or send a letter to Creative
+Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+                       Intent of our licensing choice
+
+We chose the license CC-BY-4.0 because it allows derivative works, such as
+improved sentence alignments or trained machine translation systems, while
+requiring that any derivative work convey our full Copyright, disclaimer and
+license statement, and a description of changes you make. Please include this
+LICENSE file and the accompanying README file in any derivative work of this
+work.
+
+You are encouraged to work with this corpus to train machine translation
+systems or any other NLP technology.
+
+You are encouraged to work with this corpus to improve on our alignments: that
+is why we provide not only the aligned corpus, but also the raw text in
+one-paragraph-per-line format, and the gold standard evaluation alignments.
+
+One thing that is not allowed is: this corpus and any derivatives you make of
+it should not be used to try to misrepresent what a Member of the Legislative
+Assembly of Nunavut has said, or be used for any defamatory purpose.
+
+Any work using this corpus should cite the following paper:
+   Eric Joanis, Rebecca Knowles, Roland Kuhn, Samuel Larkin, Patrick
+   Littell, Chi-kiu Lo, Darlene Stewart and Jeffrey Micher. The Nunavut
+   Hansard Inuktitut-English Parallel Corpus 3.0 with Preliminary Machine
+   Translation Results. Submitted to LREC 2020.
+========= End LICENSE   ==========
+
+Urdu trigrams based on this corpus:
+
+Jawaid, Bushra; Kamran, Amir and Bojar, Ondřej, 2014, Urdu Monolingual Corpus, LINDAT/CLARIAH-CZ digital library at the Institute of Formal and Applied Linguistics (ÚFAL), Faculty of Mathematics and Physics, Charles University, http://hdl.handle.net/11858/00-097C-0000-0023-65A9-5.
+
+
+
+Bhojpuri trigrams based on a corpus made available through this resource:
+
+@article{ojha2019english,
+  title={English-Bhojpuri SMT System: Insights from the Karaka Model},
+  author={Ojha, Atul Kr},
+  journal={arXiv preprint arXiv:1905.02239},
+  year={2019}
+}
+@inproceedings{karakanta2019proceedings,
+  title={Proceedings of the 2nd Workshop on Technologies for MT of Low Resource Languages},
+  author={Karakanta, Alina and Ojha, Atul Kr and Liu, Chao-Hong and Washington, Jonathan and Oco, Nathaniel and Lakew, Surafel Melaku and Malykh, Valentin and Zhao, Xiaobing},
+  booktitle={Proceedings of the 2nd Workshop on Technologies for MT of Low Resource Languages},
+  year={2019}
+}
+@article{kumar2018automatic,
+  title={Automatic identification of closely-related Indian languages: Resources and experiments},
+  author={Kumar, Ritesh and Lahiri, Bornini and Alok, Deepak and Ojha, Atul Kr and Jain, Mayank and Basit, Abdul and Dawer, Yogesh},
+  journal={arXiv preprint arXiv:1803.09405},
+  year={2018}
+}
+
+Scots trigrams based on the text "Minnie" by Sheena Blackhall, made available through the Scottish Corpus of Texts and Speech,
+available online at https://www.scottishcorpus.ac.uk/document/?documentid=1496.
+
+Asturian trigrams based on the textbook "Gramática de la Llingua Asturiana, 3ª edición" by the Asturian Language Academy
+(http://www.academiadelallingua.com/wp-content/uploads/2014/10/Gramatica_Llingua.pdf)
+
+Hawaiian language trigrams based on the book "Ka mooolelo Hawaii," available online at http://ulukau.org/elib/cgi-bin/library?e=d-0mooolelo-000Sec--11haw-50-20-frameset-book--1-010escapewin&a=d&p2=book. Thanks to Kanoe Makalii Aiu for suggesting this resource!
+
+Galician trigrams based on the text "Polos camiños das horas" by the Royal Galician Academy, available online at
+http://publicacions.academia.gal/index.php/rag/catalog/view/368/369/1215-1 
+
+Catalan trigrams based on the text "Sagarra, Una Vida Intensa" by the Institut d'Estudis Catalans, available online at
+https://publicacions.iec.cat/repository/pdf/00000210/00000063.pdf
+
+Twi trigrams based on the "English-Akuapem Twi Parallel Corpus" by Azunre et al, available online at
+https://zenodo.org/record/4432117

@@ -1,0 +1,4 @@
+Some of the terrain files we're using this quarter are large, and we figured
+it would be best if we didn't ship them directly with the starter files.
+Instead, they're downloaded from the Stanford servers on-demand. The downloaded
+terrain files will be stored here in this folder.

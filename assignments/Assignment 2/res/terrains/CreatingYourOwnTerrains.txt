@@ -1,0 +1,15 @@
+Here's how to create your own terrain file!
+
+1. In a plain-text editor, make a new file. You'll want to save it to this directory.
+
+2. The first line of your file should be the string "local", without quotes, all in lower case.
+
+3. The next two lines of the file should be the number of rows and columns in the grid, respectively.
+
+4. The next line indicates how many water sources there are in the world.
+
+5. For each of those water sources, add in two more lines giving the row and column index of where that water source is.
+
+6. After that, write out the Grid<double> representing the water heights by writing out the data one row at a time, with spaces between the heights.
+
+Hope this helps! Looking forward to seeing what you came up with!
