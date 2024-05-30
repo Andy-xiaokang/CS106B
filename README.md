@@ -16,3 +16,5 @@ lecture notes 2023 fall quarter in this repo
 [bilibili video](https://www.bilibili.com/video/BV1G7411k7jG)  
 [youtube video](https://www.youtube.com/playlist?list=PL-h0BZdG_K4kAmsfvAik-Za826pNbQd0d)  
 
+## postscript
+2022年冬版本提供的作业是齐全的，我在做2023年 fall 的版本时发现提供的资料不全，有些只能 stanford 内部的人访问，所以该仓库中 lectures 选做的2023 fall 版本，assignments and sections 做的2022 winter 版本， 此外由于2023提供的 CS106B Library 版本是2023, 而2022 winter 提供的版本是2021， 2023版本的 libray 对2021版本的 stater code 并不向下兼容， 所以做2023 版本需要编译2023版本的 Library，转做2022 winter 版本时需要从新编译2021版本的库。 
