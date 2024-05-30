@@ -1,0 +1,47 @@
+# This file contains information from rail lines around Tokyo and is adapted from:
+#
+# https://www.kanpai-japan.com/sites/default/files/uploads/2015/06/tokyo-jr-train-map.jpg
+#
+# This is very simplified and only includes the major stations.
+#
+# The file format is
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Tokyo.dst provided by Mia Tanaka mctanaka@ (thanks Mia!!)
+
+Shin-Maebashi (0, 0): Takasaki
+Takasaki (1, 0): Shin-Maebashi, Kumagaya, Hachioji
+Kumagaya (2, 0): Takasaki, Omiya, Oyama
+Oyama (7, 0): Omiya, Utsunomiya, Kumagaya, Tomobe
+Utsunomiya (8, 0): Oyama, Nasushiobara
+Nasushiobara (9, 0): Utsunomiya
+Omiya (4, 1): Kumagaya, Oyama, Akabane, Hachioji
+Mito (11, 1): Tomobe
+Akabane (6, 2): Omiya, Ueno, Ikebukuro, Abiko
+Tomobe (11, 2): Oyama, Mito, Abiko
+Ikebukuro (5, 3): Akabane, Shinjuku, Tachikawa, Tokyo, Ueno
+Abiko (9, 3): Tomobe, Narita, Akabane, Ueno
+Hachioji (2, 4): Tachikawa, Hashimoto, Takasaki, Omiya
+Tachikawa (3, 4): Hachioji, Musashi-Kosugi, Shinjuku
+Shinjuku (5, 4): Tachikawa, Ikebukuro, Tokyo, Shinagawa, Musashi-Kosugi
+Ueno (7, 4): Akabane, Ikebukuro, Tokyo, Abiko
+Kinshicho (8, 4): Chiba
+Hashimoto (2, 5): Hachioji, Shin-Yokohama, Odawara, Ofuna
+Tokyo (7, 5): Ueno, Shinjuku, Ikebukuro, Shinagawa, Chiba, Haneda-Airport, Soga
+Narita (10, 5): Abiko, Sakura
+Shinagawa (6, 6): Tokyo, Shinjuku, Musashi-Kosugi, Kawasaki, Haneda-Airport
+Chiba (9, 6): Kinshicho, Sakura, Soga
+Sakura (10, 6): Narita, Chiba, Naruto
+Naruto (11, 6): Sakura, Oami
+Shin-Yokohama (3, 7): Hashimoto, Yokohama, Musashi-Kosugi
+Musashi-Kosugi (4, 7): Shin-Yokohama, Tachikawa, Shinagawa, Shinjuku, Kawasaki
+Kawasaki (5, 7): Shinagawa, Musashi-Kosugi, Yokohama
+Haneda-Airport (8, 7): Shinagawa, Tokyo
+Soga (9, 7): Chiba, Tokyo, Oami, Kisarazu
+Oami (10, 7): Soga, Naruto
+Atami (0, 8): Odawara
+Odawara (1, 8): Atami, Shin-Yokohama, Ofuna
+Ofuna (2, 8): Hashimoto, Yokohama
+Yokohama (4, 8): Hashimoto, Shin-Yokohama, Kawasaki
+Kisarazu (9, 8): Soga
+

@@ -1,0 +1,33 @@
+# This file contains information about Japan. It's (loosely) adapted from
+# this shinkansen map:
+#
+#     https://www.japan-guide.com/e/e2018.html
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+Hakodate (5, -7): Aomori
+Aomori (5, -6): Hakodate, Morioka
+Morioka (5.5, -5): Aomori, Akita, Sendai
+Akita (4, -5): Morioka
+Sendai (5.5, -3): Morioka, Yamagata, Tokyo
+Yamagata (4, -4): Sendai
+Tokyo (5, -1): Sendai, Niigata, Kanazawa, Nagoya
+Niigata (4.75, -2.5): Tokyo
+Kanazawa (4, -2): Tokyo
+Nagoya (4, -1): Tokyo, Kyoto
+Kyoto (3, -1): Nagoya, Osaka
+Osaka (2, -1): Kyoto, Hiroshima
+Hiroshima (1, -1): Osaka, Fukuoka
+Fukuoka (0, -1): Hiroshima, Kagoshima
+Kagoshima (0, 0): Fukuoka
+

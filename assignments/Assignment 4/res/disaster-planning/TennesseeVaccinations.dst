@@ -1,0 +1,31 @@
+# File: TennesseeVaccinations.dst
+# Caroline Berg & Melanie Zhou, CS106B
+# February 12, 2021
+#
+# In recent news, Tennessee has come under fire for not having enough vaccine distribution
+# centers in its local counties. We have created a map to be used with DisasterPlanning.cpp
+# to help the Tennessee government to decide which counties should be supplied with vaccines
+# so that the most citizens are protected.
+#
+# reference map: https://www.9news.com/article/news/health/coronavirus/
+# covid-vaccine-distribution-in-tennessee/51-44052de9-d10c-42cf-8d5c-34f81b7308a9
+Fentress (0, 0): Scott, Morgan, Cumberland
+Cumberland (0, 1): Fentress, Morgan, Roane
+Scott (1, 0): Fentress, Morgan, Anderson, Campbell
+Morgan (1, 1): Fentress, Scott, Cumberland, Roane, Anderson
+Roane (1, 2): Morgan, Anderson, Knox, Loudon, McMinn, Cumberland
+McMinn (1, 3): Monroe, Loudon, Roane
+Campbell (2, 0): Scott, Anderson, Union, Claiborne
+Anderson (2, 1): Scott, Campbell, Union, Knox, Loudon, Roane, Morgan
+Loudon (2, 2): Roane, Anderson, Knox, Blount, Monroe, McMinn
+Monroe (2, 3): McMinn, Roane, Loudon, Blount
+Claiborne (3, 0): Campbell, Union, Grainger, Hancock
+Union (3, 1): Campbell, Claiborne, Grainger, Knox, Anderson
+Knox (3, 2): Anderson, Roane, Loudon, Blount, Sevier, Jefferson, Grainger, Union
+Blount (3, 3): Loudon, Knox, Sevier, Monroe
+Hancock (4, 0): Claiborne
+Grainger (4, 1): Claiborne, Hamblen, Jefferson, Knox, Union
+Hamblen (4, 2): Grainger, Jefferson, Cocke
+Jefferson (4, 3): Grainger, Hamblen, Cocke, Sevier, Knox
+Sevier (4, 4): Blount, Knox, Jefferson, Cocke
+Cocke (5, 3): Hamblen, Jefferson, Sevier

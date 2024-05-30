@@ -1,0 +1,34 @@
+Put your answers to the debugging questions from Problem One in this file.
+
+Q1: finish = 'C'  numDisks = 5  start = 'A'  temp = 'B'
+
+
+
+Q2: TowersOfHanoi.cpp solveTowersOfHanoi(int, char, char, char)
+
+
+
+Q3: 31
+
+
+
+Q4: 15
+
+
+
+Q5: "12"
+
+
+
+Q6: Set<string> thisOption = permutationsRec(remaining, chosen += ch);  change chosen += ch to chosen + ch
+
+
+
+Q7: when if calls permutationsRec(remaining, chosen += ch) function, it changes the chosen argument first, that means whenever you
+    call the recursive(callee) function you changed the caller's choosen argument,
+    permutationsRec("12", choosen = "")
+        permutationsRec("2", "1")  this function implicitly changed the caller's choosen to "1"
+            permutationsRec("", "12") this function implicily changed the caller's choosen to "12"
+
+    cause the output to {"12", "1"+"21"} the choosen = "" changed to "1" is implicitly when the first call
+

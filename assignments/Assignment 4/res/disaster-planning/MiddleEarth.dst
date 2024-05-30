@@ -1,0 +1,23 @@
+# This file contains information about Middle Earth from The Lord of the Rings franchise.
+# It's (loosely) adapted from
+# this wikipedia map:
+#
+# https://en.wikipedia.org/wiki/Middle-earth
+#
+#
+
+
+Mithlond (0, 2):
+Fornost (5, 0): Bree
+Laketown (18, 0): OldFord
+Hobbiton (3, 2): Bree, Tharbad
+Bree (6, 2): Fornost, Hobbiton, Tharbad, Rivendell
+Rivendell (11, 2): Bree
+OldFord (14, 1): Laketown, MinasTirith
+Tharbad (7, 5): Bree, Hobbiton, Edoras
+Edoras (12, 12): Tharbad, MinasTirith
+MinasTirith (17, 14): Edoras, MinasMorgul, Pelargir, OldFord
+MinasMorgul (18, 14): MinasTirith, Pelargir
+Pelargir (16, 16): MinasTirith, MinasMorgul, DolAmroth
+DolAmroth (11, 16): Pelargir, Edhellond
+Edhellond (12, 15): DolAmroth

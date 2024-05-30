@@ -1,0 +1,15 @@
+# source : https://j.17qq.com/article/qstwwctcx.html
+# Zinan Hu CS106b HW4 extension
+Nanjing (7, 0): Zhangjia Gang, Wuxi
+Zhangjia Gang(8, 1): Changshu
+Changshu(9, 2): Taicang, Suzhou
+Wuxi(4, 1): Suzhou
+Taicang(10, 3): Shanghai
+Suzhou(5, 2): Shanghai
+Shanghai(10, 4): Yangshan Gang, Jiaxing, Huzhou
+Yangshan Gang(13, 5):
+Jiaxing (7, 6): Hangzhou
+Huzhou(4, 6): Hangzhou
+Hangzhou(5, 7): Shaoxing
+Shaoxing(7, 7):
+Ningbo(10, 8): Hangzhou

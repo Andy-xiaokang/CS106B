@@ -1,0 +1,31 @@
+# This file contains the example from the assignment handout. That handout was in turn inspired
+# by this excellent schematic representation of the US highway system:
+#
+# http://www.chrisyates.net/reprographics/comics/278theinterstatesystem.jpg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+Seattle (1, 0): Butte, Portland
+Butte (2, 0): Seattle, Salt Lake City
+Portland (1, 1): Seattle, Salt Lake City, Sacramento
+San Francisco (0, 2): Sacramento
+Sacramento (1, 2): San Francisco, Portland, Salt Lake City, Los Angeles
+Salt Lake City (2, 2): Butte, Portland, Sacramento, Monroe
+Monroe (2, 3): Salt Lake City, Las Vegas
+Las Vegas (2, 4): Monroe, Barstow
+Barstow (2, 5): Las Vegas, Los Angeles, Flagstaff
+Flagstaff (3, 5): Barstow, Phoenix
+Los Angeles (1, 6): Sacramento, Barstow, Phoenix, San Diego
+Phoenix (3, 6): Flagstaff, Los Angeles, Nogales
+San Diego (1, 7): Los Angeles, Nogales
+Nogales (3, 7): San Diego, Phoenix

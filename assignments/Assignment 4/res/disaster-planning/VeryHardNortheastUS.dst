@@ -1,0 +1,52 @@
+# THIS IS A CHALLENGING TEST FILE. It's going to take a while for your program to find something
+# that works.
+#
+# This file contains information about the Northeastern US plus a part of the midwest. It's
+# stolen from this excellent schematic:
+#
+# http://www.chrisyates.net/reprographics/comics/278theinterstatesystem.jpg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+Grand Rapids (0, 0): Lansing, Chicago
+Lansing (1, 0): Grand Rapids, Detroit, Battle Creek
+Detroit (2, 0): Lansing, Battle Creek, Toledo
+White River Junction (9, 0): Concord, Springfield
+Portland (11, 0): Boston
+Concord (10, 1): White River Junction, Boston
+Battle Creek (1, 2): Lansing, Chicago, Detroit, Indianapolis
+Syracuse (6, 2): Albany, Scranton, Cleveland
+Albany (7, 2): Syracuse, Springfield, Newburgh
+Springfield (8, 2): Albany, White River Junction, Hartford, Boston
+Boston (11, 2): Portland, Concord, Springfield, New Haven
+Scranton (6, 3): Syracuse, Wilkes-Barre, Newburgh
+Newburgh (9, 3): Albany, Scranton, Hartford, New York City
+Hartford (10, 3): Newburgh, Springfield, New Haven
+New Haven (11, 3): Boston, Hartford, New York City
+Chicago (0, 4): Grand Rapids, Battle Creek, Indianapolis, Toledo
+Toledo (2, 4): Detroit, Cleveland, Dayton, Chicago
+Cleveland (4, 4): Toledo, Erie, Cambridge
+Erie (5, 4): Cleveland, Wilkes-Barre, Pittsburgh
+Wilkes-Barre (6, 4): Erie, Scranton, New York City, Harrisburg
+New York City (11, 4): Newburgh, New Haven, Harrisburg, Philadelphia
+Philadelphia (11, 5): New York City, Harrisburg, Baltimore
+Indianapolis (0, 6): Chicago, Dayton, Battle Creek
+Dayton (2, 6): Toledo, Indianapolis, Cincinnati, Columbus
+Columbus (3, 6): Dayton, Cleveland, Cambridge, Cincinnati
+Cambridge (4, 6): Columbus, Pittsburgh, Cleveland
+Pittsburgh (5, 6): Cambridge, Erie, Harrisburg
+Harrisburg (6, 6): Wilkes-Barre, Pittsburgh, Baltimore, Front Royal, New York City, Philadelphia
+Baltimore (11, 6): Philadelphia, Harrisburg, DC
+Cincinnati (2, 7): Dayton, Columbus
+Front Royal (6, 7): Harrisburg, DC
+DC (11, 7): Baltimore, Front Royal

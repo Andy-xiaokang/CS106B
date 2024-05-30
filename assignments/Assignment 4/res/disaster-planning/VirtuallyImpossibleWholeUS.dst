@@ -1,0 +1,229 @@
+# This file contains information about the Imaginary US High Speed Rail Map. It's adapted from
+# this rail map, with some adjustments:
+#
+# https://www.reddit.com/r/imaginarymaps/comments/8650k9/the_united_states_high_speed_rail_system_map_2037/
+#
+# A note from the course staff - this sample case has a *ton* of cities in it, and we actually have
+# no idea what the optimal solution is. If you can figure out the optimal solution, let us know how
+# you figured it out and what that solution is!
+
+# Alabama
+Birmingham (1242, 682): Jackson, Mobile, Nashville, Atlanta, Tallahassee
+Mobile (1210, 768): NOrleans, Birmingham, Jackson, Tallahassee
+
+# Arizona
+Phoenix (484, 618): SD, LA, LV, Flagstaff, Albuquerque, Tucson, EP
+Flagstaff (515, 574): Phoenix, Albuquerque
+Tucson (506, 682): Phoenix
+
+# Arkansas
+LtR (1068, 625): OKC, Texarcana
+Texarcana (1021, 679): Dallas, LtR
+
+# California
+Eureka (184, 305): Medford, SF
+Redding (233, 313): Medford, Reno, Sacramento
+Sacramento (250, 401): Redding, Reno, SF, Fresno, Portland, Seattle
+SF (208, 423): Sacramento, Eureka, SJ
+SJ (230, 439): SF, SB, LA
+Fresno (292, 458): Sacramento, Reno, LV, LA
+SB (260, 550): SJ, LA, HI
+LA (298, 575): SB, SJ, Fresno, LV, SD, Phoenix, Denver
+SD (315, 630): LA, Phoenix
+
+# Colorado
+Denver (706, 441): LA, SLC, Cheyenne, Albuquerque, Chicago, OKC, Wichita
+
+# Connecticut
+NHaven (1589, 309): NYC, Providence, Boston, Hamptons
+
+# Delaware
+Dover (1545, 407): Baltimore, Salisbury
+
+# Florida
+Tallahassee (1330, 767): Birmingham, Mobile, Jacksonville, Tampa
+Jacksonville (1414, 761): Orlando, Tallahassee, Savannah
+Orlando (1435, 814): Tampa, Jacksonville, Miami, Atlanta
+Tampa (1392, 853): Miami, Orlando, Tallahassee
+Miami (1484, 925): KeyWest, Tampa, Orlando
+KeyWest (1449, 962): Miami
+
+# Georgia
+Atlanta (1311, 639): Chattanooga, Birmingham, Savannah, Orlando, Columbia
+Savannah (1428, 697): Atlanta, Jacksonville, Charleston
+
+# Idaho
+Boise (437, 262): Spokane, Reno, SLC, Helena, Billings, Portland
+
+# Illinois
+Chicago (1185, 350): MKE, Dubuque, Denver, STL
+
+# Indiana
+Indianapolis (1234, 421): SoB, Chicago, Louisville, Columbus, Cincinnati
+SoB (1227, 367): Chicago, Indianapolis, GR, Cleveland
+
+# Iowa
+DM (1031, 363): Omaha, Sioux, Dubuque, Minneapolis
+Dubuque (1102, 336): Chicago, Madison, DM
+
+# Kansas
+Wichita (937, 518): Denver, Topeka, OKC
+Topeka (967, 469): KC, Wichita, Omaha
+
+# Kentucky
+Louisville (1251, 488): Indianapolis, Cincinnati, STL, Nashville, Lexington
+Lexington (1294, 498): Louisville, Cincinnati, Nashville
+
+# Louisiana
+BatonRouge (1116, 780): Texarcana, Houston, Jackson, NOrleans
+NOrleans (1162, 800): BatonRouge, Jackson, Mobile
+
+# Maine
+PortlandME (1637, 203): Concord, Augusta
+Augusta (1649, 177): PortlandME, Burlington, Lubeck, FKent
+Lubeck (1700, 141): Augusta
+QC (1585, 90): Montreal, FKent
+FKent (1641, 67): QC, Augusta
+
+# Maryland
+Salisbury (1545, 440): Dover
+Baltimore (1509, 404): DC, Dover, Philadelphia
+
+# Massachusets
+Boston (1628, 259): Albany, Providence, PortlandME, Concord
+
+# Michigan (love to the Upper Penninsula)
+Detroit (1311, 330): GR, Cleveland, Toronto
+Marquette (1195, 188): GB
+GR (1238, 315): MKE, Detroit, SoB
+
+# Minnesota
+Duluth (1053, 180): Fargo, Minneapolis
+Minneapolis (1034, 253): Fargo, Duluth, Sioux, DM, Madison, GB
+
+# Mississippi
+Jackson (1133, 706): Houston, Texarcana, BatonRouge, NOrleans, Birmingham
+
+# Missouri
+STL (1124, 478): Chicago, OKC, KC
+KC (1004, 472): STL, Topeka, Chicago, OKC
+
+# Montana
+Helena (592, 153): Boise, Billings
+Billings (650, 200): Helena, Boise, SLC, Bismark, Casper, Minneapolis
+
+# Nebraska
+Omaha (961, 380): Cheyenne, Sioux, DM, Topeka
+
+# Nevada
+Reno (300, 374): Redding, Sacramento, Fresno
+LV (411, 517): LA, Fresno, SLC, Phoenix
+
+# New Hampshire
+Concord (1608, 223): Burlington, PortlandME, Boston
+
+# New Jersey
+AC (1565, 386): Philadelphia, NYC
+
+# New York
+NYC (1570, 337): Philadelphia, Albany, Hamptons, NHaven
+Hamptons (1598, 325): NYC, NHaven
+Ithaca (1487, 290): Scranton, Syracuse
+Albany (1548, 266): NYC, Syracuse, Burlington, Boston
+Syracuse (1498, 261): Buffalo, Ithaca, Albany
+Buffalo (1422, 294): Erie, Toronto, Syracuse, Pittsburgh
+Toronto (1411, 252): Buffalo, Detroit, Montreal
+Montreal (1511, 158): Toronto, Burlington, QC
+
+# New Mexico
+Albuquerque (650, 600): Phoenix, Flagstaff, EP, Denver
+
+# North Carolina
+Raleigh (1498, 547): Myrtle, Charlotte, Richmond
+Charlotte (1418, 571): Atlanta, Columbia, Raleigh, CharlestonWV
+
+# North Dakota
+Bismark (858, 192): Billings, Fargo, Sioux
+Fargo (944, 189): Bismark, Sioux, Duluth, Minneapolis
+
+# Ohio
+Columbus (1324, 411): Indianapolis, Cincinnati, Cleveland, Pittsburgh, CharlestonWV, SoB
+Cincinnati (1299, 454): Louisville, Lexington, Indianapolis, Columbus
+Cleveland (1354, 351): Columbus, SoB, Detroit, Pittsburgh, Erie
+
+# Oklahoma
+OKC (927, 608): Denver, Wichita, LtR, Dallas, KC, STL
+
+# Oregon
+Portland (278, 133): Salem, Olympia, Spokane, Sacramento, SJ, Boise
+Salem (264, 148): Portland, Eugene
+Eugene (269, 193): Salem, Medford
+Medford (229, 242): Eugene, Redding, Eureka
+
+# Pennsylvania
+Pittsburgh (1411, 377): Columbus, Cleveland, DC, Erie, Hershey
+Erie (1390, 321): Cleveland, Pittsburgh, Buffalo
+Hershey (1506, 365): Pittsburgh, Scranton, Philadelphia
+Philadelphia (1539, 375): Baltimore, Hershey, NYC, AC, Chicago
+Scranton (1505, 324): Ithaca, Hershey
+
+# Rhode Island
+Providence (1624, 288): Boston, NHaven
+
+# South Carolina
+Charleston (1457, 664): Savannah, Columbia, Myrtle
+Columbia (1418, 620): Charleston, Charlotte, Myrtle, Atlanta
+Myrtle (1474, 626): Charleston, Columbia, Raleigh
+
+# South Dakota
+Sioux (944, 324): Omaha, Bismark, Fargo, Minneapolis, DM
+
+# Tennessee
+Nashville (1246, 568): Louisville, Lexington, Chattanooga, Memphis, Birmingham
+Memphis (1142, 608): Nashville, Chattanooga, Jackson, LtR
+Chattanooga (1280, 600): Nashville, Memphis, Atlanta
+
+# Texas
+EP (640, 730): Phoenix, Albuquerque, Dallas, SA
+SA (887, 825): EP, Austin, CC
+CC (914, 881): Houston, SA
+Houston (987, 818): CC, Austin
+Austin (917, 798): Dallas, SA, CC, Houston
+Dallas (943, 707): EP, Houston, Texarcana, Austin, OKC, LtR
+
+# Utah
+SLC (520, 373): Reno, Boise, Billings, Denver, LV
+
+# Vermont
+Burlington (1558, 196): Albany, Montreal, Augusta, Concord
+
+# Virginia
+VB (1538, 488): Richmond
+Richmond (1507, 472): VB, Raleigh, DC
+DC (1496, 421): Columbus, CharlestonWV, Pittsburgh, Richmond, Charlotte, Baltimore
+
+# Washington
+Seattle (320, 40): Olympia, Spokane, Sacramento, AK
+Olympia (308, 64): Seattle, Portland
+Spokane (432, 88): Seattle, Portland, Boise
+
+# West Virginia
+CharlestonWV (1381, 463): Columbus, Charlotte
+
+# Wisconsin
+Madison (1136, 300): Dubuque, MKE, Minneapolis, GB
+GB (1169, 258): Minneapolis, MKE, Madison, Marquette
+MKE (1176, 303): GB, Chicago, Madison
+
+# Wyoming
+Casper (685, 302): Cheyenne, Billings
+Cheyenne (717, 374): Casper, Denver, Omaha
+
+
+HI (0, 750): SB
+AK (0, 0): Seattle
+
+
+
+
+

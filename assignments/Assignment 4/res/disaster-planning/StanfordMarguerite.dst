@@ -1,0 +1,39 @@
+# This file contains information about the Stanford Campus. It's (loosely) adapted from
+# this Marguerite map:
+#
+# https://transportation.stanford.edu/sites/default/files/2021-01/marguerite-map-1.4.2021.png
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if building A links to
+# building B, then building B will implicitly link back to building A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+
+OCA (0, 2): Searsville
+Searsville (1, 4): OCA, GovCorner, MedicalSchool
+GovCorner (2, 4): FloMo, LagunitaCourt
+ShoppingCenter (3, 1): TransitCenter, MedicalSchool
+MedicalSchool (3, 2): ShoppingCenter, HooverPavillion
+JordanQuad (3, 3): LagunitaCourt, CantorArtsCenter
+LagunitaCourt (3, 4): GovCorner, JordanQuad, Tressider
+HooverPavillion (4, 1): TransitCenter, MedicalSchool, CantorArtsCenter
+CantorArtsCenter (4, 2): HooverPavillion, JordanQuad
+TransitCenter (5, 0): ShoppingCenter, HooverPavillion, ArrillagaSports
+MainQuad (5, 3): Tressider, MemAud
+Tressider (5, 4): LagunitaCourt, LawSchool, MainQuad
+FloMo (5, 5): GovCorner
+MemAud (6, 2): MainQuad, GreenLibrary, MontagHall
+GreenLibrary (6, 3): MemAud, LawSchool
+LawSchool (6, 4): Tressider, Wilbur
+MontagHall (7, 2): ArrillagaSports, MemAud, GSB
+GSB (7, 3): MontagHall, Wilbur, EVGR
+Wilbur (7, 4): LawSchool, EVGR
+ArrillagaSports (8, 2): TransitCenter, MontagHall, EVGR
+EVGR (8, 3): ArrillagaSports, GSB, Wilbur

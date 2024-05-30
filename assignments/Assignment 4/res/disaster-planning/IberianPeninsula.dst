@@ -1,0 +1,39 @@
+# This file contains information about the Iberian Peninsula. It's (loosely) adapted from
+# this rail map:
+#
+# http://mapofeurope.com/wp-content/uploads/2013/06/rail-map-of-europe.jpg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+
+A Coruna (0, 0): Vigo
+Oviedo (1, 0): Leon
+Bilbao (2, 0): Zaragoza, Valladolid
+Vigo (0, 1): A Coruna, Leon, Porto
+Leon (1, 1): Oviedo, Vigo, Valladolid
+Huesca (3, 0): Zaragoza
+Porto (0, 2): Vigo, Salamanca, Lisboa
+Salamanca (1, 2): Porto, Valladolid
+Valladolid (2, 2): Leon, Bilbao, Madrid
+Zaragoza (3, 2): Huesca, Bilbao, Barcelona, Madrid
+Barcelona (4, 2): Zaragoza, Valencia
+Lisboa (0, 3): Porto, Faro, Madrid
+Madrid (2, 3): Valladolid, Lisboa, Toledo, Zaragoza, Valencia
+Toledo (2, 4): Madrid, Valencia, Cordoba
+Valencia (3, 4): Barcelona, Alicante, Madrid, Toledo
+Faro (0, 5): Lisboa, Sevilla
+Sevilla (1, 5): Faro, Cadiz, Cordoba
+Cordoba (2, 5): Sevilla, Toledo, Malaga
+Alicante (3, 5): Valencia
+Cadiz (1, 6): Sevilla
+Malaga (2, 6): Cordoba

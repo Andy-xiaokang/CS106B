@@ -1,0 +1,23 @@
+# This map contains several of the major cities in Massachusetts and is based off the map from
+# the following website:
+#
+# http://ontheworldmap.com/usa/state/massachusetts/
+#
+# The cities used are the red dots on the above map (except for the addition of Provincetown).
+
+Pittsfield (1, 4): Greenfield, Northhampton, Springfield
+Greenfield (7, 2): Pittsfield, Worcester
+Northhampton (7, 6): Pittsfield, Worcester
+Springfield (7, 9): Pittsfield, Worcester
+Worcester (13, 6.5): Greenfield, Northhampton, Springfield, Boston, Lowell
+Lowell (17, 1.5): Worcester, Lawrence, Boston, Salem
+Salem (20, 4): Lowell
+Lawrence (18.5, 0): Lowell
+Boston (19, 6): Worcester, Cambridge, Dedham, Brockton, Lowell
+Cambridge (17.5, 5): Boston
+Dedham (17.75, 7.75): Boston, Brockton
+Brockton (19, 9.75): Dedham, Boston, Taunton, Plymouth
+Taunton (19.25, 12.75): Brockton
+Plymouth (22, 12.25): Brockton, Barnstable
+Barnstable (25, 14.75): Plymouth, Provincetown
+Provincetown (26, 9.75): Barnstable

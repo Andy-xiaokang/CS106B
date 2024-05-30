@@ -1,0 +1,42 @@
+# This file contains information about Central Europe. It's (loosely) adapted from
+# this rail map:
+#
+# http://mapofeurope.com/wp-content/uploads/2013/06/rail-map-of-europe.jpg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+
+Salzburg (0, 5): Wien, Ljubljana
+Ljubljana (0, 7): Salzburg, Zagreb, Split
+Split (0, 8): Ljubljana, Zagreb, Sarajevo
+Berlin (1, 1): Poznan, Dresden
+Dresden (1, 2): Berlin, Wroclaw, Praha
+Praha (1, 3): Dresden, Ostrava, Brno, Wien
+Wien (1, 5): Praha, Brno, Bratislava, Budapest, Ljubljana
+Zagreb (1, 7): Ljubljana, Split, Sarajevo, Beograd
+Gdansk (2, 0): Poznan, Warszawa
+Poznan (2, 1): Berlin, Gdansk, Warszawa, Wroclaw
+Wroclaw (2, 2): Poznan, Katowice, Dresden
+Ostrava (3, 3): Katowice, Lwiw, Cluj-Napoca, Brno, Praha
+Brno (2, 4): Ostrava, Praha, Wien, Bratislava
+Bratislava (3, 5): Wien, Brno, Ostrava, Lwiw, Cluj-Napoca
+Sarajevo (2, 8): Split, Zagreb, Beograd
+Warszawa (4, 1): Poznan, Gdansk, Katowice, Lwiw
+Katowice (3, 2): Krakow, Ostrava, Wroclaw, Lwiw
+Budapest (3, 6): Wien, Cluj-Napoca, Beograd, Zagreb
+Beograd (3, 7): Sarajevo, Zagreb, Budapest, Bucuresti
+Krakow (4, 2): Katowice, Lwiw
+Lwiw (5, 3): Cluj-Napoca, Krakow, Warszawa
+Cluj-Napoca (5, 5): Brasov, Budapest, Lwiw
+Brasov (5, 6): Cluj-Napoca, Bucuresti
+Bucuresti (5, 7): Brasov, Beograd

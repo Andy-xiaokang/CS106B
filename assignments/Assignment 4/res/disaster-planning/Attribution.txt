@@ -1,0 +1,27 @@
+Colorado.dst file created by former CS106B students Michael Mendoza and Marcus Llorente.
+
+EasternChinaSh.dst file created by former CS106B student Zinan Hu.
+
+MiddleEarth.dst file created by former CS106B student Angel Ortiz.
+
+LowerOahu.dst file created by former CS106B student Shina Penaranda.
+
+Tokyo.dst file created by former CS106B student Mia Tanaka.
+
+MidwestUS.dst file created by former CS106B students Elena Sierra and Abhi Kumar.
+
+JapanShinkansen.dst file created by former CS106B student Justine Sato.
+
+Massachusetts.dst file created by former CS106B student Joey O'Brien.
+
+VirtuallyImpossibleWholeUS.dst created by former CS106B students Markus Diehl and Meelad Amouzgar.
+
+StanfordMarguerite.dst created by former CS106B students Sophie Wu and Abhinav Agarwal.
+
+StanfordClubCardinal.dst created by former CS106B students Benjamen Gao and Jessica Zhang.
+
+TennesseeVaccinations.dst created by former CS106B students Caroline Berg and Melanie Zhou.
+
+All other .dst files written by Keith Schwarz, based on maps linked from their respective files.
+
+Want your name to be here? Create a custom file and include it as an extension!

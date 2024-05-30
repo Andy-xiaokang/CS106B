@@ -1,0 +1,32 @@
+# This file contains information about Stanford University. It's (loosely) adapted from
+# the map in Club Cardinal:
+#
+# https://club-cardinal.com/map
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Hey Alejo! We hope that you've had a pleasant grading session.
+# For our extension, we opted for the "make your own map" option
+# after noticing that there isn't a map made for Stanford yet.
+# To gather the information for this extension, we consulted the
+# map featured on Club Cardinal (https://club-cardinal.com/map).
+# Please let us know if you have any questions and have a nice day!
+#                                               - Ben and Jess :)
+
+
+Mausoleum (1, 1): Stanford Arts Museum
+Stanford Arts Museum (2, 1): Mausoleum, The Oval
+The Oval (3, 1): Stanford Arts Museum, Memorial Church
+Y2E2 (2, 3): Memorial Church, Arillaga Gym
+Memorial Church (3, 3): The Oval, Y2E2, TAP
+Meyer Green (5, 3): Dorm
+Arillaga Gym (1, 4): Y2E2, Roble Arts Gym
+Roble Arts Gym (2, 4): Arillaga Gym, TAP, Womens Community Center, Windhover
+TAP (3, 4): Roble Arts Gym, Memorial Church, Windhover, Old Union
+Old Union (4, 4): TAP, Dorm
+Dorm (5, 4): Old Union, Meyer Green
+Womens Community Center (2, 5): Roble Arts Gym, Windhover
+Windhover (3, 5): Womens Community Center, TAP, Roble Arts Gym
+Dish (5, 5):

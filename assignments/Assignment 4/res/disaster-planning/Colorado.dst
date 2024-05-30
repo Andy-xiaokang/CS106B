@@ -1,0 +1,61 @@
+# THIS IS A CHALLENGING TEST FILE. It's going to take a while for your program to find something
+# that works.
+#
+# This file contains information about the major cities and mountain towns of Colorado
+# It's inspired by the state of Colorado #mountaintrees represent
+#
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+Denver (9, 3): Castle Rock, Loveland, Granby, Silverthorne, Boulder
+Loveland (9, 2): Greeley, Denver, Fort Collins, Boulder
+Boulder (8, 3): Loveland, Denver, Fort Collins
+Greeley (10, 2): Loveland
+Fort Collins (9, 1): Loveland, Greeley, Boulder
+Castle Rock (9, 4): Denver, Colorado Springs
+Colorado Springs(9, 6): Castle Rock, Pueblo, Canon City, Woodland Park
+Pueblo (9, 8): Colorado Springs, Canon City, Walsenburg
+Gunnison (4, 6):Crested Butte, Montrose, Poncha Springs
+Crested Butte (4, 5): Gunnison
+Telluride (2, 7): Silverton
+Silverton (3, 8): Montrose, Telluride, Durango
+Durango (3, 9): Silverton, Pagosa Springs
+Pagosa Springs (5, 9): Durango, Alamosa
+Alamosa (6, 8): Pagosa Springs, Poncha Springs
+Poncha Springs (5, 6): Alamosa, Salida, Gunnison, Buena Vista
+Salida (6, 6): Canon City, Poncha Springs
+Buena Vista (5, 5): Poncha Springs, Vail, Aspen, Woodland Park
+Aspen (4, 4): Buena Vista, Glenwood Springs
+Vail (5, 3): Glenwood Springs, Buena Vista, Silverthorne
+Silverthorne (6, 3): Frisco, Vail, Granby, Denver
+Frisco (6, 4): Silverthorne, Breckenridge
+Breckenridge (7, 4): Frisco
+Granby (6, 2): Denver, Silverthorne, Steamboat
+Walsenburg (9, 9): Pueblo, Alamosa
+Canon City (7, 6): Pueblo, Salida, Colorado Springs
+Woodland Park (8, 5): Buena Vista, Colorado Springs
+Dinosaur (1, 1): Craig, Rangely
+Rangely (1, 2): White River City, Dinosaur, Fruta
+Craig (3, 1): Dinosaur, Meeker, Hayden
+Hayden (4, 1): Craig, Steamboat
+Steamboat (5, 1): Hayden, Granby
+Meeker (3, 2): Craig, Glenwood Springs, White River City
+White River City (2, 2): Rangely, Meeker
+Fruta (1, 3): Grand Junction, Rangely
+Grand Junction (2, 3): Delta, Fruta, Palisade
+Palisade (3, 3): Grand Junction, Glenwood Springs
+Glenwood Springs (4, 3): Meeker, Vail, Aspen, Palisade
+Delta (2, 5): Cedar Ride, Hotchkiss, Montrose, Grand Junction
+Cedar Ride (2, 4): Delta
+Paonia (3, 4): Hotchkiss
+Hotchkiss (3, 5): Delta, Paonia
+Montrose (2, 6): Gunnison, Silverton, Delta

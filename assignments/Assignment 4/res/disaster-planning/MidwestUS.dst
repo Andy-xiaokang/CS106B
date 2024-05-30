@@ -1,0 +1,47 @@
+# By: Elena Sierra and Abhi Kumar; CS 106B; 02/10/2021
+# SL: Eddie Arreola
+# MidwestUS.dst
+#
+# This file contains information about the Midwest US.
+# It's inspired by / stolen from this excellent schematic:
+#
+# http://www.chrisyates.net/reprographics/comics/278theinterstatesystem.jpg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+#
+# The Midwest includes cities in North Dakota, South Dakota, Nebraska, Kansas, Minnesota, Iowa,
+# Missouri, Wisconsin, Illinois, Indiana, Michigan, and Ohio
+
+
+Buffalo (0, -3): Fargo
+Fargo (1, -3): Sioux Falls, Minneapolis
+Minneapolis (2, -3): Fargo, Albert Lea
+Sioux Falls (1, -2): Fargo, Albert Lea, Omaha
+Albert Lea (2, -2): Minneapolis, Sioux Falls, Des Moines, Chicago
+Omaha (1, -1): Sioux Falls, Des Moines, Kansas City
+Des Moines (2, -1): Omaha, Kansas City, Albert Lea, Chicago
+Kansas City (2, 0): Des Moines, Omaha, St. Louis
+St. Louis (3, 0): Kansas City, Chicago, Indianapolis,
+Chicago (4, -1): Albert Lea, Des Moines, St. Louis, Indianapolis, Toledo, Battle Creek
+Grand Rapids (4, -3): Lansing, Chicago
+Lansing (5, -3): Grand Rapids, Detroit, Battle Creek
+Battle Creek (5, -2): Lansing, Detroit, Chicago, Indianapolis
+Detroit (6, -3): Lansing, Battle Creek, Toledo
+Toledo (6, -1): Cleveland, Detroit, Chicago, Dayton
+Indianapolis (6, 0): Dayton, Battle Creek, Chicago, St. Louis
+Dayton (7, 0): Columbus, Toledo, Cincinnati, Indianapolis
+Columbus (8, 0): Cambridge, Cleveland, Dayton
+Cambridge (9, 0): Erie, Columbus
+Cleveland (8, -1): Erie, Columbus, Dayton, Toledo
+Erie (9, -1): Cleveland, Cambridge
+Cincinnati (7, 1): Dayton, Columbus

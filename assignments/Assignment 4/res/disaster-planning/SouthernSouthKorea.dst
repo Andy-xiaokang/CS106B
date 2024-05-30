@@ -1,0 +1,51 @@
+# This file contains information from rail lines in the southern half of South Korea and is
+# adapted from
+#
+# https://upload.wikimedia.org/wikipedia/commons/7/79/KTX_linemap_en.svg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+Mokpo (0, 8): Naju
+Naju (1, 7): Gwangju Songjeong
+Gwangju Songjeong (1, 6): Jeongeup
+Jeongeup (1, 4): Iksan
+Iksan (1, 3): Jeonju
+Yeocheon (2, 8): Suncheon, Yeosu Expo
+Suncheon (2, 7): Guryegu
+Guryegu (2, 6): Gokseong
+Gokseong (2, 5): Namwon
+Namwon (2, 4): Jeonju
+Jeonju (2, 3): Nonsan
+Nonsan (2, 2): Gongju, Gyeryong
+Gongju (2, 1): Osong
+Yeosu Expo (3, 8):
+Gyeryong (3, 2): Seodaejeon
+Jinju (4, 6): Masan
+Seodaejeon (4, 2): Daejong
+Osong (4, 0): Daejong
+Masan (5, 6): Changwon
+Daejong (5, 2): Gimcheon Gumi
+Changwon (6, 6): Changwon Jungang
+Gimcheon Gumi (6, 2): Dongdaegu
+Changwon Jungang (7, 6): Jinyeong
+Jinyeong (7, 5): Miryang
+Miryang (7, 4): Gupo, Gyeongsan
+Gyeongsan (7, 3): Dongdaegu
+Dongdaegu (7, 2): Singyeongju
+Busan (8, 6): Gupo
+Gupo (8, 5): Ulsan
+Ulsan (8, 4): Singyeongju
+Singyeongju (8, 3): Pohang
+Pohang (8, 2): 
+
+

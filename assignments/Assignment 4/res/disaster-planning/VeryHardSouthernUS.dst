@@ -1,0 +1,57 @@
+# THIS IS A CHALLENGING TEST FILE. It's going to take a while for your program to find something
+# that works.
+#
+# This file contains information about the Southern US.
+# It's inspired by / stolen from this excellent schematic:
+#
+# http://www.chrisyates.net/reprographics/comics/278theinterstatesystem.jpg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+
+Louisville (4, 0): Lexington, Nashville
+Lexington (5, 0): Louisville, Charleston, Knoxville
+Charleston (6, 0): Lexington, Staunton, Wyethville
+Staunton (7, 0): Charleston, Wyethville, Richmond
+Richmond (10, 0): Staunton, Petersburg
+Wyethville (7, 1): Charleston, Staunton, Knoxville, Winston-Salem
+Petersburg (10, 1): Richmond, Greensboro, Raleigh
+Wichita Falls (0, 2): Oklahoma City
+Oklahoma City (1, 2): Wichita Falls, Dallas, Little Rock
+Little Rock (2, 2): Oklahoma City, Dallas, Memphis
+Memphis (3, 2): Little Rock, Jackson, Nashville
+Nashville (4, 2): Louisville, Memphis, Birmingham, Knoxville
+Knoxville (5, 2): Lexington, Nashville, Atlanta, Winston-Salem, Wyethville
+Winston-Salem (8, 2): Wyethville, Knoxville, Charlotte, Greensboro
+Greensboro (9, 2): Winston-Salem, Charlotte, Raleigh, Petersburg
+Raleigh (10, 2): Petersburg, Greensboro, Columbia
+Charlotte (9, 3): Winston-Salem, Atlanta, Columbia, Greensboro
+Dallas (1, 4): Oklahoma City, El Paso, San Antonio, Jackson, Little Rock
+Jackson (3, 4): Memphis, Dallas, New Orleans, Birmingham
+Birmingham (4, 4): Nashville, Jackson, Atlanta, Montgomery
+Atlanta (5, 4): Knoxville, Birmingham, Montgomery, Macon, Columbia, Charlotte
+Columbia (10, 4): Raleigh, Charlotte, Atlanta, Savannah
+Montgomery (4, 5): Birmingham, Atlanta, Mobile
+Macon (5, 5): Atlanta, Savannah, Lake City
+Savannah (10, 5): Columbia, Macon, Jacksonville
+El Paso (0, 6): Dallas, San Antonio
+San Antonio (1, 6): Dallas, El Paso, Houston
+Houston (2, 6): Dallas, San Antonio, New Orleans
+New Orleans (3, 6): Jackson, Houston, Mobile
+Mobile (4, 6): New Orleans, Montgomery, Lake City
+Lake City (5, 6): Macon, Mobile, Jacksonville, Tampa
+Jacksonville (10, 6): Savannah, Lake City, Daytona Beach
+Tampa (9, 7): Lake City, Daytona Beach, Fort Myers
+Daytona Beach (10, 7): Jacksonville, Miami, Tampa
+Fort Myers (9, 8): Tampa
+Miami (10, 8): Daytona Beach

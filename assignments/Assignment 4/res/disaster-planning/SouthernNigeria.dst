@@ -1,0 +1,47 @@
+# This file contains information from highways in southeastern Nigeria and is adapted from
+#
+# https://www.mapsofworld.com/nigeria/maps/nigeria-road-map.jpg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+Okuta (0, 1): Shaki, Kishi
+Shaki (0, 2): Iseyin
+Iseyin (0, 3): Kishi, Ibadan
+Kishi (1, 2): Ilorin
+Ogbomosho (1, 3): Ilorin, Ibadan
+Ibadan (1, 4): Oshogbo, Ijebu Ode, Akure
+Ijebu Ode (1, 5): Lagos, Benin City
+Lagos (1, 6):
+Ilorin (2, 2): Bida, Oshogbo
+Oshogbo (2, 3): Akure
+Akure (2, 4): Owo, Lokoja
+Bida (3, 1): Abuja
+Owo (3, 4): Benin City
+Benin City (3, 5): Onitsha, Port Harcourt
+Port Harcourt (3, 7): Aba
+Abuja (4, 1): Keffi, Abaji
+Abaji (4, 2): Keffi, Lokoja
+Lokoja (4, 3): Gboko, Enugu
+Onitsha (4, 5): Awka, Owerri
+Owerri (4, 6): Aba
+Aba (4, 7): Uyo, Calabar, Enugu
+Uyo (4, 8):
+Keffi (5, 1): Lafia
+Awka (5, 5): Enugu
+Calabar (5, 8):
+Enugu (6, 5): Abakaliki
+Lafia (7, 2): Makurdi
+Makurdi (7, 3): Gboko
+Abakaliki (7, 5): Gboko
+Gboko (8, 4):
+

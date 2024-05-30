@@ -1,0 +1,31 @@
+# This file contains information about the British Isles. It's (loosely) adapted from
+# this rail map:
+#
+# http://mapofeurope.com/wp-content/uploads/2013/06/rail-map-of-europe.jpg
+#
+# The file format is
+#
+#    Name (X, Y): Link1, Link2, ..., LinkN
+#
+# Our code will automatically insert roads in the reverse direction, so if city A links to
+# city B, then city B will implicitly link back to A. Just for completeness, though, we've
+# included everything here.
+#
+# The X and Y coordinates are in "logical space." You can have the size of one unit mean
+# whatever you'd like it to mean, and our code will map everything nicely into the display
+# window.
+
+
+Glasgow (2, 0): Edinburgh, Manchester
+Edinburgh (3, 0): Newcastle, Glasgow, Manchester
+Belfast (0, 1): Dublin
+Newcastle (4, 1): Edinburgh, Leeds
+Dublin (0, 2): Belfast, Cork
+Liverpool (1, 2): Manchester
+Manchester (2, 2): Liverpool, Glasgow, Edinburgh, Leeds, Birmingham
+Leeds (4, 2): Newcastle, London, Birmingham
+Cork (0, 3): Dublin
+Birmingham (2, 3): Manchester, Leeds, Bristol, London
+Cardiff (1, 4): Bristol
+Bristol (2, 4): Cardiff, Birmingham, London
+London (3, 4): Bristol, Birmingham, Leeds
