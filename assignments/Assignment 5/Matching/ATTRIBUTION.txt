@@ -1,0 +1,8 @@
+The code for maximum weighted matching was formed by shamelessly copying a C
+implementation by Ed Rothberg in 1985, updating it to make it legal C++ code,
+removing everything that wasn't needed for the maximum matching logic, and
+cleaning up the interface a bit. The original source can be found here:
+
+http://archive.dimacs.rutgers.edu/pub/netflow/matching/weighted/solver-1/
+
+Most of the code here is taken directly from the original.

@@ -1,0 +1,15 @@
+The big-O time complexity of the function...
+
+... printH is O(n^2),
+... printC is O(n),
+... printI is O(n^2),
+... printP is O(n^2),
+... printChip is O(n^2),
+... countTriples is O(n^3),
+... printCycle_v1 is O(n^2),
+... printCycle_v2 is O(n^2),
+... printCycle_v3 is O(n),
+... recursivePuzzle is O(n),
+... recursiveEnigma is O(log(n)),
+... maximumSingleSellProfit_v1 is O(n^2), and
+... maximumSingleSellProfit_v2 is O(n)
