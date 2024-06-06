@@ -1,0 +1,57 @@
+Q1: macOS
+
+Q2: elems[3].name = "" elems[3].weight = 0.0
+    elems[4].name = "" elems[4].weight = 5.21501700093393e-310
+    elems[5].name = "" elems[5].weight = 0.0
+
+
+Q3:   jackie                 jackie                    Jackie
+      /    \                /      \                  /      \
+    Tito   jermaine       Tito     Jermaine        Jermaine  Tito
+   /    \                /    \                   /        \
+michael mardon         marlon  michael           marlon     michael
+
+
+Q4:        T
+        /     \
+       B       G
+     /  \     /  \
+    S    A    V   R
+   /  \
+  O    K
+
+
+Q5:       G
+        /   \
+      B       R
+     / \     / \
+    S   A   V   K
+   /
+  O
+
+
+Q6:  0      1  2  3  4  5  6  7  8
+    unused  G  B  R  S  A  V  K  O
+
+
+Q7:
+
+
+
+
+
+
+
+
+
+Q8:
+
+
+
+
+
+
+
+
+
+
