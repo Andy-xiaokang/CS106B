@@ -1,0 +1,42 @@
+Q1: when the load factor is <= 0.85 the linear probing is faster than robin
+    when load factor >= 0.9 the robin is faster than linear probing
+
+
+
+
+Q2: robin is faster than linear probing with the gap grow quickly when load factor grows
+
+
+
+
+Q3: the linear probing is faster than robin with the gap stay the same
+
+
+
+
+Q4:
+
+
+
+
+Q5:
+
+
+
+
+Q6:
+
+
+
+
+Q7:
+
+
+
+
+Q8:
+
+
+
+
+
