@@ -18,7 +18,8 @@ CS106B Programming Abstractions in C++
 [archived website 2022 winter](https://web.stanford.edu/class/archive/cs/cs106b/cs106b.1224/)  
 lecture notes 2023 fall quarter in this repo  
 [bilibili video](https://www.bilibili.com/video/BV1G7411k7jG)  
-[youtube video](https://www.youtube.com/playlist?list=PL-h0BZdG_K4kAmsfvAik-Za826pNbQd0d)  
+[youtube video](https://www.youtube.com/playlist?list=PL-h0BZdG_K4kAmsfvAik-Za826pNbQd0d)
+[一篇关于 assignments 的知乎参考 post](https://www.zhihu.com/people/liang-gong-chun-ri-30-2/posts)
 
 ## postscript
 
